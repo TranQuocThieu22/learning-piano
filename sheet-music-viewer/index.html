@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Learning - Sheet Music Viewer</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- abcjs CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.2/abcjs-audio.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>🎹 Sheet Music Viewer</h1>
+            <p>Dán mã ABC của bài tập vào ô bên dưới để xem bản nhạc và nghe thử.</p>
+        </header>
+
+        <main class="app-main">
+            <div class="editor-section">
+                <div class="section-header">
+                    <h2>ABC Notation</h2>
+                </div>
+                <textarea id="abc-source" spellcheck="false" placeholder="Nhập mã ABC vào đây... (Ví dụ: 
+X: 1
+T: Bài tập mẫu
+M: 4/4
+L: 1/4
+K: C
+C D E F | G A B c |)"></textarea>
+            </div>
+
+            <div class="viewer-section">
+                <div class="section-header">
+                    <h2>Sheet Music</h2>
+                </div>
+                <div id="paper" class="paper-container"></div>
+                <div id="audio" class="audio-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- abcjs Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/abcjs/6.2.2/abcjs-basic-min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
