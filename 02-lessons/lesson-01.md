@@ -1,31 +1,50 @@
-# Bài 1: Ôn tập cơ bản và Vị trí nốt trên đàn
+# Bài 1: Làm quen với Khuông nhạc, Nốt nhạc và Phím đàn (Từ con số 0)
 
-Chào bạn, hôm nay chúng ta sẽ bắt đầu bài học đầu tiên. Vì bạn đã biết đọc nốt nhạc cơ bản, chúng ta sẽ lướt qua phần này nhanh chóng để bước vào thực hành ngay nhé.
+Chào bạn, không sao cả! Chúng ta sẽ bắt đầu từ những khái niệm căn bản nhất. Hãy coi đây là một bảng chữ cái mới mà bạn sắp làm quen.
 
-## 1. Khóa Sol và Khóa Pha
-- **Khóa Sol (G clef)**: Dành cho tay phải. Nằm trên khuông nhạc phía trên. Nốt Sol nằm ở dòng kẻ thứ 2 từ dưới lên.
-- **Khóa Pha (F clef)**: Dành cho tay trái. Nằm trên khuông nhạc phía dưới. Nốt Pha nằm ở dòng kẻ thứ 4 từ dưới lên.
+## 1. Bảy nốt nhạc cơ bản và Phím đàn
+Âm nhạc phương Tây (và Piano) xoay quanh 7 nốt nhạc cơ bản. Tại Việt Nam, chúng ta hay gọi là:
+**Đô - Rê - Mi - Pha - Sol - La - Si**
 
-## 2. Vị trí nốt trên phím đàn
-Một bàn phím piano có chu kỳ lặp lại cấu trúc 2 phím đen và 3 phím đen.
-- **Nốt Đô (C)**: Luôn nằm ngay bên trái của cụm 2 phím đen.
-- Hãy tìm nốt **Đô giữa (Middle C - C4)** trên đàn của bạn. Thường nó nằm ở khoảng giữa cây đàn. Đây sẽ là điểm mốc cho hầu hết các bài tập cơ bản.
+Ký hiệu chữ cái quốc tế tương ứng (bạn bắt buộc phải nhớ cái này vì sheet nhạc thường dùng chữ):
+- **C** = Đô
+- **D** = Rê
+- **E** = Mi
+- **F** = Pha
+- **G** = Sol
+- **A** = La
+- **B** = Si
+*(Mẹo nhớ: Hãy nhớ từ A, B, C, D, E, F, G tương ứng với La, Si, Đô, Rê, Mi, Pha, Sol).*
 
-## 3. Số ngón tay (Fingering)
-Quy ước số ngón tay cực kỳ quan trọng trong Piano:
-- Ngón cái: Số 1
-- Ngón trỏ: Số 2
-- Ngón giữa: Số 3
-- Ngón áp út: Số 4
-- Ngón út: Số 5
+**👉 Cách tìm nốt Đô (C) trên đàn Piano:**
+Nhìn lên bàn phím, bạn sẽ thấy các phím đen được xếp theo cụm: **Cụm 2 phím đen** và **Cụm 3 phím đen**.
+Nốt **Đô (C)** luôn là phím trắng nằm **ngay sát bên trái** của cụm 2 phím đen.
+Hãy tìm nốt Đô nằm ở khoảng giữa cây đàn của bạn, người ta gọi đó là nốt **Đô giữa (Middle C)**.
 
-## 4. Tư thế ngồi và đặt tay
-- Ngồi thẳng lưng, thả lỏng vai.
-- Bàn tay đặt lên phím đàn cong tự nhiên như đang cầm một quả bóng tennis hoặc quả cam nhỏ.
-- Không để các khớp ngón tay bị gãy (gập vào trong) khi bấm phím. Lực phát ra từ ngón tay, không phải từ cổ tay.
+Từ nốt Đô đó, bạn đếm tiến lên các phím trắng liên tiếp về bên phải: Đô (C), Rê (D), Mi (E), Pha (F), Sol (G)...
+
+## 2. Khuông nhạc và Khóa Sol
+Bản nhạc được viết trên **Khuông nhạc** gồm 5 dòng kẻ ngang song song và 4 khe giữa các dòng kẻ. Ta đếm từ dưới lên trên (Dòng 1 ở dưới cùng).
+
+Ở đầu khuông nhạc thường có hình một dấu cuộn tròn rất đẹp, đó gọi là **Khóa Sol (Treble Clef)**. Khóa Sol thường dành cho **Tay Phải**.
+
+**👉 Vị trí nốt Đô giữa trên khuông nhạc Khóa Sol:**
+Nó nằm trên một **dòng kẻ phụ ngắn** được vẽ thêm ở ngay phía dưới dòng kẻ thứ nhất (dòng dưới cùng) của khuông nhạc. 
+Trông nó giống như một hành tinh có một đường xích đạo vắt ngang qua. 
+
+## 3. Tư thế ngồi và số ngón tay
+- Ngón cái = Số 1
+- Ngón trỏ = Số 2
+- Ngón giữa = Số 3
+- Ngón áp út = Số 4
+- Ngón út = Số 5
+
+**Tư thế:** 
+Để bàn tay cong tự nhiên như đang cầm một quả bóng tennis. Không làm xẹp các khớp ngón tay.
 
 ---
-**Nhiệm vụ của bạn:**
-Hãy ngồi vào đàn, chỉnh lại tư thế, và chơi thử 5 nốt C, D, E, F, G bằng tay phải (ngón 1 đến 5), sau đó bằng tay trái (ngón 5 đến 1). Chú ý giữ đúng tư thế tay. 
-
-*Sau khi đọc xong bài này, hãy chuyển sang thư mục bài tập `exercise-01.md` nhé!*
+**Nhiệm vụ của bạn hôm nay:**
+1. Thuộc lòng 7 chữ cái C, D, E, F, G, A, B.
+2. Tìm được chính xác tất cả các nốt Đô (C) trên cây đàn FP-30X của bạn.
+3. Đặt ngón cái tay phải (ngón 1) lên nốt Đô giữa, lần lượt đặt các ngón 2,3,4,5 lên các phím Rê, Mi, Pha, Sol kế tiếp. 
+4. Chuyển sang đọc `03-exercises/exercise-01.md` để bắt đầu tập luyện nhé!
