@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let abcBlocksCounter = 0;
     const abcDataMap = {}; // Store abc string to render later
 
-    renderer.code = function(code, language) {
+    renderer.code = function(tokenOrCode, maybeLang) {
+        // Handle newer marked versions (token object) and older versions (code, language)
+        const code = typeof tokenOrCode === 'object' ? tokenOrCode.text : tokenOrCode;
+        const language = typeof tokenOrCode === 'object' ? tokenOrCode.lang : maybeLang;
+
         if (language === 'abc') {
             const id = `abc-block-${abcBlocksCounter++}`;
             abcDataMap[id] = code;
@@ -31,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
         }
         // Default code block rendering
-        return `<pre><code>${code}</code></pre>`;
+        return `<pre><code class="language-${language}">${code}</code></pre>`;
     };
 
     marked.setOptions({ renderer });
