@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piano Journey</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- abcjs CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/abcjs-audio.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="web-style.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>🎹 Piano Journey</h2>
+                <button class="mobile-toggle" id="mobile-toggle">✕</button>
+            </div>
+            <nav class="nav-menu">
+                <div class="nav-section">
+                    <h3>Khởi đầu</h3>
+                    <a href="#roadmap" class="nav-link active" data-file="01-roadmap/roadmap.md">Lộ trình học</a>
+                    <a href="#guidelines" class="nav-link" data-file="04-submissions/submission-guidelines.md">Hướng dẫn nộp bài</a>
+                </div>
+                <div class="nav-section">
+                    <h3>Giai đoạn 1</h3>
+                    <a href="#lesson-1" class="nav-link" data-file="02-lessons/lesson-01.md">Bài 1: Làm quen phím đàn</a>
+                    <a href="#exercise-1" class="nav-link" data-file="03-exercises/exercise-01.md">Bài tập 1: Nốt C-D-E-F-G</a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="topbar">
+                <button class="menu-btn" id="menu-btn">☰ Menu</button>
+                <div class="topbar-title">Piano Learning</div>
+            </header>
+            <div id="content" class="content-container markdown-body">
+                <div class="loader">Đang tải...</div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/abcjs@6.2.2/abcjs-basic-min.js"></script>
+    <!-- Custom JS -->
+    <script src="web-app.js"></script>
+</body>
+</html>
