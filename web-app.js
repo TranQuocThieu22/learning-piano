@@ -44,11 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadPage(file) {
         contentDiv.innerHTML = '<div class="loader">Đang tải...</div>';
         try {
-            // In a real server environment, fetch works. 
-            // Since we might run this locally via double click (file://), fetch might fail due to CORS.
-            // But Github Pages uses http://, so it works perfectly.
             const response = await fetch(file);
-            if (!response.ok) throw new Error('Network response was not ok');
+            if (!response.ok) throw new Error(`Lỗi HTTP ${response.status} (${response.statusText})`);
             const markdownText = await response.text();
             
             // Reset counter for new page
@@ -68,8 +65,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             contentDiv.innerHTML = `
                 <h2>Oops!</h2>
-                <p>Không thể tải bài học: ${file}</p>
-                <p style="color:var(--text-muted); font-size:0.9em;">Lưu ý: Nếu bạn đang mở file trực tiếp từ máy tính, trình duyệt có thể chặn tải file. Hãy dùng VSCode Live Server hoặc tải lên Github Pages.</p>
+                <p>Không thể tải bài học: <strong>${file}</strong></p>
+                <p style="color: #ef4444; margin-top: 10px;">Chi tiết lỗi: ${error.message}</p>
+                <p style="color:var(--text-muted); font-size:0.9em; margin-top: 20px;">Lưu ý: Nếu bạn đang mở file trực tiếp từ máy tính, trình duyệt có thể chặn tải file. Hãy dùng VSCode Live Server hoặc tải lên Github Pages.</p>
+                <p style="color:var(--text-muted); font-size:0.9em;">Nếu bạn đang chạy trên Vercel/Github và bị lỗi 404, hãy kiểm tra lại xem file này đã được commit và Push lên Github chưa nhé!</p>
             `;
             console.error(error);
         }
