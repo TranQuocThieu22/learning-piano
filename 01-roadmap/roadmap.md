@@ -1,24 +1,25 @@
-# Lộ trình học Piano (Dành cho người mới bắt đầu)
+# Lộ trình học Piano (Dành cho người mới bắt đầu từ số 0)
 
-Chào mừng bạn đến với khóa học Piano cơ bản! Dù bạn đã biết chút ít về đọc nốt nhạc, chúng ta vẫn sẽ lướt nhanh qua các kiến thức nền tảng để đảm bảo mọi thứ được vững chắc nhất.
+Vì bạn là người mới bắt đầu hoàn toàn, chúng ta sẽ chia nhỏ lộ trình ra **từng ngày một** thay vì từng tuần. Mục tiêu là để não bộ và các ngón tay có đủ thời gian thích nghi mà không bị ngợp. Mỗi ngày bạn chỉ cần dành 30-45 phút tập trung.
 
-## Giai đoạn 1: Nền tảng vững chắc (Tuần 1 - 2)
-Mục tiêu: Đọc nốt nhạc nhạy bén, hiểu nhịp phách, và làm quen với phím đàn.
-- **Bài 1**: Ôn tập cách đọc nốt nhạc khóa Sol và khóa Pha. Xác định vị trí nốt trên đàn Piano.
-- **Bài 2**: Nhịp, phách và các hình nốt (Tròn, trắng, đen, đơn).
-- **Bài 3**: Luyện ngón cơ bản (Hanpn 1) và tư thế tay đúng.
+## Giai đoạn 1: Nền tảng vững chắc (Khoảng 60 ngày / 2 tháng)
+Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, và điều khiển các ngón tay độc lập.
 
-## Giai đoạn 2: Ghép hai tay cơ bản (Tuần 3 - 5)
-Mục tiêu: Đánh các bản nhạc đơn giản có giai điệu (tay phải) và đệm bè đơn (tay trái).
-- **Bài 4**: Khái niệm hợp âm trưởng/thứ cơ bản (C, F, G).
-- **Bài 5**: Thực hành ghép hai tay các bài hát ngắn (ví dụ: Twinkle Twinkle Little Star, Ode to Joy).
-- **Bài 6**: Kỹ thuật luồn ngón và chuyển hợp âm.
+- **Ngày 1 - 7**: Làm quen với 7 nốt nhạc cơ bản (C, D, E, F, G, A, B). Dành cả tuần đầu chỉ để nhắm mắt cũng bấm trúng nốt Đô (C) và giữ tư thế tay cong tự nhiên không bị mỏi.
+- **Ngày 8 - 14**: Luyện tập 5 ngón tay độc lập (C-D-E-F-G) riêng từng tay. Đánh chậm rãi để ngón áp út và ngón út không bị dính vào nhau.
+- **Ngày 15 - 21**: Nhịp và phách. Làm quen với nốt Đen, Trắng, Tròn. (Giai đoạn này chủ yếu vỗ tay và đập nhịp chân, chưa ghép vào đàn vội).
+- **Ngày 22 - 30**: Thực hành đếm nhịp ra miệng kết hợp bấm phím trên đàn bằng từng tay.
+- **Ngày 31 - 45**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái).
+- **Ngày 46 - 60**: Chuyên tâm thực hành thị tấu (nhìn bản nhạc và đánh) các bài tập vỡ lòng cực chậm. Ôn tập tổng hợp Giai đoạn 1.
 
-## Giai đoạn 3: Phát triển kỹ thuật và nhịp điệu (Tuần 6 - 8)
-Mục tiêu: Tăng tốc độ, đánh có cảm xúc (Dynamics) và thử sức với bản nhạc dài hơn.
-- **Bài 7**: Các nốt thăng, giáng và Dấu hóa chuẩn.
-- **Bài 8**: Nhịp lấy đà, dấu lặng.
-- **Bài 9**: Thực hành bài hoàn chỉnh (Minuet in G - Bach hoặc tương đương).
+## Giai đoạn 2: Ghép hai tay cơ bản
+*(Sẽ được lên chi tiết sau khi bạn vượt qua Giai đoạn 1 một cách vững vàng)*
+- Khái niệm hợp âm cơ bản.
+- Đánh giai điệu tay phải, đệm tay trái bằng hợp âm rải hoặc chập.
+- Kỹ thuật luồn ngón để đánh các đoạn nhạc dài hơn 5 nốt.
 
 ---
-*Mỗi tuần chúng ta sẽ có bài tập thực hành gửi kèm sheet nhạc dạng ABC, bạn sẽ nộp bài bằng cách quay video hoặc ghi âm nhé!*
+**Quy tắc học tập:**
+1. **Không nhảy cóc**: Không qua Ngày 2 nếu Ngày 1 ngón tay vẫn còn cứng hoặc chưa tìm đúng phím.
+2. **Nộp bài thường xuyên**: Sau mỗi bài tập thực hành, hãy quay clip bàn tay gửi vào thư mục `04-submissions` để gia sư kiểm tra tư thế.
+3. **Thả lỏng**: Đừng gồng vai hay gập ngón tay khi đánh. 
