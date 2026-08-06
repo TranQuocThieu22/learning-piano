@@ -104,6 +104,7 @@ textarea:focus {
 
 .paper-container {
     background-color: var(--paper-bg);
+    color: #000000;
     border-radius: 8px;
     padding: 1rem;
     overflow-x: auto;
