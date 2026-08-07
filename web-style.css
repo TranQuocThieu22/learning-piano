@@ -240,6 +240,15 @@ body {
     justify-content: center;
 }
 
+/* Note Highlighting */
+.abcjs-highlight {
+    fill: #3b82f6 !important;
+}
+.abcjs-highlight path,
+.abcjs-highlight text {
+    fill: #3b82f6 !important;
+}
+
 .loader {
     text-align: center;
     padding: 3rem;

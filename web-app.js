@@ -85,7 +85,35 @@ document.addEventListener('DOMContentLoaded', () => {
             // Audio render
             if (ABCJS.synth.supportsAudio()) {
                 const synthControl = new ABCJS.synth.SynthController();
-                synthControl.load(`#audio-${id}`, null, {
+                
+                // Cursor Control to highlight notes
+                const cursorControl = {
+                    onStart: function() {
+                        const paper = document.getElementById(`paper-${id}`);
+                        if(paper) {
+                            paper.querySelectorAll('.abcjs-highlight').forEach(e => e.classList.remove('abcjs-highlight'));
+                        }
+                    },
+                    onEvent: function(ev) {
+                        const paper = document.getElementById(`paper-${id}`);
+                        if(paper) {
+                            paper.querySelectorAll('.abcjs-highlight').forEach(e => e.classList.remove('abcjs-highlight'));
+                        }
+                        if (ev.elements) {
+                            ev.elements.forEach(el => {
+                                el.classList.add('abcjs-highlight');
+                            });
+                        }
+                    },
+                    onFinished: function() {
+                        const paper = document.getElementById(`paper-${id}`);
+                        if(paper) {
+                            paper.querySelectorAll('.abcjs-highlight').forEach(e => e.classList.remove('abcjs-highlight'));
+                        }
+                    }
+                };
+
+                synthControl.load(`#audio-${id}`, cursorControl, {
                     displayLoop: true,
                     displayRestart: true,
                     displayPlay: true,
