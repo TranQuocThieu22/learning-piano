@@ -38,6 +38,17 @@ V: 1 clef=bass
 w: Do Re Mi Pha | Sol Pha Mi Re | Do Mi Sol Mi | Do
 ```
 
+## Bài tập 1C: Bài tập Không cần đàn (Away from piano)
+Đây là các bài tập bạn có thể làm bất cứ lúc nào (tại bàn làm việc, trên giường...) để não bộ và ngón tay làm quen với piano.
+
+**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
+- **Mục tiêu:** Tập cho ngón tay ngoan ngoãn cử động độc lập.
+- **Cách làm:** Úp 2 bàn tay lên đùi hoặc mặt bàn (tư thế khum tròn). Nhấc **từng ngón tay một** (từ ngón cái đến ngón út) gõ xuống bàn 5 lần, trong khi 4 ngón còn lại phải dính chặt xuống bàn. Bài này trông dễ nhưng cực kỳ mỏi ở ngón áp út!
+
+**2. TÙY CHỌN [Phương pháp: Đọc chay bản nhạc / Score Study]**
+- **Mục tiêu:** Luyện mắt phản xạ nhanh với tên nốt nhạc.
+- **Cách làm:** Hãy nhìn vào đoạn mã ABC ở trên, đừng gõ tay gì cả. Hãy chỉ ngón trỏ vào từng nốt nhạc trên màn hình và đọc to tên nốt ra miệng: "Đô - Rê - Mi - Pha - Sol - Pha...". Đọc từ chậm đến nhanh dần.
+
 ## Yêu cầu thực hành
 1. Tập riêng tay phải thật chậm, vừa đánh vừa nhẩm tên nốt "Đô, Rê, Mi..." ra miệng. Cố gắng giữ tay cong tròn, không bị xẹp khớp. Đánh đi đánh lại 10-15 lần cho quen.
 2. Chuyển sang tập riêng tay trái 10-15 lần.

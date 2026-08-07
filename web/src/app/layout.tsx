@@ -19,10 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript defaultColorScheme="dark" />
+        <ColorSchemeScript forceColorScheme="dark" />
       </head>
       <body className={outfit.className} suppressHydrationWarning>
-        <MantineProvider defaultColorScheme="dark">
+        <MantineProvider forceColorScheme="dark">
           {children}
         </MantineProvider>
       </body>

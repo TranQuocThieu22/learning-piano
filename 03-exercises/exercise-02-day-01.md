@@ -42,11 +42,17 @@ V: 2 clef=bass
 "Trái"C, D, E, F, | G,2 E,2 | C,4 |]
 ```
 
-## Bài tập 2C: Bài tập mặt bàn (Không cần đàn)
-Đây là bài tập bạn có thể làm bất cứ lúc nào (tại bàn làm việc, giờ nghỉ trưa...) để rèn luyện sự độc lập và nhịp điệu của ngón tay.
+## Bài tập 2C: Bài tập Không cần đàn (Away from piano)
+Đây là phương pháp luyện tập xa đàn cực kỳ hiệu quả mà bạn có thể làm bất cứ lúc nào.
+
+**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
 - **Tư thế:** Đặt 2 bàn tay lên mặt bàn hoặc đùi, úp tay xuống và giữ dáng khum tròn như ôm bóng.
 - **Động tác 1 (Nhịp điệu):** Vừa đếm miệng "1-2-3-4". Tay trái gõ liên tục ngón 2 (trỏ) theo mỗi nhịp đếm. Tay phải chỉ gõ ở nhịp 1 và 3. Đánh xong đổi tay.
-- **Động tác 2 (Độc lập ngón tay):** Giữ nguyên tư thế, nhấc **MỖI** ngón áp út (ngón 4) của 2 tay lên và gõ nhẹ xuống 5 lần. Các ngón khác phải giữ dính chặt xuống mặt bàn không được nhúc nhích.
+- **Động tác 2 (Độc lập ngón tay):** Giữ nguyên tư thế, nhấc **MỖI** ngón áp út (ngón 4) của 2 tay lên và gõ nhẹ xuống 5 lần. Các ngón khác phải giữ dính chặt xuống mặt bàn.
+
+**2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
+- **Mục tiêu:** Cảm nhận nhịp điệu bằng chính cơ thể.
+- **Cách làm:** Hãy nghe mẫu Bài tập 2A trên máy tính. Sau đó tắt máy đi, bạn tự vỗ tay và miệng tự hát giai điệu: *"Đô Rê Mi Pha... Sol (ngân dài 2 nhịp)... Mi (ngân 2 nhịp)..."* để quen với việc giữ hơi cho nốt Trắng và Tròn.
 
 ## Yêu cầu thực hành
 1. Tập Bài 2A với tay phải và tay trái riêng biệt. Chú ý **giữ phím đàn** đủ nhịp đếm đối với nốt Trắng (2 nhịp) và nốt Tròn (4 nhịp).
