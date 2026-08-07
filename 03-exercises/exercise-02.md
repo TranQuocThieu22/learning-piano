@@ -42,7 +42,14 @@ V: 2 clef=bass
 "Trái"C, D, E, F, | G,2 E,2 | C,4 |]
 ```
 
+## Bài tập 2C: Bài tập mặt bàn (Không cần đàn)
+Đây là bài tập bạn có thể làm bất cứ lúc nào (tại bàn làm việc, giờ nghỉ trưa...) để rèn luyện sự độc lập và nhịp điệu của ngón tay.
+- **Tư thế:** Đặt 2 bàn tay lên mặt bàn hoặc đùi, úp tay xuống và giữ dáng khum tròn như ôm bóng.
+- **Động tác 1 (Nhịp điệu):** Vừa đếm miệng "1-2-3-4". Tay trái gõ liên tục ngón 2 (trỏ) theo mỗi nhịp đếm. Tay phải chỉ gõ ở nhịp 1 và 3. Đánh xong đổi tay.
+- **Động tác 2 (Độc lập ngón tay):** Giữ nguyên tư thế, nhấc **MỖI** ngón áp út (ngón 4) của 2 tay lên và gõ nhẹ xuống 5 lần. Các ngón khác phải giữ dính chặt xuống mặt bàn không được nhúc nhích.
+
 ## Yêu cầu thực hành
 1. Tập Bài 2A với tay phải và tay trái riêng biệt. Chú ý **giữ phím đàn** đủ nhịp đếm đối với nốt Trắng (2 nhịp) và nốt Tròn (4 nhịp).
 2. Khi tập ghép 2 tay ở Bài 2B, đánh với tốc độ **cực kỳ chậm**. Đảm bảo 2 tay giáng xuống phím đàn cùng một thời điểm, không bị lệch tiếng.
 3. Tập đi tập lại 15-20 lần đến khi 2 tay đồng bộ.
+4. Bất cứ khi nào rảnh, hãy tập Bài 2C trên mặt bàn để tăng sự dẻo dai.
