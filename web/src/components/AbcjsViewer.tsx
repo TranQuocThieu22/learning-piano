@@ -31,7 +31,18 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
             paperRef.current.querySelectorAll('.abcjs-highlight').forEach(e => e.classList.remove('abcjs-highlight'));
           }
           if (ev.elements) {
-            ev.elements.forEach((el: any) => el.classList.add('abcjs-highlight'));
+            ev.elements.forEach((el: any) => {
+              if (el && el.classList) {
+                el.classList.add('abcjs-highlight');
+              } else if (Array.isArray(el)) {
+                // Xử lý trường hợp có nhiều bè/khuông nhạc (multi-staves)
+                el.forEach((subEl: any) => {
+                  if (subEl && subEl.classList) {
+                    subEl.classList.add('abcjs-highlight');
+                  }
+                });
+              }
+            });
           }
         },
         onFinished: () => {

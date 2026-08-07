@@ -106,3 +106,9 @@ body {
 .markdown-pre-wrapper:hover {
   transform: translateY(-2px);
 }
+
+/* ABCJS Highlight Style */
+.abcjs-highlight {
+  fill: #ff4757 !important;
+  stroke: #ff4757 !important;
+}
