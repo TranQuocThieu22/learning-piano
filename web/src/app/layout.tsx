@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Outfit } from "next/font/google";
 import '@mantine/core/styles.css';
 import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Piano Learning App",
@@ -17,11 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
-      <body className={inter.className}>
+      <body className={outfit.className} suppressHydrationWarning>
         <MantineProvider defaultColorScheme="dark">
           {children}
         </MantineProvider>
