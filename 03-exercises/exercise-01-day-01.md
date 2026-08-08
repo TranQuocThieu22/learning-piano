@@ -2,6 +2,9 @@
 
 Vì chúng ta bắt đầu từ con số 0, mục tiêu của bài này rất đơn giản: Tập cho 5 ngón tay ngoan ngoãn nhấn đúng phím, và mắt bắt đầu làm quen với sheet nhạc.
 
+> [!TIP]
+> **⏱️ Ước lượng thời gian hoàn thành:** Bài này khá cơ bản, cần **2 ngày** luyện tập (mỗi ngày 30 phút) để não bộ quen thuộc hoàn toàn với vị trí 5 nốt đầu tiên. Đừng vội vàng, cứ tập từ từ nhé!
+
 ## Chuẩn bị tư thế tay
 - **Tay phải**: Tìm nốt Đô (C) ở giữa đàn. Đặt ngón 1 (Ngón cái) lên Đô, ngón 2 (Trỏ) lên Rê (D), ngón 3 (Giữa) lên Mi (E), ngón 4 (Áp út) lên Pha (F), và ngón 5 (Út) lên Sol (G).
 - **Tay trái**: Tìm nốt Đô (C) nằm bên trái nốt Đô giữa một quãng. Lần này đặt ngược lại: Ngón 5 (Út) lên Đô, ngón 4 lên Rê, ngón 3 lên Mi, ngón 2 lên Pha, và ngón 1 (Cái) lên Sol.

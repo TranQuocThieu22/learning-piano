@@ -2,6 +2,9 @@
 
 Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) với các hình nốt mới (Đen, Trắng, Tròn) và thử đánh 2 tay cùng lúc.
 
+> [!WARNING]
+> **⏱️ Ước lượng thời gian hoàn thành:** Việc ghép 2 tay chơi cùng lúc là một "cú sốc" nhẹ với người mới. Để qua được bài này một cách trơn tru, bạn cần luyện tập trong **3 ngày**. Đừng nản chí nếu bạn thấy 2 tay bị "loạn" trong 1-2 ngày đầu nhé!
+
 ## Chuẩn bị vị trí tay (Giống bài 1)
 - **Tay phải (Treble Clef):** Ngón 1 lên Đô (C) giữa. Các ngón 2,3,4,5 lên D,E,F,G.
 - **Tay trái (Bass Clef):** Ngón 5 lên Đô (C) thấp. Các ngón 4,3,2,1 lên D,E,F,G.
