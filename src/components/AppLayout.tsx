@@ -50,8 +50,8 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
 
             sortedCatFiles.forEach(file => {
               // Phân tách title: "Bài tập 2 - Ngày 1: Nhịp điệu" -> base="Bài tập 2", topic="Nhịp điệu"
-              // Hoặc "Bài tập 1: Làm quen..." -> base="Bài tập 1", topic="Làm quen..."
-              const match = file.title.match(/^(Bài tập \d+|Bài \d+)(?:[\s-]*Ngày\s*\d+)?[:\s-]*([^]*)/i);
+              // Phân tách title: "Chương 1 - Bài 1: Nốt liền kề" -> base="Chương 1", topic="Nốt liền kề"
+              const match = file.title.match(/^(Chương \d+)(?:[\s-]*Bài\s*\d+)?[:\s-]*([^]*)/i);
               
               if (match) {
                 const baseGroup = match[1]; // "Bài tập 2"
@@ -101,9 +101,9 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                     >
                       {files.map(file => {
                         const href = `/${file.category}/${file.slug}`;
-                        // Try to extract Day from title, or just use the full title
-                        const dayMatch = file.title.match(/(Ngày \d+)/i);
-                        const label = dayMatch ? dayMatch[1] : file.title.replace(new RegExp(`^${groupName}[:\\s-]*`, 'i'), '') || 'Nội dung';
+                        // Try to extract Bài from title, or just use the full title
+                        const lessonMatch = file.title.match(/(Bài \d+)/i);
+                        const label = lessonMatch ? lessonMatch[1] : file.title.replace(new RegExp(`^${groupName}[:\\s-]*`, 'i'), '') || 'Nội dung';
                         return (
                           <NavLink
                             key={file.slug}

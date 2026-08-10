@@ -1,4 +1,4 @@
-# Bài tập 2 - Ngày 3: Thử thách độc lập nhịp điệu (Rhythm Patterns)
+# Chương 2 - Bài 3: Thử thách độc lập nhịp điệu (Rhythm Patterns)
 
 Chúc mừng bạn đã đến với ngày cuối cùng của Bài 2! Ở 2 ngày trước, tay của bạn đã quen với việc đánh cùng lúc và đánh luân phiên. Hôm nay, chúng ta sẽ bước vào thử thách khó nhất của kỹ năng phối hợp: **Hai tay đánh hai nhịp điệu khác nhau.**
 

@@ -1,4 +1,4 @@
-# Bài tập 2 - Ngày 1: Nhịp điệu và Phối hợp 2 tay
+# Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay
 
 Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) với các hình nốt mới (Đen, Trắng, Tròn) và thử đánh 2 tay cùng lúc.
 

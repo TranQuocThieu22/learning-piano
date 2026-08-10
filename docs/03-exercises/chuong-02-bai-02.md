@@ -1,4 +1,4 @@
-# Bài tập 2 - Ngày 2: Đánh luân phiên và đan xen 2 tay
+# Chương 2 - Bài 2: Đánh luân phiên 2 tay (Alternating hands)
 
 Hôm nay chúng ta vẫn giữ nguyên chủ đề của Bài 2 là **Nhịp điệu và Phối hợp 2 tay**, nhưng chúng ta sẽ nâng cấp bài tập lên một chút để rèn luyện trí não và sự phản xạ độc lập.
 

@@ -1,4 +1,4 @@
-# Bài tập 1 - Ngày 2: Luyện tập bước nhảy (Leaps) trên 5 nốt đầu tiên
+# Chương 1 - Bài 2: Luyện tập bước nhảy (Leaps) trên 5 nốt đầu tiên
 
 Ở Ngày 1, bạn đã làm quen với việc đánh các nốt liền kề nhau (bước đi - steps). Hôm nay chúng ta sẽ nâng cấp lên một chút: Tập đánh các "bước nhảy" (leaps). Nghĩa là ngón tay bạn sẽ phải bỏ qua một phím để bấm phím tiếp theo (ví dụ: đánh Đô xong nhảy lên Mi, bỏ qua Rê).
 

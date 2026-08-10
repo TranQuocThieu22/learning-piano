@@ -4,14 +4,13 @@ description: Triggers when the user asks for a new day's lesson or how to practi
 ---
 
 # Multi-day Lessons & Progress Tracking
-- A single "Bài" (Lesson) can span multiple days of practice.
-- Keep track of the current lesson and day in a file named `01-roadmap/progress.md`. If it doesn't exist, create it.
-- **NEW LESSON ESTIMATION**: Whenever you introduce Day 1 of a BRAND NEW lesson (e.g., Lesson 3, Day 1), you MUST evaluate the complexity of the lesson's core topic. Then, explicitly tell the user your estimation of how many days (e.g., "This topic takes 3 days to master" - provide ONE specific number, NOT a range like "2-3 days") they should spend practicing this specific lesson before moving on.
-- When the user asks for a new day of practice but wants to stay on the same lesson (e.g., Lesson 2, Day 2), DO NOT create a new `lesson-XX.md` file. Instead, rely on the existing lesson and generate a NEW exercise file for that specific day (e.g., `03-exercises/exercise-02-day-02.md`). 
-- **CRITICAL FILE NAMING**: Even for Day 1 of a new lesson, the exercise file MUST be named with the day suffix (e.g., `03-exercises/exercise-03-day-01.md`). This ensures files sort correctly in the file explorer and Next.js menu.
-- **TEACHING METHOD FOR CONSECUTIVE DAYS**: If Day 2 (or Day 3) is on the same Lesson topic as Day 1, you MUST provide **different** exercises, new variations, or slightly extended theory that still revolves around the same core topic. For example, if Day 1 is "Playing both hands together", Day 2 could be "Alternating hands", and Day 3 could be "Changing rhythm patterns". Do not just repeat Day 1's exact exercises. Gradually increase the difficulty.
-- **CRITICAL**: The Title (Heading 1) of the new exercise file MUST follow the exact format: `# Bài tập [X] - Ngày [Y]: [Chủ đề]`. (For example: `# Bài tập 2 - Ngày 2: Luyện nhịp điệu luân phiên`). This ensures the UI can parse it and group it into a 3-level menu (Bài tập 2 -> Ngày 2).
-- Always log the previous day's results in `05-learning-logs`.
+- The curriculum is structured into **Chương** (Chapter/Module) and **Bài** (Lesson/Topic).
+- Keep track of the current chapter and lesson in a file named `docs/01-roadmap/progress.md`. If it doesn't exist, create it.
+- **NEW LESSON ESTIMATION**: Whenever you introduce a BRAND NEW lesson (e.g., Chương 2 - Bài 1), you MUST evaluate the complexity of the lesson's core topic. Then, explicitly tell the user your estimation of how many days (e.g., "This topic takes 3 days to master" - provide ONE specific number, NOT a range like "2-3 days") they should spend practicing this specific lesson before moving on.
+- When the user asks for a new day of practice but they haven't finished the estimated days for the current lesson, DO NOT create a new lesson file. Instead, advise them to continue repeating the current lesson's routine to build muscle memory.
+- **CRITICAL FILE NAMING**: Exercise files MUST be named using the `chuong-XX-bai-YY.md` format (e.g., `docs/03-exercises/chuong-03-bai-01.md`). This ensures files sort correctly in the file explorer and Next.js menu.
+- **CRITICAL**: The Title (Heading 1) of the new exercise file MUST follow the exact format: `# Chương [X] - Bài [Y]: [Chủ đề]`. (For example: `# Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay`). This ensures the UI can parse it and group it into a 3-level menu (Exercises -> Chương 2 -> Bài 1).
+- Always log the previous session's results in `docs/05-learning-logs`.
 
 # Daily Practice Structure
 When giving instructions for a daily piano practice session, you MUST structure the lesson to fit a 30-45 minute timeframe, divided into the following sections:

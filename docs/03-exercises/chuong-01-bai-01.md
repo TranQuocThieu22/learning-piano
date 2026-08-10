@@ -1,4 +1,4 @@
-# Bài tập 1 - Ngày 1: Làm quen phím đàn và 5 nốt đầu tiên (C-D-E-F-G)
+# Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên (C-D-E-F-G)
 
 Vì chúng ta bắt đầu từ con số 0, mục tiêu của bài này rất đơn giản: Tập cho 5 ngón tay ngoan ngoãn nhấn đúng phím, và mắt bắt đầu làm quen với sheet nhạc.
 
