@@ -9,8 +9,6 @@ Vì chúng ta bắt đầu từ con số 0, mục tiêu của bài này rất đ
 - **Tay phải**: Tìm nốt Đô (C) ở giữa đàn. Đặt ngón 1 (Ngón cái) lên Đô, ngón 2 (Trỏ) lên Rê (D), ngón 3 (Giữa) lên Mi (E), ngón 4 (Áp út) lên Pha (F), và ngón 5 (Út) lên Sol (G).
 - **Tay trái**: Tìm nốt Đô (C) nằm bên trái nốt Đô giữa một quãng. Lần này đặt ngược lại: Ngón 5 (Út) lên Đô, ngón 4 lên Rê, ngón 3 lên Mi, ngón 2 lên Pha, và ngón 1 (Cái) lên Sol.
 
-## Hướng dẫn sử dụng Sheet Music Viewer
-Mở `sheet-music-viewer/index.html` lên. Copy từng đoạn mã bên dưới dán vào để máy đánh mẫu cho bạn nghe trước nhé.
 
 ## Đoạn mã ABC (Tay phải)
 Dưới các nốt nhạc có hiển thị tên nốt (C, D, E...) để bạn dễ đọc hơn!

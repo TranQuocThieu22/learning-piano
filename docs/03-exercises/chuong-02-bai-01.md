@@ -9,7 +9,6 @@ Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) v�
 - **Tay phải (Treble Clef):** Ngón 1 lên Đô (C) giữa. Các ngón 2,3,4,5 lên D,E,F,G.
 - **Tay trái (Bass Clef):** Ngón 5 lên Đô (C) thấp. Các ngón 4,3,2,1 lên D,E,F,G.
 
-Bạn có thể copy mã ABC dưới đây vào `sheet-music-viewer/index.html` để nghe mẫu nhé.
 
 ## Bài tập 2A: Cảm nhận nốt Đen, Trắng, Tròn (Tay phải)
 Đánh thật chậm. Với nốt trắng phải giữ phím đàn đủ 2 nhịp. Với nốt tròn giữ đủ 4 nhịp. Vừa đánh vừa đếm miệng "1 2 3 4".
