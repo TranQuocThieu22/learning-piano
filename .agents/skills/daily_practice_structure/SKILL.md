@@ -30,5 +30,6 @@ When giving instructions for a daily piano practice session, you MUST structure 
      - **Mental Play / Visualization (Luyện tập Tưởng tượng)**: Closing eyes and vividly imagining the hands, keys, and sounds of the piece.
      - **Score Study (Đọc chay bản nhạc)**: Reading the sheet music (or ABC notation) like a book, saying note names and clapping the rhythm.
      - **Solfège/Singing (Hát giai điệu)**: Singing or humming the melody of the exercise to internalize the pitch and rhythm before playing.
+     - **Music Copying / Dictation (Chép nốt nhạc ra giấy)**: Drawing a 5-line staff and manually writing down notes, clefs, or composing short melodies on paper to build deep visual memory.
 
 Always remind the user that **quality over quantity** is key. 30 minutes of highly focused practice is better than 2 hours of mindless playing.
