@@ -15,20 +15,20 @@ description: Triggers when the user asks for a new day's lesson or how to practi
 # Daily Practice Structure
 When giving instructions for a daily piano practice session, you MUST structure the lesson to fit a 30-45 minute timeframe, divided into the following sections:
 
-1. **Khởi động & Ôn tập (5-10 phút)**: 
-   - Reviewing the previous day's theory or doing simple finger warm-ups.
-2. **Học kiến thức / Kỹ năng mới (15-20 phút)**: 
-   - Core practice. Focusing intensely on the new skill for the day (e.g., finding new notes, learning a new rhythm).
-   - Emphasize taking breaks if hands get tense.
-3. **Thực hành tự do / Tổng kết (5-10 phút)**:
-   - Playing through the exercise slowly without stopping, or just exploring the keyboard freely.
-   - Remind the user to record a submission if applicable.
-4. **Bài tập Không cần đàn / Away from piano (Tùy chọn, làm lúc rảnh rỗi)**:
+1. **Bài tập Không cần đàn / Away from piano (Tập ban ngày lúc rảnh rỗi)**:
    - **MANDATORY**: ALWAYS include a **Tapping/Rhythm (Bài tập mặt bàn)** exercise. This is crucial for beginners to build finger independence and rhythm.
    - **OPTIONAL ADDITION**: You MUST also add **ONE (1) additional optional method** from the list below to keep things fresh:
      - **Mental Play / Visualization (Luyện tập Tưởng tượng)**: Closing eyes and vividly imagining the hands, keys, and sounds of the piece.
      - **Score Study (Đọc chay bản nhạc)**: Reading the sheet music (or ABC notation) like a book, saying note names and clapping the rhythm.
      - **Solfège/Singing (Hát giai điệu)**: Singing or humming the melody of the exercise to internalize the pitch and rhythm before playing.
      - **Music Copying / Dictation (Chép nốt nhạc ra giấy)**: Drawing a 5-line staff and manually writing down notes, clefs, or composing short melodies on paper to build deep visual memory.
+2. **Khởi động & Ôn tập trên đàn (5-10 phút)**: 
+   - Reviewing the previous day's theory or doing simple finger warm-ups.
+3. **Học kiến thức / Kỹ năng mới trên đàn (15-20 phút)**: 
+   - Core practice. Focusing intensely on the new skill for the day (e.g., finding new notes, learning a new rhythm).
+   - Emphasize taking breaks if hands get tense.
+4. **Thực hành tự do / Tổng kết (5-10 phút)**:
+   - Playing through the exercise slowly without stopping, or just exploring the keyboard freely.
+   - Remind the user to record a submission if applicable.
 
 Always remind the user that **quality over quantity** is key. 30 minutes of highly focused practice is better than 2 hours of mindless playing.

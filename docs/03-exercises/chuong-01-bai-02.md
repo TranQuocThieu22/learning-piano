@@ -2,6 +2,16 @@
 
 Ở Ngày 1, bạn đã làm quen với việc đánh các nốt liền kề nhau (bước đi - steps). Hôm nay chúng ta sẽ nâng cấp lên một chút: Tập đánh các "bước nhảy" (leaps). Nghĩa là ngón tay bạn sẽ phải bỏ qua một phím để bấm phím tiếp theo (ví dụ: đánh Đô xong nhảy lên Mi, bỏ qua Rê).
 
+## 4. Bài tập Không cần đàn (Away from piano)
+
+**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
+- **Động tác:** Úp hai bàn tay lên bàn. Thay vì gõ lần lượt từ 1 đến 5 như Ngày 1, hôm nay hãy tập gõ theo "bước nhảy".
+- **Cách gõ:** Gõ ngón Cái (1) -> Nhấc ngón Giữa (3) gõ xuống -> Nhấc ngón Út (5) gõ xuống. Các ngón còn lại dính chặt mặt bàn. Lặp lại 10 lần mỗi tay.
+
+**2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
+- **Mục tiêu:** Giúp tai quen với khoảng cách âm thanh của bước nhảy.
+- **Cách làm:** Hãy nghe giai điệu máy đánh mẫu. Sau đó tự hát vang lên miệng "Đôôôô... Miiii... Sollll... Miiii...". Việc hát cao độ lên xuống này sẽ gắn kết tiềm thức của bạn với phím đàn rất tốt!
+
 ## 1. Khởi động (5 phút)
 - **Tay phải & Tay trái:** Hãy mở lại Bài tập của Ngày 1 và đánh đi đánh lại khoảng 3-5 lần để ngón tay được làm nóng. Nhớ duy trì tư thế bàn tay khum tròn như đang cầm quả bóng tennis nhé!
 
@@ -43,12 +53,3 @@ w: Do Mi Sol Mi | Re Pha Re Pha | Do Mi Re Pha | Do
 - Thử thách trí nhớ: Hãy tắt màn hình máy tính đi và tự cố gắng đánh lại giai điệu "Đô Mi Sol Mi" bằng trí nhớ.
 - Đánh với tốc độ cực chậm, không cần đếm nhịp quá khắt khe, miễn là bấm đúng phím và đúng ngón.
 
-## 4. Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-- **Động tác:** Úp hai bàn tay lên bàn. Thay vì gõ lần lượt từ 1 đến 5 như Ngày 1, hôm nay hãy tập gõ theo "bước nhảy".
-- **Cách gõ:** Gõ ngón Cái (1) -> Nhấc ngón Giữa (3) gõ xuống -> Nhấc ngón Út (5) gõ xuống. Các ngón còn lại dính chặt mặt bàn. Lặp lại 10 lần mỗi tay.
-
-**2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
-- **Mục tiêu:** Giúp tai quen với khoảng cách âm thanh của bước nhảy.
-- **Cách làm:** Hãy nghe giai điệu máy đánh mẫu. Sau đó tự hát vang lên miệng "Đôôôô... Miiii... Sollll... Miiii...". Việc hát cao độ lên xuống này sẽ gắn kết tiềm thức của bạn với phím đàn rất tốt!

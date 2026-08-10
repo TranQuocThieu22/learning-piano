@@ -4,6 +4,18 @@ Chúc mừng bạn đã đến với ngày cuối cùng của Bài 2! Ở 2 ngà
 
 Mục tiêu: Tay trái sẽ giữ một nhịp điệu chậm rãi, đều đặn (như kim đồng hồ), trong khi tay phải sẽ múa những nốt nhạc nhanh hơn.
 
+## Bài tập Không cần đàn (Away from piano)
+
+**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
+Để làm được Bài tập 2F, bạn phải thông qua bài tập vỗ bàn này trước:
+- **Nhịp điệu:** Đếm to "Một - Hai - Ba - Bốn".
+- **Tay Trái:** Chỉ vỗ xuống ở nhịp "Một" và nhịp "Ba". (Giữ nguyên tay trên mặt bàn ở nhịp 2 và 4).
+- **Tay Phải:** Vỗ liên tục ở cả 4 nhịp "Một, Hai, Ba, Bốn".
+- **Lưu ý:** Lần đầu tiên thử, tay trái của bạn sẽ có xu hướng "nhấc lên" theo tay phải. Hãy kiềm chế nó lại! Lặp lại 15 lần cho đến khi 2 tay "đường ai nấy đi".
+
+**2. TÙY CHỌN [Phương pháp: Đọc chay bản nhạc / Score Study]**
+- **Cách làm:** Hãy nhìn vào dòng nhạc của Tay Trái (khuông dưới). Vừa gõ nhịp chân, vừa đọc to tên nốt: "Đôôô (kéo dài) - Miiii (kéo dài)". Sau đó làm tương tự với Tay Phải. Việc đọc trước như vậy giúp não bộ xử lý thông tin nốt nhạc xong xuôi, khi đưa tay lên đàn bạn chỉ cần tập trung vào việc bấm phím mà thôi.
+
 ## Bài tập 2F: Trái chậm, Phải nhanh
 Hãy nghe mẫu đoạn mã ABC dưới đây. Bạn sẽ thấy tay trái đánh nốt Trắng (2 nhịp mới đánh 1 lần), trong khi tay phải đánh nốt Đen (mỗi nhịp đánh 1 lần).
 
@@ -24,17 +36,6 @@ V: 2 clef=bass
 w: 1-2 3-4 | 1-2 3-4 | 1-2 3-4 | 1-2-3-4
 ```
 
-## Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-Để làm được Bài tập 2F, bạn phải thông qua bài tập vỗ bàn này trước:
-- **Nhịp điệu:** Đếm to "Một - Hai - Ba - Bốn".
-- **Tay Trái:** Chỉ vỗ xuống ở nhịp "Một" và nhịp "Ba". (Giữ nguyên tay trên mặt bàn ở nhịp 2 và 4).
-- **Tay Phải:** Vỗ liên tục ở cả 4 nhịp "Một, Hai, Ba, Bốn".
-- **Lưu ý:** Lần đầu tiên thử, tay trái của bạn sẽ có xu hướng "nhấc lên" theo tay phải. Hãy kiềm chế nó lại! Lặp lại 15 lần cho đến khi 2 tay "đường ai nấy đi".
-
-**2. TÙY CHỌN [Phương pháp: Đọc chay bản nhạc / Score Study]**
-- **Cách làm:** Hãy nhìn vào dòng nhạc của Tay Trái (khuông dưới). Vừa gõ nhịp chân, vừa đọc to tên nốt: "Đôôô (kéo dài) - Miiii (kéo dài)". Sau đó làm tương tự với Tay Phải. Việc đọc trước như vậy giúp não bộ xử lý thông tin nốt nhạc xong xuôi, khi đưa tay lên đàn bạn chỉ cần tập trung vào việc bấm phím mà thôi.
 
 ## Yêu cầu thực hành
 1. Tuyệt đối không được vội ghép 2 tay ngay lập tức!
