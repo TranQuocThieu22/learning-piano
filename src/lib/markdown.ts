@@ -16,8 +16,8 @@ export interface MarkdownFile {
 }
 
 export function getAllMarkdownFiles(): MarkdownFile[] {
-  // process.cwd() in Next.js is usually the root of the next.js project (web/)
-  const rootDir = path.join(process.cwd(), '..');
+  // process.cwd() is the root of the project, content is now in docs/
+  const rootDir = path.join(process.cwd(), 'docs');
   const files: MarkdownFile[] = [];
 
   for (const dir of contentDirs) {
@@ -45,7 +45,7 @@ export function getAllMarkdownFiles(): MarkdownFile[] {
 }
 
 export function getMarkdownContent(relativePath: string): string | null {
-  const rootDir = path.join(process.cwd(), '..');
+  const rootDir = path.join(process.cwd(), 'docs');
   const fullPath = path.join(rootDir, relativePath);
   if (!fs.existsSync(fullPath)) return null;
   return fs.readFileSync(fullPath, 'utf-8');
