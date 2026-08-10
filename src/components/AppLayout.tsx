@@ -7,7 +7,8 @@ import { MarkdownFile } from '@/lib/markdown';
 import { ThemeToggle } from './ThemeToggle';
 
 export function AppLayout({ children, files }: { children: React.ReactNode, files: MarkdownFile[] }) {
-  const [opened, { toggle }] = useDisclosure();
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+  const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const pathname = usePathname();
 
   const categories = files.reduce((acc, file) => {
@@ -22,14 +23,15 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
       navbar={{
         width: 300,
         breakpoint: 'sm',
-        collapsed: { mobile: !opened },
+        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
       padding="md"
     >
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between">
           <Group>
-            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
+            <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
             <Title order={3}>🎹 Piano Journey</Title>
           </Group>
           <ThemeToggle />
@@ -84,7 +86,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                         component={Link}
                         label={file.title}
                         active={pathname === href}
-                        onClick={() => { if (opened) toggle(); }}
+                        onClick={() => { if (mobileOpened) toggleMobile(); }}
                       />
                     );
                   }
@@ -109,7 +111,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                             component={Link}
                             label={label}
                             active={pathname === href}
-                            onClick={() => { if (opened) toggle(); }}
+                            onClick={() => { if (mobileOpened) toggleMobile(); }}
                           />
                         );
                       })}
@@ -127,7 +129,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                       component={Link}
                       label={file.title}
                       active={pathname === href}
-                      onClick={() => { if (opened) toggle(); }}
+                      onClick={() => { if (mobileOpened) toggleMobile(); }}
                     />
                   );
                 })}
