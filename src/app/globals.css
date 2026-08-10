@@ -5,7 +5,7 @@ html, body {
 }
 
 body {
-  background-color: var(--mantine-color-dark-8);
+  /* Mantine will handle background and color automatically */
 }
 
 /* --- PREMIUM MARKDOWN STYLING --- */
@@ -13,13 +13,13 @@ body {
   max-width: 850px;
   margin: 0 auto;
   line-height: 1.8;
-  color: var(--mantine-color-dark-0);
+  color: var(--mantine-color-text);
   padding: 2.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02));
   border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 }
 
 .markdown-body h1 {
@@ -35,16 +35,16 @@ body {
 .markdown-body h2 {
   font-size: 1.8rem;
   font-weight: 700;
-  color: var(--mantine-color-blue-4);
+  color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-4));
   margin-top: 3rem;
   margin-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
   padding-bottom: 0.5rem;
 }
 
 .markdown-body h3 {
   font-size: 1.4rem;
-  color: var(--mantine-color-teal-4);
+  color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-teal-4));
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
@@ -52,14 +52,14 @@ body {
 .markdown-body p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
-  color: var(--mantine-color-dark-1);
+  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
 }
 
 .markdown-body ul, .markdown-body ol {
   margin-bottom: 1.5rem;
   padding-left: 1.8rem;
   font-size: 1.1rem;
-  color: var(--mantine-color-dark-1);
+  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
 }
 
 .markdown-body li {
@@ -70,7 +70,7 @@ body {
   border-left: 4px solid var(--mantine-color-violet-5);
   margin: 2rem 0;
   padding: 1rem 1.5rem;
-  background: rgba(132, 94, 247, 0.1);
+  background: light-dark(rgba(132, 94, 247, 0.05), rgba(132, 94, 247, 0.1));
   border-radius: 0 12px 12px 0;
   font-style: italic;
   font-size: 1.1rem;
@@ -79,22 +79,22 @@ body {
 .markdown-body hr {
   border: 0;
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
   margin: 3rem 0;
 }
 
 .markdown-body strong {
-  color: var(--mantine-color-yellow-4);
+  color: light-dark(var(--mantine-color-orange-8), var(--mantine-color-yellow-4));
   font-weight: 600;
 }
 
 .markdown-body code {
-  background: rgba(255, 255, 255, 0.1);
+  background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
   padding: 0.2em 0.4em;
   border-radius: 6px;
   font-family: monospace;
   font-size: 0.9em;
-  color: var(--mantine-color-red-4);
+  color: light-dark(var(--mantine-color-red-8), var(--mantine-color-red-4));
 }
 
 /* Glassmorphism for wrappers */
