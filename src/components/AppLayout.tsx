@@ -4,6 +4,7 @@ import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MarkdownFile } from '@/lib/markdown';
+import { ThemeToggle } from './ThemeToggle';
 
 export function AppLayout({ children, files }: { children: React.ReactNode, files: MarkdownFile[] }) {
   const [opened, { toggle }] = useDisclosure();
@@ -26,9 +27,12 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md">
-          <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          <Title order={3}>🎹 Piano Journey</Title>
+        <Group h="100%" px="md" justify="space-between">
+          <Group>
+            <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
+            <Title order={3}>🎹 Piano Journey</Title>
+          </Group>
+          <ThemeToggle />
         </Group>
       </AppShell.Header>
 
