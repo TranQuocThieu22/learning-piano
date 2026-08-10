@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import '@mantine/core/styles.css';
 import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 
-const outfit = Outfit({ subsets: ["latin"] });
+const beVietnamPro = Be_Vietnam_Pro({ 
+  subsets: ["latin", "vietnamese"],
+  weight: ['400', '500', '600', '700', '800'] 
+});
 
 export const metadata: Metadata = {
   title: "Piano Learning App",
@@ -21,7 +24,7 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
-      <body className={outfit.className} suppressHydrationWarning>
+      <body className={beVietnamPro.className} suppressHydrationWarning>
         <MantineProvider defaultColorScheme="light">
           {children}
         </MantineProvider>
