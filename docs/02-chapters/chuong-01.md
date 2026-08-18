@@ -1,4 +1,4 @@
-# Bài 1: Làm quen với Khuông nhạc, Nốt nhạc và Phím đàn (Từ con số 0)
+# Chương 1: Nền tảng phím đàn và nốt nhạc
 
 Chào bạn, không sao cả! Chúng ta sẽ bắt đầu từ những khái niệm căn bản nhất. Hãy coi đây là một bảng chữ cái mới mà bạn sắp làm quen.
 
@@ -47,4 +47,4 @@ Trông nó giống như một hành tinh có một đường xích đạo vắt 
 1. Thuộc lòng 7 chữ cái C, D, E, F, G, A, B.
 2. Tìm được chính xác tất cả các nốt Đô (C) trên cây đàn FP-30X của bạn.
 3. Đặt ngón cái tay phải (ngón 1) lên nốt Đô giữa, lần lượt đặt các ngón 2,3,4,5 lên các phím Rê, Mi, Pha, Sol kế tiếp. 
-4. Chuyển sang đọc `03-exercises/exercise-01.md` để bắt đầu tập luyện nhé!
+4. Chuyển sang đọc `03-exercises/chuong-01-bai-01.md` để bắt đầu tập luyện nhé!

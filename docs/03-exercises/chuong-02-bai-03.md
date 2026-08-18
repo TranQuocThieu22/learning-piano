@@ -7,7 +7,7 @@ Mục tiêu: Tay trái sẽ giữ một nhịp điệu chậm rãi, đều đặ
 ## Bài tập Không cần đàn (Away from piano)
 
 **1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-Để làm được Bài tập 2F, bạn phải thông qua bài tập vỗ bàn này trước:
+Để làm được Bài tập 3A, bạn phải thông qua bài tập vỗ bàn này trước:
 - **Nhịp điệu:** Đếm to "Một - Hai - Ba - Bốn".
 - **Tay Trái:** Chỉ vỗ xuống ở nhịp "Một" và nhịp "Ba". (Giữ nguyên tay trên mặt bàn ở nhịp 2 và 4).
 - **Tay Phải:** Vỗ liên tục ở cả 4 nhịp "Một, Hai, Ba, Bốn".
@@ -16,12 +16,12 @@ Mục tiêu: Tay trái sẽ giữ một nhịp điệu chậm rãi, đều đặ
 **2. TÙY CHỌN [Phương pháp: Đọc chay bản nhạc / Score Study]**
 - **Cách làm:** Hãy nhìn vào dòng nhạc của Tay Trái (khuông dưới). Vừa gõ nhịp chân, vừa đọc to tên nốt: "Đôôô (kéo dài) - Miiii (kéo dài)". Sau đó làm tương tự với Tay Phải. Việc đọc trước như vậy giúp não bộ xử lý thông tin nốt nhạc xong xuôi, khi đưa tay lên đàn bạn chỉ cần tập trung vào việc bấm phím mà thôi.
 
-## Bài tập 2F: Trái chậm, Phải nhanh
+## Bài tập 3A: Trái chậm, Phải nhanh
 Hãy nghe mẫu đoạn mã ABC dưới đây. Bạn sẽ thấy tay trái đánh nốt Trắng (2 nhịp mới đánh 1 lần), trong khi tay phải đánh nốt Đen (mỗi nhịp đánh 1 lần).
 
 ```abc
 X: 1
-T: Bài tập 2F - Độc lập nhịp điệu
+T: Bài tập 3A - Độc lập nhịp điệu (Trái chậm, Phải nhanh)
 C: Gia sư Piano
 M: 4/4
 L: 1/4
@@ -34,6 +34,42 @@ w: 1 2 3 4 | 1 2 3 4 | 1 2 3 4 | 1-2-3-4
 V: 2 clef=bass
 "Trái"C,2 E,2 | G,2 E,2 | C,2 G,2 | C,4 |]
 w: 1-2 3-4 | 1-2 3-4 | 1-2 3-4 | 1-2-3-4
+```
+
+## Bài tập 3B: Phải chậm, Trái nhanh
+Bây giờ chúng ta đổi vai trò! Tay phải sẽ giữ nhịp điệu chậm (nốt Trắng), còn tay trái sẽ múa lượn liên tục (nốt Đen). Thường thì làm việc này với tay trái sẽ khó hơn tay phải rất nhiều!
+
+```abc
+X: 2
+T: Bài tập 3B - Độc lập nhịp điệu (Phải chậm, Trái nhanh)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+%%staves {1 2}
+K: C
+V: 1 clef=treble
+"Phải"E2 G2 | F2 D2 | C2 E2 | C4 |]
+V: 2 clef=bass
+"Trái"C, D, E, F, | D, E, F, G, | C, D, E, F, | C,4 |]
+```
+
+## Bài tập 3C: Thử thách độc lập (Biến tấu giai điệu)
+Áp dụng kỹ năng "Trái chậm, Phải nhanh" vào một giai điệu có bước nhảy.
+
+```abc
+X: 3
+T: Bài tập 3C - Thử thách bước nhảy độc lập
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+%%staves {1 2}
+K: C
+V: 1 clef=treble
+"Phải"C E C E | D F D F | E G F D | C4 |]
+V: 2 clef=bass
+"Trái"C,2 E,2 | G,2 F,2 | E,2 D,2 | C,4 |]
 ```
 
 

@@ -26,6 +26,7 @@ When giving instructions for a daily piano practice session, you MUST structure 
    - Reviewing the previous day's theory or doing simple finger warm-ups.
 3. **Học kiến thức / Kỹ năng mới trên đàn (15-20 phút)**: 
    - Core practice. Focusing intensely on the new skill for the day (e.g., finding new notes, learning a new rhythm).
+   - **MANDATORY**: You MUST generate at least **3 to 4 varied exercises (ABC notation blocks)** per lesson. Do not just provide 1 exercise. Provide a warm-up exercise (e.g., Bài tập A), a familiar melody or variation (e.g., Bài tập B), and a slightly more challenging pattern (e.g., Bài tập C). This ensures the user has enough material to practice for 15-20 minutes without getting bored.
    - Emphasize taking breaks if hands get tense.
 4. **Thực hành tự do / Tổng kết (5-10 phút)**:
    - Playing through the exercise slowly without stopping, or just exploring the keyboard freely.

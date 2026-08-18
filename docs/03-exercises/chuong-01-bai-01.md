@@ -21,12 +21,12 @@ Vì chúng ta bắt đầu từ con số 0, mục tiêu của bài này rất đ
 - **Tay trái**: Tìm nốt Đô (C) nằm bên trái nốt Đô giữa một quãng. Lần này đặt ngược lại: Ngón 5 (Út) lên Đô, ngón 4 lên Rê, ngón 3 lên Mi, ngón 2 lên Pha, và ngón 1 (Cái) lên Sol.
 
 
-## Đoạn mã ABC (Tay phải)
+## Bài tập 1A: Khởi động Tay phải
 Dưới các nốt nhạc có hiển thị tên nốt (C, D, E...) để bạn dễ đọc hơn!
 
 ```abc
 X: 1
-T: Bài tập 1 - Tay phải (Tập từ từ)
+T: Bài tập 1A - Khởi động Tay phải
 C: Gia sư Piano
 M: 4/4
 L: 1/4
@@ -36,10 +36,10 @@ K: C
 w: Do Re Mi Pha | Sol Pha Mi Re | Do Mi Sol Mi | Do
 ```
 
-## Đoạn mã ABC (Tay trái)
+## Bài tập 1B: Khởi động Tay trái
 ```abc
 X: 2
-T: Bài tập 1 - Tay trái
+T: Bài tập 1B - Khởi động Tay trái
 C: Gia sư Piano
 M: 4/4
 L: 1/4
@@ -50,8 +50,39 @@ V: 1 clef=bass
 w: Do Re Mi Pha | Sol Pha Mi Re | Do Mi Sol Mi | Do
 ```
 
+## Bài tập 1C: Giai điệu quen thuộc (Tay phải)
+Thử đánh giai điệu "Ode to Joy" nổi tiếng chỉ với 5 nốt nhạc này nhé.
+
+```abc
+X: 3
+T: Bài tập 1C - Ode to Joy (Tay phải)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+K: C
+"3"E "3"E "4"F "5"G | "5"G "4"F "3"E "2"D | "1"C "1"C "2"D "3"E | "3"E "2"D "2"D2 |]
+w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
+```
+
+## Bài tập 1D: Giai điệu quen thuộc (Tay trái)
+Tương tự bài 1C, nhưng bây giờ tay trái làm ca sĩ chính!
+
+```abc
+X: 4
+T: Bài tập 1D - Ode to Joy (Tay trái)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+K: C
+V: 1 clef=bass
+"3"E, "3"E, "2"F, "1"G, | "1"G, "2"F, "3"E, "4"D, | "5"C, "5"C, "4"D, "3"E, | "3"E, "4"D, "4"D,2 |]
+w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
+```
+
 
 ## Yêu cầu thực hành
-1. Tập riêng tay phải thật chậm, vừa đánh vừa nhẩm tên nốt "Đô, Rê, Mi..." ra miệng. Cố gắng giữ tay cong tròn, không bị xẹp khớp. Đánh đi đánh lại 10-15 lần cho quen.
-2. Chuyển sang tập riêng tay trái 10-15 lần.
+1. Tập riêng tay phải thật chậm các bài 1A và 1C, vừa đánh vừa nhẩm tên nốt "Đô, Rê, Mi..." ra miệng. Cố gắng giữ tay cong tròn, không bị xẹp khớp.
+2. Chuyển sang tập tay trái với các bài 1B và 1D.
 3. Khi bạn cảm thấy các ngón tay đã nhớ vị trí và không bị ấn nhầm phím nữa, hãy quay một đoạn video (chỉ quay bàn tay) gửi vào mục `04-submissions` để mình xem tư thế tay của bạn đã chuẩn chưa nhé!

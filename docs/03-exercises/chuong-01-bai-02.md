@@ -2,7 +2,7 @@
 
 Ở Ngày 1, bạn đã làm quen với việc đánh các nốt liền kề nhau (bước đi - steps). Hôm nay chúng ta sẽ nâng cấp lên một chút: Tập đánh các "bước nhảy" (leaps). Nghĩa là ngón tay bạn sẽ phải bỏ qua một phím để bấm phím tiếp theo (ví dụ: đánh Đô xong nhảy lên Mi, bỏ qua Rê).
 
-## 4. Bài tập Không cần đàn (Away from piano)
+## Bài tập Không cần đàn (Away from piano)
 
 **1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
 - **Động tác:** Úp hai bàn tay lên bàn. Thay vì gõ lần lượt từ 1 đến 5 như Ngày 1, hôm nay hãy tập gõ theo "bước nhảy".
@@ -18,12 +18,12 @@
 ## 2. Kỹ năng mới: Bước nhảy (15 phút)
 Khi đánh bước nhảy, điều quan trọng nhất là bạn **không được nhấc bổng cả bàn tay lên**. Hãy để các ngón tay tự vươn ra và nhấn xuống.
 
-### Đoạn mã ABC (Tay phải)
+### Bài tập 2A: Khởi động bước nhảy (Tay phải)
 Bạn copy mã dưới đây vào trình phát nhạc nhé. Chú ý số ngón tay ghi ở trên nốt!
 
 ```abc
 X: 1
-T: Bài tập 1 - Ngày 2 (Tay phải nhảy quãng)
+T: Bài tập 2A - Tay phải nhảy quãng
 C: Gia sư Piano
 M: 4/4
 L: 1/4
@@ -33,12 +33,12 @@ K: C
 w: Do Mi Sol Mi | Re Pha Re Pha | Do Mi Re Pha | Do
 ```
 
-### Đoạn mã ABC (Tay trái)
+### Bài tập 2B: Khởi động bước nhảy (Tay trái)
 Bây giờ đổi sang tay trái. Đừng quên Đô thấp ở tay trái bắt đầu bằng ngón số 5 (ngón út) nhé!
 
 ```abc
 X: 2
-T: Bài tập 1 - Ngày 2 (Tay trái nhảy quãng)
+T: Bài tập 2B - Tay trái nhảy quãng
 C: Gia sư Piano
 M: 4/4
 L: 1/4
@@ -47,6 +47,37 @@ K: C
 V: 1 clef=bass
 "Ngón 5"C, "3"E, "1"G, "3"E, | "4"D, "2"F, "4"D, "2"F, | "5"C, "3"E, "4"D, "2"F, | "5"C,4 |]
 w: Do Mi Sol Mi | Re Pha Re Pha | Do Mi Re Pha | Do
+```
+
+### Bài tập 2C: Giai điệu bước nhảy (Tay phải)
+Thử thách tay phải vươn xa hơn với các quãng nhảy lặp lại.
+
+```abc
+X: 3
+T: Bài tập 2C - Giai điệu bước nhảy (Tay phải)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+K: C
+"1"C "3"E "1"C "3"E | "2"D "4"F "2"D "4"F | "3"E "5"G "4"F "2"D | "1"C4 |]
+w: Do Mi Do Mi | Re Pha Re Pha | Mi Sol Pha Re | Do
+```
+
+### Bài tập 2D: Giai điệu bước nhảy (Tay trái)
+Bây giờ đến lượt tay trái thể hiện.
+
+```abc
+X: 4
+T: Bài tập 2D - Giai điệu bước nhảy (Tay trái)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+K: C
+V: 1 clef=bass
+"5"C, "3"E, "5"C, "3"E, | "4"D, "2"F, "4"D, "2"F, | "3"E, "1"G, "2"F, "4"D, | "5"C,4 |]
+w: Do Mi Do Mi | Re Pha Re Pha | Mi Sol Pha Re | Do
 ```
 
 ## 3. Thực hành tự do (5 phút)

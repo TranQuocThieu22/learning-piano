@@ -1,4 +1,4 @@
-# Bài 2: Nhịp điệu và Hai tay chạm nhau (Từ con số 0)
+# Chương 2: Nhịp điệu và Phối hợp 2 tay
 
 Chào bạn, hôm qua chúng ta đã làm quen với 5 nốt C-D-E-F-G rất tốt rồi. Hôm nay chúng ta sẽ học thêm một khái niệm cực kỳ quan trọng trong âm nhạc: **Nhịp điệu (Trường độ)** và bắt đầu thử thách **phối hợp 2 tay**.
 
@@ -35,5 +35,5 @@ Hôm qua bạn đã tập từng tay riêng biệt. Hôm nay, chúng ta sẽ b�
 **Nhiệm vụ của bạn hôm nay:**
 1. Hiểu được nốt Đen (1 nhịp), nốt Trắng (2 nhịp), nốt Tròn (4 nhịp).
 2. Vừa đánh đàn vừa nhẩm đếm nhịp thành tiếng (VD: đánh nốt trắng đọc "Một... Hai...").
-3. Chuyển sang đọc `03-exercises/exercise-02.md` để thực hành phối hợp 2 tay với các hình nốt này.
+3. Chuyển sang đọc `03-exercises/chuong-02-bai-01.md` để thực hành phối hợp 2 tay với các hình nốt này.
 4. Luyện thêm **Bài tập mặt bàn (Không cần đàn)** để cải thiện sự linh hoạt của tay vào thời gian rảnh.

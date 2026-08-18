@@ -5,7 +5,7 @@ Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) v�
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc ghép 2 tay chơi cùng lúc là một "cú sốc" nhẹ với người mới. Để qua được bài này một cách trơn tru, bạn cần luyện tập trong **3 ngày**. Đừng nản chí nếu bạn thấy 2 tay bị "loạn" trong 1-2 ngày đầu nhé!
 
-## Bài tập 2C: Bài tập Không cần đàn (Away from piano)
+## Bài tập Không cần đàn (Away from piano)
 Đây là phương pháp luyện tập xa đàn cực kỳ hiệu quả mà bạn có thể làm bất cứ lúc nào.
 
 **1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
@@ -54,6 +54,24 @@ V: 1 clef=treble
 w: Do Re Mi Pha | Sol Mi | Do
 V: 2 clef=bass
 "Trái"C, D, E, F, | G,2 E,2 | C,4 |]
+```
+
+## Bài tập 2C: Thử thách 2 tay (Biến tấu)
+Bây giờ hai tay của bạn sẽ đàn một giai điệu dài hơn một chút. Đừng quên nốt Trắng giữ 2 nhịp nhé!
+
+```abc
+X: 3
+T: Bài tập 2C - Hai tay phối hợp (Biến tấu)
+C: Gia sư Piano
+M: 4/4
+L: 1/4
+Q: 1/4=60
+%%staves {1 2}
+K: C
+V: 1 clef=treble
+"Phải"E2 D2 | C2 D2 | E F G2 | C4 |]
+V: 2 clef=bass
+"Trái"E,2 D,2 | C,2 D,2 | E, F, G,2 | C,4 |]
 ```
 
 
