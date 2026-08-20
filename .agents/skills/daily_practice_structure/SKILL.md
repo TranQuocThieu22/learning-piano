@@ -16,6 +16,7 @@ description: Triggers when the user asks for a new day's lesson or how to practi
 When giving instructions for a daily piano practice session, you MUST structure the lesson to fit a 30-45 minute timeframe, divided into the following sections:
 
 1. **Bài tập Không cần đàn / Away from piano (Tập ban ngày lúc rảnh rỗi)**:
+   - **CRITICAL DETAIL REQUIREMENT**: When generating these exercises, DO NOT be generic or superficial. You MUST provide highly detailed, step-by-step physical instructions tailored EXACTLY to the new skill of the day. For example, if teaching leaps, specify exactly which fingers to lift and tap. If teaching music copying, describe exactly how to draw the clef and where to place the note on the 5 lines (e.g., "draw a circle cut by the first line").
    - **MANDATORY**: ALWAYS include a **Tapping/Rhythm (Bài tập mặt bàn)** exercise. This is crucial for beginners to build finger independence and rhythm.
    - **OPTIONAL ADDITION**: You MUST also add **ONE (1) additional optional method** from the list below to keep things fresh:
      - **Mental Play / Visualization (Luyện tập Tưởng tượng)**: Closing eyes and vividly imagining the hands, keys, and sounds of the piece.
