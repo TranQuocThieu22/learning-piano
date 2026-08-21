@@ -7,10 +7,10 @@ Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, 
 
 - **Chương 1: Nền tảng phím đàn và nốt nhạc**: Làm quen với vị trí 5 nốt đầu tiên (C, D, E, F, G) và luyện tập 5 ngón tay độc lập. Đánh chậm rãi để ngón áp út và ngón út không bị dính vào nhau.
 - **Chương 2: Nhịp điệu và Phối hợp 2 tay**: Làm quen với nốt Đen, Trắng, Tròn. Thực hành đếm nhịp ra miệng, đánh luân phiên 2 tay và tiến tới đánh độc lập 2 tay cùng lúc.
-- **Chương 3: Đọc bản nhạc (Sight-reading) cơ bản**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái).
-- **Chương 4: Phím đen và Dấu hóa (Accidentals)**: Làm quen với Dấu Thăng (#), Dấu Giáng (b). Thực hành vươn ngón tay lên các phím đen mà không bị trượt.
+- **Chương 3: Đọc bản nhạc (Sight-reading) cơ bản**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái), nối 2 khóa lại thành **Khuông nhạc kép (Grand Staff)**, hiểu **số chỉ nhịp** và làm quen **nhịp 3/4 (điệu Waltz)**. Kết thúc bằng một **Trạm dừng chân** chơi trọn vẹn bản nhạc hoàn chỉnh.
+- **Chương 4: Phím đen và Dấu hóa (Accidentals)**: Làm quen với Dấu Thăng (#), Dấu Giáng (b), Dấu Bình (♮) và khái niệm nửa cung / nguyên cung. Thực hành vươn ngón tay lên các phím đen mà không bị trượt, cảm nhận sự khác biệt màu sắc Trưởng - Thứ, và chơi được câu Blues đầu tiên.
 - **Chương 5: Kỹ thuật ngón và Cảm xúc (Expression)**: Rèn luyện cường độ to nhỏ (Dynamics - Forte/Piano) và kỹ thuật đánh liền mạch (Legato) hay nảy ngón (Staccato).
-- **Chương 6: Kỹ thuật mở rộng tay**: Luyện tập luồn ngón cái (Thumb under) và vắt ngón (Cross over) để đánh các đoạn nhạc dài vượt quá phạm vi 5 phím.
+- **Chương 6: Kỹ thuật mở rộng tay**: Luyện tập luồn ngón cái (Thumb under) và vắt ngón (Cross over) để đánh các đoạn nhạc dài vượt quá phạm vi 5 phím. Kết thúc Giai đoạn 1 bằng một **Trạm dừng chân** tổng kết.
 
 ## Giai đoạn 2: Ứng dụng, Đệm hát và Pedal
 *(Sẽ được lên chi tiết sau khi bạn vượt qua Giai đoạn 1 một cách vững vàng)*
@@ -20,7 +20,21 @@ Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, 
 - Ứng dụng vào đệm các bản nhạc Pop đơn giản.
 
 ---
+## 🎯 Trạm dừng chân (Recital Milestones)
+
+Cứ sau mỗi cụm chương lớn, lộ trình có một **Bài Tổng ôn** — ở đó bạn **không học kỹ năng mới nào cả**, mà chỉ gom tất cả những gì đã học để chơi trọn vẹn một bản nhạc hoàn chỉnh từ đầu đến cuối.
+
+Mục đích không chỉ là ôn tập. Việc tập từng ô nhịp rời rạc rất khác với việc chơi liền mạch cả bài — và cảm giác "mình vừa chơi xong một bản nhạc thật" chính là thứ giữ cho bạn không bỏ cuộc.
+
+- **Trạm 1 — sau Chương 3**: Jingle Bells (2 tay), Ode to Joy (bản đầy đủ), Waltz nhỏ.
+- **Trạm 2 — sau Chương 6**: *(sẽ được lên chi tiết khi bạn tới nơi)*
+
+**Nguyên tắc chọn bài cho Trạm dừng chân:** bản nhạc **chỉ được dùng những nốt đã thực sự được dạy**. Không đưa bài có nốt nằm ngoài tầm tay hiện tại — điều đó chỉ tạo cảm giác thất bại chứ không dạy được gì.
+
+---
 **Quy tắc học tập:**
 1. **Không nhảy cóc**: Không qua Bài mới / Chương mới nếu Bài cũ ngón tay vẫn còn cứng, chưa tìm đúng phím, hoặc chưa vững nhịp.
 2. **Tick khi học xong**: Sau khi kết thúc một bài học, vào mục **Nhật ký học tập** trên app và tick bài đó là xong. Đăng nhập bằng Google (góc trên bên phải) trước để tiến độ tick của bạn được lưu lại.
-3. **Thả lỏng**: Đừng gồng vai hay gập ngón tay khi đánh.
+3. **Luyện tai mỗi ngày**: Mỗi bài đều có một thử thách **Thẩm âm (Ear Training)** nhỏ ở phần Thực hành tự do. Đừng bỏ qua nó — mắt và tay giúp bạn đọc được bản nhạc, nhưng chỉ có **tai** mới giúp bạn nghe một bài hát bất kỳ rồi tự mò ra nốt trên đàn.
+4. **Thả lỏng**: Đừng gồng vai hay gập ngón tay khi đánh.
+5. **Chậm mà chắc**: Mọi bài tập đều ghi tốc độ gợi ý (ví dụ `Q: 1/4=60`). Chỉ tăng tốc độ khi bạn đã chơi trơn tru **3 lần liên tiếp không vấp** ở tốc độ hiện tại.
