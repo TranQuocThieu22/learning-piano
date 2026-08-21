@@ -1,15 +1,65 @@
 'use client';
-import { AppShell, Burger, Group, NavLink, Title, ScrollArea, Box } from '@mantine/core';
+import { AppShell, Avatar, Burger, Button, Group, NavLink, Title, ScrollArea, Box, Text } from '@mantine/core';
+import { IconChecklist } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MarkdownFile } from '@/lib/markdown';
 import { ThemeToggle } from './ThemeToggle';
+import { signInWithGoogle, signOutAction } from '@/lib/auth-actions';
 
-export function AppLayout({ children, files }: { children: React.ReactNode, files: MarkdownFile[] }) {
+export interface AppSessionUser {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+}
+
+function AuthHeaderButton({ user }: { user: AppSessionUser | null }) {
+  if (!user) {
+    return (
+      <form action={signInWithGoogle}>
+        <Button type="submit" size="xs" variant="light">
+          Đăng nhập với Google
+        </Button>
+      </form>
+    );
+  }
+
+  return (
+    <Group gap="xs">
+      <Avatar src={user.image ?? undefined} radius="xl" size="sm">
+        {(user.name ?? user.email ?? '?').charAt(0).toUpperCase()}
+      </Avatar>
+      <Text size="sm" visibleFrom="sm">
+        {user.name ?? user.email}
+      </Text>
+      <form action={signOutAction}>
+        <Button type="submit" size="xs" variant="subtle" color="gray">
+          Đăng xuất
+        </Button>
+      </form>
+    </Group>
+  );
+}
+
+export function AppLayout({
+  children,
+  files,
+  user = null,
+  completedSlugs,
+}: {
+  children: React.ReactNode;
+  files: MarkdownFile[];
+  user?: AppSessionUser | null;
+  completedSlugs?: Set<string>;
+}) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const pathname = usePathname();
+
+  const withTick = (label: string, slug: string) =>
+    completedSlugs?.has(slug) ? `✓ ${label}` : label;
 
   const categories = files.reduce((acc, file) => {
     if (!acc[file.category]) acc[file.category] = [];
@@ -34,12 +84,25 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
             <Title order={3}>🎹 Piano Journey</Title>
           </Group>
-          <ThemeToggle />
+          <Group gap="md">
+            <AuthHeaderButton user={user} />
+            <ThemeToggle />
+          </Group>
         </Group>
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
         <ScrollArea>
+          <NavLink
+            href="/nhat-ky"
+            component={Link}
+            label="Nhật ký học tập"
+            leftSection={<IconChecklist size={18} />}
+            active={pathname === '/nhat-ky'}
+            mb="md"
+            onClick={() => { if (mobileOpened) toggleMobile(); }}
+          />
+
           {Object.entries(categories).map(([cat, catFiles]) => {
             // Group by Lesson (e.g., "Bài 1", "Bài tập 2")
             const groupedFiles: Record<string, { label: string, files: MarkdownFile[] }> = {};
@@ -84,7 +147,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                         key={file.slug}
                         href={href}
                         component={Link}
-                        label={file.title}
+                        label={withTick(file.title, file.slug)}
                         active={pathname === href}
                         onClick={() => { if (mobileOpened) toggleMobile(); }}
                       />
@@ -109,7 +172,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                             key={file.slug}
                             href={href}
                             component={Link}
-                            label={label}
+                            label={withTick(label, file.slug)}
                             active={pathname === href}
                             onClick={() => { if (mobileOpened) toggleMobile(); }}
                           />
@@ -127,7 +190,7 @@ export function AppLayout({ children, files }: { children: React.ReactNode, file
                       key={file.slug}
                       href={href}
                       component={Link}
-                      label={file.title}
+                      label={withTick(file.title, file.slug)}
                       active={pathname === href}
                       onClick={() => { if (mobileOpened) toggleMobile(); }}
                     />

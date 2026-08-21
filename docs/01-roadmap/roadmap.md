@@ -22,5 +22,5 @@ Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, 
 ---
 **Quy tắc học tập:**
 1. **Không nhảy cóc**: Không qua Bài mới / Chương mới nếu Bài cũ ngón tay vẫn còn cứng, chưa tìm đúng phím, hoặc chưa vững nhịp.
-2. **Nộp bài thường xuyên**: Sau khi kết thúc một bài học, hãy quay clip bàn tay gửi vào thư mục `04-submissions` để gia sư kiểm tra tư thế trước khi cấp phép qua bài mới.
-3. **Thả lỏng**: Đừng gồng vai hay gập ngón tay khi đánh. 
+2. **Tick khi học xong**: Sau khi kết thúc một bài học, vào mục **Nhật ký học tập** trên app và tick bài đó là xong. Đăng nhập bằng Google (góc trên bên phải) trước để tiến độ tick của bạn được lưu lại.
+3. **Thả lỏng**: Đừng gồng vai hay gập ngón tay khi đánh.
