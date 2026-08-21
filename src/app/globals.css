@@ -100,6 +100,57 @@ body {
   color: light-dark(var(--mantine-color-red-8), var(--mantine-color-red-4));
 }
 
+/* --- TABLES (GFM) --- */
+.markdown-table-wrapper {
+  margin: 2rem 0;
+  overflow-x: auto; /* wide tables scroll themselves, page never scrolls sideways */
+  border-radius: 12px;
+  border: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.12));
+}
+
+.markdown-table-wrapper table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.05rem;
+}
+
+.markdown-table-wrapper th,
+.markdown-table-wrapper td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
+}
+
+.markdown-table-wrapper th {
+  background: light-dark(rgba(132, 94, 247, 0.08), rgba(132, 94, 247, 0.18));
+  font-weight: 700;
+  color: light-dark(var(--mantine-color-violet-9), var(--mantine-color-violet-2));
+  white-space: nowrap;
+}
+
+.markdown-table-wrapper td {
+  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
+}
+
+.markdown-table-wrapper tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-table-wrapper tbody tr:hover td {
+  background: light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.03));
+}
+
+/* Blockquote paragraphs inherit the quote styling, not the body paragraph size */
+.markdown-body blockquote p {
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
 /* Glassmorphism for wrappers */
 .markdown-pre-wrapper {
   margin: 2rem 0;
