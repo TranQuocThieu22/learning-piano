@@ -6,12 +6,12 @@ description: Triggers when the user asks for a new day's lesson or how to practi
 # Multi-day Lessons & Progress Tracking
 - The curriculum is structured into **Chương** (Chapter/Module) and **Bài** (Lesson/Topic).
 - **PROGRESS IS TRACKED IN THE APP, NOT IN A FILE.** The user marks a lesson done by ticking it on the **Nhật ký học tập** page (`/nhat-ky`), which saves to the database against their Google account. Do NOT create or update `docs/01-roadmap/progress.md` — that file has been removed and the submission workflow no longer exists. Never tell the user to record or submit a video.
-- To find out where the user currently is, ASK them which lesson they last ticked, or read the most recent file in `docs/05-learning-logs`. Do not assume.
+- To find out where the user currently is, ASK them which lesson they last ticked. Do not assume, and do not look for a progress file — there isn't one.
 - **NEW LESSON ESTIMATION**: Whenever you introduce a BRAND NEW lesson (e.g., Chương 2 - Bài 1), you MUST evaluate the complexity of the lesson's core topic. Then, explicitly tell the user your estimation of how many days (e.g., "This topic takes 3 days to master" - provide ONE specific number, NOT a range like "2-3 days") they should spend practicing this specific lesson before moving on.
 - When the user asks for a new day of practice but they haven't finished the estimated days for the current lesson, DO NOT create a new lesson file. Instead, advise them to continue repeating the current lesson's routine to build muscle memory.
 - **CRITICAL FILE NAMING**: Exercise files MUST be named using the `chuong-XX-bai-YY.md` format (e.g., `docs/03-exercises/chuong-03-bai-01.md`). This is not just for sorting — the app parses lessons with the regex `/^chuong-(\d+)-bai-(\d+)$/` in `src/lib/lessons.ts`. **A file that does not match this pattern is silently dropped from the Nhật ký page and can never be ticked.** This applies to Recital/Tổng ôn lessons too: name them `chuong-03-bai-06.md`, never `recital-01.md`.
 - **CRITICAL**: The Title (Heading 1) of the new exercise file MUST follow the exact format: `# Chương [X] - Bài [Y]: [Chủ đề]`. (For example: `# Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay`). This ensures the UI can parse it and group it into a 3-level menu (Exercises -> Chương 2 -> Bài 1).
-- Always log the previous session's results in `docs/05-learning-logs`.
+- **Do NOT create learning-log files.** The `docs/05-learning-logs` folder has been retired along with the submission workflow — progress is now recorded solely by ticking lessons in the app.
 
 # Musical Content Rules (CRITICAL)
 - **NEVER use a note the user has not been taught yet.** Before writing any ABC block, check the reading vocabulary they actually have. As of Chương 3: right hand reads C-D-E-F-G (treble, middle C position), left hand reads C-D-E-F-G (bass, one octave below). Anything above G or below low C requires shifting the hand — a Chương 6 skill.
