@@ -1,7 +1,5 @@
-import Link from 'next/link';
 import {
   Alert,
-  Anchor,
   Badge,
   Card,
   Container,
@@ -13,6 +11,7 @@ import {
 } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
+import { NavAnchor } from '@/components/NavAnchor';
 import { LessonTickButton } from '@/components/LessonTickButton';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
@@ -92,9 +91,9 @@ export default async function LearningLogPage() {
             {currentLesson && (
               <Text size="sm" mt="sm">
                 Bài hiện tại:{' '}
-                <Anchor component={Link} href={currentLesson.href}>
+                <NavAnchor href={currentLesson.href}>
                   {currentLesson.title}
-                </Anchor>
+                </NavAnchor>
               </Text>
             )}
             {!currentLesson && totalCount > 0 && (
@@ -116,9 +115,9 @@ export default async function LearningLogPage() {
                   <Card key={lesson.slug} withBorder padding="sm">
                     <Group justify="space-between" wrap="nowrap">
                       <div>
-                        <Anchor component={Link} href={lesson.href} fw={500}>
+                        <NavAnchor href={lesson.href} fw={500}>
                           {lesson.title}
-                        </Anchor>
+                        </NavAnchor>
                         {completedSlugs.has(lesson.slug) && (
                           <Badge ml="sm" color="green" size="sm">
                             Đã học xong
