@@ -84,3 +84,10 @@ w: Do Mi Do Mi | Re Pha Re Pha | Mi Sol Pha Re | Do
 - Thử thách trí nhớ: Hãy tắt màn hình máy tính đi và tự cố gắng đánh lại giai điệu "Đô Mi Sol Mi" bằng trí nhớ.
 - Đánh với tốc độ cực chậm, không cần đếm nhịp quá khắt khe, miễn là bấm đúng phím và đúng ngón.
 
+### Thử thách Thẩm âm (Ear Training) — Bước đi hay bước nhảy?
+
+- Nhắm mắt. Bấm **hai nốt liên tiếp** trong tầm 5 ngón, tự chọn ngẫu nhiên.
+- Không mở mắt, đoán xem hai nốt đó là **bước đi** (hai phím trắng sát nhau, ví dụ Đô → Rê) hay **bước nhảy** (có bỏ qua phím ở giữa, ví dụ Đô → Mi).
+- Mở mắt kiểm tra. Làm 8 lần.
+
+*Bước nhảy nghe "rộng" và "hở" hơn bước đi. Nhận ra được sự khác biệt này bằng tai chính là nền tảng để sau này bạn nghe một bài hát và mò ra nốt.*

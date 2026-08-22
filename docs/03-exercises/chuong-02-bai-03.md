@@ -73,6 +73,17 @@ V: 2 clef=bass
 ```
 
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Lặp lại tiết tấu:**
+- Chọn **một nốt duy nhất** (ví dụ nốt Đô), rồi gõ một mẫu tiết tấu 4 nhịp tự nghĩ ra — ví dụ "ngắn ngắn dài" hoặc "dài ngắn ngắn".
+- Đợi 3 giây, rồi **cố gắng lặp lại y hệt** mẫu vừa gõ, chỉ dựa vào trí nhớ.
+- Làm 5 lần với 5 mẫu khác nhau, mỗi lần thử phức tạp hơn một chút.
+
+*Đây là luyện **trí nhớ tiết tấu**. Nếu bạn nhớ được tiết tấu mà không cần bản nhạc, việc học thuộc bài sau này sẽ nhanh hơn rất nhiều.*
+
+**Tự do:** Đánh Bài 3A với tốc độ chậm nhất có thể, chú ý giữ tay trái đứng yên ở nhịp 2 và 4.
+
 ## Yêu cầu thực hành
 1. Tuyệt đối không được vội ghép 2 tay ngay lập tức!
 2. Hãy tập Tay Trái riêng 5 lần. Chú ý đếm nhịp thật to và giữ phím đủ 2 nhịp.

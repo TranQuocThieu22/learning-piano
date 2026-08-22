@@ -82,6 +82,18 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 ```
 
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Cao hơn hay thấp hơn?**
+- Nhắm mắt lại. Bấm nốt **Đô (C)** bằng ngón 1, nghe kỹ.
+- Vẫn nhắm mắt, bấm **một phím bất kỳ** trong 4 nốt còn lại (Rê, Mi, Pha, Sol).
+- Tự trả lời thành tiếng: nốt vừa rồi **cao hơn hay thấp hơn** nốt Đô?
+- Mở mắt kiểm tra. Làm 5 lần.
+
+*Đây là bài luyện tai dễ nhất, nhưng đừng bỏ qua: nó dạy tai bạn khái niệm cơ bản nhất của âm nhạc là cao — thấp.*
+
+**Tự do:** Đặt tay lên 5 phím và bấm lung tung trong 2 phút, không cần theo bản nhạc nào. Chỉ để làm quen cảm giác phím đàn dưới đầu ngón tay.
+
 ## Yêu cầu thực hành
 1. Tập riêng tay phải thật chậm các bài 1A và 1C, vừa đánh vừa nhẩm tên nốt "Đô, Rê, Mi..." ra miệng. Cố gắng giữ tay cong tròn, không bị xẹp khớp.
 2. Chuyển sang tập tay trái với các bài 1B và 1D.

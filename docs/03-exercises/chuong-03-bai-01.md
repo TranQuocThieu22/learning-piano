@@ -68,6 +68,18 @@ K: C
 C E D C | E C D2 | C C E E | D D C2 |]
 ```
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Đoán một trong ba nốt:**
+- Nhắm mắt, tay phải đặt ngón 1-2-3 lên **Đô, Rê, Mi**.
+- Bấm ngẫu nhiên **một** trong ba nốt đó.
+- Không mở mắt, đoán vừa nghe nốt nào rồi nói to tên nốt.
+- Mở mắt kiểm tra. Làm 10 lần.
+
+*Chỉ ba lựa chọn nên đừng vội nản nếu đoán sai — ba nốt này nằm sát nhau nên rất dễ nhầm. Đoán đúng 6/10 lần đã là tốt cho lần đầu.*
+
+**Tự do:** Đánh lại Bài 3B (Mary Had A Little Lamb) mà **không nhìn xuống tay**.
+
 ## Yêu cầu thực hành
 1. Hãy đánh thật chậm từng bài (3A, 3B, 3C). Đọc to tên nốt "Đô - Rê - Mi" khi đánh.
 2. Nếu bạn bị bấm nhầm phím, hãy nhắm mắt lại, tự "sờ" để tìm lại nốt Đô (C) ở cụm 2 phím đen, sau đó đánh tiếp. Tuyệt đối hạn chế cúi đầu xuống nhìn tay!

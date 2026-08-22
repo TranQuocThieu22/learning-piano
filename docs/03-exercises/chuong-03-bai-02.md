@@ -64,6 +64,17 @@ E E F G | G F E D | C C D E | E D D2 |
 E E F G | G F E D | C C D E | D C C2 |]
 ```
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Đoán một trong năm nốt:**
+- Giống bài trước, nhưng lần này mở rộng ra **cả 5 nốt Đô Rê Mi Pha Sol**.
+- Nhắm mắt, bấm ngẫu nhiên một nốt, đoán tên rồi kiểm tra. Làm 10 lần.
+- **Mẹo:** nếu bí, hãy bấm nốt **Đô** trước làm mốc, rồi so nốt cần đoán với nó xem cao hơn bao nhiêu.
+
+*Việc lấy một nốt làm mốc rồi đo các nốt khác theo nó chính là cách người chơi nhạc chuyên nghiệp mò nốt bằng tai.*
+
+**Tự do:** Đánh Bài 3F (Ode to Joy) một lần liền mạch, không dừng sửa lỗi.
+
 ## Yêu cầu thực hành
 1. Không cúi đầu nhìn phím đàn. Hãy tin tưởng vào ngón tay của bạn.
 2. Vừa đánh vừa đọc to tên nốt để tạo liên kết vững chắc giữa mắt - miệng - tay.

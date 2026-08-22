@@ -2,6 +2,9 @@
 
 Vì bạn là người mới bắt đầu hoàn toàn, chúng ta sẽ chia nhỏ lộ trình ra **từng ngày một** thay vì từng tuần. Mục tiêu là để não bộ và các ngón tay có đủ thời gian thích nghi mà không bị ngợp. Mỗi ngày bạn chỉ cần dành 30-45 phút tập trung.
 
+> [!TIP]
+> Trước khi bắt đầu, hãy đọc qua **[Phương pháp luyện tập hiệu quả](/01-roadmap/phuong-phap-luyen-tap)** để biết một buổi tập gồm những phần nào, và vì sao mỗi bài đều có bài tập không cần đàn.
+
 ## Giai đoạn 1: Nền tảng vững chắc (Khoảng 60 ngày / 2 tháng)
 Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, và điều khiển các ngón tay độc lập. Lộ trình được thiết kế theo tiến độ kỹ năng (Self-paced), bạn hoàn toàn làm chủ tốc độ của mình:
 

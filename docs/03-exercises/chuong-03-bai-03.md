@@ -71,6 +71,18 @@ V: 1 clef=bass
 C, E, D, C, | E, C, D,2 | C, C, E, E, | D, D, C,2 |]
 ```
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Cùng tên nốt, khác độ cao:**
+- Bấm nốt **Đô giữa** bằng tay phải, nghe kỹ. Rồi bấm nốt **Đô thấp** bằng tay trái (ngón 5).
+- Nghe sự khác biệt: hai nốt này **cùng tên là Đô**, nghe "giống nhau" một cách kỳ lạ, nhưng một cái trầm hơn hẳn. Khoảng cách đó gọi là một **quãng tám (octave)**.
+- Làm tương tự với cặp Rê–Rê và Mi–Mi.
+- Sau đó nhắm mắt, bấm ngẫu nhiên một trong hai nốt Đô, đoán xem đó là Đô cao hay Đô thấp.
+
+*Hiểu được quãng tám sẽ giúp bạn rất nhiều ở bài sau: khi đọc khuông nhạc kép, cùng một tên nốt sẽ xuất hiện ở nhiều vị trí khác nhau, và bạn cần phân biệt chúng bằng cả mắt lẫn tai.*
+
+**Tự do:** Đánh Bài 3H (Jingle Bells tay trái) mà không nhìn xuống phím đàn.
+
 ## Yêu cầu thực hành
 1. Không cúi đầu nhìn phím đàn. Mắt dán chặt vào bản nhạc.
 2. Vừa đánh vừa đọc to tên nốt "Đô - Rê - Mi". Bạn có thể sẽ bị đọc nhầm vị trí của Khóa Sol, điều đó là hoàn toàn bình thường, hãy kiên nhẫn sửa lại.

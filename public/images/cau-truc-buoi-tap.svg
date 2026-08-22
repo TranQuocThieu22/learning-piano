@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 330" width="100%" style="max-width:920px;height:auto">
+<text x="460.0" y="32" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="17" font-weight="700" fill="#8792a6" text-anchor="middle">Cấu trúc một buổi tập</text>
+<rect x="50" y="58" width="820" height="62" rx="10" fill="#a78bfa" fill-opacity="0.12" stroke="#a78bfa" stroke-width="2" stroke-dasharray="7 5"/>
+<text x="460.0" y="84" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#a78bfa" text-anchor="middle">① BÀI TẬP KHÔNG CẦN ĐÀN — tranh thủ lúc rảnh trong ngày</text>
+<text x="460.0" y="104" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500" fill="#8792a6" text-anchor="middle">Gõ mặt bàn (bắt buộc) + một phương pháp tùy chọn · không tính vào thời gian ngồi đàn</text>
+<rect x="50" y="170" width="205.0" height="76" rx="10" fill="#3b82f6" fill-opacity="0.2" stroke="#3b82f6" stroke-width="2"/>
+<text x="152.5" y="196" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#3b82f6" text-anchor="middle">② Khởi động</text>
+<text x="152.5" y="213" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#3b82f6" text-anchor="middle">&amp; Ôn tập</text>
+<text x="152.5" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">5–10 phút</text>
+<rect x="255.0" y="170" width="410.0" height="76" rx="10" fill="#f59e0b" fill-opacity="0.2" stroke="#f59e0b" stroke-width="2"/>
+<text x="460.0" y="196" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" text-anchor="middle">③ Học kỹ năng mới</text>
+<text x="460.0" y="220" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">15–20 phút</text>
+<rect x="665.0" y="170" width="205.0" height="76" rx="10" fill="#14b8a6" fill-opacity="0.2" stroke="#14b8a6" stroke-width="2"/>
+<text x="767.5" y="196" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#14b8a6" text-anchor="middle">④ Tự do</text>
+<text x="767.5" y="213" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#14b8a6" text-anchor="middle">&amp; Luyện tai</text>
+<text x="767.5" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">5–10 phút</text>
+<path d="M50 262 L870 262" stroke="#8792a6" stroke-width="2"/>
+<path d="M50 256 L50 268" stroke="#8792a6" stroke-width="2"/>
+<path d="M870 256 L870 268" stroke="#8792a6" stroke-width="2"/>
+<text x="460.0" y="286" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#8792a6" text-anchor="middle">Tổng thời gian ngồi trước đàn: 30 – 45 phút</text>
+<text x="460.0" y="310" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#f59e0b" text-anchor="middle">Chất lượng quan trọng hơn số lượng — 30 phút tập trung tốt hơn 2 tiếng lơ đãng</text>
+</svg>

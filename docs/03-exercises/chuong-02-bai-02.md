@@ -78,6 +78,18 @@ V: 2 clef=bass
 "Trái"C, z E, z | C, z z2 | D, z G,, z | C,2 z2 |]
 ```
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Tay nào vừa đánh?**
+- Nhắm mắt, hai tay đặt sẵn ở vị trí quen thuộc (tay phải ở Đô giữa, tay trái ở Đô thấp).
+- Bấm **một nốt bất kỳ**, lúc bằng tay trái lúc bằng tay phải, hoàn toàn ngẫu nhiên.
+- Không mở mắt, tự nói to: **"Trái!"** hay **"Phải!"**.
+- Làm 10 lần.
+
+*Nghe có vẻ hiển nhiên vì bạn tự bấm nên biết trước. Mẹo là hãy bấm thật nhanh không suy nghĩ, rồi mới nghe và phán đoán — tai bạn đang học phân biệt **âm khu trầm và âm khu cao**, kỹ năng cần thiết khi sau này đọc khuông nhạc kép.*
+
+**Tự do:** Đánh Bài 2D thật chậm, tập trung vào khoảnh khắc "chờ đến lượt" của mỗi tay.
+
 ## Yêu cầu thực hành
 1. Mở đàn, khởi động bằng cách đánh lại Bài 2A và 2B trong 5 phút để làm nóng ngón tay.
 2. Bắt đầu tập Bài 2D, 2E, 2F cực kỳ chậm. Chú ý lúc nào tay phải đánh, lúc nào tay trái đánh. 

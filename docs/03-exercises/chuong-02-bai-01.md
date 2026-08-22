@@ -75,6 +75,17 @@ V: 2 clef=bass
 ```
 
 
+## Thực hành tự do & Luyện tai (5 phút)
+
+**Thử thách Thẩm âm (Ear Training) — Nốt này dài mấy nhịp?**
+- Nhắm mắt. Bấm một phím bất kỳ rồi **giữ nó** trong 1, 2 hoặc 4 nhịp, tự chọn ngẫu nhiên.
+- Trong lúc giữ, đếm thầm và tự xác định vừa đánh **nốt Đen, nốt Trắng hay nốt Tròn**.
+- Làm 8 lần, mỗi lần đổi độ dài khác nhau.
+
+*Bài này luyện tai theo **trường độ** chứ không phải cao độ. Nhiều người mới đọc đúng nốt nhưng giữ phím sai nhịp, vì tai chưa quen đo thời gian.*
+
+**Tự do:** Đánh Bài 2A một lần duy nhất từ đầu đến cuối, không dừng lại sửa lỗi.
+
 ## Yêu cầu thực hành
 1. Tập Bài 2A với tay phải và tay trái riêng biệt. Chú ý **giữ phím đàn** đủ nhịp đếm đối với nốt Trắng (2 nhịp) và nốt Tròn (4 nhịp).
 2. Khi tập ghép 2 tay ở Bài 2B, đánh với tốc độ **cực kỳ chậm**. Đảm bảo 2 tay giáng xuống phím đàn cùng một thời điểm, không bị lệch tiếng.
