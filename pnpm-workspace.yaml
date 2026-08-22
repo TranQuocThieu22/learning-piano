@@ -1,3 +1,11 @@
+# pnpm chặn script cài đặt của dependency theo mặc định (lý do bảo mật).
+# Hai package dưới đây cần chạy script để tải/liên kết binary gốc của chúng,
+# nếu không cho phép thì Next.js và ESLint sẽ không chạy được.
+#
+#   esbuild       — bộ đóng gói, cần binary gốc theo từng nền tảng
+#   unrs-resolver — bộ phân giải module viết bằng Rust, do eslint-config-next kéo về
+#
+# Sinh lại danh sách này bằng: pnpm approve-builds
 allowBuilds:
-  esbuild: set this to true or false
-  unrs-resolver: set this to true or false
+  esbuild: true
+  unrs-resolver: true

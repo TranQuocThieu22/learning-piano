@@ -22,6 +22,14 @@ body {
   border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 }
 
+.markdown-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 2rem auto;
+}
+
 .markdown-body h1 {
   font-size: 2.8rem;
   font-weight: 800;
@@ -98,6 +106,26 @@ body {
   font-family: monospace;
   font-size: 0.9em;
   color: light-dark(var(--mantine-color-red-8), var(--mantine-color-red-4));
+}
+
+/* --- NÚT CHUYỂN GIAO DIỆN SÁNG/TỐI --- */
+/* Cả hai biểu tượng đều nằm trong HTML, CSS chọn cái nào hiển thị.
+   Nhờ vậy HTML của server và của client luôn giống hệt nhau, tránh
+   lỗi hydration mismatch mà cách rẽ nhánh bằng JS gây ra. */
+/* Mặc định là giao diện sáng -> hiện mặt trăng (bấm để chuyển sang tối).
+   Đặt mặc định thay vì chỉ dựa vào thuộc tính data-mantine-color-scheme,
+   vì thuộc tính đó do script gắn lúc chạy, chưa có trong HTML server dựng —
+   nếu không sẽ có khoảnh khắc cả hai biểu tượng cùng hiện. */
+.theme-icon--sun {
+  display: none;
+}
+
+[data-mantine-color-scheme='dark'] .theme-icon--sun {
+  display: block;
+}
+
+[data-mantine-color-scheme='dark'] .theme-icon--moon {
+  display: none;
 }
 
 /* --- LINKS --- */

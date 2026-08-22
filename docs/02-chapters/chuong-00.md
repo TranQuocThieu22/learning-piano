@@ -22,6 +22,8 @@ Cây piano đầu tiên được **Bartolomeo Cristofori** chế tạo tại Flo
 
 Trước đó, nhạc cụ phím phổ biến nhất là **harpsichord**. Nó có một nhược điểm lớn mà thời đó chưa ai giải quyết được: **không thể chơi to nhỏ theo ý muốn**.
 
+![Đàn Harpsichord (MET DP225547)](https://commons.wikimedia.org/wiki/Special:FilePath/Harpsichord_MET_DP225547.jpg)
+
 ![So sánh cơ chế gảy dây của harpsichord và gõ búa của piano](/images/gay-vs-go.svg)
 
 Lý do nằm ở cơ chế:
@@ -52,6 +54,8 @@ Nói cách khác: **cây đàn của bạn được đặt tên theo đúng kh�
 Cây piano của Cristofori chưa giống đàn ngày nay. Phải mất thêm khoảng 150 năm nữa, qua bàn tay của nhiều nhà chế tác, piano mới có hình hài quen thuộc: **88 phím**, khung gang chịu được sức căng khổng lồ của dây, và bộ pedal.
 
 Ba cây đàn do chính Cristofori làm vẫn còn tồn tại đến hôm nay, tại các bảo tàng ở **New York (1720)**, **Rome (1722)** và **Leipzig (1726)**.
+
+![Cây đàn piano của Cristofori năm 1720, hiện trưng bày tại Bảo tàng Nghệ thuật Metropolitan (New York)](https://commons.wikimedia.org/wiki/Special:FilePath/Grand_Piano_MET_DP300941.jpg)
 
 Còn cây **piano điện** mà phần lớn chúng ta đang dùng thì mới xuất hiện từ khoảng thập niên 1980. Nó ghi âm lại tiếng của đàn cơ thật, và mô phỏng sức nặng của phím bằng cơ cấu búa — đó là lý do ở Chương 1 mình khuyên bạn ưu tiên loại **phím nặng**: để lực ngón tay bạn vẫn có ý nghĩa, đúng như Cristofori đã thiết kế cách đây hơn 300 năm.
 
