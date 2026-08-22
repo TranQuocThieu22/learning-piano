@@ -1,6 +1,6 @@
 # Chương 4: Phím đen và Dấu hóa (Accidentals)
 
-Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn chỉ chơi trên các **phím trắng**. Nhưng cây đàn của bạn còn 36 phím đen nữa đang chờ được chạm tới — và chúng chính là thứ tạo ra màu sắc, cảm xúc, sự "gai góc" hay "u buồn" cho âm nhạc.
+Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn chỉ chơi trên các **phím trắng**. Nhưng cây đàn của bạn còn cả một hàng **phím đen** nữa đang chờ được chạm tới — và chúng chính là thứ tạo ra màu sắc, cảm xúc, sự "gai góc" hay "u buồn" cho âm nhạc.
 
 ## 1. Nửa cung và Nguyên cung
 

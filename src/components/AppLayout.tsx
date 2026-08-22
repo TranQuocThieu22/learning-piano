@@ -8,6 +8,18 @@ import { MarkdownFile } from '@/lib/markdown';
 import { ThemeToggle } from './ThemeToggle';
 import { signInWithGoogle, signOutAction } from '@/lib/auth-actions';
 
+/** Vietnamese sidebar headings; falls back to the folder name if unlisted. */
+const CATEGORY_LABELS: Record<string, string> = {
+  '01-roadmap': 'Lộ trình',
+  '02-chapters': 'Lý thuyết',
+  '03-exercises': 'Bài tập',
+  '06-quyet-dinh': 'Ghi chú',
+};
+
+function categoryLabel(cat: string) {
+  return CATEGORY_LABELS[cat] ?? cat.replace(/^\d+-/, '').replace(/-/g, ' ');
+}
+
 export interface AppSessionUser {
   id: string;
   name?: string | null;
@@ -132,7 +144,7 @@ export function AppLayout({
             return (
               <Box key={cat} mb="md">
                 <Title order={6} mb="sm" style={{ textTransform: 'uppercase', color: 'var(--mantine-color-dimmed)' }}>
-                  {cat.replace(/^\d+-/, '').replace(/-/g, ' ')}
+                  {categoryLabel(cat)}
                 </Title>
 
                 {/* Render Grouped Files (3-level menu) */}

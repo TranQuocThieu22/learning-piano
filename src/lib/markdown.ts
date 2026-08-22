@@ -4,7 +4,8 @@ import path from 'path';
 const contentDirs = [
   '01-roadmap',
   '02-chapters',
-  '03-exercises'
+  '03-exercises',
+  '06-quyet-dinh'
 ];
 
 export interface MarkdownFile {

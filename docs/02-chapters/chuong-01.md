@@ -2,6 +2,15 @@
 
 Chào bạn, không sao cả! Chúng ta sẽ bắt đầu từ những khái niệm căn bản nhất. Hãy coi đây là một bảng chữ cái mới mà bạn sắp làm quen.
 
+> [!NOTE]
+> **🎹 Bạn cần cây đàn như thế nào?**
+>
+> Toàn bộ giáo trình này được viết cho **đàn phím**, không phụ thuộc hãng hay model cụ thể nào. Bạn dùng đàn gì cũng theo được, miễn là:
+> - **Tối thiểu 61 phím** để đủ chỗ cho các bài tập. Đàn **88 phím** là lý tưởng vì đúng như piano thật.
+> - **Ưu tiên phím nặng (weighted / hammer action)** — loại phím có sức nặng giống đàn cơ. Đây là điểm quan trọng nhất, vì phần lớn kỹ thuật trong giáo trình là học cách điều khiển lực ngón tay. Phím nhẹ kiểu organ vẫn tập được, nhưng sau này chuyển sang piano thật sẽ phải làm quen lại.
+>
+> Nếu bạn **chưa có đàn và đang cân nhắc mua piano điện**, một gợi ý ở tầm phổ thông là **Roland FP-30X** (88 phím, phím nặng) — giáo trình này ban đầu được soạn quanh cây đàn đó. Nhưng đây chỉ là một ví dụ tham khảo, hoàn toàn không bắt buộc; các dòng tương đương của Yamaha, Casio, Kawai đều dùng tốt.
+
 ## 1. Bảy nốt nhạc cơ bản và Phím đàn
 Âm nhạc phương Tây (và Piano) xoay quanh 7 nốt nhạc cơ bản. Tại Việt Nam, chúng ta hay gọi là:
 **Đô - Rê - Mi - Pha - Sol - La - Si**
@@ -51,6 +60,6 @@ Khi đặt 5 ngón tay phải vào đúng vị trí, bàn phím sẽ trông như
 ---
 **Nhiệm vụ của bạn hôm nay:**
 1. Thuộc lòng 7 chữ cái C, D, E, F, G, A, B.
-2. Tìm được chính xác tất cả các nốt Đô (C) trên cây đàn FP-30X của bạn.
+2. Tìm được chính xác tất cả các nốt Đô (C) trên cây đàn của bạn.
 3. Đặt ngón cái tay phải (ngón 1) lên nốt Đô giữa, lần lượt đặt các ngón 2,3,4,5 lên các phím Rê, Mi, Pha, Sol kế tiếp. 
 4. Chuyển sang **[Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên](/03-exercises/chuong-01-bai-01)** để bắt đầu tập luyện nhé!
