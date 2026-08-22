@@ -9,11 +9,11 @@ Thứ âm nhạc mà chúng ta sắp học — bảy nốt Đô Rê Mi, khuông 
 ![Dòng thời gian âm nhạc phương Tây và thời điểm piano ra đời](/images/timeline-lich-su.svg)
 
 - **Baroque (khoảng 1600 – 1750):** Thời của **Johann Sebastian Bach**. Nhạc nhiều bè đan xen nhau như những sợi chỉ dệt lại. Nhạc cụ phím chủ đạo là đàn **harpsichord** và đại phong cầm (organ).
-  <br>![Chân dung Johann Sebastian Bach](https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach_1746.jpg)
+  ![Chân dung Johann Sebastian Bach](https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach_1746.jpg)
 - **Cổ điển (khoảng 1750 – 1820):** Thời của **Mozart** và **Beethoven**. Giai điệu trở nên rõ ràng, cân đối, dễ nghe hơn. Đây cũng là lúc piano soán ngôi harpsichord để thành nhạc cụ trung tâm.
-  <br>![Chân dung Ludwig van Beethoven](https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_van_Beethoven.jpg)
+  ![Chân dung Ludwig van Beethoven](https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_van_Beethoven.jpg)
 - **Lãng mạn (khoảng 1820 – 1900):** Thời của **Chopin** và **Liszt**. Âm nhạc chuyển sang kể chuyện cảm xúc cá nhân — dữ dội, mơ mộng, kịch tính. Kỹ thuật piano được đẩy tới giới hạn.
-  <br>![Ảnh chụp Frédéric Chopin (1849)](https://commons.wikimedia.org/wiki/Special:FilePath/Frederic_Chopin_photo.jpeg)
+  ![Ảnh chụp Frédéric Chopin (1849)](https://commons.wikimedia.org/wiki/Special:FilePath/Frederic_Chopin_photo.jpeg)
 - **Hiện đại (từ 1900):** Jazz, Pop, nhạc phim... Piano có mặt trong hầu hết mọi thể loại.
 
 > [!NOTE]
