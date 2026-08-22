@@ -22,11 +22,15 @@ Ba phần còn lại diễn ra khi bạn ngồi vào đàn:
 
 **1. Gõ mặt bàn (Tapping)** — *bắt buộc trong mọi bài*
 
+![Ảnh minh họa ngón tay gõ trên mặt bàn](/images/tapping-on-table.jpg)
+
 Úp tay lên bàn ở tư thế khum tròn, rồi nhấc từng ngón gõ xuống trong khi các ngón khác dính chặt. Nghe đơn giản nhưng cực kỳ mỏi ở ngón áp út.
 
 *Vì sao hiệu quả:* khó khăn lớn nhất của người mới không phải là nhớ nốt, mà là **các ngón tay chưa cử động độc lập được** — nhấc ngón 4 thì ngón 3 và 5 nhấc theo. Gõ mặt bàn tách riêng đúng vấn đề đó ra để rèn, không bị phân tâm bởi việc phải đọc nốt cùng lúc.
 
 **2. Luyện tập tưởng tượng (Mental Play)**
+
+![Ảnh minh họa người nhắm mắt tưởng tượng bàn phím piano](/images/mental-play.jpg)
 
 Nhắm mắt, hình dung thật rõ bàn phím trước mặt, "thấy" ngón tay mình di chuyển và "nghe" âm thanh vang lên trong đầu.
 
@@ -45,6 +49,8 @@ Hát hoặc ngân nga giai điệu bài tập bằng miệng trước khi đánh
 *Vì sao hiệu quả:* hát buộc bạn phải **thực sự nghe được cao độ trong đầu** trước khi tay chạm phím. Nếu hát không ra thì nghĩa là bạn chưa hình dung được bài nhạc, và tay sẽ chỉ đang bấm phím một cách máy móc.
 
 **5. Chép nốt ra giấy (Music Copying)**
+
+![Ảnh minh họa tay cầm bút chì chép nốt nhạc](/images/music-copying.jpg)
 
 Kẻ khuông năm dòng rồi tự tay vẽ khóa nhạc và các nốt.
 
