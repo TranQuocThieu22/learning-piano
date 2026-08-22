@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 460 354" width="100%" style="max-width:460px;height:auto">
+<rect x="70" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="110" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="150" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="190" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="230" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="270" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="310" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="350" y="108" width="40" height="180" rx="3" fill="#f1f5f9" stroke="#8792a6" stroke-width="2"/>
+<rect x="150" y="108" width="40" height="180" rx="3" fill="#f59e0b" fill-opacity="0.3" stroke="#f59e0b" stroke-width="3"/>
+<rect x="190" y="108" width="40" height="180" rx="3" fill="#f59e0b" fill-opacity="0.3" stroke="#f59e0b" stroke-width="3"/>
+<rect x="98.0" y="108" width="24" height="112" rx="2" fill="#334155"/>
+<rect x="138.0" y="108" width="24" height="112" rx="2" fill="#334155"/>
+<rect x="218.0" y="108" width="24" height="112" rx="2" fill="#334155"/>
+<rect x="258.0" y="108" width="24" height="112" rx="2" fill="#334155"/>
+<rect x="298.0" y="108" width="24" height="112" rx="2" fill="#334155"/>
+<text x="90.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">C</text>
+<text x="130.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">D</text>
+<text x="170.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">E</text>
+<text x="210.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">F</text>
+<text x="250.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">G</text>
+<text x="290.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">A</text>
+<text x="330.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">B</text>
+<text x="370.0" y="274" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#8792a6" text-anchor="middle">C</text>
+<path d="M90.0 90 L130.0 90" stroke="#3b82f6" stroke-width="3"/>
+<path d="M90.0 83 L90.0 97" stroke="#3b82f6" stroke-width="3"/>
+<path d="M130.0 83 L130.0 97" stroke="#3b82f6" stroke-width="3"/>
+<text x="110.0" y="80" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#3b82f6" text-anchor="middle">Nguyên cung</text>
+<path d="M170.0 58 L210.0 58" stroke="#f59e0b" stroke-width="3"/>
+<path d="M170.0 51 L170.0 65" stroke="#f59e0b" stroke-width="3"/>
+<path d="M210.0 51 L210.0 65" stroke="#f59e0b" stroke-width="3"/>
+<text x="190.0" y="48" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="700" fill="#f59e0b" text-anchor="middle">Nửa cung</text>
+<text x="230.0" y="318" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#f59e0b" text-anchor="middle">Mi → Pha sát nhau, KHÔNG có phím đen ở giữa</text>
+<text x="230.0" y="338" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="13" font-weight="500" fill="#8792a6" text-anchor="middle">(cặp Si → Đô cũng vậy)</text>
+</svg>

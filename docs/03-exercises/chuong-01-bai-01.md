@@ -85,4 +85,5 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 ## Yêu cầu thực hành
 1. Tập riêng tay phải thật chậm các bài 1A và 1C, vừa đánh vừa nhẩm tên nốt "Đô, Rê, Mi..." ra miệng. Cố gắng giữ tay cong tròn, không bị xẹp khớp.
 2. Chuyển sang tập tay trái với các bài 1B và 1D.
-3. Khi bạn cảm thấy các ngón tay đã nhớ vị trí và không bị ấn nhầm phím nữa, hãy quay một đoạn video (chỉ quay bàn tay) gửi vào mục `04-submissions` để mình xem tư thế tay của bạn đã chuẩn chưa nhé!
+3. Khi bạn cảm thấy các ngón tay đã nhớ vị trí và không bị ấn nhầm phím nữa, hãy tick hoàn thành bài này ở ô trên cùng trang, hoặc trong mục **[Nhật ký học tập](/nhat-ky)**.
+4. **Mẹo tự kiểm tra:** quay một đoạn video ngắn chỉ bàn tay rồi tự xem lại. Bạn sẽ thấy ngay những thói quen mà lúc đang đánh không hề nhận ra — vai nhô lên, cổ tay sụp xuống, hay ngón tay bị xẹp khớp.

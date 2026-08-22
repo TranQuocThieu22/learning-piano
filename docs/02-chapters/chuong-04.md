@@ -12,6 +12,8 @@ Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn c
 - **Nguyên cung (Whole step / Tone):** bằng 2 nửa cung, tức là **bỏ qua đúng một phím** ở giữa.
   - Ví dụ: từ Đô (C) sang Rê (D) = nguyên cung (bỏ qua phím đen giữa chúng).
 
+![Nửa cung và nguyên cung trên bàn phím](/images/half-whole-step.svg)
+
 **👉 Điều bất ngờ cần nhớ:** Không phải cặp phím trắng nào cũng cách nhau nguyên cung. Có **2 cặp đặc biệt** nằm sát nhau, không có phím đen ở giữa:
 - **Mi → Pha (E → F)**
 - **Si → Đô (B → C)**
@@ -31,6 +33,8 @@ Phím đen không có tên riêng — chúng được gọi tên dựa theo phí
 Ví dụ cụ thể trên đàn:
 - **Pha thăng (F#)** = phím đen nằm ngay bên phải nốt Pha.
 - **Mi giáng (Eb)** = phím đen nằm ngay bên trái nốt Mi.
+
+![Vị trí Pha thăng và Mi giáng trên bàn phím](/images/black-keys-accidentals.svg)
 
 **👉 Một phím đen, hai cái tên:** Phím đen giữa Rê và Mi có thể gọi là **Rê thăng (D#)** hoặc **Mi giáng (Eb)** — cùng một phím, chỉ khác cách gọi tùy ngữ cảnh bản nhạc. Bạn không cần hiểu sâu vì sao ngay lúc này, chỉ cần biết là bình thường.
 
@@ -58,4 +62,4 @@ Phím đen **hẹp hơn, cao hơn và nằm sâu hơn** phím trắng, nên cầ
 **Nhiệm vụ của bạn trong Chương này:**
 1. Tìm và gọi đúng tên tất cả các phím đen quanh vị trí 5 ngón C-D-E-F-G của bạn.
 2. Ghi nhớ 2 cặp phím trắng đặc biệt: **Mi-Pha** và **Si-Đô**.
-3. Chuyển sang đọc `03-exercises/chuong-04-bai-01.md` để bắt đầu tập luyện!
+3. Chuyển sang **[Chương 4 - Bài 1: Làm quen Dấu Thăng (Pha thăng)](/03-exercises/chuong-04-bai-01)** để bắt đầu tập luyện!

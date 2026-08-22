@@ -1,6 +1,7 @@
 'use client';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import Link from 'next/link';
 import { AbcjsViewer } from './AbcjsViewer';
 
 /**
@@ -35,6 +36,18 @@ export function MarkdownViewer({ content }: { content: string }) {
           pre({ children }: any) {
             // react-markdown wraps code blocks in pre. If the child is our AbcjsViewer, we don't want the pre tag.
             return <div className="markdown-pre-wrapper">{children}</div>;
+          },
+          a({ href, children, ...props }: any) {
+            // Internal links go through next/link for client-side navigation;
+            // external ones open in a new tab.
+            if (href?.startsWith('/')) {
+              return <Link href={href}>{children}</Link>;
+            }
+            return (
+              <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
+                {children}
+              </a>
+            );
           },
           table({ children }: any) {
             // Wrapper lets wide tables scroll on their own instead of
