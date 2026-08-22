@@ -5,6 +5,7 @@ Vì bạn là người mới bắt đầu hoàn toàn, chúng ta sẽ chia nhỏ
 ## Giai đoạn 1: Nền tảng vững chắc (Khoảng 60 ngày / 2 tháng)
 Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, và điều khiển các ngón tay độc lập. Lộ trình được thiết kế theo tiến độ kỹ năng (Self-paced), bạn hoàn toàn làm chủ tốc độ của mình:
 
+- **Chương 0: Cây đàn bạn sắp học đến từ đâu?**: Bài đọc tổng quan, không có bài tập. Lịch sử hình thành âm nhạc phương Tây qua bốn thời kỳ, câu chuyện Cristofori phát minh ra piano năm 1700, và vì sao cái tên "piano" lại quyết định cách chúng ta tập luyện.
 - **Chương 1: Nền tảng phím đàn và nốt nhạc**: Làm quen với vị trí 5 nốt đầu tiên (C, D, E, F, G) và luyện tập 5 ngón tay độc lập. Đánh chậm rãi để ngón áp út và ngón út không bị dính vào nhau.
 - **Chương 2: Nhịp điệu và Phối hợp 2 tay**: Làm quen với nốt Đen, Trắng, Tròn. Thực hành đếm nhịp ra miệng, đánh luân phiên 2 tay và tiến tới đánh độc lập 2 tay cùng lúc.
 - **Chương 3: Đọc bản nhạc (Sight-reading) cơ bản**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái), nối 2 khóa lại thành **Khuông nhạc kép (Grand Staff)**, hiểu **số chỉ nhịp** và làm quen **nhịp 3/4 (điệu Waltz)**. Kết thúc bằng một **Trạm dừng chân** chơi trọn vẹn bản nhạc hoàn chỉnh.

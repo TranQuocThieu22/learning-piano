@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 340" width="100%" style="max-width:980px;height:auto">
+<rect x="70.0" y="210" width="315.0" height="52" rx="6" fill="#3b82f6" fill-opacity="0.18" stroke="#3b82f6" stroke-width="2"/>
+<text x="227.5" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="15" font-weight="700" fill="#3b82f6" text-anchor="middle">Baroque</text>
+<text x="227.5" y="252" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500" fill="#8792a6" text-anchor="middle">Bach</text>
+<rect x="385.0" y="210" width="147.0" height="52" rx="6" fill="#14b8a6" fill-opacity="0.18" stroke="#14b8a6" stroke-width="2"/>
+<text x="458.5" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="15" font-weight="700" fill="#14b8a6" text-anchor="middle">Cổ điển</text>
+<text x="458.5" y="252" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500" fill="#8792a6" text-anchor="middle">Mozart · Beethoven</text>
+<rect x="532.0" y="210" width="168.0" height="52" rx="6" fill="#a78bfa" fill-opacity="0.18" stroke="#a78bfa" stroke-width="2"/>
+<text x="616.0" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="15" font-weight="700" fill="#a78bfa" text-anchor="middle">Lãng mạn</text>
+<text x="616.0" y="252" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500" fill="#8792a6" text-anchor="middle">Chopin · Liszt</text>
+<rect x="700.0" y="210" width="210.0" height="52" rx="6" fill="#8792a6" fill-opacity="0.18" stroke="#8792a6" stroke-width="2"/>
+<text x="805.0" y="232" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="15" font-weight="700" fill="#8792a6" text-anchor="middle">Hiện đại</text>
+<text x="805.0" y="252" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="11" font-weight="500" fill="#8792a6" text-anchor="middle">Jazz · Pop</text>
+<path d="M56 278 L924 278" stroke="#8792a6" stroke-width="2"/>
+<path d="M70.0 278 L70.0 288" stroke="#8792a6" stroke-width="2"/>
+<text x="70.0" y="306" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">1600</text>
+<path d="M280.0 278 L280.0 288" stroke="#8792a6" stroke-width="2"/>
+<text x="280.0" y="306" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">1700</text>
+<path d="M490.0 278 L490.0 288" stroke="#8792a6" stroke-width="2"/>
+<text x="490.0" y="306" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">1800</text>
+<path d="M700.0 278 L700.0 288" stroke="#8792a6" stroke-width="2"/>
+<text x="700.0" y="306" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">1900</text>
+<path d="M910.0 278 L910.0 288" stroke="#8792a6" stroke-width="2"/>
+<text x="910.0" y="306" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="600" fill="#8792a6" text-anchor="middle">2000</text>
+<path d="M280.0 202 L280.0 120" stroke="#f59e0b" stroke-width="3"/>
+<circle cx="280.0" cy="202" r="7" fill="#f59e0b"/>
+<rect x="125.0" y="70" width="310" height="50" rx="8" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-width="2"/>
+<text x="280.0" y="92" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="14" font-weight="700" fill="#f59e0b" text-anchor="middle">NĂM 1700 — Cây piano đầu tiên</text>
+<text x="280.0" y="110" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="500" fill="#8792a6" text-anchor="middle">Bartolomeo Cristofori, Florence (Ý)</text>
+<text x="490.0" y="28" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="17" font-weight="700" fill="#8792a6" text-anchor="middle">Dòng thời gian âm nhạc phương Tây</text>
+<text x="490.0" y="50" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif" font-size="12" font-weight="500" fill="#8792a6" text-anchor="middle">Piano ra đời giữa thời Baroque, rồi trở thành nhạc cụ trung tâm của thời Cổ điển</text>
+</svg>
