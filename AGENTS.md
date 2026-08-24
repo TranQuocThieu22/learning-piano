@@ -14,3 +14,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - **Không làm piano ảo bấm chuột/chạm màn hình** — xem `docs/06-quyet-dinh/khong-lam-piano-ao.md`. Lý do ngắn gọn: giáo trình dạy kỹ thuật vật lý (form tay, độc lập ngón, lực đánh) mà bàn phím ảo không rèn được, lại tạo cảm giác sai về tiến bộ và cạnh tranh thời gian với cây đàn thật người học đang có. Hai hướng thay thế được chấp nhận là **bài luyện nhận nốt** và **kết nối Web MIDI với đàn thật**.
 - **Không dùng tệp để theo dõi tiến độ** — tiến độ được ghi bằng cách tick bài trên trang `/nhat-ky`, lưu vào database theo tài khoản Google. Thư mục `docs/05-learning-logs` và quy trình nộp video đã được gỡ bỏ, đừng tạo lại.
+
+# Định hướng kinh doanh
+
+Trước khi đụng tới bất cứ thứ gì liên quan tới giá, gói bán, phân quyền hay thanh toán, **đọc `docs/_internal/dinh-huong-kinh-doanh.md`**.
+
+Thư mục `_internal` **không hiển thị trên web** (nằm ngoài `contentDirs` trong `src/lib/markdown.ts`) — đây là tài liệu nội bộ, đừng đưa nội dung của nó ra giao diện người học.
+
+Vài ràng buộc tuyệt đối, vi phạm là gây hậu quả thật:
+
+- **Không bịa "giá gốc" gạch ngang** cho mức giá chưa từng bán, và **không dùng đồng hồ đếm ngược giả lập**. Khuyến mại ở Việt Nam chịu điều chỉnh của Nghị định 81/2018 (sửa đổi bởi 128/2024); bịa giá gốc là quảng cáo sai sự thật, có thể bị phạt và đình chỉ tên miền.
+- **Không chạy thương mại trên gói Vercel Hobby** — gói miễn phí cấm dùng thương mại, tài khoản bị đình chỉ đồng nghĩa khách đã trả tiền mất quyền truy cập.
+- **Không hứa cập nhật miễn phí trọn đời** cho nội dung chưa tồn tại. Giai đoạn 3 và 4 là **sản phẩm riêng**, không gộp vào gói Giai đoạn 1-2, và chỉ được quảng bá khi đã soạn xong.
