@@ -5,13 +5,71 @@
 > nên không xuất hiện trên thanh điều hướng. Đây là ghi chép cho người phát triển,
 > không phải nội dung cho người học.
 >
-> **Cập nhật lần cuối:** 22/08/2026
+> **Cập nhật lần cuối:** 24/08/2026
 >
 > **Mức độ tin cậy:** Các con số về giá và thị trường là **suy luận** từ dữ liệu
 > tham khảo công khai, chưa được kiểm chứng bằng doanh số thật. Phần pháp lý cần
 > hỏi lại người có chuyên môn trước khi áp dụng.
 
 ---
+
+## 0. Vì sao sản phẩm này tồn tại
+
+Ghi lại đây vì đây là **giả thuyết nền** của cả sản phẩm lẫn cách bán. Mọi quyết định ở các mục sau đều quy về nó, nên khi giả thuyết này sai thì phần còn lại cũng phải xem lại.
+
+Người phát triển sản phẩm cũng chính là người học — đã thử qua ba con đường phổ biến và cả ba đều không đi tới đâu:
+
+**App học đàn tự động chấm điểm.** Nhóm app phổ biến hiện nay đều theo cùng một khuôn: bản nhạc chạy trên màn hình, người học chơi theo, máy chấm đúng sai ngay lập tức. Với người mới thật sự thì cách này không hiệu quả — bản nhạc cứ trôi, không chờ ai cả. Tay chưa quen phím, mắt còn phải dò xem nốt nào là nốt nào, mà nhạc đã trôi qua mất — thế là vấp, máy báo sai, càng cuống lại càng sai. Sai liên tục mà không hiểu vì sao sai, dẫn tới nản và bỏ.
+
+Điểm mấu chốt: **nhịp độ do máy áp đặt, không do người học kiểm soát**. Người mới cần được dừng lại giữa chừng, đánh đi đánh lại đúng một ô nhịp, chậm bao nhiêu tùy sức mình — đúng những thứ mà một bản nhạc đang chạy không cho phép. Cộng thêm việc phản hồi chỉ nói *đúng/sai* chứ không nói *sửa thế nào*, người học không có đường nào để tự gỡ.
+
+> [!IMPORTANT]
+> **Nguyên tắc rút ra — không ép chơi theo bản nhạc chạy trực tiếp.**
+>
+> Sản phẩm này **không** được đặt người mới vào tình huống phải theo kịp một bản nhạc đang trôi. Người học tự quyết định khi nào bắt đầu, khi nào dừng, tập lại đoạn nào, ở tốc độ nào. Máy đánh nhịp là công cụ **người học tự bật và tự chỉnh**, khác hẳn về bản chất với một bản nhạc chạy không chờ ai.
+>
+> Phát nhạc mẫu để **nghe** thì hoàn toàn khác và vẫn giữ — nghe là để hình dung bài, không phải để bị chấm điểm.
+>
+> Ràng buộc này áp cho cả tính năng Web MIDI trong tương lai: chấm điểm được, nhưng phải theo kiểu **đánh xong rồi xem lại**, không phải chạy đua thời gian thực.
+
+**Khóa học piano trên mạng.** Nội dung chung chung, không nhìn ra lộ trình cụ thể. Học xong một video không biết mình đang ở đâu, còn bao xa nữa, và hôm nay đáng lẽ phải tập cái gì. Thiếu **thứ tự và điểm dừng rõ ràng**.
+
+**Gia sư.** Hiệu quả nhất trong ba lựa chọn nhưng chi phí khá đắt, lại phải sắp xếp thêm thời gian cố định ngoài giờ. Rào cản là **tiền và lịch**, không phải chất lượng.
+
+### Ba khoảng trống rút ra được
+
+| Cách học | Thiếu cái gì |
+|---|---|
+| App chấm điểm tự động | Ép chơi theo bản nhạc chạy liên tục — người học không kiểm soát được nhịp độ; sai mà không hiểu vì sao |
+| Khóa online | Không có lộ trình cụ thể, không biết mình đang ở đâu |
+| Gia sư | Đắt và ràng buộc lịch |
+
+Đó chính xác là ba thứ sản phẩm này nhắm vào: **lộ trình có thứ tự và có điểm dừng**, **giải thích nguyên nhân chứ không chỉ báo đúng/sai**, và **tự học theo nhịp của mình với chi phí một lần**. Chữ *theo nhịp của mình* ở đây phải hiểu theo nghĩa đen: người học được dừng, được tập lại, được chậm — không có gì trên màn hình chạy trước mặt ép họ phải theo kịp. Nhật ký tick bài tồn tại cũng vì lý do này — nó trả lời câu "tôi đang ở đâu" mà cả ba cách trên đều không trả lời được.
+
+### Vừa để học, vừa để bán
+
+Sản phẩm sinh ra từ nhu cầu thật của người làm ra nó, và có mục tiêu thương mại ngay từ đầu. Hai mục tiêu này hỗ trợ nhau: sản phẩm phải đủ tốt để chính người làm dùng được, mới đáng để người khác trả tiền.
+
+> [!IMPORTANT]
+> **Cảnh báo khi dùng lập luận này.**
+>
+> Đây là trải nghiệm của **một người**. Nó là lý do rất tốt để bắt đầu, nhưng **không phải bằng chứng** rằng thị trường có cùng vấn đề. Rất nhiều sản phẩm chết vì người làm giải quyết đúng nỗi đau của mình mà nỗi đau đó hiếm.
+>
+> Cách kiểm chứng đã có sẵn ở mục 8: trong 20-30 người học thật đầu tiên, bao nhiêu người đi hết Chương 1. **Nếu người khác cũng bỏ ở tuần thứ hai giống như khi họ dùng các app chấm điểm tự động**, nghĩa là vấn đề nằm ở bản chất việc học piano chứ không nằm ở lộ trình — và toàn bộ định vị sản phẩm phải làm lại.
+
+> [!NOTE]
+> **Nếu đưa câu chuyện này ra trang bán hàng** thì phải giữ nguyên sự thật: không thổi phồng thời gian đã bỏ ra, không bịa số người đã dạy. Kể đúng ba trở ngại đã gặp là đủ mạnh rồi, và nó là thứ **không đối thủ nào sao chép được** vì nó là chuyện thật của bạn.
+
+> [!WARNING]
+> **Quy tắc: không nêu đích danh tên app hay khóa học của người khác.**
+>
+> Áp cho mọi nơi — tài liệu này, nội dung trên web, trang bán hàng, quảng cáo, mạng xã hội. Luôn mô tả theo **cách làm** ("app chấm điểm tự động", "khóa học dạng video rời rạc") chứ không theo **tên thương hiệu**.
+>
+> Cơ sở pháp lý: Luật Quảng cáo sửa đổi 2025 (số 75/2025/QH15, hiệu lực 01/01/2026) đã nới quy định cũ — trước đây cấm tuyệt đối so sánh trực tiếp, nay chỉ cấm so sánh **không có tài liệu hợp pháp chứng minh**. Nhưng câu chuyện ở mục này là **trải nghiệm cá nhân**, không phải kết quả đo lường có tài liệu chứng minh, nên vẫn nằm đúng vào vùng bị cấm. Mức phạt theo Nghị định 38/2021 (sửa đổi bởi 128/2022), Điều 34 khoản 4: **40-60 triệu đồng với cá nhân**, gấp đôi với tổ chức, kèm buộc gỡ bỏ quảng cáo.
+>
+> Ngoài ra Luật Cạnh tranh 2018 Điều 45 cấm cung cấp **thông tin không trung thực về doanh nghiệp khác** làm ảnh hưởng uy tín, và cấm **so sánh không có bằng chứng**.
+>
+> Nói chung chung không làm lập luận yếu đi chút nào — người đọc từng dùng app kiểu đó sẽ tự nhận ra. Cái được là **không tạo cho ai cái cớ để kiện, và không tự dựng đối thủ ra để họ chú ý tới mình**.
 
 ## 1. Sản phẩm này là gì, và không là gì
 
