@@ -1,6 +1,6 @@
 'use client';
 import { AppShell, Avatar, Burger, Button, Group, NavLink, Title, ScrollArea, Box, Text } from '@mantine/core';
-import { IconChecklist } from '@tabler/icons-react';
+import { IconChecklist, IconMetronome } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -111,6 +111,14 @@ export function AppLayout({
             label="Nhật ký học tập"
             leftSection={<IconChecklist size={18} />}
             active={pathname === '/nhat-ky'}
+            onClick={() => { if (mobileOpened) toggleMobile(); }}
+          />
+          <NavLink
+            href="/luyen-nhip"
+            component={Link}
+            label="Máy đánh nhịp"
+            leftSection={<IconMetronome size={18} />}
+            active={pathname === '/luyen-nhip'}
             mb="md"
             onClick={() => { if (mobileOpened) toggleMobile(); }}
           />

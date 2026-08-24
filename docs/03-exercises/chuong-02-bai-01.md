@@ -5,6 +5,16 @@ Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) v�
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc ghép 2 tay chơi cùng lúc là một "cú sốc" nhẹ với người mới. Để qua được bài này một cách trơn tru, bạn cần luyện tập trong **3 ngày**. Đừng nản chí nếu bạn thấy 2 tay bị "loạn" trong 1-2 ngày đầu nhé!
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Chỉ tập **2A** với từng tay riêng. Trọng tâm là giữ phím đủ nhịp: nốt Trắng 2 nhịp, nốt Tròn 4 nhịp. |
+| **Ngày 2** | Ôn 2A rồi bắt đầu **2B** — lần đầu ghép hai tay. Đánh cực chậm, chỉ cần hai tay xuống phím cùng lúc. |
+| **Ngày 3** | Ghép 2B cho mượt rồi thử **2C**. Bật máy đánh nhịp ở 60 BPM để kiểm tra xem mình có giữ đều không. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bài tập Không cần đàn (Away from piano)
 Đây là phương pháp luyện tập xa đàn cực kỳ hiệu quả mà bạn có thể làm bất cứ lúc nào.
 

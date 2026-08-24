@@ -5,6 +5,15 @@ Lần đầu tiên ngón tay bạn rời khỏi vùng phím trắng an toàn! H�
 > [!TIP]
 > **⏱️ Ước lượng thời gian hoàn thành:** Bản thân nốt mới không khó, nhưng ngón tay cần thời gian học lại "bản đồ" khoảng cách khi có phím đen xen vào. Bài này cần **2 ngày** luyện tập.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Gõ mặt bàn cho ngón 4 tiến - lùi. Trên đàn tập **1A và 1B**, tập trung nghe khác biệt giữa Pha và Pha thăng. |
+| **Ngày 2** | Ôn 1A rồi sang **1C và 1D**. Dành thời gian cho phần ứng biến tự do với thang âm Lydian. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Vì sao lại bắt đầu bằng Pha thăng?
 
 Vì nó nằm đúng dưới **ngón 4 (áp út)** khi tay bạn đang ở thế C-D-E-F-G — chỉ cần đẩy ngón 4 tiến lên trước một chút là chạm tới, không phải dịch chuyển cả bàn tay. Đây là phím đen dễ với tới nhất.

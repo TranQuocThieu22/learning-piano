@@ -1,8 +1,21 @@
 # Chương 2 - Bài 3: Thử thách độc lập nhịp điệu (Rhythm Patterns)
 
-Chúc mừng bạn đã đến với ngày cuối cùng của Bài 2! Ở 2 ngày trước, tay của bạn đã quen với việc đánh cùng lúc và đánh luân phiên. Hôm nay, chúng ta sẽ bước vào thử thách khó nhất của kỹ năng phối hợp: **Hai tay đánh hai nhịp điệu khác nhau.**
+Chúc mừng bạn đã đến với bài cuối cùng của Chương 2! Ở hai bài trước, tay của bạn đã quen với việc đánh cùng lúc và đánh luân phiên. Hôm nay, chúng ta sẽ bước vào thử thách khó nhất của kỹ năng phối hợp: **Hai tay đánh hai nhịp điệu khác nhau.**
 
 Mục tiêu: Tay trái sẽ giữ một nhịp điệu chậm rãi, đều đặn (như kim đồng hồ), trong khi tay phải sẽ múa những nốt nhạc nhanh hơn.
+
+> [!WARNING]
+> **⏱️ Ước lượng thời gian hoàn thành:** Đây là thử thách khó nhất của Chương 2: hai tay chạy hai nhịp điệu khác nhau. Bài này cần **3 ngày** luyện tập, đừng nản nếu ngày đầu thấy loạn.
+
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Vỗ bàn cho thành thạo trước khi đụng đàn. Trên đàn chỉ tập **tay trái riêng** của bài 3A, giữ nốt Trắng đủ 2 nhịp. |
+| **Ngày 2** | Ghép hai tay bài **3A**. Chỗ khó nhất là nhịp 2 và 4: tay phải đánh mà tay trái không được nhúc nhích. |
+| **Ngày 3** | Đổi vai với **3B** (tay trái chạy nhanh), rồi thử **3C** nếu còn sức. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
 
 ## Bài tập Không cần đàn (Away from piano)
 

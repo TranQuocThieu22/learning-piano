@@ -7,6 +7,16 @@ Phần thưởng là bạn sẽ chơi được một câu **Blues** thực thụ
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc hai ngón thay phiên nhau ra vào phím đen đòi hỏi bàn tay phải rất ổn định. Bài này cần **3 ngày** luyện tập.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Gõ mặt bàn luân phiên ngón 2 và ngón 4. Trên đàn chỉ tập **3A** cho thuộc số ngón mới của thang âm Blues. |
+| **Ngày 2** | Tập **3B** (câu riff kinh điển) thật chậm, rồi thử **3C**. |
+| **Ngày 3** | Ghép **3D** hai tay ở tốc độ 70. Dành hẳn 5 phút cuối cho phần ứng biến Blues tự do. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## 1. Thang âm Blues - Vũ khí bí mật
 
 Có một chuỗi nốt mà bạn cứ đánh loạn xạ theo thứ tự nào cũng nghe hay: đó là **thang âm Blues (Blues scale)**.

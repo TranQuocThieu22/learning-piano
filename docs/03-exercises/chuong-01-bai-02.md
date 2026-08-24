@@ -1,11 +1,23 @@
 # Chương 1 - Bài 2: Luyện tập bước nhảy (Leaps) trên 5 nốt đầu tiên
 
-Ở Ngày 1, bạn đã làm quen với việc đánh các nốt liền kề nhau (bước đi - steps). Hôm nay chúng ta sẽ nâng cấp lên một chút: Tập đánh các "bước nhảy" (leaps). Nghĩa là ngón tay bạn sẽ phải bỏ qua một phím để bấm phím tiếp theo (ví dụ: đánh Đô xong nhảy lên Mi, bỏ qua Rê).
+Ở Bài 1, bạn đã làm quen với việc đánh các nốt liền kề nhau (bước đi - steps). Hôm nay chúng ta sẽ nâng cấp lên một chút: Tập đánh các "bước nhảy" (leaps). Nghĩa là ngón tay bạn sẽ phải bỏ qua một phím để bấm phím tiếp theo (ví dụ: đánh Đô xong nhảy lên Mi, bỏ qua Rê).
+
+> [!TIP]
+> **⏱️ Ước lượng thời gian hoàn thành:** Bước nhảy chỉ là mở rộng của kỹ năng hôm trước, nhưng ngón tay cần thời gian học cách vươn xa mà không kéo cả bàn tay theo. Bài này cần **2 ngày** luyện tập.
+
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Gõ mặt bàn theo bước nhảy. Trên đàn tập **2A và 2B**, chú ý không nhấc bổng cả bàn tay khi vươn ngón. |
+| **Ngày 2** | Ôn 2A/2B rồi sang **2C và 2D**. Cuối buổi thử đánh lại "Đô Mi Sol Mi" bằng trí nhớ, không nhìn màn hình. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
 
 ## Bài tập Không cần đàn (Away from piano)
 
 **1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-- **Động tác:** Úp hai bàn tay lên bàn. Thay vì gõ lần lượt từ 1 đến 5 như Ngày 1, hôm nay hãy tập gõ theo "bước nhảy".
+- **Động tác:** Úp hai bàn tay lên bàn. Thay vì gõ lần lượt từ 1 đến 5 như Bài 1, hôm nay hãy tập gõ theo "bước nhảy".
 - **Cách gõ:** Gõ ngón Cái (1) -> Nhấc ngón Giữa (3) gõ xuống -> Nhấc ngón Út (5) gõ xuống. Các ngón còn lại dính chặt mặt bàn. Lặp lại 10 lần mỗi tay.
 
 **2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
@@ -13,7 +25,7 @@
 - **Cách làm:** Hãy nghe giai điệu máy đánh mẫu. Sau đó tự hát vang lên miệng "Đôôôô... Miiii... Sollll... Miiii...". Việc hát cao độ lên xuống này sẽ gắn kết tiềm thức của bạn với phím đàn rất tốt!
 
 ## 1. Khởi động (5 phút)
-- **Tay phải & Tay trái:** Hãy mở lại Bài tập của Ngày 1 và đánh đi đánh lại khoảng 3-5 lần để ngón tay được làm nóng. Nhớ duy trì tư thế bàn tay khum tròn như đang cầm quả bóng tennis nhé!
+- **Tay phải & Tay trái:** Hãy mở lại các bài tập của Bài 1 và đánh đi đánh lại khoảng 3-5 lần để ngón tay được làm nóng. Nhớ duy trì tư thế bàn tay khum tròn như đang cầm quả bóng tennis nhé!
 
 ## 2. Kỹ năng mới: Bước nhảy (15 phút)
 Khi đánh bước nhảy, điều quan trọng nhất là bạn **không được nhấc bổng cả bàn tay lên**. Hãy để các ngón tay tự vươn ra và nhấn xuống.

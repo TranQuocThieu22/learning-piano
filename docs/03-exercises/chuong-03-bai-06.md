@@ -7,6 +7,17 @@ Hôm nay **không có kỹ năng mới nào cả**. Nhiệm vụ duy nhất củ
 > [!TIP]
 > **⏱️ Ước lượng thời gian hoàn thành:** Bài này cần **4 ngày**. Nghe có vẻ lâu cho một bài "không học gì mới", nhưng chơi trọn vẹn một bản nhạc mà không vấp là kỹ năng hoàn toàn khác với việc tập từng ô nhịp rời rạc. Hãy cho mình đủ thời gian để thực sự *thuộc* bài.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Tập **Tiết mục 1 (Jingle Bells)** theo từng câu nhạc 4 ô nhịp một, tay riêng trước. |
+| **Ngày 2** | Vẫn Tiết mục 1, bắt đầu ghép hai tay từng câu rồi nối lại với nhau. |
+| **Ngày 3** | Chơi trọn Tiết mục 1 không dừng. Ôn lại **Tiết mục 2 (Ode to Joy)**. |
+| **Ngày 4** | Chơi cả **ba tiết mục** liền mạch như một buổi biểu diễn thật. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bạn đã đi được xa đến đâu rồi?
 
 Hãy nhìn lại một chút — cách đây vài tuần bạn còn chưa biết nốt Đô nằm ở đâu. Bây giờ bạn đã có:
@@ -126,9 +137,9 @@ C, z z | C, z z | G, z z | C, z z | G, z z | G, z z | G, z z | C,3 |]
 
 ## Yêu cầu thực hành
 
-1. **Ngày 1-2:** Tập Tiết mục 1 theo từng câu nhạc (4 ô nhịp một), tay riêng rồi ghép.
-2. **Ngày 3:** Ghép trọn vẹn Tiết mục 1. Ôn lại Tiết mục 2.
-3. **Ngày 4:** Chơi cả 3 tiết mục như một buổi biểu diễn thật — từ đầu đến cuối, không dừng.
+1. **Chia nhỏ trước khi nối.** Đừng cố chơi cả bài ngay từ đầu. Tập từng câu nhạc 4 ô nhịp cho chắc, rồi mới nối hai câu lại với nhau.
+2. **Bật máy đánh nhịp ở 60 BPM** khi ghép cả bài. Đây là lúc dễ lộ ra tật chơi nhanh ở đoạn dễ và chậm lại ở đoạn khó.
+3. **Tập chỗ khó riêng.** Nếu vấp mãi ở một ô nhịp, hãy tách riêng đúng ô đó ra đánh 10 lần, thay vì chơi lại cả bài từ đầu.
 4. **Mẹo hay:** Hãy thử quay video lại chính mình chơi (chỉ để tự xem). Bạn sẽ phát hiện ra những thói quen mà lúc đang đánh không hề nhận ra — như vai bị nhô lên, hay cổ tay bị sụp xuống.
 
 Sau bài này, bạn sẽ bước sang **Chương 4: Phím đen và Dấu hóa** — vùng đất của những âm thanh mới lạ. Nghỉ ngơi và tự thưởng cho mình một chút nhé!

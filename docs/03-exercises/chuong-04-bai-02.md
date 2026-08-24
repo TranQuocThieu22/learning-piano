@@ -7,6 +7,15 @@ Và bạn sắp được nghe một điều thú vị: chỉ cần hạ một n�
 > [!TIP]
 > **⏱️ Ước lượng thời gian hoàn thành:** Bạn đã quen với khái niệm dấu hóa từ bài trước rồi, nên bài này nhẹ nhàng hơn. Cần **2 ngày** luyện tập.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Gõ mặt bàn cho ngón 3. Trên đàn tập **2A và 2B**, nghe kỹ sự khác nhau giữa Mi và Mi giáng. |
+| **Ngày 2** | Tập **2C** (Vui và Buồn) — bài quan trọng nhất, chơi liền 8 ô nhịp để nghe rõ chuyển màu. Rồi thử **2D**. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Cách tìm Mi giáng trên đàn
 
 1. Đặt tay phải ở thế quen thuộc: ngón 3 trên nốt Mi.

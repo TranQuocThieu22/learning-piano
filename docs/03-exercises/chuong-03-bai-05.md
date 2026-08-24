@@ -5,6 +5,15 @@ Từ đầu đến giờ, mọi bài tập của chúng ta đều có ký hiệu
 > [!TIP]
 > **⏱️ Ước lượng thời gian hoàn thành:** Khái niệm không khó, nhưng cơ thể bạn đã quen đếm 4 nhịp suốt mấy tuần nay, giờ đổi sang đếm 3 sẽ hơi "lấn cấn". Bài này cần **2 ngày** luyện tập.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Vỗ bàn "BÙM - chát - chát" cho quen đã. Trên đàn tập **5A** để cảm nhận đếm 3 thay vì 4. |
+| **Ngày 2** | Tập **5B** rồi **5C**. Chú ý tay trái chỉ đánh một lần ở phách 1 rồi nghỉ, đừng đánh theo tay phải. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## 1. Vạch nhịp và Ô nhịp
 
 Nhìn vào bản nhạc, bạn sẽ thấy những **vạch dọc** cắt ngang khuông nhạc. Đó là **Vạch nhịp (Bar line)**.

@@ -1,8 +1,21 @@
 # Chương 2 - Bài 2: Đánh luân phiên 2 tay (Alternating hands)
 
-Hôm nay chúng ta vẫn giữ nguyên chủ đề của Bài 2 là **Nhịp điệu và Phối hợp 2 tay**, nhưng chúng ta sẽ nâng cấp bài tập lên một chút để rèn luyện trí não và sự phản xạ độc lập.
+Hôm nay chúng ta vẫn giữ nguyên chủ đề của Chương 2 là **Nhịp điệu và Phối hợp 2 tay**, nhưng chúng ta sẽ nâng cấp bài tập lên một chút để rèn luyện trí não và sự phản xạ độc lập.
 
-Mục tiêu của Ngày 2 là giúp 2 tay của bạn không chỉ biết đánh cùng lúc, mà còn biết "chờ đợi" và đánh luân phiên nhau (tay này đánh thì tay kia nghỉ).
+Mục tiêu của bài này là giúp 2 tay của bạn không chỉ biết đánh cùng lúc, mà còn biết "chờ đợi" và đánh luân phiên nhau (tay này đánh thì tay kia nghỉ).
+
+> [!WARNING]
+> **⏱️ Ước lượng thời gian hoàn thành:** Việc "chờ đến lượt" nghe đơn giản nhưng lại khó hơn đánh cùng lúc, vì tay không đánh vẫn có xu hướng nhúc nhích theo. Bài này cần **3 ngày** luyện tập.
+
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Tập kỹ bài gõ mặt bàn luân phiên trước. Trên đàn chỉ tập **2D**, thật chậm, đếm to từng phách. |
+| **Ngày 2** | Ôn 2D rồi sang **2E**. Chú ý khoảnh khắc tay phải phải đứng yên chờ tay trái. |
+| **Ngày 3** | Thử **2F** — bài khó nhất. Nếu loạn thì quay lại 2D và giảm tốc độ xuống 50 BPM. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
 
 ## Bài tập Không cần đàn (Away from piano)
 Tiếp tục chuỗi bài tập luyện não ở mọi nơi để tay không bị cứng:

@@ -5,6 +5,15 @@ Vì chúng ta bắt đầu từ con số 0, mục tiêu của bài này rất đ
 > [!TIP]
 > **⏱️ Ước lượng thời gian hoàn thành:** Bài này khá cơ bản, cần **2 ngày** luyện tập (mỗi ngày 30 phút) để não bộ quen thuộc hoàn toàn với vị trí 5 nốt đầu tiên. Đừng vội vàng, cứ tập từ từ nhé!
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Làm bài tập mặt bàn. Trên đàn chỉ tập **1A và 1B** (khởi động hai tay riêng), thật chậm, vừa đánh vừa đọc tên nốt. |
+| **Ngày 2** | Ôn nhanh 1A/1B rồi chuyển sang **1C và 1D** (Ode to Joy). Mục tiêu là bấm đúng phím, chưa cần đều nhịp. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bài tập 1C: Bài tập Không cần đàn (Away from piano)
 Đây là các bài tập bạn có thể làm bất cứ lúc nào (tại bàn làm việc, trên giường...) để não bộ và ngón tay làm quen với piano.
 

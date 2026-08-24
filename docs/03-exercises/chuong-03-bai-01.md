@@ -5,6 +5,16 @@ Hôm nay chúng ta sẽ chính thức tập nhìn bản nhạc mà KHÔNG ghi s�
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc tập phản xạ mắt đọc nốt trên giấy mất khá nhiều năng lượng não bộ. Bài này cần **3 ngày** luyện tập để mắt bạn bắt đầu quen với việc "nhìn nốt - bấm phím" một cách vô thức.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Chép nốt ra giấy trước. Trên đàn chỉ tập **3A**, mắt dán vào bản nhạc, tuyệt đối không nhìn tay. |
+| **Ngày 2** | Ôn 3A rồi sang **3B** (Mary Had A Little Lamb). Vừa đánh vừa đọc to tên nốt. |
+| **Ngày 3** | Thử **3C** (bước nhảy Đô - Mi). Cuối buổi đánh lại 3B một lần liền mạch không dừng sửa lỗi. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bài tập Không cần đàn (Away from piano)
 *(Tập ban ngày lúc rảnh rỗi)*
 

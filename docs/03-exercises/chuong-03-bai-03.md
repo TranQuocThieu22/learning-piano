@@ -7,6 +7,16 @@ Hôm nay chúng ta sẽ học cách đọc 3 nốt cơ bản nhất của Khóa 
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc đổi từ Khóa Sol sang Khóa Pha rất dễ gây nhầm lẫn (ví dụ nốt Đô Khóa Pha nằm ở vị trí khác hoàn toàn nốt Đô Khóa Sol). Bài này cần ít nhất **3 ngày** luyện tập để não bộ không bị "chập mạch".
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Vẽ Khóa Pha và ba nốt Đô-Rê-Mi ra giấy 10 lần. Trên đàn chỉ tập **3G**. |
+| **Ngày 2** | Ôn 3G rồi sang **3H** (Jingle Bells tay trái). Chấp nhận việc hay đọc nhầm sang Khóa Sol, cứ sửa từ từ. |
+| **Ngày 3** | Thử **3I** (bước nhảy tay trái). Cuối buổi đánh lại 3H không nhìn phím. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bài tập Không cần đàn (Away from piano)
 *(Tập ban ngày lúc rảnh rỗi)*
 

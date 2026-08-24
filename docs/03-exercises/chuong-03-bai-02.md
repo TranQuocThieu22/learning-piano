@@ -5,6 +5,15 @@ Bạn đã quen với Đô, Rê, Mi. Hôm nay chúng ta sẽ bổ sung nốt Pha
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Việc nạp thêm 2 nốt mới sẽ làm não bộ phải xử lý nhiều thông tin hơn. Bài này cần **2 ngày** luyện tập để bạn có thể đọc mượt mà cả 5 nốt mà không bị nhầm lẫn.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Vẽ cặp nốt Pha - Sol ra giấy. Trên đàn tập **3D và 3E**, tập trung vào ngón 4 và ngón 5. |
+| **Ngày 2** | Ôn nhanh 3D/3E rồi thử thách với **3F** (Ode to Joy đọc nốt, không có chữ nhắc). |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## Bài tập Không cần đàn (Away from piano)
 *(Tập ban ngày lúc rảnh rỗi)*
 

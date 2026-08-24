@@ -7,6 +7,16 @@ Hôm nay chúng ta học cách mắt "lia" giữa hai khuông để hai tay đ�
 > [!WARNING]
 > **⏱️ Ước lượng thời gian hoàn thành:** Đây là bài "ghép mảnh" quan trọng nhất của Chương 3. Mắt phải xử lý 2 dòng thông tin cùng lúc, rất tốn năng lượng não bộ. Bài này cần **3 ngày** luyện tập.
 
+**📅 Kế hoạch từng ngày**
+
+| Ngày | Trọng tâm |
+|---|---|
+| **Ngày 1** | Gõ mặt bàn hai tay cùng lúc. Trên đàn chỉ tập **4A** cho thuộc vị trí Pha - Sol của tay trái. |
+| **Ngày 2** | Tập **4B** (hai tay song song) — dạng khuông nhạc kép dễ nhất. Tập riêng từng tay 3 lần rồi mới ghép. |
+| **Ngày 3** | Tập **4D** (Ode to Joy có đệm). Bài **4C** là tùy chọn, làm nếu còn thời gian và tay chưa mỏi. |
+
+*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+
 ## 1. Hiểu về Khuông nhạc kép
 
 Hãy nhìn vào bất kỳ bài tập 2 khuông nào bên dưới, bạn sẽ thấy:
@@ -84,8 +94,10 @@ V: 2 clef=bass
 E, F, G, F, | E, D, C, D, | E, G, F, D, | C,4 |]
 ```
 
-## Bài tập 4C: Tay trái giữ nền, tay phải chạy
-Đây mới là kết cấu bạn gặp nhiều nhất trong nhạc thật: tay trái giữ một nốt dài làm nền, tay phải đi giai điệu bên trên. Tay trái đánh nốt Tròn (giữ đủ 4 nhịp, **không nhấc tay lên sớm**).
+## Bài tập 4C: Tay trái giữ nền, tay phải chạy *(tùy chọn)*
+*Bài này là **tùy chọn** — bốn bài tập hai khuông trong một buổi là hơi nhiều. Nếu tay đã mỏi hoặc hết giờ, cứ bỏ qua và ưu tiên bài 4D.*
+
+Đây là kết cấu bạn gặp nhiều nhất trong nhạc thật: tay trái giữ một nốt dài làm nền, tay phải đi giai điệu bên trên. Tay trái đánh nốt Tròn (giữ đủ 4 nhịp, **không nhấc tay lên sớm**).
 
 ```abc
 X: 3
