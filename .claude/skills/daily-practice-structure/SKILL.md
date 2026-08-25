@@ -1,6 +1,6 @@
 ---
-name: Daily Practice Structure
-description: Triggers when the user asks for a new day's lesson or how to practice for the day.
+name: daily-practice-structure
+description: Soạn bài học piano mới theo cấu trúc Chương/Bài của giáo trình này, kèm quy tắc đặt tên file chuong-XX-bai-YY.md, giới hạn nốt được phép dùng và bố cục buổi tập 30-45 phút. Dùng khi người dùng xin bài học mới, hỏi hôm nay tập gì, hoặc cần soạn bài Tổng ôn (Trạm dừng chân).
 ---
 
 # Multi-day Lessons & Progress Tracking

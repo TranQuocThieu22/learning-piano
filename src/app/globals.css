@@ -207,3 +207,17 @@ body {
   fill: #ff4757 !important;
   stroke: #ff4757 !important;
 }
+
+/* Tô màu kết quả chấm bài trên khuông nhạc.
+   Dùng !important vì abcjs đặt fill thẳng trên từng path khi vẽ. */
+.practice-wrong,
+.practice-wrong * {
+  fill: #e8590c !important;
+  stroke: #e8590c !important;
+}
+
+.practice-missing,
+.practice-missing * {
+  fill: #adb5bd !important;
+  stroke: #adb5bd !important;
+}

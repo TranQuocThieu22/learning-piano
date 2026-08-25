@@ -1,6 +1,6 @@
 ---
-name: Generate Git Commit Messages
-description: Triggers when the user asks for a commit message to track their learning progress or code changes.
+name: git-commit-messages
+description: Soạn commit message tiếng Việt có dấu cho repo này và chỉ in ra dưới dạng code block để người dùng tự dán vào Fork. Dùng khi người dùng nói "in commit message", "viết commit message", "soạn commit", hoặc vừa xong một thay đổi code/bài học và cần ghi lại vào Git. Không tự chạy git commit.
 ---
 
 # Instructions
