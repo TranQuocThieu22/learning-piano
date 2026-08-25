@@ -72,8 +72,8 @@ Hãy đọc to theo nhịp: **"BÙM - chát - chát | BÙM - chát - chát"**. C
 
 ```abc
 X: 1
-T: Bai tap 5A - Cam nhan nhip 3-4
-C: Gia su Piano
+T: Bài tập 5A - Cảm nhận nhịp 3/4
+C: Gia sư Piano
 M: 3/4
 L: 1/4
 Q: 1/4=60
@@ -88,8 +88,8 @@ Lần đầu tiên chơi đúng kết cấu Waltz. Tay trái đánh **một nố
 
 ```abc
 X: 2
-T: Bai tap 5B - Bum Chat Chat
-C: Gia su Piano
+T: Bài tập 5B - Bùm Chát Chát
+C: Gia sư Piano
 M: 3/4
 L: 1/4
 Q: 1/4=60
@@ -106,8 +106,8 @@ Một điệu valse nhỏ do gia sư viết riêng cho 5 nốt của bạn. Tay 
 
 ```abc
 X: 3
-T: Bai tap 5C - Giai dieu Waltz
-C: Gia su Piano
+T: Bài tập 5C - Giai điệu Waltz
+C: Gia sư Piano
 M: 3/4
 L: 1/4
 Q: 1/4=60

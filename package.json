@@ -10,7 +10,8 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "check:lessons": "node scripts/check-lessons.mjs"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.3",

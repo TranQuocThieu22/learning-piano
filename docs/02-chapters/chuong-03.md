@@ -11,7 +11,7 @@ Khóa Sol thường dùng để ghi lại những âm thanh cao (tay phải).
 
 ```abc
 X: 101
-T: Khoa Sol - Cac not tren DONG KE
+T: Khóa Sol - Các nốt trên DÒNG KẺ
 M: 4/4
 L: 1/4
 K: C
@@ -23,7 +23,7 @@ w: Mi Sol Si Re Pha
 
 ```abc
 X: 102
-T: Khoa Sol - Cac not trong KHE HO
+T: Khóa Sol - Các nốt trong KHE HỞ
 M: 4/4
 L: 1/4
 K: C
@@ -39,7 +39,7 @@ Khóa Pha dùng để ghi lại những âm thanh trầm ấm (tay trái).
 
 ```abc
 X: 103
-T: Khoa Pha - Cac not tren DONG KE
+T: Khóa Pha - Các nốt trên DÒNG KẺ
 M: 4/4
 L: 1/4
 K: C
@@ -52,7 +52,7 @@ w: Sol Si Re Pha La
 
 ```abc
 X: 104
-T: Khoa Pha - Cac not trong KHE HO
+T: Khóa Pha - Các nốt trong KHE HỞ
 M: 4/4
 L: 1/4
 K: C
@@ -79,7 +79,7 @@ Hãy nghe thử ba nốt Pha đó vang lên lần lượt từ thấp đến cao
 
 ```abc
 X: 105
-T: Ba not Pha o ba quang tam khac nhau
+T: Ba nốt Pha ở ba quãng tám khác nhau
 M: 4/4
 L: 1/4
 Q: 1/4=70
@@ -90,7 +90,7 @@ F,4 | z4 | z4 |]
 
 ```abc
 X: 106
-T: Hai not Pha con lai (Khoa Sol)
+T: Hai nốt Pha còn lại (Khóa Sol)
 M: 4/4
 L: 1/4
 Q: 1/4=70

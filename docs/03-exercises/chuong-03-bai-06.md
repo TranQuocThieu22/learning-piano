@@ -65,7 +65,7 @@ Bạn đã chơi giai điệu này bằng tay trái ở Bài 3. Bây giờ giai 
 ```abc
 X: 1
 T: Jingle Bells - Grand Staff
-C: Gia su Piano
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -85,8 +85,8 @@ Giai điệu đã theo bạn từ Chương 1, giờ chơi trọn vẹn cả hai 
 
 ```abc
 X: 2
-T: Ode to Joy - Ban day du
-C: Gia su Piano
+T: Ode to Joy - Bản đầy đủ
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -106,8 +106,8 @@ C,4 | C,4 | C,4 | C,4 |]
 
 ```abc
 X: 3
-T: Waltz nho - Ban trinh dien
-C: Gia su Piano
+T: Waltz nhỏ - Bản trình diễn
+C: Gia sư Piano
 M: 3/4
 L: 1/4
 Q: 1/4=60

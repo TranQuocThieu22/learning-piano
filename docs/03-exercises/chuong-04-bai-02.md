@@ -50,8 +50,8 @@ Và bạn sắp được nghe một điều thú vị: chỉ cần hạ một n�
 
 ```abc
 X: 1
-T: Bai tap 2A - Cham Mi giang
-C: Gia su Piano
+T: Bài tập 2A - Chạm Mi giáng
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -64,8 +64,8 @@ Nghe kỹ sự khác biệt. Ô nhịp 3 dùng dấu bình (`=E`) để quay l�
 
 ```abc
 X: 2
-T: Bai tap 2B - So sanh Mi va Mi giang
-C: Gia su Piano
+T: Bài tập 2B - So sánh Mi và Mi giáng
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -78,8 +78,8 @@ E _E E _E | D2 _E2 | =E D =E G | C4 |]
 
 ```abc
 X: 3
-T: Bai tap 2C - Vui va Buon
-C: Gia su Piano
+T: Bài tập 2C - Vui và Buồn
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -93,8 +93,8 @@ Ghép 2 tay với màu sắc buồn. Hãy thử chơi bài này **nhỏ nhẹ (p
 
 ```abc
 X: 4
-T: Bai tap 2D - Grand Staff mau Thu
-C: Gia su Piano
+T: Bài tập 2D - Grand Staff màu Thứ
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60

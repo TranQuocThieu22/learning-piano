@@ -88,7 +88,7 @@ K: C
 V: 1 clef=treble
 z "Phải"D z F | z G z2 | z F z D | C2 z2 |]
 V: 2 clef=bass
-"Trái"C, z E, z | C, z z2 | D, z G,, z | C,2 z2 |]
+"Trái"C, z E, z | C, z z2 | D, z G, z | C,2 z2 |]
 ```
 
 ## Thực hành tự do & Luyện tai (5 phút)

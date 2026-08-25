@@ -65,8 +65,8 @@ Bài khởi động nền tảng. Chú ý số ngón ghi trên nốt — **ngón
 
 ```abc
 X: 1
-T: Bai tap 3A - Thang am Blues
-C: Gia su Piano
+T: Bài tập 3A - Thang âm Blues
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -79,8 +79,8 @@ K: C
 
 ```abc
 X: 2
-T: Bai tap 3B - Cau Blues kinh dien
-C: Gia su Piano
+T: Bài tập 3B - Câu Blues kinh điển
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=70
@@ -94,8 +94,8 @@ Bài này trộn nốt Đen và nốt Trắng, đồng thời dùng cả Mi giá
 
 ```abc
 X: 3
-T: Bai tap 3C - Ket hop hai phim den
-C: Gia su Piano
+T: Bài tập 3C - Kết hợp hai phím đen
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -109,8 +109,8 @@ Tiết mục cuối Chương 4. Tay trái giữ nốt nền chắc nịch, tay p
 
 ```abc
 X: 4
-T: Bai tap 3D - Blues Grand Staff
-C: Gia su Piano
+T: Bài tập 3D - Blues Grand Staff
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=70

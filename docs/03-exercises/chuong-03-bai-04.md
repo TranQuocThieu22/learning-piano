@@ -66,8 +66,8 @@ Chỉ tay trái. Tập trung vào ngón 2 (Pha) và ngón 1 (Sol). Mắt nhìn b
 
 ```abc
 X: 1
-T: Bài tập 4A - Pha và Sol Khoa Pha
-C: Gia su Piano
+T: Bài tập 4A - Pha và Sol Khóa Pha
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -81,8 +81,8 @@ F, G, F, G, | F,2 G,2 | G, F, E, F, | G,4 |]
 
 ```abc
 X: 2
-T: Bai tap 4B - Grand Staff song song
-C: Gia su Piano
+T: Bài tập 4B - Grand Staff song song
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -101,8 +101,8 @@ E, F, G, F, | E, D, C, D, | E, G, F, D, | C,4 |]
 
 ```abc
 X: 3
-T: Bai tap 4C - Tay trai giu nen
-C: Gia su Piano
+T: Bài tập 4C - Tay trái giữ nền
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -119,8 +119,8 @@ Giai điệu quen thuộc từ Chương 1, nhưng lần này có tay trái đệ
 
 ```abc
 X: 4
-T: Bai tap 4D - Ode to Joy Grand Staff
-C: Gia su Piano
+T: Bài tập 4D - Ode to Joy Grand Staff
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60

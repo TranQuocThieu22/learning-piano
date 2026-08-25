@@ -53,8 +53,8 @@ Chỉ đi lên rồi đi xuống, nhưng thay Pha bằng Pha thăng. Đánh th�
 
 ```abc
 X: 1
-T: Bai tap 1A - Cham phim den lan dau
-C: Gia su Piano
+T: Bài tập 1A - Chạm phím đen lần đầu
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -67,8 +67,8 @@ Bài này cực kỳ quan trọng cho đôi tai của bạn: đánh Pha rồi đ
 
 ```abc
 X: 2
-T: Bai tap 1B - So sanh Pha va Pha thang
-C: Gia su Piano
+T: Bài tập 1B - So sánh Pha và Pha thăng
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -83,8 +83,8 @@ F ^F F ^F | G2 ^F2 | =F E =F G | C4 |]
 
 ```abc
 X: 3
-T: Bai tap 1C - Mau sac Lydian
-C: Gia su Piano
+T: Bài tập 1C - Màu sắc Lydian
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
@@ -98,8 +98,8 @@ Ghép 2 tay. Tay trái giữ nốt nền phím trắng, tay phải đi giai đi�
 
 ```abc
 X: 4
-T: Bai tap 1D - Grand Staff voi phim den
-C: Gia su Piano
+T: Bài tập 1D - Grand Staff với phím đen
+C: Gia sư Piano
 M: 4/4
 L: 1/4
 Q: 1/4=60
