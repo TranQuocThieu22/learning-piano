@@ -3,10 +3,11 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent, TuneObject } from 'abcjs';
 import 'abcjs/abcjs-audio.css';
-import { Button, Group } from '@mantine/core';
+import { Button, Group, Select } from '@mantine/core';
 import { IconDeviceGamepad2 } from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
+import { INSTRUMENTS, loadSavedProgram, saveProgram, synthOptions } from '@/lib/soundfont';
 
 /** abcjs gắn noteTimings lên tune sau khi gọi setTiming, nhưng chưa khai báo trong .d.ts. */
 type TuneWithTimings = TuneObject & { noteTimings?: NoteTimingEvent[] };
@@ -53,9 +54,18 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   const paperRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLDivElement>(null);
   const elementsRef = useRef<HTMLElement[][]>([]);
+  /** Giữ lại để đổi nhạc cụ mà không phải vẽ lại bản nhạc. */
+  const tuneRef = useRef<TuneObject | null>(null);
+  const synthControlRef = useRef<InstanceType<typeof ABCJS.synth.SynthController> | null>(null);
 
   const [expected, setExpected] = useState<ScoreEvent[]>([]);
   const [practiceOpen, setPracticeOpen] = useState(false);
+  /** Bật khi SynthController đã gắn xong, để effect nạp tiếng đàn biết lúc chạy. */
+  const [audioReady, setAudioReady] = useState(false);
+  // Đọc localStorage ngay lúc khởi tạo state được, không lo lệch hydration:
+  // ô chọn nhạc cụ chỉ hiện sau khi audioReady bật, nên `program` không hề nằm
+  // trong cây render đầu tiên mà React đem so với HTML dựng từ server.
+  const [program, setProgram] = useState(loadSavedProgram);
 
   const clearHighlights = useCallback(() => {
     for (const group of elementsRef.current) {
@@ -86,8 +96,10 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
 
     const score = extractScore(visualObj[0]);
     elementsRef.current = score.elements;
+    tuneRef.current = visualObj[0];
     setExpected(score.events);
     setPracticeOpen(false);
+    setAudioReady(false);
 
     // Audio render
     if (ABCJS.synth.supportsAudio()) {
@@ -116,21 +128,47 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
         displayWarp: true
       });
 
-      const midiBuffer = new ABCJS.synth.CreateSynth();
-      midiBuffer.init({
-        visualObj: visualObj[0]
-      }).then(() => {
-        synthControl.setTune(visualObj[0], false);
-      }).catch(err => {
-        console.warn("Audio problem:", err);
-      });
+      // setTune tự dựng lấy chuỗi âm thanh của nó, nên không cần CreateSynth
+      // riêng ở đây — tạo thêm chỉ khiến mẫu âm bị tải hai lần.
+      synthControlRef.current = synthControl;
+      setAudioReady(true);
     }
   }, [abcNotation]);
+
+  // Nạp lại tiếng đàn khi đổi bản nhạc hoặc khi người học chọn nhạc cụ khác.
+  useEffect(() => {
+    const synthControl = synthControlRef.current;
+    const tune = tuneRef.current;
+    if (!audioReady || !synthControl || !tune) return;
+
+    synthControl.setTune(tune, false, synthOptions(program)).catch((err) => {
+      console.warn('Audio problem:', err);
+    });
+  }, [audioReady, program, abcNotation]);
 
   return (
     <div className="sheet-music-wrapper" style={{ margin: '2rem 0', background: 'var(--mantine-color-body)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--mantine-color-default-border)' }}>
       <div ref={paperRef} className="sheet-music-paper" style={{ background: '#fff', color: '#000', padding: '1rem', borderRadius: '4px', overflowX: 'auto' }}></div>
       <div ref={audioRef} className="sheet-music-audio" style={{ marginTop: '1rem' }}></div>
+
+      {audioReady && (
+        <Select
+          mt="sm"
+          size="xs"
+          label="Tiếng đàn khi nghe mẫu"
+          description="Chỉ đổi tiếng của bản phát mẫu, không ảnh hưởng tới bài tập."
+          data={INSTRUMENTS.map((i) => ({ value: String(i.program), label: i.label }))}
+          value={String(program)}
+          allowDeselect={false}
+          maw={260}
+          onChange={(value) => {
+            if (!value) return;
+            const next = Number(value);
+            setProgram(next);
+            saveProgram(next);
+          }}
+        />
+      )}
 
       {expected.length > 0 && (
         <>

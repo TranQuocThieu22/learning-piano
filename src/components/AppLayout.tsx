@@ -97,7 +97,15 @@ export function AppLayout({
           <Group gap="xs" wrap="nowrap" style={{ minWidth: 0, flexShrink: 1 }}>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-            <Title order={3} truncate style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)' }}>
+            <Title
+              order={3}
+              style={{
+                fontSize: 'clamp(1rem, 4vw, 1.5rem)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
               🎹 Piano Journey
             </Title>
           </Group>
