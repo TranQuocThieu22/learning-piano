@@ -23,14 +23,26 @@ export interface Instrument {
   /** Tên thư mục mẫu âm, phải khớp thư mục trong public/soundfonts/. */
   folder: string;
   label: string;
+  /** Nhóm hiển thị trong ô chọn (Select group của Mantine). */
+  group: 'Piano cơ' | 'Piano điện' | 'Khác';
 }
 
-/** Giữ danh sách này khớp với INSTRUMENTS trong scripts/download-soundfont.mjs. */
+/**
+ * Giữ danh sách này khớp với INSTRUMENTS trong scripts/download-soundfont.mjs.
+ *
+ * Bộ MusyngKite chỉ có một nguồn mẫu âm chung (General MIDI), không có bản
+ * ghi riêng theo hãng đàn (Yamaha, Steinway...) — danh sách dưới đây là các
+ * *loại* piano khác nhau trong họ nhạc cụ GM (program 0-7), không phải hãng.
+ */
 export const INSTRUMENTS: Instrument[] = [
-  { program: 0, folder: 'acoustic_grand_piano', label: 'Piano cơ (Grand Piano)' },
-  { program: 1, folder: 'bright_acoustic_piano', label: 'Piano sáng tiếng' },
-  { program: 4, folder: 'electric_piano_1', label: 'Piano điện' },
-  { program: 6, folder: 'harpsichord', label: 'Harpsichord (đàn cổ)' },
+  { program: 0, folder: 'acoustic_grand_piano', label: 'Grand Piano', group: 'Piano cơ' },
+  { program: 1, folder: 'bright_acoustic_piano', label: 'Piano sáng tiếng', group: 'Piano cơ' },
+  { program: 3, folder: 'honkytonk_piano', label: 'Honky-tonk (piano cũ, hơi lệch tông)', group: 'Piano cơ' },
+  { program: 2, folder: 'electric_grand_piano', label: 'Grand Piano điện', group: 'Piano điện' },
+  { program: 4, folder: 'electric_piano_1', label: 'Piano điện 1', group: 'Piano điện' },
+  { program: 5, folder: 'electric_piano_2', label: 'Piano điện 2', group: 'Piano điện' },
+  { program: 7, folder: 'clavinet', label: 'Clavinet', group: 'Piano điện' },
+  { program: 6, folder: 'harpsichord', label: 'Harpsichord (đàn cổ)', group: 'Khác' },
 ];
 
 export const DEFAULT_PROGRAM = INSTRUMENTS[0].program;

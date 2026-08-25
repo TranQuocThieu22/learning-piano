@@ -20,7 +20,11 @@ const BASE_URL = 'https://paulrosen.github.io/midi-js-soundfonts/MusyngKite';
 const INSTRUMENTS = [
   'acoustic_grand_piano',
   'bright_acoustic_piano',
+  'honkytonk_piano',
+  'electric_grand_piano',
   'electric_piano_1',
+  'electric_piano_2',
+  'clavinet',
   'harpsichord',
 ];
 

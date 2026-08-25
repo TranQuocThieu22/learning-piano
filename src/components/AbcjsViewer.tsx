@@ -141,7 +141,12 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     const tune = tuneRef.current;
     if (!audioReady || !synthControl || !tune) return;
 
-    synthControl.setTune(tune, false, synthOptions(program)).catch((err) => {
+    // Phải truyền userAction=true để ép SynthController gọi lại go(), tức
+    // build lại midiBuffer theo `program`/soundFontUrl mới. Gọi với false
+    // (như trước) chỉ ghi đè self.options mà không nạp lại gì — nên sau
+    // lần play đầu tiên, đổi nhạc cụ không có tác dụng vì self.isLoaded
+    // đã true và play() không gọi go() nữa (xem runWhenReady trong abcjs).
+    synthControl.setTune(tune, true, synthOptions(program)).catch((err) => {
       console.warn('Audio problem:', err);
     });
   }, [audioReady, program, abcNotation]);
@@ -157,7 +162,13 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
           size="xs"
           label="Tiếng đàn khi nghe mẫu"
           description="Chỉ đổi tiếng của bản phát mẫu, không ảnh hưởng tới bài tập."
-          data={INSTRUMENTS.map((i) => ({ value: String(i.program), label: i.label }))}
+          data={['Piano cơ', 'Piano điện', 'Khác'].map((group) => ({
+            group,
+            items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
+              value: String(i.program),
+              label: i.label,
+            })),
+          }))}
           value={String(program)}
           allowDeselect={false}
           maw={260}
