@@ -46,3 +46,6 @@ next-env.d.ts
 
 .vercel
 .env*
+# Nhưng bản mẫu thì phải có trong repo — nó chỉ chứa tên biến và chú thích,
+# không chứa giá trị thật. Xem docs/_internal/bien-moi-truong.md.
+!.env.example

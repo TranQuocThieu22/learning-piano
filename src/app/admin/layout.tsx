@@ -1,0 +1,42 @@
+import { notFound } from 'next/navigation';
+import { Container, Group, Text, Title } from '@mantine/core';
+import Link from 'next/link';
+import { isCurrentUserAdmin } from '@/lib/admin';
+
+/**
+ * Cửa chặn chung cho mọi trang dưới /admin.
+ *
+ * Trả `notFound()` chứ không phải trang "bạn không có quyền": người lạ dò đường
+ * dẫn sẽ thấy đúng như mọi đường dẫn không tồn tại khác, không xác nhận cho họ
+ * biết ở đây có khu quản trị.
+ *
+ * Lưu ý: layout chặn được việc NHÌN THẤY trang, không chặn được việc GỌI Server
+ * Action. Mỗi action trong admin-actions.ts phải tự gọi requireAdmin().
+ */
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  if (!(await isCurrentUserAdmin())) notFound();
+
+  return (
+    <Container size="xl" py="lg">
+      <Group justify="space-between" mb="lg" wrap="wrap">
+        <Title order={2}>Quản trị</Title>
+        <Group gap="md">
+          <Text component={Link} href="/admin" size="sm" c="blue">
+            Người học
+          </Text>
+          <Text component={Link} href="/admin/thanh-toan" size="sm" c="blue">
+            Thanh toán
+          </Text>
+          <Text component={Link} href="/" size="sm" c="dimmed">
+            Về trang học
+          </Text>
+        </Group>
+      </Group>
+      {children}
+    </Container>
+  );
+}
