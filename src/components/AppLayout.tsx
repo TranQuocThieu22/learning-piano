@@ -31,7 +31,10 @@ function AuthHeaderButton({ user }: { user: AppSessionUser | null }) {
   if (!user) {
     return (
       <form action={signInWithGoogle}>
-        <Button type="submit" size="xs" variant="light">
+        <Button type="submit" size="xs" variant="light" hiddenFrom="xs">
+          Đăng nhập
+        </Button>
+        <Button type="submit" size="xs" variant="light" visibleFrom="xs">
           Đăng nhập với Google
         </Button>
       </form>
@@ -39,7 +42,7 @@ function AuthHeaderButton({ user }: { user: AppSessionUser | null }) {
   }
 
   return (
-    <Group gap="xs">
+    <Group gap="xs" wrap="nowrap">
       <Avatar src={user.image ?? undefined} radius="xl" size="sm">
         {(user.name ?? user.email ?? '?').charAt(0).toUpperCase()}
       </Avatar>
@@ -90,13 +93,15 @@ export function AppLayout({
       padding="md"
     >
       <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Group>
+        <Group h="100%" px="md" justify="space-between" wrap="nowrap">
+          <Group gap="xs" wrap="nowrap" style={{ minWidth: 0, flexShrink: 1 }}>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
             <Burger opened={desktopOpened} onClick={toggleDesktop} visibleFrom="sm" size="sm" />
-            <Title order={3}>🎹 Piano Journey</Title>
+            <Title order={3} truncate style={{ fontSize: 'clamp(1rem, 4vw, 1.5rem)' }}>
+              🎹 Piano Journey
+            </Title>
           </Group>
-          <Group gap="md">
+          <Group gap="xs" wrap="nowrap" style={{ flexShrink: 0 }}>
             <AuthHeaderButton user={user} />
             <ThemeToggle />
           </Group>
