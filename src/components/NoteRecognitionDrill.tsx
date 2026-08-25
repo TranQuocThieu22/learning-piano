@@ -19,6 +19,26 @@ type Feedback =
   | { kind: 'wrong-octave'; played: number }
   | { kind: 'wrong'; played: number };
 
+/**
+/**
+ * Nhãn của thanh chọn phạm vi dài hơn một phần ba bề ngang máy điện thoại, nên
+ * buộc phải cho nó xuống dòng. Thả cho trình duyệt tự chọn chỗ ngắt thì ra
+ * "Khóa Sol (tay" / "phải)" trông rất kỳ, vì vậy bọc mỗi cụm vào một span cấm
+ * ngắt — chỗ ngắt duy nhất còn lại là khoảng trắng giữa hai cụm.
+ *
+ * Quy tắc thu chữ khi màn hình hẹp nằm ở `.drill-level-picker` trong globals.css.
+ */
+function levelLabel(label: string) {
+  const at = label.indexOf(' (');
+  if (at < 0) return label;
+  return (
+    <>
+      <span style={{ whiteSpace: 'nowrap' }}>{label.slice(0, at)}</span>{' '}
+      <span style={{ whiteSpace: 'nowrap' }}>{label.slice(at + 1)}</span>
+    </>
+  );
+}
+
 export function NoteRecognitionDrill() {
   const [levelId, setLevelId] = useState(DRILL_LEVELS[0].id);
   const level = useMemo(() => findLevel(levelId), [levelId]);
@@ -117,10 +137,11 @@ export function NoteRecognitionDrill() {
       <Box>
         <Text size="sm" fw={500} mb={6}>Chọn phạm vi nốt</Text>
         <SegmentedControl
+          className="drill-level-picker"
           fullWidth
           value={levelId}
           onChange={changeLevel}
-          data={DRILL_LEVELS.map((l) => ({ value: l.id, label: l.label }))}
+          data={DRILL_LEVELS.map((l) => ({ value: l.id, label: levelLabel(l.label) }))}
         />
         <Text size="xs" c="dimmed" mt={6}>{level.hint}</Text>
       </Box>

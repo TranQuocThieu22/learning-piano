@@ -2,15 +2,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent, TuneObject } from 'abcjs';
-import 'abcjs/abcjs-audio.css';
 import { Button, Group, Select } from '@mantine/core';
 import { IconDeviceGamepad2 } from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
+import { SheetAudioControls } from './SheetAudioControls';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
 import { INSTRUMENTS, loadSavedProgram, saveProgram, synthOptions } from '@/lib/soundfont';
 
 /** abcjs gắn noteTimings lên tune sau khi gọi setTiming, nhưng chưa khai báo trong .d.ts. */
 type TuneWithTimings = TuneObject & { noteTimings?: NoteTimingEvent[] };
+
+/** `seek` có thật trong SynthController nhưng thiếu trong .d.ts của abcjs. */
+type SynthControllerWithSeek = InstanceType<typeof ABCJS.synth.SynthController> & {
+  seek?: (percent: number, units?: string) => void;
+};
+
+/** Nhịp mỗi phút ở tốc độ `warp`, tính lại đúng như abcjs làm trong `SynthController.go`. */
+function bpmAtWarp(tune: TuneObject, warp: number) {
+  const msPerMeasure = (tune.millisecondsPerMeasure() * 100) / warp;
+  return Math.round((tune.getBeatsPerMeasure() / msPerMeasure) * 60000);
+}
 
 interface ExtractedScore {
   events: ScoreEvent[];
@@ -67,6 +78,14 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   // trong cây render đầu tiên mà React đem so với HTML dựng từ server.
   const [program, setProgram] = useState(loadSavedProgram);
 
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isLooping, setIsLooping] = useState(false);
+  /** Vị trí đang phát, 0..1. */
+  const [progress, setProgress] = useState(0);
+  const [totalMs, setTotalMs] = useState(0);
+  const [warp, setWarp] = useState(100);
+  const [bpm, setBpm] = useState(0);
+
   const clearHighlights = useCallback(() => {
     for (const group of elementsRef.current) {
       for (const el of group) el.classList?.remove(WRONG_CLASS, MISSING_CLASS);
@@ -100,6 +119,11 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     setExpected(score.events);
     setPracticeOpen(false);
     setAudioReady(false);
+    setIsPlaying(false);
+    setIsLooping(false);
+    setProgress(0);
+    setWarp(100);
+    setBpm(bpmAtWarp(visualObj[0], 100));
 
     // Audio render
     if (ABCJS.synth.supportsAudio()) {
@@ -110,21 +134,33 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
       };
 
       const cursorControl = {
-        onStart: clearPlaybackHighlight,
+        onStart: () => {
+          clearPlaybackHighlight();
+          setIsPlaying(true);
+        },
+        onBeat: (beatNumber: number, totalBeats: number, totalTime: number) => {
+          setProgress(totalBeats > 0 ? beatNumber / totalBeats : 0);
+          setTotalMs(totalTime);
+        },
         onEvent: (ev: NoteTimingEvent) => {
           clearPlaybackHighlight();
           for (const group of ev.elements ?? []) {
             for (const el of group) el.classList?.add('abcjs-highlight');
           }
         },
-        onFinished: clearPlaybackHighlight,
+        onFinished: () => {
+          clearPlaybackHighlight();
+          setIsPlaying(false);
+          setProgress(0);
+        },
       };
 
+      // Vẫn phải gọi load() để SynthController có chỗ gắn: nội bộ nó cập nhật
+      // các nút bấm ở đây mỗi khi trạng thái đổi. Ta ẩn hẳn khối này đi và tự
+      // dựng lại giao diện bằng Mantine ở SheetAudioControls cho đồng bộ theme.
+      // Riêng displayWarp phải bật, vì `setWarp` ghi thẳng vào ô nhập tốc độ
+      // của abcjs mà không kiểm tra tồn tại — thiếu nó là lỗi ngay khi đổi tốc độ.
       synthControl.load(audioRef.current, cursorControl, {
-        displayLoop: true,
-        displayRestart: true,
-        displayPlay: true,
-        displayProgress: true,
         displayWarp: true
       });
 
@@ -151,54 +187,102 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     });
   }, [audioReady, program, abcNotation]);
 
+  const handlePlayPause = useCallback(() => {
+    const synthControl = synthControlRef.current;
+    if (!synthControl) return;
+    // play() tự lật giữa phát và dừng; onStart chỉ báo lúc bắt đầu nên khi tạm
+    // dừng phải tự hạ cờ xuống. Lật ngay, không chờ promise, để nút phản hồi liền tay.
+    synthControl.play();
+    setIsPlaying((playing) => !playing);
+  }, []);
+
+  const handleRestart = useCallback(() => {
+    synthControlRef.current?.restart();
+    setProgress(0);
+  }, []);
+
+  const handleToggleLoop = useCallback(() => {
+    synthControlRef.current?.toggleLoop();
+    setIsLooping((looping) => !looping);
+  }, []);
+
+  const handleSeek = useCallback((next: number) => {
+    (synthControlRef.current as SynthControllerWithSeek | null)?.seek?.(next);
+    setProgress(next);
+  }, []);
+
+  const handleWarpChange = useCallback((next: number) => {
+    const tune = tuneRef.current;
+    setWarp(next);
+    if (tune) setBpm(bpmAtWarp(tune, next));
+    synthControlRef.current?.setWarp(next);
+  }, []);
+
+  const showPracticeButton = expected.length > 0 && !practiceOpen;
+
   return (
     <div className="sheet-music-wrapper" style={{ margin: '2rem 0', background: 'var(--mantine-color-body)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--mantine-color-default-border)' }}>
       <div ref={paperRef} className="sheet-music-paper" style={{ background: '#fff', color: '#000', padding: '1rem', borderRadius: '4px', overflowX: 'auto' }}></div>
-      <div ref={audioRef} className="sheet-music-audio" style={{ marginTop: '1rem' }}></div>
+      {/* Thanh mặc định của abcjs — ẩn đi, chỉ giữ làm chỗ cho nó ghi trạng thái. */}
+      <div ref={audioRef} className="sheet-music-audio" style={{ display: 'none' }}></div>
 
       {audioReady && (
-        <Select
-          mt="sm"
-          size="xs"
-          label="Tiếng đàn khi nghe mẫu"
-          description="Chỉ đổi tiếng của bản phát mẫu, không ảnh hưởng tới bài tập."
-          data={['Piano cơ', 'Piano điện', 'Khác'].map((group) => ({
-            group,
-            items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
-              value: String(i.program),
-              label: i.label,
-            })),
-          }))}
-          value={String(program)}
-          allowDeselect={false}
-          maw={260}
-          onChange={(value) => {
-            if (!value) return;
-            const next = Number(value);
-            setProgram(next);
-            saveProgram(next);
-          }}
+        <SheetAudioControls
+          isPlaying={isPlaying}
+          isLooping={isLooping}
+          progress={progress}
+          totalMs={totalMs}
+          warp={warp}
+          bpm={bpm}
+          onPlayPause={handlePlayPause}
+          onRestart={handleRestart}
+          onToggleLoop={handleToggleLoop}
+          onSeek={handleSeek}
+          onWarpChange={handleWarpChange}
         />
       )}
 
-      {expected.length > 0 && (
-        <>
-          {!practiceOpen && (
-            <Group mt="sm">
-              <Button
-                variant="light"
-                size="xs"
-                leftSection={<IconDeviceGamepad2 size={16} />}
-                onClick={() => setPracticeOpen(true)}
-                data-testid="open-practice"
-              >
-                Tập bài này với đàn
-              </Button>
-            </Group>
+      {/* Canh đáy để nút thẳng hàng với ô chọn — ô chọn bị nhãn đẩy xuống thấp hơn. */}
+      {(audioReady || showPracticeButton) && (
+        <Group mt="sm" gap="sm" align="flex-end">
+          {audioReady && (
+            <Select
+              size="xs"
+              label="Tiếng đàn khi nghe mẫu"
+              data={['Piano cơ', 'Piano điện', 'Khác'].map((group) => ({
+                group,
+                items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
+                  value: String(i.program),
+                  label: i.label,
+                })),
+              }))}
+              value={String(program)}
+              allowDeselect={false}
+              w={240}
+              onChange={(value) => {
+                if (!value) return;
+                const next = Number(value);
+                setProgram(next);
+                saveProgram(next);
+              }}
+            />
           )}
-          {practiceOpen && <ScorePractice expected={expected} onResults={paintResults} />}
-        </>
+
+          {showPracticeButton && (
+            <Button
+              variant="light"
+              size="xs"
+              leftSection={<IconDeviceGamepad2 size={16} />}
+              onClick={() => setPracticeOpen(true)}
+              data-testid="open-practice"
+            >
+              Tập bài này với đàn
+            </Button>
+          )}
+        </Group>
       )}
+
+      {practiceOpen && <ScorePractice expected={expected} onResults={paintResults} />}
     </div>
   );
 }

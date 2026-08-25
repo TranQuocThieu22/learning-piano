@@ -221,3 +221,17 @@ body {
   fill: #adb5bd !important;
   stroke: #adb5bd !important;
 }
+
+/* Thanh chọn phạm vi nốt ở trang Luyện nhận nốt: ba nhãn cộng lại rộng hơn bề
+   ngang máy điện thoại, mà Mantine đặt sẵn white-space: nowrap nên tab thứ ba
+   bị đẩy hẳn ra ngoài khung và mất hút. Cho nhãn xuống dòng và thu chữ lại để
+   cả ba luôn nhìn thấy được. Chỗ được phép ngắt dòng do levelLabel() quyết định
+   trong NoteRecognitionDrill.tsx. */
+@media (max-width: 480px) {
+  .drill-level-picker .mantine-SegmentedControl-label {
+    white-space: normal;
+    font-size: 12px;
+    line-height: 1.25;
+    padding-inline: 6px;
+  }
+}
