@@ -1,70 +1,96 @@
-# Chương 0: Cây đàn bạn sắp học đến từ đâu?
+# Chương 0: Vì sao bạn muốn chơi piano?
 
-Trước khi đặt ngón tay đầu tiên lên phím đàn, hãy dành 10 phút để biết mình đang cầm trên tay thứ gì. Bạn không cần thuộc lòng bài này, cũng không có bài tập nào phải làm — chỉ cần đọc cho vui, và bạn sẽ hiểu vì sao những chương sau lại dạy như vậy.
+Chương này không dạy bạn nốt nào cả. Không có bài tập, không cần ngồi vào đàn, đọc hết chỉ mất năm phút.
 
-## 1. Âm nhạc phương Tây trong một dòng thời gian
+Nhưng nó là chương mình muốn bạn đọc kỹ nhất. Vì thứ quyết định bạn có đi hết lộ trình này hay không, thật ra không nằm ở ngón tay — nó nằm ở **lý do**.
 
-Thứ âm nhạc mà chúng ta sắp học — bảy nốt Đô Rê Mi, khuông nhạc năm dòng kẻ, cách chia nhịp 4/4 — không phải tự nhiên mà có. Nó là kết quả của khoảng 400 năm định hình, chia thành bốn thời kỳ lớn:
+## Cái khoảnh khắc đã đưa bạn tới đây
 
-![Dòng thời gian âm nhạc phương Tây và thời điểm piano ra đời](/images/timeline-lich-su.svg)
+Hầu như ai tìm học piano cũng có một khoảnh khắc như vậy. Nó thường rất nhỏ và rất riêng.
 
-- **Baroque (khoảng 1600 – 1750):** Thời của **Johann Sebastian Bach**. Nhạc nhiều bè đan xen nhau như những sợi chỉ dệt lại. Nhạc cụ phím chủ đạo là đàn **harpsichord** và đại phong cầm (organ).
-  ![Chân dung Johann Sebastian Bach](https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach_1746.jpg)
-- **Cổ điển (khoảng 1750 – 1820):** Thời của **Mozart** và **Beethoven**. Giai điệu trở nên rõ ràng, cân đối, dễ nghe hơn. Đây cũng là lúc piano soán ngôi harpsichord để thành nhạc cụ trung tâm.
-  ![Chân dung Ludwig van Beethoven](https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_van_Beethoven.jpg)
-- **Lãng mạn (khoảng 1820 – 1900):** Thời của **Chopin** và **Liszt**. Âm nhạc chuyển sang kể chuyện cảm xúc cá nhân — dữ dội, mơ mộng, kịch tính. Kỹ thuật piano được đẩy tới giới hạn.
-  ![Ảnh chụp Frédéric Chopin (1849)](https://commons.wikimedia.org/wiki/Special:FilePath/Frederic_Chopin_photo.jpeg)
-- **Hiện đại (từ 1900):** Jazz, Pop, nhạc phim... Piano có mặt trong hầu hết mọi thể loại.
+Có thể là một buổi tối bạn xem phim. Ngoài cửa sổ trong phim đang mưa, nhân vật ngồi xuống cây đàn, và tự nhiên cả bộ phim im lặng lại — chỉ còn tiếng piano. Bạn ngồi yên tới hết cảnh đó, rồi tua lại xem thêm một lần nữa.
 
-> [!NOTE]
-> Bài **Ode to Joy** mà bạn sẽ tập ngay ở Chương 1 là của **Beethoven**, viết năm 1824 — thuộc bản Giao hưởng số 9, tác phẩm cuối đời của ông. Điều đáng nể: lúc sáng tác nó, Beethoven **đã điếc gần như hoàn toàn**.
+Có thể là một bản nhạc trong bộ anime bạn xem hồi cấp ba. Bao nhiêu năm rồi bạn quên gần hết tình tiết, nhưng cái giai điệu ấy vang lên đâu đó là bạn nhận ra ngay, và trong ba giây đầu tiên bạn thấy bình yên một cách khó giải thích.
 
-## 2. Piano ra đời như thế nào?
+Có thể là một cây đàn đặt giữa sảnh khách sạn, hay ở góc một quán cà phê. Một người lạ ngồi xuống, đánh vài câu, và cả không gian ồn ào tự dưng dịu xuống. Lúc đó trong đầu bạn thoáng qua một ý nghĩ rất cụ thể: *giá mà mình cũng làm được thế.*
 
-Cây piano đầu tiên được **Bartolomeo Cristofori** chế tạo tại Florence, nước Ý, vào khoảng **năm 1700**. Ông là người trông coi bộ sưu tập nhạc cụ cho gia tộc Medici.
+Hoặc đơn giản là bạn đã đi qua một nơi rất đẹp — biển lúc chiều muộn, một ngôi nhà gỗ giữa rừng thông, một chuyến tàu chạy dọc bờ nước — và bạn nghe nhạc piano trong tai nghe suốt quãng đường ấy. Từ hôm đó, âm nhạc và nơi chốn đó dính vào nhau trong trí nhớ bạn, gỡ không ra.
 
-Trước đó, nhạc cụ phím phổ biến nhất là **harpsichord**. Nó có một nhược điểm lớn mà thời đó chưa ai giải quyết được: **không thể chơi to nhỏ theo ý muốn**.
+> Hãy dừng lại một chút và **nhớ lại đúng khoảnh khắc của bạn**. Bản nhạc nào, ở đâu, lúc đó bạn thấy gì.
+>
+> Nghe hơi sến, nhưng có lý do rất thực tế: đến tuần thứ hai, khi ngón áp út mỏi nhừ và bạn vẫn đang loay hoay với năm nốt đầu tiên, đó chính là thứ giữ bạn ngồi lại trước cây đàn.
 
-![Đàn Harpsichord (MET DP225547)](https://commons.wikimedia.org/wiki/Special:FilePath/Harpsichord_MET_DP225547.jpg)
+## Những bản nhạc đã kéo rất nhiều người tới cây đàn
 
-![So sánh cơ chế gảy dây của harpsichord và gõ búa của piano](/images/gay-vs-go.svg)
+Bạn không hề một mình. Có những bản nhạc mà cứ vài năm lại có thêm một thế hệ nghe được và muốn học đàn vì nó:
 
-Lý do nằm ở cơ chế:
+- **Für Elise** và **Sonata Ánh Trăng** — Beethoven. Hai bản nhạc có lẽ nhiều người nhận ra nhất thế giới.
+- **Nocturne Op. 9 No. 2** — Chopin. Nghe như một người đang kể chuyện rất khẽ vào đêm khuya.
+- **Clair de Lune** — Debussy. Cái tên có nghĩa là *ánh trăng*, và bản nhạc đúng là nghe như ánh trăng thật.
+- **River Flows in You** — Yiruma. Bản nhạc đã đẩy không biết bao nhiêu người trẻ đi mua cây đàn đầu tiên.
+- **Merry-Go-Round of Life** (*Lâu đài bay của pháp sư Howl*) và **One Summer's Day** (*Vùng đất linh hồn*) — Joe Hisaishi. Nhạc phim hoạt hình Ghibli, và có lẽ là lý do phổ biến nhất khiến người Việt trẻ muốn học piano.
+- Và cả một bộ anime dựng hẳn quanh cây đàn piano — **Shigatsu wa Kimi no Uso** (*Khúc nhạc tháng Tư*) — bộ phim mà rất nhiều người xem xong là đi tìm lớp học đàn.
 
-- **Harpsichord dùng một miếng gảy móc vào dây.** Bạn bấm phím nhẹ hay mạnh thì miếng gảy vẫn móc qua dây y hệt nhau, nên âm thanh phát ra **luôn cùng một độ lớn**.
-- **Piano dùng búa gõ vào dây rồi bật ra.** Bấm nhẹ thì búa gõ nhẹ, tiếng nhỏ. Bấm mạnh thì búa gõ mạnh, tiếng to. Lần đầu tiên, **lực ngón tay của người chơi điều khiển được cảm xúc của bản nhạc.**
+Mình nói thẳng một điều, vì bạn sẽ tự phát hiện ra sớm thôi: **phần lớn những bản nhạc trên đều khó**, có bài rất khó. Chúng không phải chỗ để bắt đầu, và giáo trình này không hứa hẹn sau ba tháng bạn chơi được Clair de Lune.
 
-## 3. Cái tên "Piano" nghĩa là gì?
+Nhưng chúng là **đích đến**. Và đích đến thì cần thiết đúng như những bài tập năm nốt ở Chương 1 vậy — không có nó, chẳng ai chịu tập năm nốt làm gì.
 
-Đây là chi tiết mình thích nhất, và nó giải thích luôn vì sao giáo trình này cứ nhắc bạn đừng gồng tay.
+## Bạn sẽ thật sự chơi được gì, và khi nào
 
-Cristofori gọi phát minh của mình là:
+Chỗ này mình sẽ thành thật thay vì hứa hẹn cho vui:
 
-> **"Gravicembalo col piano, e forte"**
-> — nghĩa là *"đàn harpsichord có thể chơi NHỎ và TO"*
+- **Ngày đầu tiên:** bạn tìm được nốt Đô giữa và đánh được năm nốt liên tiếp bằng năm ngón.
+- **Sau khoảng ba tuần:** hai tay chơi cùng lúc được, đọc được nốt trên khuông nhạc thay vì nhìn tên chữ.
+- **Cuối Chương 3:** bạn chơi trọn vẹn **Ode to Joy** và **Jingle Bells** bằng hai tay, từ nốt đầu tới nốt cuối, không dừng lại. Lộ trình gọi mốc đó là **Trạm dừng chân** — một buổi bạn không học gì mới, chỉ ngồi chơi nhạc.
+- **Hết Giai đoạn 2:** bạn tự đệm được một bài hát mình thích.
 
-Trong tiếng Ý, **piano** = nhỏ, khẽ; **forte** = to, mạnh. Người ta rút gọn cái tên dài đó thành **pianoforte**, rồi rút gọn thêm lần nữa thành **piano**.
+Cảm giác lần đầu chơi hết một bản nhạc thật, không vấp, không phải dừng lại sửa — đó là thứ mình muốn bạn chạm tới càng sớm càng tốt. Nó khác hẳn việc tập từng ô nhịp rời rạc, và nó là lý do lộ trình này cứ vài chương lại cài một Trạm dừng chân.
 
-Nói cách khác: **cây đàn của bạn được đặt tên theo đúng khả năng chơi to nhỏ của nó.** Toàn bộ giá trị của nhạc cụ này nằm ở chỗ nó nghe theo lực ngón tay bạn.
+## Không ai giục bạn cả
 
-Điều đó dẫn tới hệ quả rất thực tế cho việc tập luyện:
+Một điều nữa nên biết trước khi bắt đầu.
 
-- Vì sao phải **giữ bàn tay khum tròn và thả lỏng vai**? Vì bàn tay gồng cứng thì mọi nốt đều ra một lực như nhau — bạn đang biến cây piano thành cây harpsichord.
-- Vì sao Chương 5 dành hẳn một chương cho **sắc thái to nhỏ (dynamics)**? Vì đó chính là thứ làm nên định nghĩa của nhạc cụ này.
+Ở đây **không có bản nhạc nào tự trôi trên màn hình** bắt bạn phải theo kịp, không có nốt rơi kiểu game, không có ai chấm đúng sai ngay trên đầu ngón tay bạn.
 
-## 4. Từ 1700 đến cây đàn trong nhà bạn
+Bạn dừng lúc nào cũng được. Đánh đi đánh lại đúng một ô nhịp hai mươi lần cũng được. Chậm bằng một nửa tốc độ ghi trên bài cũng được — và thường thì đó mới là cách tập đúng.
 
-Cây piano của Cristofori chưa giống đàn ngày nay. Phải mất thêm khoảng 150 năm nữa, qua bàn tay của nhiều nhà chế tác, piano mới có hình hài quen thuộc: **88 phím**, khung gang chịu được sức căng khổng lồ của dây, và bộ pedal.
+Máy đánh nhịp có sẵn trong app, nhưng **bạn tự bật và tự chỉnh**. Bản nhạc mẫu bấm nghe được bất cứ lúc nào, nhưng nghe là để hình dung bài, không phải để bị chấm điểm.
 
-Ba cây đàn do chính Cristofori làm vẫn còn tồn tại đến hôm nay, tại các bảo tàng ở **New York (1720)**, **Rome (1722)** và **Leipzig (1726)**.
+Người mới bỏ cuộc phần lớn không phải vì họ kém, mà vì bị đặt vào tình huống phải chạy theo một thứ không chờ ai. Ở đây thì không.
 
-![Cây đàn piano của Cristofori năm 1720, hiện trưng bày tại Bảo tàng Nghệ thuật Metropolitan (New York)](https://commons.wikimedia.org/wiki/Special:FilePath/Grand_Piano_MET_DP300941.jpg)
+## Một ý duy nhất cần mang theo
 
-Còn cây **piano điện** mà phần lớn chúng ta đang dùng thì mới xuất hiện từ khoảng thập niên 1980. Nó ghi âm lại tiếng của đàn cơ thật, và mô phỏng sức nặng của phím bằng cơ cấu búa — đó là lý do ở Chương 1 mình khuyên bạn ưu tiên loại **phím nặng**: để lực ngón tay bạn vẫn có ý nghĩa, đúng như Cristofori đã thiết kế cách đây hơn 300 năm.
+Nếu cả chương này bạn chỉ nhớ được một câu, hãy nhớ câu này:
+
+> **Cây đàn của bạn được đặt tên theo khả năng chơi to và nhỏ của nó.**
+
+Trong tiếng Ý, **piano** nghĩa là *khẽ, nhỏ*, còn **forte** là *to, mạnh*. Tên đầy đủ của nhạc cụ này là **pianoforte** — nghĩa đen là "nhỏ - to". Người ta rút gọn dần thành **piano**.
+
+Nói cách khác, toàn bộ giá trị của cây đàn nằm ở chỗ nó **nghe theo lực ngón tay bạn**. Bấm nhẹ ra tiếng khẽ, bấm mạnh ra tiếng vang.
+
+Điều đó dẫn tới một hệ quả rất thực tế cho mọi buổi tập sau này: **bàn tay gồng cứng thì mọi nốt đều ra một lực như nhau**, và cây piano trong tay bạn mất đi đúng thứ làm nên tên gọi của nó. Mỗi khi thấy vai mình so lên hay ngón tay đơ ra, hãy nhớ lại câu trên rồi thả lỏng.
+
+Vì sao có hẳn một chương (Chương 5) dành cho cường độ to nhỏ, cũng là vì lý do này.
+
+## Nhiệm vụ của bạn ở chương này
+
+Không có bài tập nào cả. Chỉ hai việc, và cả hai đều không cần đàn:
+
+1. Nhớ lại **khoảnh khắc của bạn** — bản nhạc nào đã khiến bạn muốn học.
+2. Mở nghe lại bản nhạc đó **một lần**, trọn vẹn, trước khi bước vào Chương 1.
+
+Sẵn sàng rồi thì sang **[Chương 1: Nền tảng phím đàn và nốt nhạc](/02-chapters/chuong-01)**.
 
 ---
-**Nhiệm vụ của bạn ở chương này:**
 
-Không có bài tập nào cả. Chỉ cần nhớ **một ý duy nhất**: cây đàn này được sinh ra để chơi **to và nhỏ**. Mỗi khi tập mà thấy vai mình gồng lên hay ngón tay cứng đơ, hãy nhớ lại điều đó.
+## Đọc thêm — nếu bạn tò mò
 
-Sẵn sàng rồi thì chuyển sang **[Chương 1: Nền tảng phím đàn và nốt nhạc](/02-chapters/chuong-01)**.
+Bản đầu tiên của chương này kể toàn bộ lịch sử: bốn thời kỳ âm nhạc phương Tây trải 400 năm, chân dung Bach - Mozart - Chopin, ông thợ người Ý phát minh ra cây piano đầu tiên năm 1700, cơ chế búa gõ dây khác miếng gảy ra sao.
+
+Chuyện hay thật, nhưng nó **dài** — và không có chữ nào trong đó giúp ngón tay bạn bấm đúng phím trong ngày đầu tiên. Dựng một bức tường chữ ngay trước mặt người vừa mới bắt đầu là cách nhanh nhất khiến họ đóng tab và không quay lại.
+
+Nên phần đó được chuyển sang một trang riêng:
+
+**👉 [Chương 0 - Đọc thêm: Cây đàn này đến từ đâu?](/02-chapters/chuong-00-doc-them)**
+
+Đọc lúc nào cũng được — một tối nào đó rảnh rỗi, hay lúc ngồi nghỉ cho tay đỡ mỏi. Không đọc cũng chẳng ảnh hưởng gì tới việc tập. Nó nằm đó cho những hôm bạn tò mò, chứ không phải một cửa ải phải qua.

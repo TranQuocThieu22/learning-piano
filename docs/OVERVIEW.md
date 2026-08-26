@@ -46,7 +46,7 @@ khiển ngón độc lập.
 
 | Chương | Nội dung | Số bài | Trạng thái |
 |---|---|---|---|
-| 0 | Lịch sử piano — bài đọc, không có bài tập | 0 | ✅ Xong |
+| 0 | Vì sao bạn muốn chơi piano — bài đọc tạo động lực, không có bài tập; lịch sử piano tách sang trang *Đọc thêm* | 0 | ✅ Xong |
 | 1 | 5 nốt đầu tiên C-D-E-F-G, độc lập ngón | 2 | ✅ Xong |
 | 2 | Trường độ (đen/trắng/tròn), phối hợp 2 tay | 3 | ✅ Xong |
 | 3 | Đọc khuông nhạc, khóa Sol + khóa Pha, Grand Staff, nhịp 3/4, **Trạm dừng chân 1** | 6 | ✅ Xong |
