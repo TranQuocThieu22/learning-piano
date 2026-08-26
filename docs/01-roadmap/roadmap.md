@@ -17,11 +17,14 @@ Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, 
 - **Chương 6: Kỹ thuật mở rộng tay**: Thêm ba nốt mới **La, Si và Đô cao** để đủ một quãng tám, rồi học **luồn ngón cái (Thumb under)** và **vắt ngón (Cross over)** — hai kỹ thuật cho phép tay đi lại trên bàn phím thay vì đứng yên một chỗ. Ghép lại thành **thang âm Đô trưởng** hai tay. Kết thúc Giai đoạn 1 bằng một **Trạm dừng chân** tổng kết.
 
 ## Giai đoạn 2: Ứng dụng, Đệm hát và Pedal
-*(Sẽ được lên chi tiết sau khi bạn vượt qua Giai đoạn 1 một cách vững vàng)*
-- Cấu tạo hợp âm cơ bản (Trưởng/Thứ).
-- Đánh giai điệu tay phải, đệm tay trái bằng hợp âm rải hoặc chập.
-- Nghệ thuật sử dụng Pedal (Bàn đạp vang âm) để kết nối các hợp âm.
-- Ứng dụng vào đệm các bản nhạc Pop đơn giản.
+Mục tiêu của cả giai đoạn gói trong một câu: **tự đệm được một bài hát bạn thích, từ đầu tới cuối**. Tay phải giữ giai điệu, tay trái không còn giữ một nốt nữa mà giữ cả mảng hòa âm bên dưới.
+
+- **Chương 7: Hợp âm — ba nốt cùng một lúc**: Cách dựng hợp âm ba nốt, ba hợp âm trụ cột **Đô - Pha - Sol**, sự khác nhau giữa **Trưởng và Thứ** (chỉ nằm ở nốt giữa), và cách đổi hợp âm đúng nhịp. Kết thúc bằng bản đệm hoàn chỉnh đầu tiên.
+- **Chương 8: Mẫu đệm tay trái**: Thay vì bấm cả hợp âm một cục, tay trái học **rải nốt và chia nhịp** — hợp âm chập, hợp âm rải, mẫu đệm cho nhịp 4/4 và 3/4.
+- **Chương 9: Pedal vang âm**: Cách đạp và nhả pedal đúng thời điểm để nối các hợp âm thành một dòng chảy liền mạch, thay vì để chúng dính bết vào nhau.
+- **Chương 10: Đệm một bài hát hoàn chỉnh**: Ghép tất cả lại, kèm **Trạm dừng chân số 3** khép lại Giai đoạn 2.
+
+*(Chương 8 trở đi sẽ được soạn tiếp; Chương 7 đã có đầy đủ bài tập.)*
 
 ---
 ## 🎯 Trạm dừng chân (Recital Milestones)
@@ -32,6 +35,7 @@ Mục đích không chỉ là ôn tập. Việc tập từng ô nhịp rời r�
 
 - **Trạm 1 — sau Chương 3**: Jingle Bells (2 tay), Ode to Joy (bản đầy đủ), Waltz nhỏ.
 - **Trạm 2 — sau Chương 6**: Twinkle Twinkle Little Star (2 tay — bài cần nốt La nên tới đây mới chơi được), Thang âm Đô trưởng 2 tay lên xuống, Waltz nhỏ số 2 (nhịp 3/4, dùng trọn quãng tám).
+- **Trạm 3 — sau Chương 10**: *(khép lại Giai đoạn 2 — sẽ được lên chi tiết khi bạn tới nơi)*
 
 **Nguyên tắc chọn bài cho Trạm dừng chân:** bản nhạc **chỉ được dùng những nốt đã thực sự được dạy**. Không đưa bài có nốt nằm ngoài tầm tay hiện tại — điều đó chỉ tạo cảm giác thất bại chứ không dạy được gì.
 

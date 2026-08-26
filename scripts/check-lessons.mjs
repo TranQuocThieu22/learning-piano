@@ -30,10 +30,20 @@ const TITLE_PATTERN = /^#\s+Chương\s+(\d+)\s+-\s+Bài\s+(\d+):\s+.+/;
  */
 const RANGE_5_FINGER = { rhLow: 0, rhHigh: 4, lhLow: -7, lhHigh: -3 };  // C4..G4 và C3..G3
 const RANGE_OCTAVE   = { rhLow: 0, rhHigh: 7, lhLow: -7, lhHigh: 0 };   // C4..C5 và C3..C4
-const FIRST_OCTAVE_CHAPTER = 6;
+/**
+ * Giai đoạn 2: tay trái bấm hợp âm nên phải với lên quá Đô giữa — hợp âm Sol
+ * (Sol-Si-Rê) chạm tới nốt Rê, hợp âm La thứ (La-Đô-Mi) chạm tới nốt Mi.
+ */
+const RANGE_CHORDS   = { rhLow: 0, rhHigh: 7, lhLow: -7, lhHigh: 2 };   // C4..C5 và C3..E4
 
-const rangeForChapter = (chapter) =>
-  chapter >= FIRST_OCTAVE_CHAPTER ? RANGE_OCTAVE : RANGE_5_FINGER;
+const FIRST_OCTAVE_CHAPTER = 6;
+const FIRST_CHORD_CHAPTER = 7;
+
+const rangeForChapter = (chapter) => {
+  if (chapter >= FIRST_CHORD_CHAPTER) return RANGE_CHORDS;
+  if (chapter >= FIRST_OCTAVE_CHAPTER) return RANGE_OCTAVE;
+  return RANGE_5_FINGER;
+};
 
 /**
  * Cụm từ tiếng Việt bị mất dấu. Dò theo CỤM chứ không theo từ đơn, vì từ đơn hay

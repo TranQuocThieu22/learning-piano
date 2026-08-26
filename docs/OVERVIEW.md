@@ -39,7 +39,7 @@ mục 0):
 
 ## 2. Lộ trình và trạng thái
 
-Giáo trình chia làm **4 giai đoạn**; hiện mới soạn Giai đoạn 1.
+Giáo trình chia làm **4 giai đoạn**; Giai đoạn 1 đã xong, Giai đoạn 2 đang soạn dở.
 
 **Giai đoạn 1 — Nền tảng (~60 ngày).** Xác định nốt trên đàn, hiểu nhịp phách, điều
 khiển ngón độc lập.
@@ -54,11 +54,17 @@ khiển ngón độc lập.
 | 5 | Legato, staccato, cường độ (dynamics) | 3 | ✅ Xong |
 | 6 | Ba nốt mới La-Si-Đô cao, luồn ngón cái, vắt ngón, thang âm Đô trưởng, **Trạm dừng chân 2** | 4 | ✅ Xong |
 
-Tổng hiện có: **21 bài tick được**, trải 6 chương — Giai đoạn 1 đã soạn xong.
+Tổng hiện có: **25 bài tick được**, trải 7 chương — Giai đoạn 1 xong, Giai đoạn 2 đã bắt đầu.
 
-**Giai đoạn 2 — Ứng dụng và đệm hát.** Hợp âm Trưởng/Thứ, đệm tay trái, pedal, đệm
-nhạc Pop đơn giản. Chưa lên chi tiết. Đích đến phải là **tự đệm được một bài hát
-hoàn chỉnh** — đó là điều kiện để gói "Nền tảng" trọn vẹn.
+**Giai đoạn 2 — Ứng dụng và đệm hát.** Đích đến: **tự đệm được một bài hát hoàn
+chỉnh** — điều kiện để gói "Nền tảng" trọn vẹn. Khung 4 chương đã chốt trong roadmap:
+
+| Chương | Nội dung | Số bài | Trạng thái |
+|---|---|---|---|
+| 7 | Hợp âm ba nốt, C-F-G, Trưởng/Thứ, đổi hợp âm, đệm Ode to Joy | 4 | ✅ Xong |
+| 8 | Mẫu đệm tay trái: hợp âm chập, hợp âm rải, mẫu cho 4/4 và 3/4 | 0 | ⬜ Chưa soạn |
+| 9 | Pedal vang âm — đạp và nhả đúng thời điểm | 0 | ⬜ Chưa soạn |
+| 10 | Đệm trọn một bài hát + **Trạm dừng chân 3** | 0 | ⬜ Chưa soạn |
 
 **Giai đoạn 3 và 4** (Nâng cao, Cảm âm & Ứng tấu) — chưa soạn, và là **sản phẩm bán
 riêng**, không gộp vào gói Giai đoạn 1-2.
@@ -87,8 +93,9 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
   tám — nên **"Twinkle Twinkle" và "Happy Birthday" không dùng được** (cần nốt La), còn
   Jingle Bells, Ode to Joy, Mary Had a Little Lamb, Hot Cross Buns thì được. **Từ Chương
   6** (luồn ngón cái / vắt ngón) nới ra trọn quãng tám Đô-Đô ở cả hai tay, và Twinkle
-  Twinkle chính là bài thưởng của Trạm dừng chân 2. `scripts/check-lessons.mjs` tự chọn
-  tầm nốt theo số chương trong tên file.
+  Twinkle chính là bài thưởng của Trạm dừng chân 2. **Từ Chương 7** tay trái bấm hợp âm
+  nên với lên tới nốt Mi trên Đô giữa. `scripts/check-lessons.mjs` tự chọn tầm nốt theo
+  số chương trong tên file — sửa tầm ở ba hằng số `RANGE_*` đầu file.
 - **Bản nhạc viết bằng ABC notation**, render bằng abcjs. Mỗi ô nhịp phải cộng đủ
   phách; Grand Staff hai bè phải bằng số ô nhịp. Tiêu đề `T:` / `C:` viết **tiếng Việt
   có dấu**.
@@ -186,8 +193,9 @@ web**. Trước khi đụng tới giá, gói bán, phân quyền hay thanh toán
 ## 7. Việc tiếp theo, theo thứ tự ưu tiên
 
 1. ~~Hoàn thiện Chương 5 và 6~~ — **xong**, Giai đoạn 1 đã đủ 6 chương / 21 bài.
-2. **Soạn Giai đoạn 2** — việc quan trọng nhất hiện nay, và là thứ người học khao khát
-   (tự đệm được bài mình thích). Gói "Nền tảng" chưa trọn vẹn nếu thiếu phần này.
+2. **Soạn nốt Giai đoạn 2 (Chương 8, 9, 10)** — việc quan trọng nhất hiện nay. Chương 7
+   đã xong; gói "Nền tảng" chỉ trọn vẹn khi người học **tự đệm được một bài hát**, tức
+   là phải có đủ mẫu đệm, pedal và bài tổng kết.
 3. **Web MIDI chấm điểm** — thứ duy nhất không sao chép được (nội dung chữ thì chụp
    màn hình là hết).
 4. Video ngắn quay tay cho các bài kỹ thuật.
