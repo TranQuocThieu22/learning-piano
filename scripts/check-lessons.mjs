@@ -21,9 +21,19 @@ const CHAPTER_DIR = 'docs/02-chapters';
 const FILE_PATTERN = /^chuong-(\d+)-bai-(\d+)\.md$/;
 const TITLE_PATTERN = /^#\s+Chương\s+(\d+)\s+-\s+Bài\s+(\d+):\s+.+/;
 
-/** pitch của abcjs: 0 = Đô giữa (C4), mỗi bậc diatonic là 1. */
-const RH_LOW = 0,  RH_HIGH = 4;   // C4..G4 — thế tay phải
-const LH_LOW = -7, LH_HIGH = -3;  // C3..G3 — thế tay trái
+/**
+ * pitch của abcjs: 0 = Đô giữa (C4), mỗi bậc diatonic là 1.
+ *
+ * Tầm nốt cho phép nới ra ở Chương 6 — đó đúng là chương dạy luồn ngón cái và
+ * vắt ngón để đi quá thế tay 5 ngón. Trước đó, một nốt ngoài tầm gần như luôn
+ * là lỗi soạn bài; từ Chương 6 trở đi, cả quãng tám Đô-Đô là hợp lệ.
+ */
+const RANGE_5_FINGER = { rhLow: 0, rhHigh: 4, lhLow: -7, lhHigh: -3 };  // C4..G4 và C3..G3
+const RANGE_OCTAVE   = { rhLow: 0, rhHigh: 7, lhLow: -7, lhHigh: 0 };   // C4..C5 và C3..C4
+const FIRST_OCTAVE_CHAPTER = 6;
+
+const rangeForChapter = (chapter) =>
+  chapter >= FIRST_OCTAVE_CHAPTER ? RANGE_OCTAVE : RANGE_5_FINGER;
 
 /**
  * Cụm từ tiếng Việt bị mất dấu. Dò theo CỤM chứ không theo từ đơn, vì từ đơn hay
@@ -148,8 +158,10 @@ for (const { dir, file, strictNaming } of targets) {
 
   if (allPitches.length === 0) continue;
 
+  const chapter = Number(/^chuong-(\d+)/.exec(file)?.[1] ?? 0);
+  const { rhLow, rhHigh, lhLow, lhHigh } = rangeForChapter(chapter);
   const outside = allPitches.filter(
-    (p) => !((p >= RH_LOW && p <= RH_HIGH) || (p >= LH_LOW && p <= LH_HIGH))
+    (p) => !((p >= rhLow && p <= rhHigh) || (p >= lhLow && p <= lhHigh))
   );
   // Chỉ soi thế tay với bài tập. Chương lý thuyết dạy đọc khuông nhạc nên các
   // bảng minh hoạ trong đó BẮT BUỘC trải rộng ngoài thế tay 5 ngón.

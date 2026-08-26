@@ -51,10 +51,10 @@ khiển ngón độc lập.
 | 2 | Trường độ (đen/trắng/tròn), phối hợp 2 tay | 3 | ✅ Xong |
 | 3 | Đọc khuông nhạc, khóa Sol + khóa Pha, Grand Staff, nhịp 3/4, **Trạm dừng chân 1** | 6 | ✅ Xong |
 | 4 | Phím đen, dấu thăng/giáng/bình, nửa cung - nguyên cung, Blues | 3 | ✅ Xong |
-| 5 | Legato, staccato, cường độ (dynamics) | 3 | 🟡 Vừa soạn, chưa commit |
-| 6 | Luồn ngón cái, vắt ngón, **Trạm dừng chân 2** | 0 | ⬜ Chưa soạn |
+| 5 | Legato, staccato, cường độ (dynamics) | 3 | ✅ Xong |
+| 6 | Ba nốt mới La-Si-Đô cao, luồn ngón cái, vắt ngón, thang âm Đô trưởng, **Trạm dừng chân 2** | 4 | ✅ Xong |
 
-Tổng hiện có: **17 bài tick được**, trải 5 chương.
+Tổng hiện có: **21 bài tick được**, trải 6 chương — Giai đoạn 1 đã soạn xong.
 
 **Giai đoạn 2 — Ứng dụng và đệm hát.** Hợp âm Trưởng/Thứ, đệm tay trái, pedal, đệm
 nhạc Pop đơn giản. Chưa lên chi tiết. Đích đến phải là **tự đệm được một bài hát
@@ -65,7 +65,8 @@ riêng**, không gộp vào gói Giai đoạn 1-2.
 
 **Trạm dừng chân (Recital).** Sau mỗi cụm chương có một bài Tổng ôn: không dạy kỹ
 năng mới, chỉ chơi trọn 2-3 bản nhạc hoàn chỉnh. Trạm 1 sau Chương 3 (Jingle Bells,
-Ode to Joy, Waltz nhỏ); Trạm 2 dự kiến sau Chương 6.
+Ode to Joy, Waltz nhỏ); Trạm 2 khép lại Giai đoạn 1 ở cuối Chương 6 (Twinkle Twinkle,
+thang âm Đô trưởng hai tay, Waltz nhỏ số 2).
 
 ---
 
@@ -81,10 +82,13 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
   bàn + 1 phương pháp tùy chọn) → ② khởi động & ôn bài cũ 5-10 phút → ③ kỹ năng mới
   15-20 phút, **tối thiểu 3-4 bài tập ABC khác nhau** → ④ thực hành tự do + **thẩm âm
   (bắt buộc)**.
-- **Giới hạn nốt:** không bao giờ dùng nốt chưa dạy. Đến hết Giai đoạn 1 (trước
-  Chương 6), tay phải đọc C-D-E-F-G khóa Sol, tay trái C-D-E-F-G khóa Pha thấp hơn một
-  quãng tám. Hệ quả: **"Twinkle Twinkle" và "Happy Birthday" dùng không được** (cần nốt
-  La); Jingle Bells, Ode to Joy, Mary Had a Little Lamb, Hot Cross Buns thì được.
+- **Giới hạn nốt:** không bao giờ dùng nốt chưa dạy. **Chương 1-5** giới hạn ở thế tay
+  5 ngón: tay phải C-D-E-F-G khóa Sol, tay trái C-D-E-F-G khóa Pha thấp hơn một quãng
+  tám — nên **"Twinkle Twinkle" và "Happy Birthday" không dùng được** (cần nốt La), còn
+  Jingle Bells, Ode to Joy, Mary Had a Little Lamb, Hot Cross Buns thì được. **Từ Chương
+  6** (luồn ngón cái / vắt ngón) nới ra trọn quãng tám Đô-Đô ở cả hai tay, và Twinkle
+  Twinkle chính là bài thưởng của Trạm dừng chân 2. `scripts/check-lessons.mjs` tự chọn
+  tầm nốt theo số chương trong tên file.
 - **Bản nhạc viết bằng ABC notation**, render bằng abcjs. Mỗi ô nhịp phải cộng đủ
   phách; Grand Staff hai bè phải bằng số ô nhịp. Tiêu đề `T:` / `C:` viết **tiếng Việt
   có dấu**.
@@ -181,9 +185,9 @@ web**. Trước khi đụng tới giá, gói bán, phân quyền hay thanh toán
 
 ## 7. Việc tiếp theo, theo thứ tự ưu tiên
 
-1. **Hoàn thiện Chương 5 và 6** — bán một khóa dang dở là rủi ro uy tín lớn nhất.
-2. **Soạn Giai đoạn 2** — đây mới là thứ người học khao khát (tự đệm được bài mình
-   thích).
+1. ~~Hoàn thiện Chương 5 và 6~~ — **xong**, Giai đoạn 1 đã đủ 6 chương / 21 bài.
+2. **Soạn Giai đoạn 2** — việc quan trọng nhất hiện nay, và là thứ người học khao khát
+   (tự đệm được bài mình thích). Gói "Nền tảng" chưa trọn vẹn nếu thiếu phần này.
 3. **Web MIDI chấm điểm** — thứ duy nhất không sao chép được (nội dung chữ thì chụp
    màn hình là hết).
 4. Video ngắn quay tay cho các bài kỹ thuật.

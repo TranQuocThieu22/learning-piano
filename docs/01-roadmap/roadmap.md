@@ -14,7 +14,7 @@ Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, 
 - **Chương 3: Đọc bản nhạc (Sight-reading) cơ bản**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái), nối 2 khóa lại thành **Khuông nhạc kép (Grand Staff)**, hiểu **số chỉ nhịp** và làm quen **nhịp 3/4 (điệu Waltz)**. Kết thúc bằng một **Trạm dừng chân** chơi trọn vẹn bản nhạc hoàn chỉnh.
 - **Chương 4: Phím đen và Dấu hóa (Accidentals)**: Làm quen với Dấu Thăng (#), Dấu Giáng (b), Dấu Bình (♮) và khái niệm nửa cung / nguyên cung. Thực hành vươn ngón tay lên các phím đen mà không bị trượt, cảm nhận sự khác biệt màu sắc Trưởng - Thứ, và chơi được câu Blues đầu tiên.
 - **Chương 5: Kỹ thuật ngón và Cảm xúc (Expression)**: Rèn luyện cường độ to nhỏ (Dynamics - Forte/Piano) và kỹ thuật đánh liền mạch (Legato) hay nảy ngón (Staccato).
-- **Chương 6: Kỹ thuật mở rộng tay**: Luyện tập luồn ngón cái (Thumb under) và vắt ngón (Cross over) để đánh các đoạn nhạc dài vượt quá phạm vi 5 phím. Kết thúc Giai đoạn 1 bằng một **Trạm dừng chân** tổng kết.
+- **Chương 6: Kỹ thuật mở rộng tay**: Thêm ba nốt mới **La, Si và Đô cao** để đủ một quãng tám, rồi học **luồn ngón cái (Thumb under)** và **vắt ngón (Cross over)** — hai kỹ thuật cho phép tay đi lại trên bàn phím thay vì đứng yên một chỗ. Ghép lại thành **thang âm Đô trưởng** hai tay. Kết thúc Giai đoạn 1 bằng một **Trạm dừng chân** tổng kết.
 
 ## Giai đoạn 2: Ứng dụng, Đệm hát và Pedal
 *(Sẽ được lên chi tiết sau khi bạn vượt qua Giai đoạn 1 một cách vững vàng)*
@@ -31,7 +31,7 @@ Cứ sau mỗi cụm chương lớn, lộ trình có một **Bài Tổng ôn** �
 Mục đích không chỉ là ôn tập. Việc tập từng ô nhịp rời rạc rất khác với việc chơi liền mạch cả bài — và cảm giác "mình vừa chơi xong một bản nhạc thật" chính là thứ giữ cho bạn không bỏ cuộc.
 
 - **Trạm 1 — sau Chương 3**: Jingle Bells (2 tay), Ode to Joy (bản đầy đủ), Waltz nhỏ.
-- **Trạm 2 — sau Chương 6**: *(sẽ được lên chi tiết khi bạn tới nơi)*
+- **Trạm 2 — sau Chương 6**: Twinkle Twinkle Little Star (2 tay — bài cần nốt La nên tới đây mới chơi được), Thang âm Đô trưởng 2 tay lên xuống, Waltz nhỏ số 2 (nhịp 3/4, dùng trọn quãng tám).
 
 **Nguyên tắc chọn bài cho Trạm dừng chân:** bản nhạc **chỉ được dùng những nốt đã thực sự được dạy**. Không đưa bài có nốt nằm ngoài tầm tay hiện tại — điều đó chỉ tạo cảm giác thất bại chứ không dạy được gì.
 
