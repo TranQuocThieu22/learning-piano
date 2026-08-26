@@ -6,6 +6,8 @@ Nhưng nó là chương mình muốn bạn đọc kỹ nhất. Vì thứ quyết
 
 ## Cái khoảnh khắc đã đưa bạn tới đây
 
+![Cảnh bên cửa sổ và cây đàn piano trong đêm mưa](/images/piano-rain-window.jpg)
+
 Hầu như ai tìm học piano cũng có một khoảnh khắc như vậy. Nó thường rất nhỏ và rất riêng.
 
 Có thể là một buổi tối bạn xem phim. Ngoài cửa sổ trong phim đang mưa, nhân vật ngồi xuống cây đàn, và tự nhiên cả bộ phim im lặng lại — chỉ còn tiếng piano. Bạn ngồi yên tới hết cảnh đó, rồi tua lại xem thêm một lần nữa.
@@ -22,13 +24,21 @@ Hoặc đơn giản là bạn đã đi qua một nơi rất đẹp — biển l�
 
 ## Những bản nhạc đã kéo rất nhiều người tới cây đàn
 
+![Biểu diễn piano với hoa anh đào rơi](/images/anime-piano.jpg)
+
 Bạn không hề một mình. Có những bản nhạc mà cứ vài năm lại có thêm một thế hệ nghe được và muốn học đàn vì nó:
 
 - **Für Elise** và **Sonata Ánh Trăng** — Beethoven. Hai bản nhạc có lẽ nhiều người nhận ra nhất thế giới.
+  <img src="/images/beethoven.jpg" alt="Beethoven" width="200" style="border-radius: 8px; margin: 10px 0;" />
+
 - **Nocturne Op. 9 No. 2** — Chopin. Nghe như một người đang kể chuyện rất khẽ vào đêm khuya.
+  <img src="/images/chopin.jpg" alt="Chopin" width="200" style="border-radius: 8px; margin: 10px 0;" />
+
 - **Clair de Lune** — Debussy. Cái tên có nghĩa là *ánh trăng*, và bản nhạc đúng là nghe như ánh trăng thật.
 - **River Flows in You** — Yiruma. Bản nhạc đã đẩy không biết bao nhiêu người trẻ đi mua cây đàn đầu tiên.
 - **Merry-Go-Round of Life** (*Lâu đài bay của pháp sư Howl*) và **One Summer's Day** (*Vùng đất linh hồn*) — Joe Hisaishi. Nhạc phim hoạt hình Ghibli, và có lẽ là lý do phổ biến nhất khiến người Việt trẻ muốn học piano.
+  <img src="/images/spirited-away.png" alt="Spirited Away" width="200" style="border-radius: 8px; margin: 10px 0;" />
+
 - Và cả một bộ anime dựng hẳn quanh cây đàn piano — **Shigatsu wa Kimi no Uso** (*Khúc nhạc tháng Tư*) — bộ phim mà rất nhiều người xem xong là đi tìm lớp học đàn.
 
 Mình nói thẳng một điều, vì bạn sẽ tự phát hiện ra sớm thôi: **phần lớn những bản nhạc trên đều khó**, có bài rất khó. Chúng không phải chỗ để bắt đầu, và giáo trình này không hứa hẹn sau ba tháng bạn chơi được Clair de Lune.
@@ -63,6 +73,8 @@ Người mới bỏ cuộc phần lớn không phải vì họ kém, mà vì b�
 Nếu cả chương này bạn chỉ nhớ được một câu, hãy nhớ câu này:
 
 > **Cây đàn của bạn được đặt tên theo khả năng chơi to và nhỏ của nó.**
+
+![Lực đánh piano forte - to và nhỏ](/images/pianoforte-dynamics.jpg)
 
 Trong tiếng Ý, **piano** nghĩa là *khẽ, nhỏ*, còn **forte** là *to, mạnh*. Tên đầy đủ của nhạc cụ này là **pianoforte** — nghĩa đen là "nhỏ - to". Người ta rút gọn dần thành **piano**.
 
