@@ -203,6 +203,12 @@ docs/
   03-exercises/            Bài tập tick được (chuong-XX-bai-YY.md)
   07-doc-them/             Bài bên lề không bắt buộc: lịch sử piano, vì sao không có piano ảo (lên web)
   _internal/               Định hướng kinh doanh, biến môi trường (KHÔNG lên web)
+public/images/             MỘT THƯ MỤC CHO MỖI TRANG, tên trùng slug của trang đó
+  chuong-00/               Ảnh của docs/02-chapters/chuong-00.md
+  chuong-01/  chuong-02/  chuong-04/
+  phuong-phap-luyen-tap/   Ảnh của docs/01-roadmap/phuong-phap-luyen-tap.md
+  lich-su-piano/           Ảnh của docs/07-doc-them/lich-su-piano.md
+                           (ảnh dùng ở nhiều trang thì tạo thêm chung/)
 src/
   app/                     Trang Next.js
   components/              AbcjsViewer, Metronome, NoteRecognitionDrill, ScorePractice...

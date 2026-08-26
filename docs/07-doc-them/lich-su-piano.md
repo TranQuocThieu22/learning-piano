@@ -9,14 +9,14 @@
 
 Thứ âm nhạc mà chúng ta sắp học — bảy nốt Đô Rê Mi, khuông nhạc năm dòng kẻ, cách chia nhịp 4/4 — không phải tự nhiên mà có. Nó là kết quả của khoảng 400 năm định hình, chia thành bốn thời kỳ lớn:
 
-![Dòng thời gian âm nhạc phương Tây và thời điểm piano ra đời](/images/timeline-lich-su.svg)
+![Dòng thời gian âm nhạc phương Tây và thời điểm piano ra đời](/images/lich-su-piano/timeline-lich-su.svg)
 
 - **Baroque (khoảng 1600 – 1750):** Thời của **Johann Sebastian Bach**. Nhạc nhiều bè đan xen nhau như những sợi chỉ dệt lại. Nhạc cụ phím chủ đạo là đàn **harpsichord** và đại phong cầm (organ).
   ![Chân dung Johann Sebastian Bach](https://commons.wikimedia.org/wiki/Special:FilePath/Johann_Sebastian_Bach_1746.jpg)
 - **Cổ điển (khoảng 1750 – 1820):** Thời của **Mozart** và **Beethoven**. Giai điệu trở nên rõ ràng, cân đối, dễ nghe hơn. Đây cũng là lúc piano soán ngôi harpsichord để thành nhạc cụ trung tâm.
-  ![Chân dung Ludwig van Beethoven](https://commons.wikimedia.org/wiki/Special:FilePath/Ludwig_van_Beethoven.jpg)
+  ![Chân dung Ludwig van Beethoven, tranh của Joseph Karl Stieler (1820)](/images/lich-su-piano/beethoven.jpg)
 - **Lãng mạn (khoảng 1820 – 1900):** Thời của **Chopin** và **Liszt**. Âm nhạc chuyển sang kể chuyện cảm xúc cá nhân — dữ dội, mơ mộng, kịch tính. Kỹ thuật piano được đẩy tới giới hạn.
-  ![Ảnh chụp Frédéric Chopin (1849)](https://commons.wikimedia.org/wiki/Special:FilePath/Frederic_Chopin_photo.jpeg)
+  ![Ảnh chụp Frédéric Chopin (1849)](/images/lich-su-piano/chopin.jpg)
 - **Hiện đại (từ 1900):** Jazz, Pop, nhạc phim... Piano có mặt trong hầu hết mọi thể loại.
 
 > [!NOTE]
@@ -30,7 +30,7 @@ Trước đó, nhạc cụ phím phổ biến nhất là **harpsichord**. Nó c�
 
 ![Đàn Harpsichord (MET DP225547)](https://commons.wikimedia.org/wiki/Special:FilePath/Harpsichord_MET_DP225547.jpg)
 
-![So sánh cơ chế gảy dây của harpsichord và gõ búa của piano](/images/gay-vs-go.svg)
+![So sánh cơ chế gảy dây của harpsichord và gõ búa của piano](/images/lich-su-piano/gay-vs-go.svg)
 
 Lý do nằm ở cơ chế:
 

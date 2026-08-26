@@ -8,19 +8,19 @@ Trong bài này, chúng ta làm quen với 3 loại nốt phổ biến nhất:
 
 1. **Nốt Đen (Quarter note):** 
    
-   ![Nốt Đen](/images/quarter.svg)
+   ![Nốt Đen](/images/chuong-02/quarter.svg)
    - Hình dáng: Bầu dục đặc ruột, có đuôi.
    - Giá trị: **1 nhịp** (đập chân 1 cái).
    
 2. **Nốt Trắng (Half note):**
 
-   ![Nốt Trắng](/images/half.svg)
+   ![Nốt Trắng](/images/chuong-02/half.svg)
    - Hình dáng: Bầu dục rỗng ruột, có đuôi.
    - Giá trị: **2 nhịp** (đánh xuống và giữ nguyên tay trong 2 nhịp đập chân).
    
 3. **Nốt Tròn (Whole note):**
 
-   ![Nốt Tròn](/images/whole.svg)
+   ![Nốt Tròn](/images/chuong-02/whole.svg)
    - Hình dáng: Bầu dục rỗng ruột, không đuôi. Trông giống quả trứng.
    - Giá trị: **4 nhịp** (đánh xuống và giữ nguyên tay đủ 4 nhịp đập).
 

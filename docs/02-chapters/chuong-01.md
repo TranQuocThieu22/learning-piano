@@ -30,7 +30,7 @@ Nhìn lên bàn phím, bạn sẽ thấy các phím đen được xếp theo c�
 Nốt **Đô (C)** luôn là phím trắng nằm **ngay sát bên trái** của cụm 2 phím đen.
 Hãy tìm nốt Đô nằm ở khoảng giữa cây đàn của bạn, người ta gọi đó là nốt **Đô giữa (Middle C)**.
 
-![Cách tìm nốt Đô giữa trên bàn phím](/images/keyboard-middle-c.svg)
+![Cách tìm nốt Đô giữa trên bàn phím](/images/chuong-01/keyboard-middle-c.svg)
 
 Từ nốt Đô đó, bạn đếm tiến lên các phím trắng liên tiếp về bên phải: Đô (C), Rê (D), Mi (E), Pha (F), Sol (G)...
 
@@ -55,7 +55,7 @@ Trông nó giống như một hành tinh có một đường xích đạo vắt 
 
 Khi đặt 5 ngón tay phải vào đúng vị trí, bàn phím sẽ trông như thế này — người ta gọi đây là **thế tay Đô**:
 
-![Thế tay Đô: 5 ngón tay phải trên Đô, Rê, Mi, Pha, Sol](/images/keyboard-c-position.svg)
+![Thế tay Đô: 5 ngón tay phải trên Đô, Rê, Mi, Pha, Sol](/images/chuong-01/keyboard-c-position.svg)
 
 ---
 **Nhiệm vụ của bạn hôm nay:**

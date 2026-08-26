@@ -12,7 +12,7 @@ Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn c
 - **Nguyên cung (Whole step / Tone):** bằng 2 nửa cung, tức là **bỏ qua đúng một phím** ở giữa.
   - Ví dụ: từ Đô (C) sang Rê (D) = nguyên cung (bỏ qua phím đen giữa chúng).
 
-![Nửa cung và nguyên cung trên bàn phím](/images/half-whole-step.svg)
+![Nửa cung và nguyên cung trên bàn phím](/images/chuong-04/half-whole-step.svg)
 
 **👉 Điều bất ngờ cần nhớ:** Không phải cặp phím trắng nào cũng cách nhau nguyên cung. Có **2 cặp đặc biệt** nằm sát nhau, không có phím đen ở giữa:
 - **Mi → Pha (E → F)**
@@ -34,7 +34,7 @@ Ví dụ cụ thể trên đàn:
 - **Pha thăng (F#)** = phím đen nằm ngay bên phải nốt Pha.
 - **Mi giáng (Eb)** = phím đen nằm ngay bên trái nốt Mi.
 
-![Vị trí Pha thăng và Mi giáng trên bàn phím](/images/black-keys-accidentals.svg)
+![Vị trí Pha thăng và Mi giáng trên bàn phím](/images/chuong-04/black-keys-accidentals.svg)
 
 **👉 Một phím đen, hai cái tên:** Phím đen giữa Rê và Mi có thể gọi là **Rê thăng (D#)** hoặc **Mi giáng (Eb)** — cùng một phím, chỉ khác cách gọi tùy ngữ cảnh bản nhạc. Bạn không cần hiểu sâu vì sao ngay lúc này, chỉ cần biết là bình thường.
 

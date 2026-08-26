@@ -4,7 +4,7 @@ Mỗi bài học trong app đều được xây theo cùng một khuôn. Hiểu 
 
 ## Một buổi tập diễn ra như thế nào?
 
-![Cấu trúc một buổi tập: bài tập xa đàn, khởi động, học kỹ năng mới, thực hành tự do](/images/cau-truc-buoi-tap.svg)
+![Cấu trúc một buổi tập: bài tập xa đàn, khởi động, học kỹ năng mới, thực hành tự do](/images/phuong-phap-luyen-tap/cau-truc-buoi-tap.svg)
 
 Điểm quan trọng nhất: **phần ① không cần đàn**. Bạn làm nó bất cứ lúc nào trong ngày — lúc chờ họp, lúc ngồi xe, trước khi ngủ — và nó **không tính vào 30-45 phút ngồi trước đàn**. Đây là phần nhiều người bỏ qua nhất, mà lại là phần cho hiệu quả cao nhất trên mỗi phút bỏ ra.
 
@@ -22,7 +22,7 @@ Ba phần còn lại diễn ra khi bạn ngồi vào đàn:
 
 **1. Gõ mặt bàn (Tapping)** — *bắt buộc trong mọi bài*
 
-![Ảnh minh họa ngón tay gõ trên mặt bàn](/images/tapping-on-table.jpg)
+![Ảnh minh họa ngón tay gõ trên mặt bàn](/images/phuong-phap-luyen-tap/tapping-on-table.jpg)
 
 Úp tay lên bàn ở tư thế khum tròn, rồi nhấc từng ngón gõ xuống trong khi các ngón khác dính chặt. Nghe đơn giản nhưng cực kỳ mỏi ở ngón áp út.
 
@@ -30,7 +30,7 @@ Ba phần còn lại diễn ra khi bạn ngồi vào đàn:
 
 **2. Luyện tập tưởng tượng (Mental Play)**
 
-![Ảnh minh họa người nhắm mắt tưởng tượng bàn phím piano](/images/mental-play.jpg)
+![Ảnh minh họa người nhắm mắt tưởng tượng bàn phím piano](/images/phuong-phap-luyen-tap/mental-play.jpg)
 
 Nhắm mắt, hình dung thật rõ bàn phím trước mặt, "thấy" ngón tay mình di chuyển và "nghe" âm thanh vang lên trong đầu.
 
@@ -50,7 +50,7 @@ Hát hoặc ngân nga giai điệu bài tập bằng miệng trước khi đánh
 
 **5. Chép nốt ra giấy (Music Copying)**
 
-![Ảnh minh họa tay cầm bút chì chép nốt nhạc](/images/music-copying.jpg)
+![Ảnh minh họa tay cầm bút chì chép nốt nhạc](/images/phuong-phap-luyen-tap/music-copying.jpg)
 
 Kẻ khuông năm dòng rồi tự tay vẽ khóa nhạc và các nốt.
 
