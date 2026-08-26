@@ -173,8 +173,13 @@ tạo lại.
 
 ## 6. Kinh doanh (tóm tắt)
 
-Đầy đủ ở `docs/_internal/dinh-huong-kinh-doanh.md` — **tài liệu nội bộ, không đưa lên
-web**. Trước khi đụng tới giá, gói bán, phân quyền hay thanh toán thì đọc file đó.
+Hai tài liệu nội bộ, **không đưa lên web** — đọc trước khi đụng tới giá, gói bán, phân
+quyền hay thanh toán:
+
+- `docs/_internal/dinh-huong-kinh-doanh.md` — bán cái gì, giá bao nhiêu, vì sao.
+- `docs/_internal/lo-trinh-phat-trien.md` — làm theo thứ tự nào, đo bằng gì, khi nào
+  được bước tiếp. Có định nghĩa phễu T1-T7, ba kịch bản doanh thu, mô hình sản phẩm
+  bốn lớp (Free → Core → MIDI → Recurring) và danh sách việc đã cân nhắc rồi tạm gác.
 
 - **Mô hình:** freemium + **mua đứt**, không thuê bao (nội dung hữu hạn nên thuê bao
   đằng nào cũng dở).
@@ -192,16 +197,22 @@ web**. Trước khi đụng tới giá, gói bán, phân quyền hay thanh toán
 
 ## 7. Việc tiếp theo, theo thứ tự ưu tiên
 
-1. ~~Hoàn thiện Chương 5 và 6~~ — **xong**, Giai đoạn 1 đã đủ 6 chương / 21 bài.
-2. **Soạn nốt Giai đoạn 2 (Chương 8, 9, 10)** — việc quan trọng nhất hiện nay. Chương 7
-   đã xong; gói "Nền tảng" chỉ trọn vẹn khi người học **tự đệm được một bài hát**, tức
-   là phải có đủ mẫu đệm, pedal và bài tổng kết.
-3. **Web MIDI chấm điểm** — thứ duy nhất không sao chép được (nội dung chữ thì chụp
-   màn hình là hết).
-4. Video ngắn quay tay cho các bài kỹ thuật.
-5. Phân quyền theo gói, trang mua, chính sách hoàn tiền.
+> Bản đầy đủ có cổng quyết định từng giai đoạn nằm ở mục 7 của
+> `docs/_internal/lo-trinh-phat-trien.md`. Bản rút gọn:
 
-Chỉ nên bắt đầu thu tiền sau bước 1 và 2.
+1. ~~Hoàn thiện Chương 5 và 6~~ — **xong**, Giai đoạn 1 đủ 6 chương.
+2. **Đưa 20-30 người học thật vào phần miễn phí (Chương 0-1) và đo** bao nhiêu người đi
+   hết Chương 1. Chưa cần bán gì: hai chương đó vốn miễn phí theo thiết kế paywall. Dưới
+   50% thì quay lại sửa Chương 1, **không soạn thêm chương mới**.
+3. **Soạn nốt Giai đoạn 2 (Chương 8, 9, 10)** + dựng trang mua, khóa nội dung, hoàn tiền,
+   Vercel Pro. Gói "Nền tảng" chỉ trọn vẹn khi người học **tự đệm được một bài hát**.
+4. **8-10 bài SEO** trả lời câu hỏi người mới, mỗi bài dẫn vào Chương 1 — nguồn khách rẻ
+   và tích lũy theo năm.
+5. Video ngắn quay tay cho các bài kỹ thuật (quay khi nội dung đã ổn định).
+6. **Web MIDI chấm điểm** — thứ duy nhất không sao chép được (nội dung chữ thì chụp màn
+   hình là hết).
+
+Chỉ mở bán sau bước 3. Gói tháng và AI coach chỉ bàn lại khi Web MIDI chạy ổn định.
 
 ---
 
@@ -214,7 +225,7 @@ docs/
   02-chapters/             Lý thuyết từng chương (chuong-XX.md)
   03-exercises/            Bài tập tick được (chuong-XX-bai-YY.md)
   07-doc-them/             Bài bên lề không bắt buộc: lịch sử piano, vì sao không có piano ảo (lên web)
-  _internal/               Định hướng kinh doanh, biến môi trường (KHÔNG lên web)
+  _internal/               Định hướng kinh doanh, lộ trình phát triển, biến môi trường (KHÔNG lên web)
 public/images/             MỘT THƯ MỤC CHO MỖI TRANG, tên trùng slug của trang đó
   chuong-00/               Ảnh của docs/02-chapters/chuong-00.md
   chuong-01/  chuong-02/  chuong-04/

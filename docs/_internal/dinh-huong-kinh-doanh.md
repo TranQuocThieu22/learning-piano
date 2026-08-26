@@ -10,6 +10,11 @@
 > **Mức độ tin cậy:** Các con số về giá và thị trường là **suy luận** từ dữ liệu
 > tham khảo công khai, chưa được kiểm chứng bằng doanh số thật. Phần pháp lý cần
 > hỏi lại người có chuyên môn trước khi áp dụng.
+>
+> **Tài liệu đi kèm:** `lo-trinh-phat-trien.md` — thứ tự làm việc, cách đo phễu, ba
+> kịch bản doanh thu, mô hình sản phẩm bốn lớp và những việc đã cân nhắc rồi tạm
+> gác lại. File này trả lời *bán cái gì, giá bao nhiêu, vì sao*; file kia trả lời
+> *làm theo thứ tự nào, đo bằng gì, khi nào được bước tiếp*.
 
 ---
 
