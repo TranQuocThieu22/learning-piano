@@ -9,6 +9,13 @@ body {
 }
 
 /* --- PREMIUM MARKDOWN STYLING --- */
+/* Các luật bên dưới bọc bộ chọn `.markdown-body` trong :where() để nó không
+   cộng điểm ưu tiên. Lý do: trong bài học có cả widget React dựng bằng Mantine
+   (khuông nhạc, thanh nghe mẫu, nút chấm bài) — chúng cũng nằm trong
+   .markdown-body nên trước đây dính luôn cỡ chữ 1.1rem và margin-bottom 1.5rem
+   của đoạn văn, làm hàng nút bị đội cao và chữ lệch lên trên. Hạ ưu tiên xuống
+   0-0-1 thì class riêng của Mantine (0-1-0) thắng, còn thẻ p/ul/li do
+   react-markdown sinh ra vẫn ăn đúng luật này vì không có class nào khác. */
 .markdown-body {
   max-width: 850px;
   margin: 0 auto;
@@ -22,7 +29,7 @@ body {
   border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 }
 
-.markdown-body img {
+:where(.markdown-body) img {
   max-width: 100%;
   height: auto;
   border-radius: 8px;
@@ -30,7 +37,7 @@ body {
   margin: 2rem auto;
 }
 
-.markdown-body h1 {
+:where(.markdown-body) h1 {
   font-size: 2.8rem;
   font-weight: 800;
   background-image: light-dark(
@@ -43,7 +50,7 @@ body {
   letter-spacing: -0.5px;
 }
 
-.markdown-body h2 {
+:where(.markdown-body) h2 {
   font-size: 1.8rem;
   font-weight: 700;
   color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-4));
@@ -53,31 +60,31 @@ body {
   padding-bottom: 0.5rem;
 }
 
-.markdown-body h3 {
+:where(.markdown-body) h3 {
   font-size: 1.4rem;
   color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-teal-4));
   margin-top: 2.5rem;
   margin-bottom: 1rem;
 }
 
-.markdown-body p {
+:where(.markdown-body) p {
   margin-bottom: 1.5rem;
   font-size: 1.1rem;
   color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
 }
 
-.markdown-body ul, .markdown-body ol {
+:where(.markdown-body) ul, :where(.markdown-body) ol {
   margin-bottom: 1.5rem;
   padding-left: 1.8rem;
   font-size: 1.1rem;
   color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
 }
 
-.markdown-body li {
+:where(.markdown-body) li {
   margin-bottom: 0.75rem;
 }
 
-.markdown-body blockquote {
+:where(.markdown-body) blockquote {
   border-left: 4px solid var(--mantine-color-violet-5);
   margin: 2rem 0;
   padding: 1rem 1.5rem;
@@ -87,19 +94,19 @@ body {
   font-size: 1.1rem;
 }
 
-.markdown-body hr {
+:where(.markdown-body) hr {
   border: 0;
   height: 1px;
   background: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
   margin: 3rem 0;
 }
 
-.markdown-body strong {
+:where(.markdown-body) strong {
   color: light-dark(var(--mantine-color-orange-8), var(--mantine-color-yellow-4));
   font-weight: 600;
 }
 
-.markdown-body code {
+:where(.markdown-body) code {
   background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
   padding: 0.2em 0.4em;
   border-radius: 6px;
@@ -129,14 +136,14 @@ body {
 }
 
 /* --- LINKS --- */
-.markdown-body a {
+:where(.markdown-body) a {
   color: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-4));
   text-decoration: none;
   border-bottom: 1px solid light-dark(rgba(34, 139, 230, 0.4), rgba(77, 171, 247, 0.4));
   transition: border-color 0.15s ease, color 0.15s ease;
 }
 
-.markdown-body a:hover {
+:where(.markdown-body) a:hover {
   color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-blue-2));
   border-bottom-color: currentColor;
 }
@@ -183,12 +190,12 @@ body {
 }
 
 /* Blockquote paragraphs inherit the quote styling, not the body paragraph size */
-.markdown-body blockquote p {
+:where(.markdown-body) blockquote p {
   margin-bottom: 0.5rem;
   font-size: 1.05rem;
 }
 
-.markdown-body blockquote p:last-child {
+:where(.markdown-body) blockquote p:last-child {
   margin-bottom: 0;
 }
 

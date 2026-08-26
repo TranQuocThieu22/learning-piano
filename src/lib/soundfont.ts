@@ -14,6 +14,9 @@ export const SOUNDFONT_URL = '/soundfonts/';
  * abcjs chỉ tự đặt hệ số âm lượng 3.0 khi nhận ra đúng URL CDN của MusyngKite;
  * dùng URL nội bộ thì nó rơi về 1.0 và tiếng nhỏ hẳn đi. Khai báo lại cho khớp.
  * Xem `CreateSynth.init` trong abcjs (`self.soundFontVolumeMultiplier`).
+ *
+ * Đây chỉ là mức abcjs dựng ra ban đầu; mức phát ra tai người học do
+ * `normalizeBufferVolume` ở cuối tệp quyết định.
  */
 const MUSYNG_KITE_VOLUME_MULTIPLIER = 3.0;
 
@@ -67,4 +70,54 @@ export function synthOptions(program: number): SynthOptions {
     soundFontUrl: SOUNDFONT_URL,
     soundFontVolumeMultiplier: MUSYNG_KITE_VOLUME_MULTIPLIER,
   };
+}
+
+/**
+ * Đỉnh âm lượng muốn đạt sau khi kéo to, trên thang -1..1 của Web Audio.
+ * Chừa lại 10% cho chắc, chạm đúng 1.0 là bắt đầu vỡ tiếng.
+ */
+const TARGET_PEAK = 0.9;
+
+/**
+ * Trần khuếch đại. Bản nhạc gần như im lặng (chỉ có dấu lặng, hoặc nốt cực
+ * nhỏ) mà kéo lên vô hạn thì chỉ khuếch đại tiếng ồn nền của mẫu âm.
+ */
+const MAX_GAIN = 20;
+
+/**
+ * Kéo to bản nhạc abcjs vừa dựng xong, ngay trên buffer, trước khi phát.
+ *
+ * Bộ MusyngKite thu ở mức rất nhỏ: nốt to nhất trong quãng của giáo trình
+ * (Đô2 tới Đô6) chỉ chạm đỉnh khoảng 0.11 trên thang -1..1. Nhân với hệ số 3.0
+ * mà abcjs dùng cho bộ này thì một giai điệu một tay phát ra chỉ quanh
+ * -16 dBFS — mở hết loa laptop nghe vẫn nhỏ.
+ *
+ * Không thể chỉ nâng `soundFontVolumeMultiplier` lên cao: hệ số đó áp cứng cho
+ * mọi bài, nên mức đủ to cho bài một tay sẽ làm bài hai tay nhiều nốt chồng
+ * nhau bị vỡ tiếng. Đo đỉnh thật của từng bài rồi kéo vừa đủ thì to hết mức mà
+ * chắc chắn không vỡ, đồng thời tự hạ xuống nếu bài nào lỡ quá to.
+ *
+ * Sửa thẳng trên Float32Array của buffer nên tương quan mạnh/nhẹ giữa các nốt
+ * (abcjs đánh phách mạnh 105, phách nhẹ 85) vẫn giữ nguyên.
+ */
+export function normalizeBufferVolume(buffer: AudioBuffer) {
+  const channels: Float32Array[] = [];
+  let peak = 0;
+  for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+    const data = buffer.getChannelData(ch);
+    channels.push(data);
+    for (let i = 0; i < data.length; i++) {
+      const level = Math.abs(data[i]);
+      if (level > peak) peak = level;
+    }
+  }
+  if (peak <= 0) return;
+
+  const gain = Math.min(TARGET_PEAK / peak, MAX_GAIN);
+  // Chênh dưới 1% thì tai không nghe ra, khỏi quét lại cả buffer.
+  if (Math.abs(gain - 1) < 0.01) return;
+
+  for (const data of channels) {
+    for (let i = 0; i < data.length; i++) data[i] *= gain;
+  }
 }

@@ -7,14 +7,26 @@ import { IconDeviceGamepad2 } from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
 import { SheetAudioControls } from './SheetAudioControls';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
-import { INSTRUMENTS, loadSavedProgram, saveProgram, synthOptions } from '@/lib/soundfont';
+import {
+  INSTRUMENTS,
+  loadSavedProgram,
+  normalizeBufferVolume,
+  saveProgram,
+  synthOptions,
+} from '@/lib/soundfont';
 
 /** abcjs gắn noteTimings lên tune sau khi gọi setTiming, nhưng chưa khai báo trong .d.ts. */
 type TuneWithTimings = TuneObject & { noteTimings?: NoteTimingEvent[] };
 
-/** `seek` có thật trong SynthController nhưng thiếu trong .d.ts của abcjs. */
-type SynthControllerWithSeek = InstanceType<typeof ABCJS.synth.SynthController> & {
+/**
+ * Vá lại vài chỗ .d.ts của abcjs ghi thiếu hoặc ghi sai so với mã chạy thật:
+ * - `seek` có trong SynthController nhưng thiếu khai báo.
+ * - `getAudioBuffer` được khai báo trên SynthController nhưng thực tế chỉ
+ *   CreateSynth mới có; SynthController giữ nó ở thuộc tính `midiBuffer`.
+ */
+type SynthControllerInternals = InstanceType<typeof ABCJS.synth.SynthController> & {
   seek?: (percent: number, units?: string) => void;
+  midiBuffer?: { getAudioBuffer?: () => AudioBuffer | undefined };
 };
 
 /** Nhịp mỗi phút ở tốc độ `warp`, tính lại đúng như abcjs làm trong `SynthController.go`. */
@@ -171,6 +183,17 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     }
   }, [abcNotation]);
 
+  /**
+   * Kéo to bản nhạc vừa dựng xong. Phải gọi lại sau *mọi* lần abcjs dựng lại
+   * chuỗi âm thanh — đổi bài, đổi tiếng đàn, đổi tốc độ — vì mỗi lần như vậy
+   * nó tạo một AudioBuffer mới ở mức gốc.
+   */
+  const boostVolume = useCallback(() => {
+    const synthControl = synthControlRef.current as SynthControllerInternals | null;
+    const buffer = synthControl?.midiBuffer?.getAudioBuffer?.();
+    if (buffer) normalizeBufferVolume(buffer);
+  }, []);
+
   // Nạp lại tiếng đàn khi đổi bản nhạc hoặc khi người học chọn nhạc cụ khác.
   useEffect(() => {
     const synthControl = synthControlRef.current;
@@ -182,10 +205,10 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     // (như trước) chỉ ghi đè self.options mà không nạp lại gì — nên sau
     // lần play đầu tiên, đổi nhạc cụ không có tác dụng vì self.isLoaded
     // đã true và play() không gọi go() nữa (xem runWhenReady trong abcjs).
-    synthControl.setTune(tune, true, synthOptions(program)).catch((err) => {
+    synthControl.setTune(tune, true, synthOptions(program)).then(boostVolume).catch((err) => {
       console.warn('Audio problem:', err);
     });
-  }, [audioReady, program, abcNotation]);
+  }, [audioReady, program, abcNotation, boostVolume]);
 
   const handlePlayPause = useCallback(() => {
     const synthControl = synthControlRef.current;
@@ -207,7 +230,7 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   }, []);
 
   const handleSeek = useCallback((next: number) => {
-    (synthControlRef.current as SynthControllerWithSeek | null)?.seek?.(next);
+    (synthControlRef.current as SynthControllerInternals | null)?.seek?.(next);
     setProgress(next);
   }, []);
 
@@ -215,8 +238,9 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     const tune = tuneRef.current;
     setWarp(next);
     if (tune) setBpm(bpmAtWarp(tune, next));
-    synthControlRef.current?.setWarp(next);
-  }, []);
+    // setWarp dựng lại buffer từ đầu (destroy rồi go), nên phải kéo to lại.
+    synthControlRef.current?.setWarp(next)?.then(boostVolume);
+  }, [boostVolume]);
 
   const showPracticeButton = expected.length > 0 && !practiceOpen;
 
