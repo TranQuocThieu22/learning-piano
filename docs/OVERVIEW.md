@@ -6,7 +6,7 @@
 >
 > File nằm ở gốc `docs/`, **không hiển thị trên web** — `contentDirs` trong
 > `src/lib/markdown.ts` chỉ nhận `01-roadmap`, `02-chapters`, `03-exercises`,
-> `06-quyet-dinh`.
+> `07-doc-them`.
 >
 > **Cập nhật lần cuối:** 26/08/2026
 
@@ -110,7 +110,7 @@ CMS, không có bảng bài học trong database.
 | Đường dẫn | Chức năng |
 |---|---|
 | `/` | Chuyển hướng sang `/01-roadmap/roadmap` |
-| `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Ghi chú) |
+| `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm) |
 | `/nhat-ky` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
 | `/luyen-nhip` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
 | `/luyen-nhan-not` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
@@ -141,7 +141,7 @@ ngược lại nếu chưa đọc lý do.
 Giáo trình dạy thứ nằm ở *cơ thể* — form tay, độc lập ngón, sức nặng cánh tay — mà
 màn hình phẳng không rèn được. Tệ hơn, nó tạo cảm giác sai về tiến bộ và ăn mất thời
 gian lẽ ra ngồi trước đàn. Hai hướng thay thế được chấp nhận: **bài luyện nhận nốt**
-và **Web MIDI với đàn thật**. (`docs/06-quyet-dinh/khong-lam-piano-ao.md`)
+và **Web MIDI với đàn thật**. (`docs/07-doc-them/khong-lam-piano-ao.md`)
 
 **Không ép chơi theo bản nhạc chạy trực tiếp.**
 Đây là lý do chính khiến người mới bỏ cuộc với app chấm điểm tự động: nhịp độ do máy
@@ -201,7 +201,7 @@ docs/
   01-roadmap/              Lộ trình + phương pháp luyện tập
   02-chapters/             Lý thuyết từng chương (chuong-XX.md)
   03-exercises/            Bài tập tick được (chuong-XX-bai-YY.md)
-  06-quyet-dinh/           Ghi chú giải thích cho người học (lên web)
+  07-doc-them/             Bài bên lề không bắt buộc: lịch sử piano, vì sao không có piano ảo (lên web)
   _internal/               Định hướng kinh doanh, biến môi trường (KHÔNG lên web)
 src/
   app/                     Trang Next.js

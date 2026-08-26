@@ -13,7 +13,7 @@ const CATEGORY_LABELS: Record<string, string> = {
   '01-roadmap': 'Lộ trình',
   '02-chapters': 'Lý thuyết',
   '03-exercises': 'Bài tập',
-  '06-quyet-dinh': 'Ghi chú',
+  '07-doc-them': 'Đọc thêm',
 };
 
 function categoryLabel(cat: string) {

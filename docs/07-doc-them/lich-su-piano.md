@@ -1,9 +1,9 @@
-# Chương 0 - Đọc thêm: Cây đàn này đến từ đâu?
+# Cây đàn này đến từ đâu? (Lịch sử của piano)
 
 > [!NOTE]
 > **Trang này hoàn toàn không bắt buộc.** Không có bài tập, không có gì phải nhớ, và bỏ qua nó cũng không ảnh hưởng chút nào tới việc tập đàn của bạn.
 >
-> Nó nằm riêng ra đây vì đúng một lý do: người mới bắt đầu cần được **chạm vào phím đàn sớm**, chứ không phải đọc bốn trăm năm lịch sử trước đã. Nhưng nếu bạn thuộc kiểu người thích biết *tại sao mọi thứ lại như vậy*, thì mười phút ở đây sẽ trả lời kha khá câu hỏi mà các chương sau chỉ nói ngắn gọn.
+> Trước đây phần này nằm ngay trong Chương 0. Nó được chuyển xuống mục **Đọc thêm** vì đúng một lý do: người mới bắt đầu cần được **chạm vào phím đàn sớm**, chứ không phải đọc bốn trăm năm lịch sử trước đã. Nhưng nếu bạn thuộc kiểu người thích biết *tại sao mọi thứ lại như vậy*, thì mười phút ở đây sẽ trả lời kha khá câu hỏi mà các chương sau chỉ nói ngắn gọn.
 
 ## 1. Âm nhạc phương Tây trong một dòng thời gian
 

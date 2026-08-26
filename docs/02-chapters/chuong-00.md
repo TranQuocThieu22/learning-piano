@@ -89,8 +89,10 @@ Bản đầu tiên của chương này kể toàn bộ lịch sử: bốn thời
 
 Chuyện hay thật, nhưng nó **dài** — và không có chữ nào trong đó giúp ngón tay bạn bấm đúng phím trong ngày đầu tiên. Dựng một bức tường chữ ngay trước mặt người vừa mới bắt đầu là cách nhanh nhất khiến họ đóng tab và không quay lại.
 
-Nên phần đó được chuyển sang một trang riêng:
+Nên phần đó được chuyển xuống mục **Đọc thêm** ở cuối thanh điều hướng bên trái:
 
-**👉 [Chương 0 - Đọc thêm: Cây đàn này đến từ đâu?](/02-chapters/chuong-00-doc-them)**
+**👉 [Cây đàn này đến từ đâu?](/07-doc-them/lich-su-piano)**
 
 Đọc lúc nào cũng được — một tối nào đó rảnh rỗi, hay lúc ngồi nghỉ cho tay đỡ mỏi. Không đọc cũng chẳng ảnh hưởng gì tới việc tập. Nó nằm đó cho những hôm bạn tò mò, chứ không phải một cửa ải phải qua.
+
+Trong mục đó còn vài bài khác cùng kiểu — những chuyện bên lề đáng biết nhưng không cần biết ngay.

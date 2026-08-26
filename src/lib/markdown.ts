@@ -5,7 +5,7 @@ const contentDirs = [
   '01-roadmap',
   '02-chapters',
   '03-exercises',
-  '06-quyet-dinh'
+  '07-doc-them'
 ];
 
 export interface MarkdownFile {
