@@ -14,9 +14,18 @@ Có thể là một buổi tối bạn xem phim. Ngoài cửa sổ trong phim đ
 
 Có thể là một bản nhạc trong bộ anime bạn xem hồi cấp ba. Bao nhiêu năm rồi bạn quên gần hết tình tiết, nhưng cái giai điệu ấy vang lên đâu đó là bạn nhận ra ngay, và trong ba giây đầu tiên bạn thấy bình yên một cách khó giải thích.
 
+![Góc phòng học với cây đàn piano lúc chiều tà](/images/piano-anime-nostalgia.jpg)
+
+
 Có thể là một cây đàn đặt giữa sảnh khách sạn, hay ở góc một quán cà phê. Một người lạ ngồi xuống, đánh vài câu, và cả không gian ồn ào tự dưng dịu xuống. Lúc đó trong đầu bạn thoáng qua một ý nghĩ rất cụ thể: *giá mà mình cũng làm được thế.*
 
+![Cây đàn piano giữa sảnh khách sạn sang trọng](/images/piano-hotel-lobby.jpg)
+
+
 Hoặc đơn giản là bạn đã đi qua một nơi rất đẹp — biển lúc chiều muộn, một ngôi nhà gỗ giữa rừng thông, một chuyến tàu chạy dọc bờ nước — và bạn nghe nhạc piano trong tai nghe suốt quãng đường ấy. Từ hôm đó, âm nhạc và nơi chốn đó dính vào nhau trong trí nhớ bạn, gỡ không ra.
+
+![Chuyến tàu chạy dọc bờ biển lúc hoàng hôn](/images/scenery-train-water.jpg)
+
 
 > Hãy dừng lại một chút và **nhớ lại đúng khoảnh khắc của bạn**. Bản nhạc nào, ở đâu, lúc đó bạn thấy gì.
 >
@@ -24,22 +33,19 @@ Hoặc đơn giản là bạn đã đi qua một nơi rất đẹp — biển l�
 
 ## Những bản nhạc đã kéo rất nhiều người tới cây đàn
 
-![Biểu diễn piano với hoa anh đào rơi](/images/anime-piano.jpg)
-
 Bạn không hề một mình. Có những bản nhạc mà cứ vài năm lại có thêm một thế hệ nghe được và muốn học đàn vì nó:
 
 - **Für Elise** và **Sonata Ánh Trăng** — Beethoven. Hai bản nhạc có lẽ nhiều người nhận ra nhất thế giới.
-  <img src="/images/beethoven.jpg" alt="Beethoven" width="200" style="border-radius: 8px; margin: 10px 0;" />
-
 - **Nocturne Op. 9 No. 2** — Chopin. Nghe như một người đang kể chuyện rất khẽ vào đêm khuya.
-  <img src="/images/chopin.jpg" alt="Chopin" width="200" style="border-radius: 8px; margin: 10px 0;" />
-
 - **Clair de Lune** — Debussy. Cái tên có nghĩa là *ánh trăng*, và bản nhạc đúng là nghe như ánh trăng thật.
 - **River Flows in You** — Yiruma. Bản nhạc đã đẩy không biết bao nhiêu người trẻ đi mua cây đàn đầu tiên.
 - **Merry-Go-Round of Life** (*Lâu đài bay của pháp sư Howl*) và **One Summer's Day** (*Vùng đất linh hồn*) — Joe Hisaishi. Nhạc phim hoạt hình Ghibli, và có lẽ là lý do phổ biến nhất khiến người Việt trẻ muốn học piano.
-  <img src="/images/spirited-away.png" alt="Spirited Away" width="200" style="border-radius: 8px; margin: 10px 0;" />
 
-- Và cả một bộ anime dựng hẳn quanh cây đàn piano — **Shigatsu wa Kimi no Uso** (*Khúc nhạc tháng Tư*) — bộ phim mà rất nhiều người xem xong là đi tìm lớp học đàn.
+![Lâu đài bay của pháp sư Howl - Merry-Go-Round of Life](/images/merry-go-round-of-life.jpg)
+
+- Và cả một bộ anime dựng hẳn quanh cây đàn piano — **Shigatsu wa Kimi no Uso** (*Tháng tư là lời nói dối của em*) — bộ phim mà rất nhiều người xem xong là đi tìm lớp học đàn.
+
+![Tháng tư là lời nói dối của em - Your Lie in April](/images/thang-tu-la-loi-noi-doi-cua-em.jpg)
 
 Mình nói thẳng một điều, vì bạn sẽ tự phát hiện ra sớm thôi: **phần lớn những bản nhạc trên đều khó**, có bài rất khó. Chúng không phải chỗ để bắt đầu, và giáo trình này không hứa hẹn sau ba tháng bạn chơi được Clair de Lune.
 

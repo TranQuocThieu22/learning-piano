@@ -90,7 +90,7 @@ export function AppLayout({
         breakpoint: 'sm',
         collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
       }}
-      padding="md"
+      padding={{ base: 'xs', sm: 'md' }}
     >
       <AppShell.Header>
         <Group h="100%" px="md" justify="space-between" wrap="nowrap">
