@@ -15,7 +15,9 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Giáo trình piano tự học theo từng chương, kèm máy đánh nhịp và bài luyện nhận nốt.',
     start_url: '/',
     display: 'standalone',
-    orientation: 'portrait-primary',
+    // KHÔNG khai `orientation` ở đây. Đặt 'portrait-primary' là khoá cứng màn
+    // hình dọc: xoay ngang máy thì app không xoay theo. Khuông nhạc và bảng
+    // trong bài học cần bề ngang, nên phải để người học tự quyết.
     background_color: '#ffffff',
     theme_color: '#ffffff',
     lang: 'vi',
