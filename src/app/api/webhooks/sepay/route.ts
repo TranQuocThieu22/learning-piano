@@ -1,4 +1,5 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
+import { env } from '@/lib/env';
 import {
   decideReconcile,
   findTransferCode,
@@ -27,7 +28,7 @@ function secretsMatch(a: string, b: string): boolean {
 }
 
 function isAuthorised(request: Request): boolean {
-  const expected = process.env.SEPAY_WEBHOOK_API_KEY;
+  const expected = env.SEPAY_WEBHOOK_API_KEY;
   if (!expected) {
     console.error('[sepay] Thiếu SEPAY_WEBHOOK_API_KEY — từ chối mọi webhook.');
     return false;

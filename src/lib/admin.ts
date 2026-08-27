@@ -1,6 +1,7 @@
 import 'server-only';
 import { auth } from '@/auth';
 import { isAdminEmail } from './admin-allowlist';
+import { env } from './env';
 
 /**
  * Định nghĩa DUY NHẤT của "người này có phải admin không".
@@ -14,7 +15,7 @@ export async function getAdminSession() {
   const session = await auth();
   const email = session?.user?.email;
 
-  if (!isAdminEmail(email, process.env.ADMIN_EMAILS)) return null;
+  if (!isAdminEmail(email, env.ADMIN_EMAILS)) return null;
   return session;
 }
 

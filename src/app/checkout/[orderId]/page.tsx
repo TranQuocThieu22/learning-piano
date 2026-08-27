@@ -9,6 +9,7 @@ import { viewerHasFullAccess } from '@/lib/access-server';
 import { findPackage } from '@/lib/packages';
 import { getOrder } from '@/lib/payment/orders';
 import { buildVietQrUrl, formatVnd, getBankAccount } from '@/lib/payment/vietqr';
+import { env } from '@/lib/env';
 
 /**
  * Hướng dẫn chuyển khoản cho một đơn.
@@ -37,7 +38,7 @@ export default async function DonHangPage({
   const hasFullAccess = await viewerHasFullAccess(session);
 
   const pkg = findPackage(order.packageId);
-  const account = getBankAccount();
+  const account = getBankAccount(env);
   const paid = order.status === 'paid';
 
   return (

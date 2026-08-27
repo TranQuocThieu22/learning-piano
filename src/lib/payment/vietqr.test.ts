@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildVietQrUrl, formatVnd } from './vietqr';
+import { buildVietQrUrl, formatVnd, getBankAccount } from './vietqr';
 
 const account = {
   bankCode: 'MBBank',
@@ -33,5 +33,29 @@ describe('formatVnd', () => {
     // không vỡ nếu Node đổi sang dấu cách không ngắt giữa các phiên bản ICU.
     expect(formatVnd(399_000)).toMatch(/^399.000đ$/);
     expect(formatVnd(0)).toBe('0đ');
+  });
+});
+
+describe('getBankAccount', () => {
+  it('dựng được tài khoản khi có đủ mã ngân hàng và số tài khoản', () => {
+    expect(
+      getBankAccount({
+        SEPAY_BANK_CODE: 'MBBank',
+        SEPAY_ACCOUNT_NUMBER: '0903252427',
+        SEPAY_ACCOUNT_NAME: 'TRAN QUOC THIEU',
+      })
+    ).toEqual(account);
+  });
+
+  it('tên chủ tài khoản để trống được, vì mã QR không cần tới nó', () => {
+    expect(
+      getBankAccount({ SEPAY_BANK_CODE: 'MBBank', SEPAY_ACCOUNT_NUMBER: '0903252427' })
+    ).toEqual({ ...account, accountName: '' });
+  });
+
+  it('trả null khi thiếu cấu hình — thà không có QR còn hơn QR sai người nhận', () => {
+    expect(getBankAccount({})).toBeNull();
+    expect(getBankAccount({ SEPAY_BANK_CODE: 'MBBank' })).toBeNull();
+    expect(getBankAccount({ SEPAY_ACCOUNT_NUMBER: '0903252427' })).toBeNull();
   });
 });

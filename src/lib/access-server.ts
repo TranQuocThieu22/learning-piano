@@ -2,6 +2,7 @@ import 'server-only';
 import type { Session } from 'next-auth';
 import { getOwnedPackageIds } from './payment/orders';
 import { isAdminEmail } from './admin-allowlist';
+import { env } from './env';
 import { REQUIRED_PACKAGE_ID } from './access';
 
 /**
@@ -16,7 +17,7 @@ import { REQUIRED_PACKAGE_ID } from './access';
  * của khu /admin vẫn là requireAdmin() như cũ.
  */
 export async function viewerHasFullAccess(session: Session | null): Promise<boolean> {
-  if (isAdminEmail(session?.user?.email, process.env.ADMIN_EMAILS)) return true;
+  if (isAdminEmail(session?.user?.email, env.ADMIN_EMAILS)) return true;
 
   const userId = session?.user?.id;
   if (!userId) return false;

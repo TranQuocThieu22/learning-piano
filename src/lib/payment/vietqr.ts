@@ -19,14 +19,29 @@ export interface BankAccount {
   accountName: string;
 }
 
-/** Đọc thông tin tài khoản nhận tiền từ biến môi trường. */
-export function getBankAccount(): BankAccount | null {
-  const bankCode = process.env.SEPAY_BANK_CODE;
-  const accountNumber = process.env.SEPAY_ACCOUNT_NUMBER;
-  const accountName = process.env.SEPAY_ACCOUNT_NAME;
+/**
+ * Dựng thông tin tài khoản nhận tiền từ cấu hình.
+ *
+ * Nhận cấu hình qua tham số chứ không tự đọc `env`: import module 'server-only'
+ * vào đây sẽ khiến vietqr.test.ts không nạp được file, và ba test của nó lặng
+ * lẽ ngừng chạy mà tổng số test vẫn xanh. Phía gọi truyền `env` vào.
+ *
+ * Thiếu mã ngân hàng hoặc số tài khoản thì trả `null` — giao diện tự hiện lời
+ * nhắc cấu hình, không dựng ra một mã QR chuyển tiền đi đâu không rõ.
+ */
+export function getBankAccount(config: {
+  SEPAY_BANK_CODE?: string;
+  SEPAY_ACCOUNT_NUMBER?: string;
+  SEPAY_ACCOUNT_NAME?: string;
+}): BankAccount | null {
+  const { SEPAY_BANK_CODE: bankCode, SEPAY_ACCOUNT_NUMBER: accountNumber } = config;
 
   if (!bankCode || !accountNumber) return null;
-  return { bankCode, accountNumber, accountName: accountName ?? '' };
+  return {
+    bankCode,
+    accountNumber,
+    accountName: config.SEPAY_ACCOUNT_NAME ?? '',
+  };
 }
 
 export function buildVietQrUrl(params: {
