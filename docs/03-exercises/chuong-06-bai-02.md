@@ -62,6 +62,8 @@ Người mới hầu như luôn làm ngược: chơi xong nốt Mi, **hất cả
 
 Đánh lại **Bài tập 1D (Chuyển thế tay giữa chừng)** của bài trước một lần. Hôm qua bạn có hai nhịp lặng để dịch tay — hôm nay sẽ không còn khoảng nghỉ nào nữa, nên hãy để ý xem tay mình dịch nhanh cỡ nào.
 
+{{sheet: chuong-06-bai-01#1D}}
+
 ## Bài tập 2A: Bốn nốt và một lần luồn ngón
 
 Bài tập cốt lõi của cả bài. Chỉ bốn nốt, một lần luồn ngón, rồi dừng hẳn.

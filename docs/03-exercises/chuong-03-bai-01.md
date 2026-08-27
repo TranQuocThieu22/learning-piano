@@ -33,7 +33,7 @@ Hôm nay chúng ta sẽ chính thức tập nhìn bản nhạc mà KHÔNG ghi s�
 - **Lặp lại:** Hãy vẽ chuỗi Đô-Rê-Mi này lặp đi lặp lại 10 lần. Vừa vẽ vừa đọc to tên nốt. Việc tự tay vẽ nốt sẽ giúp não bộ "chụp ảnh" vị trí cực kỳ sâu sắc, khi nhìn vào sheet nhạc thật bạn sẽ nhận ra chúng ngay lập tức!
 
 ## Khởi động & Ôn tập trên đàn
-Hãy ôn lại **Chương 2 - Bài 3** (Thử thách độc lập nhịp điệu) khoảng 5 phút để làm nóng ngón tay.
+Hãy ôn lại [**Chương 2 - Bài 3**](/03-exercises/chuong-02-bai-03) (Thử thách độc lập nhịp điệu) khoảng 5 phút để làm nóng ngón tay.
 
 ## Bài tập 3A: Khởi động Đô Rê Mi
 Mắt nhìn thẳng vào bản nhạc trên màn hình, ngón tay đặt sẵn lên 3 nốt Đô Rê Mi. KHÔNG NHÌN XUỐNG TAY. Ở bài tập này mình đã xóa bỏ các chữ cái ghi nhớ (lyrics) ở bên dưới.

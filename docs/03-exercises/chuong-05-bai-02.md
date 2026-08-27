@@ -59,6 +59,8 @@ Nếu bạn tạo staccato bằng cách **co ngón tay lại** (quắp ngón và
 
 Đánh lại **Bài tập 1B (Luyến cả câu bốn nốt)** của bài trước, hai lần. Giữ legato thật đẹp. Việc ôn legato ngay trước khi học staccato là cố ý — bạn sẽ cảm nhận rõ hơn sự tương phản.
 
+{{sheet: chuong-05-bai-01#1B}}
+
 ## Bài tập 2A: Nảy từng nốt một
 
 Bài đơn giản nhất có thể: đúng năm nốt quen thuộc, mỗi nốt một cú nảy.

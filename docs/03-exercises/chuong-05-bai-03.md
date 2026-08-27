@@ -67,6 +67,8 @@ Rất nhiều người mới đánh forte bằng cách **đè** vào phím và g
 
 Đánh lại **Bài tập 2B (Xen kẽ nảy và liền)** của bài trước một lần. Giữ nguyên chất lượng nảy và liền — hôm nay ta sẽ thêm to nhỏ lên trên nền đó.
 
+{{sheet: chuong-05-bai-02#2B}}
+
 ## Bài tập 3A: To và nhỏ rõ rệt
 
 Bắt đầu bằng tương phản mạnh nhất: ô nhịp to, ô nhịp nhỏ, xen kẽ.

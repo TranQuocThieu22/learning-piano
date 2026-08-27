@@ -58,6 +58,10 @@ Chúng ta sẽ học sâu ở Chương 5, nhưng hôm nay hãy làm quen ở m�
 ## Khởi động trên đàn (5 phút)
 Đánh lại **Bài tập 4B** (Grand Staff song song) và **Bài 5A** (nhịp 3/4) mỗi bài 3 lần.
 
+{{sheet: chuong-03-bai-04#4B}}
+
+{{sheet: chuong-03-bai-05#5A}}
+
 ## 🎵 Tiết mục 1: Jingle Bells (Khuông nhạc kép - Trọn vẹn 2 tay)
 
 Bạn đã chơi giai điệu này bằng tay trái ở Bài 3. Bây giờ giai điệu chuyển lên tay phải, còn tay trái đảm nhận phần đệm nền. Đây là bản nhạc hoàn chỉnh đầu tiên của bạn.

@@ -55,6 +55,8 @@ Hai nốt mới cho tay trái đọc: hợp âm Sol có nốt **Rê** nằm ngay
 
 Đánh lại **Bài tập 1D (Hợp âm ở phách 1 và 3)** của bài trước một lần, rồi chạy thang âm Đô trưởng hai tay một lượt. Kiểm tra lại chất lượng hợp âm Đô trưởng trước khi thêm hợp âm mới lên trên.
 
+{{sheet: chuong-07-bai-01#1D}}
+
 ## Bài tập 2A: Đi qua lại giữa Đô và Pha
 
 Chỉ hai hợp âm, đổi mỗi ô nhịp một lần. Nốt tròn để bạn có trọn bốn nhịp chuẩn bị cho lần đổi tiếp theo.

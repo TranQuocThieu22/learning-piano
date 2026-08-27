@@ -45,6 +45,8 @@ Và bạn sắp được nghe một điều thú vị: chỉ cần hạ một n�
 ## Khởi động & Ôn tập trên đàn (5 phút)
 Đánh lại **Bài tập 1C (Màu sắc Lydian)** của hôm trước để ngón 4 không quên phím đen.
 
+{{sheet: chuong-04-bai-01#1C}}
+
 ## Bài tập 2A: Chạm Mi giáng
 Đi lên đi xuống với ngón 3 vươn vào phím đen. Đánh chậm, cảm nhận màu buồn của giai điệu.
 

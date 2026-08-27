@@ -67,6 +67,8 @@ Hãy đọc to theo nhịp: **"BÙM - chát - chát | BÙM - chát - chát"**. C
 ## Khởi động & Ôn tập trên đàn (5 phút)
 Đánh lại **Bài tập 4D (Ode to Joy khuông nhạc kép)** để làm nóng tay và ôn lại kỹ năng đọc 2 khuông.
 
+{{sheet: chuong-03-bai-04#4D}}
+
 ## Bài tập 5A: Cảm nhận nhịp 3/4 (Tay phải)
 Để ý ký hiệu đầu bài đã đổi thành `3/4`. Mỗi ô nhịp chỉ còn 3 phách. Vừa đánh vừa đếm to "1-2-3".
 

@@ -53,6 +53,8 @@ Trên bản nhạc, legato được ghi bằng một **đường cong vắt qua 
 
 Đánh lại **Bài tập 1A (Chạm phím đen lần đầu)** của Chương 4 một lần cho nóng tay. Lần này thử để ý xem bạn đang đánh liền hay đang đánh rời — nhiều khả năng là rời, và đó là bình thường.
 
+{{sheet: chuong-04-bai-01#1A}}
+
 ## Bài tập 1A: Luyến từng cặp hai nốt
 
 Đây là đơn vị nhỏ nhất của legato. Mỗi đường cong ôm đúng **hai nốt**: nốt đầu chuyển trọng lượng sang nốt sau, rồi nhấc tay ra hẳn trước khi vào cặp tiếp theo.

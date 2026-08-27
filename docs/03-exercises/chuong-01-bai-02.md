@@ -33,6 +33,10 @@
 
 Mở lại **Bài tập 1A và 1B** của bài trước, đánh mỗi bài 2 lượt cho nóng tay. Để ý xem hôm nay ngón tay có tìm phím nhanh hơn hôm qua không — gần như chắc chắn là có, và đó là bằng chứng cụ thể rằng bạn đang tiến bộ.
 
+{{sheet: chuong-01-bai-01#1A}}
+
+{{sheet: chuong-01-bai-01#1B}}
+
 ## Kỹ năng mới: Bước nhảy
 
 Điều quan trọng nhất khi nhảy quãng: **không nhấc bổng cả bàn tay lên**. Bàn tay giữ nguyên vị trí, chỉ có ngón tay vươn ra rồi nhấn xuống.

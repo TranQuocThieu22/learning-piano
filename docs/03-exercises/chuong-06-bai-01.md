@@ -70,6 +70,8 @@ Cả bàn tay dịch sang phải bốn phím so với thế tay Đô quen thuộ
 
 Đánh lại **Bài tập 3D (Tổng kết Chương 5)** của bài trước một lần. Giữ nguyên chất lượng legato, staccato và to nhỏ — hôm nay thêm nốt mới, nhưng những gì đã học không được rơi rụng.
 
+{{sheet: chuong-05-bai-03#3D}}
+
 ## Bài tập 1A: Khởi động thế tay Sol
 
 Bài đầu tiên chỉ để tay quen chỗ mới. Bốn ngón, bốn phím, không có gì bất ngờ.

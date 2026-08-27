@@ -72,6 +72,8 @@ Bảng số ngón này **giống hệt** bảng đi xuống của tay phải ở
 
 Đánh lại **Bài tập 2C (Thang âm Đô trưởng đi lên)** của bài trước hai lần. Chỗ luồn ngón ở nốt Pha đã đều chưa? Nếu còn khựng, hãy dành hẳn buổi hôm nay ôn lại bài 2 thay vì học tiếp — không có gì phải vội.
 
+{{sheet: chuong-06-bai-02#2C}}
+
 ## Bài tập 3A: Đi xuống từ Đô cao
 
 Đặt ngón 5 lên **Đô cao**, bốn ngón còn lại xếp xuống dần: 4 trên Si, 3 trên La, 2 trên Sol, 1 trên Pha.

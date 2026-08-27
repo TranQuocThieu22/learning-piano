@@ -30,6 +30,8 @@ Bạn đã quen với Đô, Rê, Mi. Hôm nay chúng ta sẽ bổ sung nốt Pha
 ## Khởi động & Ôn tập trên đàn (5 phút)
 Đánh lại **Bài tập 3B (Mary Had A Little Lamb)** của bài trước để khởi động mắt và tay. Nếu bạn đánh trơn tru mà không cần nhìn tay, nghĩa là bạn đã sẵn sàng học nốt mới!
 
+{{sheet: chuong-03-bai-01#3B}}
+
 ## Bài tập 3D: Làm quen Pha và Sol
 Nhìn thẳng vào màn hình, để tay phải sẵn sàng trên 5 phím. Bài này chỉ tập trung vào ngón 4 và ngón 5.
 

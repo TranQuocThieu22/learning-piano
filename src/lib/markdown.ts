@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { resolveSheetEmbeds } from './sheet-embed';
 
 const contentDirs = [
   '01-roadmap',
@@ -48,5 +49,6 @@ export function getMarkdownContent(relativePath: string): string | null {
   const rootDir = path.join(process.cwd(), 'docs');
   const fullPath = path.join(rootDir, relativePath);
   if (!fs.existsSync(fullPath)) return null;
-  return fs.readFileSync(fullPath, 'utf-8');
+  // Nhúng bản nhạc của bài khác vào ngay chỗ cần, xem sheet-embed.ts.
+  return resolveSheetEmbeds(fs.readFileSync(fullPath, 'utf-8'));
 }

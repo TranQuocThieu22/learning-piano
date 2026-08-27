@@ -61,6 +61,8 @@ Nhớ lại ngón tay trái: Đô = ngón 5, Rê = ngón 4, Mi = ngón 3, **Pha 
 ## Khởi động & Ôn tập trên đàn (5 phút)
 Đánh lại **Bài tập 3G** (Khởi động Khóa Pha) của bài trước để tay trái nhớ lại vị trí.
 
+{{sheet: chuong-03-bai-03#3G}}
+
 ## Bài tập 4A: Bổ sung Pha và Sol (Khóa Pha)
 Chỉ tay trái. Tập trung vào ngón 2 (Pha) và ngón 1 (Sol). Mắt nhìn bản nhạc, không nhìn tay.
 

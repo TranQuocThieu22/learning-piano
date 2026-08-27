@@ -62,6 +62,8 @@ Không phải may mắn gì cả: cách các phím đen được xếp trên bà
 
 Đánh lại **Bài tập 2B (Vòng Đô, Pha, Sol, Đô)** của bài trước hai lượt. Chú ý lần đổi hợp âm có rơi đúng phách 1 không — hôm nay sẽ thêm hợp âm mới vào đúng vòng này.
 
+{{sheet: chuong-07-bai-02#2B}}
+
 ## Bài tập 3A: Đô trưởng và Đô thứ, cạnh nhau
 
 Bài quan trọng nhất hôm nay, dù nhìn thì đơn giản nhất.
