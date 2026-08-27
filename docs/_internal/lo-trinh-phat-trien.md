@@ -7,11 +7,15 @@
 > File kia trả lời *bán cái gì, giá bao nhiêu, vì sao*. File này trả lời *làm theo
 > thứ tự nào, đo bằng gì, và khi nào được phép bước tiếp*.
 >
-> **Cập nhật lần cuối:** 26/08/2026
+> **Lịch sử cập nhật:** xem mục cuối file — mỗi lần sửa thêm một dòng, không ghi đè dòng cũ.
 >
 > **Mức độ tin cậy:** Mọi con số dưới đây là **suy luận**, chưa có một khách hàng
 > thật nào để kiểm chứng. Phần thuế và pháp lý phải hỏi kế toán trước khi dựa vào.
 > Ba kịch bản ở mục 3 tồn tại để **giới hạn kỳ vọng**, không phải để lập kế hoạch chi tiêu.
+>
+> **Bản mở rộng 7 năm:** `du-phong-7-nam.md` — kéo dài ba kịch bản ở mục 3 ra tới 2033,
+> quy đổi doanh thu gộp sang ròng, và liệt kê năm rào cản thật. Nó **cố ý vi phạm** cảnh
+> báo "quá năm thứ hai là văn học" ở mục 3, nên chỉ dùng để thấy thứ tự độ lớn.
 
 ---
 
@@ -263,3 +267,16 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 - Khi **Giai đoạn 2 hoàn thiện** — xem lại giá và mục 5.
 - Khi **Web MIDI chạy ổn định** — mở mục 5 lớp Recurring và mục 8 dòng đầu tiên.
 - Nếu xuất hiện **đối thủ tiếng Việt trực tiếp** — xem lại toàn bộ.
+
+---
+
+## Lịch sử cập nhật
+
+> Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
+> *Tiêu đề commit* phải chép **y hệt** tiêu đề commit để tìm lại được bằng
+> `git log --grep="<tiêu đề>"` hoặc gõ thẳng vào ô tìm kiếm của Fork.
+
+| Ngày | Tiêu đề commit | Cập nhật gì |
+|---|---|---|
+| 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang bản mở rộng 7 năm `du-phong-7-nam.md` |
+| 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Tạo file — phễu T1-T7, ba kịch bản doanh thu, mô hình sản phẩm bốn lớp, lộ trình A-E có cổng quyết định |

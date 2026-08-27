@@ -4,7 +4,7 @@
 > Thư mục `_internal` nằm ngoài `contentDirs` trong `src/lib/markdown.ts` nên không
 > xuất hiện trên thanh điều hướng.
 >
-> **Cập nhật lần cuối:** 25/08/2026
+> **Lịch sử cập nhật:** xem mục cuối file — mỗi lần sửa thêm một dòng, không ghi đè dòng cũ.
 
 Tài liệu này liệt kê **mọi biến ứng dụng thật sự đọc**, ai đọc nó, và chuyện gì xảy
 ra khi thiếu. Bản mẫu để chép là `.env.example`; file này giải thích *vì sao*.
@@ -175,3 +175,16 @@ Vercel **không** đọc `.env.local` — mọi biến phải khai lại trong b
 Sau khi deploy, thử một lần bằng
 `TEST_BASE_URL=https://<tên-miền> node scripts/test-webhook.mjs <email>` — script tự
 tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch.
+
+---
+
+## Lịch sử cập nhật
+
+> Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
+> *Tiêu đề commit* phải chép **y hệt** tiêu đề commit để tìm lại được bằng
+> `git log --grep="<tiêu đề>"` hoặc gõ thẳng vào ô tìm kiếm của Fork.
+
+| Ngày | Tiêu đề commit | Cập nhật gì |
+|---|---|---|
+| 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
+| 25/08/2026 | `feat: Thêm trang quản trị người học và tài liệu biến môi trường` | Tạo file — liệt kê mọi biến ứng dụng thật sự đọc, ba nơi nạp biến, checklist deploy lên Vercel |

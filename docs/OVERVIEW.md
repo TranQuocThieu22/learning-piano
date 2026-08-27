@@ -8,7 +8,7 @@
 > `src/lib/markdown.ts` chỉ nhận `01-roadmap`, `02-chapters`, `03-exercises`,
 > `07-doc-them`.
 >
-> **Cập nhật lần cuối:** 26/08/2026
+> **Lịch sử cập nhật:** xem mục cuối file — mỗi lần sửa thêm một dòng, không ghi đè dòng cũ.
 
 ---
 
@@ -249,3 +249,22 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 - Thêm/bỏ một trang hoặc tính năng trên app → sửa mục 4.
 - Chốt một quyết định sản phẩm mới → thêm vào mục 5 kèm **lý do**.
 - Đổi giá, đổi gói, đổi vị trí paywall → sửa mục 6 (và tài liệu nội bộ).
+
+---
+
+## 10. Lịch sử cập nhật
+
+> Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
+> *Tiêu đề commit* phải chép **y hệt** tiêu đề commit để tìm lại được bằng
+> `git log --grep="<tiêu đề>"` hoặc gõ thẳng vào ô tìm kiếm của Fork.
+
+| Ngày | Tiêu đề commit | Cập nhật gì |
+|---|---|---|
+| 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
+| 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Đồng bộ theo tài liệu lộ trình phát triển mới |
+| 26/08/2026 | `content(chuong-7): Hợp âm cơ bản, mở màn Giai đoạn 2` | Chương 7 — mở màn Giai đoạn 2 |
+| 26/08/2026 | `content(chuong-6): Kỹ thuật mở rộng tay và Trạm dừng chân 2` | Chương 6 và Trạm dừng chân 2 |
+| 26/08/2026 | `refactor: Gom ảnh theo trang và nén toàn bộ public/images` | Gom ảnh theo trang sau khi nén `public/images` |
+| 26/08/2026 | `refactor: Gom bài đọc bên lề vào mục "Đọc thêm" ở cuối sidebar` | Bài đọc bên lề chuyển xuống cuối sidebar |
+| 26/08/2026 | `docs: Viết lại Chương 0 và tách lịch sử sang trang Đọc thêm` | Viết lại Chương 0, tách lịch sử piano sang trang Đọc thêm |
+| 26/08/2026 | `docs: Thêm OVERVIEW.md tóm tắt toàn cảnh dự án` | Tạo file — tóm tắt toàn cảnh dự án trong một trang |

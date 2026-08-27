@@ -28,3 +28,17 @@ Vài ràng buộc tuyệt đối, vi phạm là gây hậu quả thật:
 - **Không bịa "giá gốc" gạch ngang** cho mức giá chưa từng bán, và **không dùng đồng hồ đếm ngược giả lập**. Khuyến mại ở Việt Nam chịu điều chỉnh của Nghị định 81/2018 (sửa đổi bởi 128/2024); bịa giá gốc là quảng cáo sai sự thật, có thể bị phạt và đình chỉ tên miền.
 - **Không chạy thương mại trên gói Vercel Hobby** — gói miễn phí cấm dùng thương mại, tài khoản bị đình chỉ đồng nghĩa khách đã trả tiền mất quyền truy cập.
 - **Không hứa cập nhật miễn phí trọn đời** cho nội dung chưa tồn tại. Giai đoạn 3 và 4 là **sản phẩm riêng**, không gộp vào gói Giai đoạn 1-2, và chỉ được quảng bá khi đã soạn xong.
+
+# Quy ước tài liệu
+
+**Mọi tài liệu trong `docs/` có mục "Lịch sử cập nhật" thì phải ghi thêm dòng mới, không được ghi đè.** Không dùng dòng "Cập nhật lần cuối" nữa — nó chỉ giữ được trạng thái mới nhất và xóa mất bối cảnh vì sao một quyết định bị sửa.
+
+Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên đầu bảng** ở mục "Lịch sử cập nhật" cuối file, gồm ba cột: ngày (`dd/mm/yyyy`), **tiêu đề commit chép y hệt**, và nội dung thay đổi viết theo *vì sao* chứ không chỉ *cái gì*:
+
+- `docs/OVERVIEW.md`
+- `docs/_internal/dinh-huong-kinh-doanh.md`
+- `docs/_internal/lo-trinh-phat-trien.md`
+- `docs/_internal/du-phong-7-nam.md`
+- `docs/_internal/bien-moi-truong.md`
+
+Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.

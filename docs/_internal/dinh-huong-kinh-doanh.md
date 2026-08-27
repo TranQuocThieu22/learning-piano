@@ -5,7 +5,7 @@
 > nên không xuất hiện trên thanh điều hướng. Đây là ghi chép cho người phát triển,
 > không phải nội dung cho người học.
 >
-> **Cập nhật lần cuối:** 24/08/2026
+> **Lịch sử cập nhật:** xem mục cuối file — mỗi lần sửa thêm một dòng, không ghi đè dòng cũ.
 >
 > **Mức độ tin cậy:** Các con số về giá và thị trường là **suy luận** từ dữ liệu
 > tham khảo công khai, chưa được kiểm chứng bằng doanh số thật. Phần pháp lý cần
@@ -15,6 +15,10 @@
 > kịch bản doanh thu, mô hình sản phẩm bốn lớp và những việc đã cân nhắc rồi tạm
 > gác lại. File này trả lời *bán cái gì, giá bao nhiêu, vì sao*; file kia trả lời
 > *làm theo thứ tự nào, đo bằng gì, khi nào được bước tiếp*.
+>
+> `du-phong-7-nam.md` — dự phóng doanh thu 7 năm và đánh giá tính khả thi. Độ tin cậy
+> thấp hơn hai file này; đọc kèm cảnh báo ở đầu file đó. Mục 1.3 của nó **không đồng ý**
+> với thứ tự ưu tiên video ở mục 9 dưới đây — tranh luận chưa chốt.
 
 ---
 
@@ -186,3 +190,18 @@ Chỉ nên bắt đầu thu tiền sau bước 1 và 2.
 - [Piano app pricing compared 2026 — ArtMaster](https://www.artmaster.com/articles/what-piano-apps-actually-cost-in-2026)
 - [Giám sát, chế tài khuyến mãi trái quy định — Người Lao Động](https://tuoitre.vn/nld/giam-sat-che-tai-khuyen-mai-trai-quy-dinh-196241108210734739.htm)
 - [Nghị định 98/2020/NĐ-CP về xử phạt vi phạm hành chính trong hoạt động thương mại — VCCI](https://vcci.com.vn/legal-document/nghi-dinh-982020nd-cp-quy-dinh-ve-xu-phat-vi-pham-hanh-chinh-trong-hoat-dong-thuong-mai-san-xuat-buon-ban-hang-gia-hang-cam-va-bao-ve-quyen-loi-nguoi-tieu-dung)
+
+---
+
+## Lịch sử cập nhật
+
+> Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
+> *Tiêu đề commit* phải chép **y hệt** tiêu đề commit để tìm lại được bằng
+> `git log --grep="<tiêu đề>"` hoặc gõ thẳng vào ô tìm kiếm của Fork.
+
+| Ngày | Tiêu đề commit | Cập nhật gì |
+|---|---|---|
+| 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang `du-phong-7-nam.md`; đánh dấu bất đồng **chưa chốt** về thứ tự ưu tiên video quay tay ở mục 9 |
+| 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Thêm dòng "Tài liệu đi kèm" trỏ sang `lo-trinh-phat-trien.md` |
+| 24/08/2026 | `Bỏ tên đích danh sản phẩm đối thủ khỏi tài liệu định hướng` | Thay tên thương hiệu bằng mô tả theo cách làm — lý do pháp lý ghi ở mục 0 |
+| 24/08/2026 | `docs: Thêm tài liệu định hướng kinh doanh và quy tắc đại lý` | Tạo file — mô hình freemium + mua đứt, giá 399k, paywall cuối Chương 1, ràng buộc pháp lý về khuyến mại |
