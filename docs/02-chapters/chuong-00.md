@@ -12,11 +12,6 @@ Hầu như ai tìm học piano cũng có một khoảnh khắc như vậy. Nó t
 
 Có thể là một buổi tối bạn xem phim. Ngoài cửa sổ trong phim đang mưa, nhân vật ngồi xuống cây đàn, và tự nhiên cả bộ phim im lặng lại — chỉ còn tiếng piano. Bạn ngồi yên tới hết cảnh đó, rồi tua lại xem thêm một lần nữa.
 
-Có thể là một bản nhạc trong bộ anime bạn xem hồi cấp ba. Bao nhiêu năm rồi bạn quên gần hết tình tiết, nhưng cái giai điệu ấy vang lên đâu đó là bạn nhận ra ngay, và trong ba giây đầu tiên bạn thấy bình yên một cách khó giải thích.
-
-![Góc phòng học với cây đàn piano lúc chiều tà](/images/chuong-00/piano-anime-nostalgia.jpg)
-
-
 Có thể là một cây đàn đặt giữa sảnh khách sạn, hay ở góc một quán cà phê. Một người lạ ngồi xuống, đánh vài câu, và cả không gian ồn ào tự dưng dịu xuống. Lúc đó trong đầu bạn thoáng qua một ý nghĩ rất cụ thể: *giá mà mình cũng làm được thế.*
 
 ![Cây đàn piano giữa sảnh khách sạn sang trọng](/images/chuong-00/piano-hotel-lobby.jpg)
