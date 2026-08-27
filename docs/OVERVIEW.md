@@ -260,6 +260,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 27/08/2026 | `refactor: Đổi đường dẫn tự viết sang tiếng Anh và chốt quy ước` | Đường dẫn trong tài liệu đổi theo quy ước mới: /nhat-ky thành /journal, /admin/thanh-toan thành /admin/payments |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
 | 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Đồng bộ theo tài liệu lộ trình phát triển mới |
 | 26/08/2026 | `content(chuong-7): Hợp âm cơ bản, mở màn Giai đoạn 2` | Chương 7 — mở màn Giai đoạn 2 |

@@ -29,6 +29,24 @@ này thêm biến `NEXT_PUBLIC_*` thì phải coi giá trị đó là công khai
 Đây là lý do các file đó có dòng `import { config } from 'dotenv'` ở đầu. Bỏ đi là
 lệnh chạy tay hỏng ngay, dù `next dev` vẫn bình thường.
 
+**Phía ứng dụng chỉ có một chỗ đọc `process.env`: `src/lib/env.ts`.** Có test canh
+(`src/lib/env.test.ts`) rằng không file nào khác trong `src/` đọc thẳng, và rằng
+mọi biến khai trong schema đều có mặt trong `.env.example`. Script trong `scripts/`
+không tính — chúng là Node độc lập, tự nạp dotenv và tự kiểm lấy.
+
+Khai báo nằm ở `src/lib/env-schema.ts` (phần thuần, tách khỏi `env.ts` vì
+`server-only` làm test không nạp được module). Schema chia **ba tầng, khác nhau có
+chủ ý — đừng gộp**:
+
+| Tầng | Biến | Thiếu thì |
+|---|---|---|
+| Bắt buộc | `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | ném lỗi ngay lúc khởi động, nêu đủ mọi biến thiếu cùng lúc |
+| Đóng cửa an toàn | `ADMIN_EMAILS`, `SEPAY_WEBHOOK_API_KEY` | tính năng đó tự khoá lại, ứng dụng vẫn sống |
+| Tuỳ chọn | `DATABASE_URL_UNPOOLED`, `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME` | lùi về mặc định |
+
+Nâng hai biến tầng giữa lên tầng bắt buộc nghe có vẻ chặt hơn nhưng là **làm yếu
+đi**: thà site chạy ở chế độ an toàn còn hơn site chết vì thiếu một khoá.
+
 **Bí mật không bao giờ được commit.** `.env.local` đã nằm trong `.gitignore` —
 kiểm tra lại bằng `git check-ignore .env.local` nếu nghi ngờ.
 
@@ -186,5 +204,6 @@ tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 27/08/2026 | `refactor: Gom việc đọc biến môi trường về một chỗ và canh bằng test` | Ghi lại rằng src/lib/env.ts là nơi duy nhất đọc process.env, kèm ba tầng bắt buộc / đóng cửa an toàn / tuỳ chọn và lý do không gộp chúng |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
 | 25/08/2026 | `feat: Thêm trang quản trị người học và tài liệu biến môi trường` | Tạo file — liệt kê mọi biến ứng dụng thật sự đọc, ba nơi nạp biến, checklist deploy lên Vercel |

@@ -29,6 +29,15 @@ Vài ràng buộc tuyệt đối, vi phạm là gây hậu quả thật:
 - **Không chạy thương mại trên gói Vercel Hobby** — gói miễn phí cấm dùng thương mại, tài khoản bị đình chỉ đồng nghĩa khách đã trả tiền mất quyền truy cập.
 - **Không hứa cập nhật miễn phí trọn đời** cho nội dung chưa tồn tại. Giai đoạn 3 và 4 là **sản phẩm riêng**, không gộp vào gói Giai đoạn 1-2, và chỉ được quảng bá khi đã soạn xong.
 
+# Bẫy kỹ thuật đã biết
+
+**Trước khi dò một lỗi lạ, đọc `docs/_internal/bay-ky-thuat.md`** — ghi theo lối *triệu chứng → nguyên nhân → cách sửa*, vì lúc gặp lại thì thứ bạn có trong tay là triệu chứng. Bốn cái hay tái phát nhất:
+
+- **Component ghép của Mantine (`Table.Tbody`, `List.Item`) dùng trong Server Component trả `undefined`**, trang 500 với thông báo "Element type is invalid" không chỉ ra file nào. Phải bọc vào client component — xem `AdminPaymentTables.tsx`.
+- **`\s` trong template literal bị nuốt dấu gạch chéo**: `` `^##\s+` `` thành `^##s+`. Dùng `String.raw`.
+- **Đếm số test là chưa đủ, phải đọc dòng `Test Files`** — một file test không nạp được sẽ làm test trong đó biến mất khỏi tổng số chứ không bị tính là trượt.
+- **File có `import 'server-only'` thì vitest không nạp được**, kể cả gián tiếp. Tách đôi như `env-schema.ts` / `env.ts`, hoặc cho hàm nhận cấu hình qua tham số.
+
 # Quy ước đặt đường dẫn
 
 **Mọi đường dẫn tự viết trong `src/app/` phải bằng tiếng Anh, chữ thường, nối bằng dấu gạch ngang.** Áp cho cả tên tham số truy vấn và giá trị của nó.
@@ -60,5 +69,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/lo-trinh-phat-trien.md`
 - `docs/_internal/du-phong-7-nam.md`
 - `docs/_internal/bien-moi-truong.md`
+- `docs/_internal/bay-ky-thuat.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
