@@ -6,6 +6,7 @@ import { auth } from '@/auth';
 import { db } from '@/db';
 import { lessonCompletions } from '@/db/schema';
 import { getAllLessons } from './lessons';
+import { slugSchema } from './validation';
 
 export interface ToggleResult {
   ok: boolean;
@@ -28,7 +29,15 @@ export async function toggleLessonCompletion(
     return { ok: false, completed: false, error: 'not-signed-in' };
   }
 
-  const isKnownLesson = getAllLessons().some((l) => l.slug === lessonSlug);
+  // Đầu vào từ client: chưa chắc là chuỗi. Kiểm hình dạng trước, rồi mới đối
+  // chiếu với danh sách bài có thật — hai bước khác nhau, cần cả hai.
+  const parsed = slugSchema.safeParse(lessonSlug);
+  if (!parsed.success) {
+    return { ok: false, completed: false, error: 'unknown-lesson' };
+  }
+  const slug = parsed.data;
+
+  const isKnownLesson = getAllLessons().some((l) => l.slug === slug);
   if (!isKnownLesson) {
     return { ok: false, completed: false, error: 'unknown-lesson' };
   }
@@ -39,7 +48,7 @@ export async function toggleLessonCompletion(
     .where(
       and(
         eq(lessonCompletions.userId, userId),
-        eq(lessonCompletions.lessonSlug, lessonSlug)
+        eq(lessonCompletions.lessonSlug, slug)
       )
     )
     .limit(1);
@@ -51,7 +60,7 @@ export async function toggleLessonCompletion(
       .where(eq(lessonCompletions.id, existing[0].id));
     completed = false;
   } else {
-    await db.insert(lessonCompletions).values({ userId, lessonSlug });
+    await db.insert(lessonCompletions).values({ userId, lessonSlug: slug });
     completed = true;
   }
 

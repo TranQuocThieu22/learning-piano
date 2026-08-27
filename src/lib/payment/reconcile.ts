@@ -1,27 +1,41 @@
+import { z } from 'zod';
 import type { OrderStatus } from '@/db/schema';
 import { extractTransferCode } from './transfer-code';
 
 /**
  * Payload SePay gửi tới webhook. Xem https://docs.sepay.vn/tich-hop-webhooks.html
  *
- * Khai báo lỏng ở những trường ta không dùng tới, vì đây là dữ liệu từ bên ngoài
- * — không được phép giả định nó luôn đủ và đúng kiểu.
+ * Đây là dữ liệu từ bên ngoài — không được phép giả định nó đủ và đúng kiểu, nên
+ * schema này là thứ duy nhất được phép biến `unknown` thành kiểu dùng được.
+ *
+ * Ba lựa chọn có chủ ý:
+ *
+ * 1. `looseObject` chứ không phải object thường: field lạ được GIỮ NGUYÊN, vì cả
+ *    payload được lưu vào cột `raw_payload` để sau còn dựng lại chuyện đã xảy ra.
+ *    Cắt bớt field lạ là tự huỷ bằng chứng khi có tranh chấp.
+ * 2. Chỉ `id` là bắt buộc. Nó là khoá chống trùng, không có thì không xử lý nổi.
+ *    Siết chặt những field còn lại nghe có vẻ an toàn hơn, nhưng SePay đổi format
+ *    là mọi giao dịch bị từ chối — mất tiền thật, tệ hơn hẳn.
+ * 3. `transferAmount` nhận cả số lẫn chuỗi vì cổng thanh toán hay gửi số dưới
+ *    dạng chuỗi. Việc quy đổi vẫn do decideReconcile làm như cũ.
  */
-export interface SePayWebhookPayload {
-  id: number | string;
-  gateway?: string;
-  transactionDate?: string;
-  accountNumber?: string;
-  subAccount?: string | null;
-  code?: string | null;
-  content?: string | null;
+export const sePayWebhookPayloadSchema = z.looseObject({
+  id: z.union([z.number(), z.string()]),
+  gateway: z.string().optional(),
+  transactionDate: z.string().optional(),
+  accountNumber: z.string().optional(),
+  subAccount: z.string().nullish(),
+  code: z.string().nullish(),
+  content: z.string().nullish(),
   /** "in" là tiền vào, "out" là tiền ra. Chỉ quan tâm tiền vào. */
-  transferType?: string;
-  description?: string;
-  transferAmount?: number;
-  accumulated?: number;
-  referenceCode?: string;
-}
+  transferType: z.string().optional(),
+  description: z.string().optional(),
+  transferAmount: z.union([z.number(), z.string()]).optional(),
+  accumulated: z.union([z.number(), z.string()]).optional(),
+  referenceCode: z.string().optional(),
+});
+
+export type SePayWebhookPayload = z.infer<typeof sePayWebhookPayloadSchema>;
 
 export interface OrderSnapshot {
   id: string;

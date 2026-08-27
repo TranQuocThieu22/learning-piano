@@ -1,6 +1,9 @@
 import { createHash, timingSafeEqual } from 'node:crypto';
-import { decideReconcile, findTransferCode } from '@/lib/payment/reconcile';
-import type { SePayWebhookPayload } from '@/lib/payment/reconcile';
+import {
+  decideReconcile,
+  findTransferCode,
+  sePayWebhookPayloadSchema,
+} from '@/lib/payment/reconcile';
 import { findOrderByTransferCode, recordPayment } from '@/lib/payment/orders';
 
 /**
@@ -42,17 +45,25 @@ export async function POST(request: Request) {
     return Response.json({ success: false }, { status: 401 });
   }
 
-  let payload: SePayWebhookPayload;
+  let raw: unknown;
   try {
-    payload = await request.json();
+    raw = await request.json();
   } catch {
     return Response.json({ success: false }, { status: 400 });
   }
 
-  if (payload?.id === undefined || payload?.id === null) {
-    console.warn('[sepay] Payload không có id, bỏ qua.');
+  // Ranh giới duy nhất biến dữ liệu ngoài thành kiểu dùng được. Trước đây chỗ
+  // này ép kiểu thẳng, nghĩa là một payload thiếu trường vẫn trôi vào tận lệnh
+  // ghi database — `Number(undefined) || 0` sẽ âm thầm ghi 0đ vào sổ kế toán.
+  const parsed = sePayWebhookPayloadSchema.safeParse(raw);
+  if (!parsed.success) {
+    console.warn(
+      '[sepay] Payload không đúng dạng, bỏ qua:',
+      JSON.stringify(parsed.error.issues)
+    );
     return Response.json({ success: false }, { status: 400 });
   }
+  const payload = parsed.data;
 
   const code = findTransferCode(payload);
   const order = code ? await findOrderByTransferCode(code) : null;

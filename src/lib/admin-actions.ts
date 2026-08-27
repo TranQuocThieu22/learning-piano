@@ -1,12 +1,25 @@
 'use server';
 
 import { and, eq } from 'drizzle-orm';
+import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { db } from '@/db';
 import { entitlements, users } from '@/db/schema';
 import { requireAdmin } from './admin';
 import { findPackage } from './packages';
 import { grantEntitlement } from './payment/orders';
+import { idSchema, noteSchema } from './validation';
+
+const grantAccessInput = z.object({
+  userId: idSchema,
+  packageId: idSchema,
+  note: noteSchema,
+});
+
+const revokeAccessInput = z.object({
+  userId: idSchema,
+  packageId: idSchema,
+});
 
 export interface AdminActionResult {
   ok: boolean;
@@ -27,13 +40,18 @@ export async function grantAccessAction(
 ): Promise<AdminActionResult> {
   const session = await requireAdmin();
 
-  const pkg = findPackage(packageId);
-  if (!pkg) return { ok: false, message: `Không có gói "${packageId}".` };
+  const input = grantAccessInput.safeParse({ userId, packageId, note });
+  if (!input.success) {
+    return { ok: false, message: 'Dữ liệu gửi lên không hợp lệ.' };
+  }
+
+  const pkg = findPackage(input.data.packageId);
+  if (!pkg) return { ok: false, message: `Không có gói "${input.data.packageId}".` };
 
   const [user] = await db
     .select({ id: users.id, email: users.email })
     .from(users)
-    .where(eq(users.id, userId))
+    .where(eq(users.id, input.data.userId))
     .limit(1);
 
   if (!user) return { ok: false, message: 'Không tìm thấy người học này.' };
@@ -44,7 +62,7 @@ export async function grantAccessAction(
     source: 'manual',
     // Ghi lại ai cấp: entitlement bảng này không có cột riêng cho người thao tác,
     // nên nhét vào ghi chú để sau còn truy được.
-    note: `${note.trim() || 'Cấp tay từ trang quản trị'} — bởi ${session.user?.email}`,
+    note: `${input.data.note || 'Cấp tay từ trang quản trị'} — bởi ${session.user?.email}`,
   });
 
   revalidatePath('/admin');
@@ -64,10 +82,18 @@ export async function revokeAccessAction(
 ): Promise<AdminActionResult> {
   await requireAdmin();
 
+  const input = revokeAccessInput.safeParse({ userId, packageId });
+  if (!input.success) {
+    return { ok: false, message: 'Dữ liệu gửi lên không hợp lệ.' };
+  }
+
   const deleted = await db
     .delete(entitlements)
     .where(
-      and(eq(entitlements.userId, userId), eq(entitlements.packageId, packageId))
+      and(
+        eq(entitlements.userId, input.data.userId),
+        eq(entitlements.packageId, input.data.packageId)
+      )
     )
     .returning({ id: entitlements.id });
 
@@ -76,5 +102,5 @@ export async function revokeAccessAction(
   if (deleted.length === 0) {
     return { ok: false, message: 'Người học này vốn không có gói đó.' };
   }
-  return { ok: true, message: `Đã thu hồi gói "${packageId}".` };
+  return { ok: true, message: `Đã thu hồi gói "${input.data.packageId}".` };
 }
