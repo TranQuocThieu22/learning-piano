@@ -70,7 +70,13 @@ export default async function DonHangPage({
             <Card withBorder padding="lg" radius="md">
               <Text fw={600} mb="md">Chuyển khoản theo đúng thông tin sau</Text>
 
-              <Group align="flex-start" wrap="wrap" gap="xl">
+              {/*
+                `justify="center"` để khi màn hình hẹp và Group xuống dòng, mã QR
+                nằm giữa thay vì dạt trái. Trên màn rộng thì bảng thông tin có
+                `flex: 1 1 260px` nên tự chiếm hết phần còn lại, bố cục hai cột
+                không đổi.
+              */}
+              <Group align="flex-start" wrap="wrap" gap="xl" justify="center">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={buildVietQrUrl({
@@ -81,7 +87,7 @@ export default async function DonHangPage({
                   alt={`Mã VietQR cho đơn ${order.transferCode}`}
                   width={220}
                   height={220}
-                  style={{ maxWidth: '100%', height: 'auto' }}
+                  style={{ maxWidth: '100%', height: 'auto', margin: '0 auto' }}
                 />
 
                 {/*
