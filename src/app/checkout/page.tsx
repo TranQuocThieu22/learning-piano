@@ -39,6 +39,12 @@ export default async function MuaPage({
     : new Set<string>();
   const alreadyOwns = owned.has(REQUIRED_PACKAGE_ID);
 
+  /**
+   * Có toàn quyền mà không có dòng entitlement nào — chỉ xảy ra với quản trị
+   * viên, vì viewerHasFullAccess() cho email trong ADMIN_EMAILS đi thẳng.
+   */
+  const laQuanTri = hasFullAccess && !alreadyOwns;
+
   return (
     <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
       <Container size="sm" px={0}>
@@ -101,6 +107,30 @@ export default async function MuaPage({
                 </Text>
                 <form action={signInWithGoogle}>
                   <Button type="submit">Đăng nhập với Google</Button>
+                </form>
+              </Stack>
+            ) : laQuanTri ? (
+              /*
+                Quản trị viên đọc được toàn bộ giáo trình mà không cần đơn nào —
+                viewerHasFullAccess() cho email trong ADMIN_EMAILS đi thẳng. Nhưng
+                họ KHÔNG có dòng nào trong bảng entitlement, nên nếu chỉ dựa vào
+                `alreadyOwns` thì trang này vẫn mời họ mua thứ họ đã có.
+
+                Cố ý vẫn để tạo được đơn: đây là cách duy nhất thử luồng bấm nút
+                và trang mã QR bằng tay. scripts/test-webhook.mjs chỉ thử được
+                phần webhook, không đi qua giao diện.
+              */
+              <Stack gap="sm">
+                <Alert color="blue" variant="light" title="Bạn không cần mua gói này">
+                  Email của bạn nằm trong <code>ADMIN_EMAILS</code> nên đã có sẵn
+                  toàn quyền đọc giáo trình. Nút dưới đây chỉ để thử luồng thanh
+                  toán — đơn tạo ra là đơn thật trong database, nhớ xoá sau khi thử.
+                </Alert>
+                <form action={createOrderAction}>
+                  <input type="hidden" name="packageId" value={pkg.id} />
+                  <Button type="submit" variant="default">
+                    Tạo đơn thử (kiểm luồng thanh toán)
+                  </Button>
                 </form>
               </Stack>
             ) : (
