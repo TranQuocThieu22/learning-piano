@@ -35,9 +35,6 @@ Bạn không hề một mình. Có những bản nhạc mà cứ vài năm lại
 - **Clair de Lune** — Debussy. Cái tên có nghĩa là *ánh trăng*, và bản nhạc đúng là nghe như ánh trăng thật.
 - **River Flows in You** — Yiruma. Bản nhạc đã đẩy không biết bao nhiêu người trẻ đi mua cây đàn đầu tiên.
 - **Merry-Go-Round of Life** (*Lâu đài bay của pháp sư Howl*) và **One Summer's Day** (*Vùng đất linh hồn*) — Joe Hisaishi. Nhạc phim hoạt hình Ghibli, và có lẽ là lý do phổ biến nhất khiến người Việt trẻ muốn học piano.
-
-![Lâu đài bay của pháp sư Howl - Merry-Go-Round of Life](/images/chuong-00/merry-go-round-of-life.jpg)
-
 - Và cả một bộ anime dựng hẳn quanh cây đàn piano — **Shigatsu wa Kimi no Uso** (*Tháng tư là lời nói dối của em*) — bộ phim mà rất nhiều người xem xong là đi tìm lớp học đàn.
 
 ![Tháng tư là lời nói dối của em - Your Lie in April](/images/chuong-00/thang-tu-la-loi-noi-doi-cua-em.jpg)
