@@ -158,6 +158,63 @@ biến `PG*`/`POSTGRES_*`/`NEON_*` mà ứng dụng không đọc vào `.env.loc
 
 ---
 
+## 9. `AppShell` tắt `header.offset` thì thanh bên trùm lên nút hamburger
+
+**Triệu chứng.** Trên điện thoại, mở thanh bên ra rồi thì không đóng lại được:
+nút hamburger biến mất, bấm vào chỗ cũ không ăn gì.
+
+**Nguyên nhân.** Thanh bên của Mantine được đặt `top: var(--app-shell-header-offset)`.
+Biến đó **chỉ tồn tại khi `header.offset` bật** — xem
+`assign-header-variables.mjs` trong `@mantine/core`. Mà `offset` lại là thứ bắt
+buộc phải tắt nếu muốn thanh tiêu đề tự trượt đi lúc cuộn xuống mà nội dung
+không nhảy theo. Tắt xong thì biến không còn, thanh bên rơi về `top: 0` và trùm
+lên cả thanh tiêu đề, kể cả nút hamburger nằm trong đó.
+
+**Cách sửa.** Tắt `offset` thì phải tự cộng chỗ cho thanh tiêu đề vào cả thanh
+bên lẫn vùng nội dung — xem `.app-navbar` và `.app-main` trong
+`src/app/globals.css`:
+
+```css
+.app-navbar.app-navbar {
+  top: calc(var(--app-shell-header-height) + var(--safe-top));
+  height: calc(100dvh - var(--app-shell-header-height) - var(--safe-top));
+}
+```
+
+Hai lớp đó **nhân đôi tên lớp** là có chủ ý. Không nhân đôi thì chúng cùng độ ưu
+tiên 0-1-0 với lớp CSS Module của Mantine, và ai thắng phụ thuộc vào thứ tự
+`@mantine/core/styles.css` với `globals.css` được ghép lúc build — một thứ đổi
+lúc nào không ai hay.
+
+Kèm theo: đừng cho thanh tiêu đề trượt đi khi thanh bên đang mở. Trong
+`AppLayout.tsx` điều kiện là `isMobile && !pinned && !mobileOpened`; bỏ vế cuối
+đi là nút hamburger lại biến mất đúng theo kiểu trên.
+
+---
+
+## 10. Tab trình duyệt bị ẩn không phát sự kiện cuộn, tưởng là mã hỏng
+
+**Triệu chứng.** Thanh tiêu đề kiểu headroom (`useHeadroom`) trông như không chạy
+khi kiểm bằng công cụ điều khiển trình duyệt: `window.scrollTo()` đổi được
+`window.scrollY` nhưng `pinned` không bao giờ đổi. Ép cho nó đổi rồi thì
+`getComputedStyle(el).transform` vẫn trả về ma trận đơn vị, dù biến
+`--app-shell-header-transform` đã được đặt đúng và luật CSS đã khớp.
+
+**Nguyên nhân.** Tab không được hiển thị thì `document.visibilityState` là
+`'hidden'` và trình duyệt ngừng dựng khung hình. Kéo theo hai chuyện: sự kiện
+`scroll` không được phát (mọi hook nghe cuộn đứng im), và CSS transition kẹt ở
+`currentTime: 0` mãi mãi (nên `transform` giữ nguyên giá trị đầu).
+
+**Cách sửa.** Không phải lỗi của mã. Muốn kiểm thì:
+
+- Bắn tay sự kiện: `window.scrollTo(0, y); window.dispatchEvent(new Event('scroll'))`.
+- Đọc giá trị cuối của transition bằng cách tắt transition rồi ép tính lại:
+  `el.style.transition = 'none'; void el.offsetHeight;`
+- Xác nhận nghi ngờ bằng `el.getAnimations()` — thấy `playState: 'running'` mà
+  `currentTime: 0` là đúng triệu chứng này.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -166,4 +223,5 @@ biến `PG*`/`POSTGRES_*`/`NEON_*` mà ứng dụng không đọc vào `.env.loc
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `fix: Trả lại chỗ cho nội dung trên màn hình điện thoại` | Thêm bẫy 9 (tắt `header.offset` của AppShell thì thanh bên trùm lên nút hamburger) và bẫy 10 (tab bị ẩn không phát sự kiện cuộn nên tưởng hiệu ứng headroom hỏng) |
 | 27/08/2026 | `docs(internal): Ghi lại các bẫy kỹ thuật đã giẫm phải` | Tạo file — tám bẫy gặp trong đợt làm cổng chặn trả phí, trang mua, đổi route và gom biến môi trường |

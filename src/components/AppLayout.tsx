@@ -1,7 +1,7 @@
 'use client';
 import { AppShell, Avatar, Burger, Button, Group, NavLink, Title, ScrollArea, Box, Text } from '@mantine/core';
 import { IconChecklist, IconLock, IconMetronome, IconMusicSearch } from '@tabler/icons-react';
-import { useDisclosure } from '@mantine/hooks';
+import { useDisclosure, useHeadroom, useMediaQuery } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MarkdownFile } from '@/lib/markdown';
@@ -77,6 +77,22 @@ export function AppLayout({
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const pathname = usePathname();
 
+  /**
+   * Trên điện thoại, thanh tiêu đề tự trượt đi khi cuộn xuống và hiện lại khi
+   * cuộn lên, lấy lại 48px chiều cao vốn đã hiếm hoi khi đọc bài. Không áp cho
+   * máy tính: ở đó chiều cao không phải thứ khan hiếm, mà thanh tiêu đề nhấp
+   * nháy theo con lăn chuột thì chỉ gây khó chịu.
+   *
+   * Điều kiện !mobileOpened là bắt buộc: thanh bên đang mở mà thanh tiêu đề
+   * trượt mất thì nút hamburger để đóng nó cũng biến mất theo.
+   *
+   * useMediaQuery trả về undefined ở lần dựng đầu (getInitialValueInEffect mặc
+   * định bật) nên HTML server và client khớp nhau, không lỗi hydration.
+   */
+  const isMobile = useMediaQuery('(max-width: 48em)');
+  const { pinned } = useHeadroom({ fixedAt: 120 });
+  const headerCollapsed = Boolean(isMobile) && !pinned && !mobileOpened;
+
   const withTick = (label: string, slug: string) =>
     completedSlugs?.has(slug) ? `✓ ${label}` : label;
 
@@ -114,7 +130,7 @@ export function AppLayout({
 
   return (
     <AppShell
-      header={{ height: 60 }}
+      header={{ height: { base: 48, sm: 60 }, collapsed: headerCollapsed, offset: false }}
       navbar={{
         width: 300,
         breakpoint: 'sm',
@@ -122,7 +138,7 @@ export function AppLayout({
       }}
       padding={{ base: 'xs', sm: 'md' }}
     >
-      <AppShell.Header>
+      <AppShell.Header className="app-header">
         <Group h="100%" px="md" justify="space-between" wrap="nowrap">
           <Group gap="xs" wrap="nowrap" style={{ minWidth: 0, flexShrink: 1 }}>
             <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
@@ -146,7 +162,7 @@ export function AppLayout({
         </Group>
       </AppShell.Header>
 
-      <AppShell.Navbar p="md">
+      <AppShell.Navbar p="md" className="app-navbar">
         <ScrollArea>
           <NavLink
             href="/journal"
@@ -277,7 +293,7 @@ export function AppLayout({
         </ScrollArea>
       </AppShell.Navbar>
 
-      <AppShell.Main>
+      <AppShell.Main className="app-main">
         {children}
       </AppShell.Main>
     </AppShell>

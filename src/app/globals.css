@@ -250,3 +250,53 @@ body {
     padding-inline: 6px;
   }
 }
+
+/* --- LẤY LẠI CHỖ TRỐNG TRÊN ĐIỆN THOẠI --- */
+/* Trang chạy ở chế độ viewport-fit=cover (khai báo trong src/app/layout.tsx),
+   nghĩa là nội dung được phép tràn xuống dưới thanh điều hướng Android và phần
+   khuyết của iPhone. Đổi lại phải tự chừa chỗ: bốn biến dưới đây là nơi duy
+   nhất đọc env(), phần còn lại của file dùng lại chúng. Trong tab trình duyệt
+   bình thường cả bốn đều bằng 0, chỉ khác 0 khi mở từ màn hình chính. */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Ba lớp dưới đây đều nhân đôi tên lớp (`.app-main.app-main`) để chắc chắn
+   thắng lớp CSS Module có sẵn của Mantine — hai bên cùng độ ưu tiên 0-1-0 nên
+   nếu không nhân đôi thì kết quả phụ thuộc vào thứ tự hai file CSS được ghép
+   lúc build, một thứ dễ đổi mà không ai để ý.
+
+   Chúng tồn tại vì AppShell được dựng với header offset: false (xem
+   AppLayout.tsx): Mantine thôi không tự chừa chỗ cho thanh tiêu đề nữa, để khi
+   nó trượt đi thì nội dung KHÔNG bị nhảy lên nhảy xuống theo. Bù lại, chỗ cho
+   thanh tiêu đề phải được cộng tay vào .app-navbar và .app-main. */
+.app-header.app-header {
+  height: calc(var(--app-shell-header-height) + var(--safe-top));
+  padding-top: var(--safe-top);
+  padding-inline: var(--safe-left) var(--safe-right);
+}
+
+.app-navbar.app-navbar {
+  top: calc(var(--app-shell-header-height) + var(--safe-top));
+  height: calc(100dvh - var(--app-shell-header-height) - var(--safe-top));
+  padding-bottom: calc(var(--mantine-spacing-md) + var(--safe-bottom));
+  padding-inline-start: calc(var(--mantine-spacing-md) + var(--safe-left));
+}
+
+.app-main.app-main {
+  padding-top: calc(
+    var(--app-shell-header-height) + var(--safe-top) + var(--app-shell-padding)
+  );
+  padding-bottom: calc(var(--app-shell-padding) + var(--safe-bottom));
+  /* Giữ nguyên phần cộng --app-shell-navbar-offset của Mantine, nếu bỏ thì trên
+     máy tính nội dung chui xuống dưới thanh bên. */
+  padding-inline-start: calc(
+    var(--app-shell-navbar-offset, 0rem) + var(--app-shell-padding) + var(--safe-left)
+  );
+  padding-inline-end: calc(
+    var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding) + var(--safe-right)
+  );
+}
