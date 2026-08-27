@@ -122,10 +122,10 @@ CMS, không có bảng bài học trong database.
 |---|---|
 | `/` | Chuyển hướng sang `/01-roadmap/roadmap` |
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm) |
-| `/nhat-ky` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
-| `/luyen-nhip` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
-| `/luyen-nhan-not` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
-| `/admin`, `/admin/thanh-toan` | Quản trị người học và đối soát thanh toán |
+| `/journal` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
+| `/metronome` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
+| `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
+| `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
 
 **Tính năng đáng chú ý:**
 
@@ -165,7 +165,7 @@ thời gian thực. Áp cho cả Web MIDI sau này.
 hàng, quảng cáo. Luôn mô tả theo *cách làm* ("app chấm điểm tự động"), không theo tên
 thương hiệu. Lý do pháp lý ở mục 0 tài liệu nội bộ.
 
-**Không dùng tệp để theo dõi tiến độ.** Tiến độ ghi bằng cách tick bài ở `/nhat-ky`,
+**Không dùng tệp để theo dõi tiến độ.** Tiến độ ghi bằng cách tick bài ở `/journal`,
 lưu vào database. Thư mục `docs/05-learning-logs` và quy trình nộp video đã gỡ, đừng
 tạo lại.
 

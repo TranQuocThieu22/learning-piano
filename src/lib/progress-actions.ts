@@ -5,8 +5,10 @@ import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { db } from '@/db';
 import { lessonCompletions } from '@/db/schema';
-import { getAllLessons } from './lessons';
+import { EXERCISES_CATEGORY, getAllLessons } from './lessons';
 import { slugSchema } from './validation';
+import { canReadLesson } from './access';
+import { viewerHasFullAccess } from './access-server';
 
 export interface ToggleResult {
   ok: boolean;
@@ -42,6 +44,15 @@ export async function toggleLessonCompletion(
     return { ok: false, completed: false, error: 'unknown-lesson' };
   }
 
+  // Không cho tick bài chưa mở khoá. Ẩn nút ở giao diện là chưa đủ: Server
+  // Action là endpoint HTTP thật, ai biết id của nó đều gọi được mà không cần
+  // nhìn thấy nút. Tick một bài chưa đọc được cũng làm hỏng chính con số tiến
+  // độ mà người học dựa vào.
+  const hasFullAccess = await viewerHasFullAccess(session);
+  if (!canReadLesson({ category: EXERCISES_CATEGORY, slug, hasFullAccess })) {
+    return { ok: false, completed: false, error: 'locked' };
+  }
+
   const existing = await db
     .select({ id: lessonCompletions.id })
     .from(lessonCompletions)
@@ -64,7 +75,7 @@ export async function toggleLessonCompletion(
     completed = true;
   }
 
-  revalidatePath('/nhat-ky');
+  revalidatePath('/journal');
   revalidatePath('/[category]/[slug]', 'page');
 
   return { ok: true, completed };

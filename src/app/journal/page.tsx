@@ -9,14 +9,15 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconInfoCircle, IconLock } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { viewerHasFullAccess } from '@/lib/access-server';
+import { canReadLesson } from '@/lib/access';
 import { NavAnchor } from '@/components/NavAnchor';
 import { LessonTickButton } from '@/components/LessonTickButton';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
-import { getLessonsByChapter, getAllLessons } from '@/lib/lessons';
+import { EXERCISES_CATEGORY, getLessonsByChapter, getAllLessons } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { signInWithGoogle } from '@/lib/auth-actions';
 
@@ -115,28 +116,53 @@ export default async function LearningLogPage() {
                 Chương {chapter.chapterNumber}
               </Title>
               <Stack gap="xs">
-                {chapter.lessons.map((lesson) => (
-                  <Card key={lesson.slug} withBorder padding="sm">
-                    <Group justify="space-between" wrap="nowrap">
-                      <div>
-                        <NavAnchor href={lesson.href} fw={500}>
-                          {lesson.title}
-                        </NavAnchor>
-                        {completedSlugs.has(lesson.slug) && (
-                          <Badge ml="sm" color="green" size="sm">
-                            Đã học xong
+                {chapter.lessons.map((lesson) => {
+                  const locked = !canReadLesson({
+                    category: EXERCISES_CATEGORY,
+                    slug: lesson.slug,
+                    hasFullAccess,
+                  });
+
+                  return (
+                    <Card key={lesson.slug} withBorder padding="sm">
+                      <Group justify="space-between" wrap="nowrap">
+                        <div>
+                          <NavAnchor href={lesson.href} fw={500}>
+                            {lesson.title}
+                          </NavAnchor>
+                          {completedSlugs.has(lesson.slug) && (
+                            <Badge ml="sm" color="green" size="sm">
+                              Đã học xong
+                            </Badge>
+                          )}
+                        </div>
+                        {/*
+                          Bài chưa mở khoá thì không hiện ô tick — tick một bài
+                          chưa đọc được vừa vô nghĩa vừa làm sai con số tiến độ.
+                          Việc chặn thật nằm ở toggleLessonCompletion.
+                        */}
+                        {locked ? (
+                          <Badge
+                            color="gray"
+                            variant="light"
+                            size="sm"
+                            leftSection={<IconLock size={12} />}
+                            style={{ flexShrink: 0 }}
+                          >
+                            Trả phí
                           </Badge>
+                        ) : (
+                          <LessonTickButton
+                            lessonSlug={lesson.slug}
+                            initialCompleted={completedSlugs.has(lesson.slug)}
+                            signedIn={Boolean(session?.user)}
+                            label=""
+                          />
                         )}
-                      </div>
-                      <LessonTickButton
-                        lessonSlug={lesson.slug}
-                        initialCompleted={completedSlugs.has(lesson.slug)}
-                        signedIn={Boolean(session?.user)}
-                        label=""
-                      />
-                    </Group>
-                  </Card>
-                ))}
+                      </Group>
+                    </Card>
+                  );
+                })}
               </Stack>
             </div>
           ))}

@@ -152,7 +152,7 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re | Mi Mi Pha Sol | Sol Pha
 1. Nhảy quãng mà **cổ tay đứng yên**, không nhấc bổng cả bàn tay lên tìm phím.
 2. Chơi **2A và 2B** trơn tru, không vấp, ở tốc độ chậm.
 3. Chơi trọn **2E — Ode to Joy** từ nốt đầu tới nốt cuối. Được phép chậm, nhưng **không dừng lại giữa chừng để sửa**.
-4. Tick hoàn thành bài này trong **[Nhật ký học tập](/nhat-ky)**.
+4. Tick hoàn thành bài này trong **[Nhật ký học tập](/journal)**.
 
 ---
 

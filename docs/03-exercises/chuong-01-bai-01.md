@@ -135,7 +135,7 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 1. Tập **1A và 1B** thật chậm, vừa đánh vừa đọc tên nốt ra miệng. Giữ tay khum tròn, không xẹp khớp.
 2. Sang ngày 2 thì làm y hệt với tay trái ở **1C và 1D**.
 3. **Mẹo tự kiểm tra:** quay một đoạn video ngắn chỉ bàn tay rồi tự xem lại. Bạn sẽ thấy ngay những thói quen mà lúc đang đánh không hề nhận ra — vai nhô lên, cổ tay sụp xuống, hay ngón tay xẹp khớp.
-4. Khi ngón tay đã nhớ vị trí và không còn ấn nhầm phím, tick hoàn thành bài này ở đầu trang hoặc trong mục **[Nhật ký học tập](/nhat-ky)**.
+4. Khi ngón tay đã nhớ vị trí và không còn ấn nhầm phím, tick hoàn thành bài này ở đầu trang hoặc trong mục **[Nhật ký học tập](/journal)**.
 
 > [!IMPORTANT]
 > **Đừng chờ hoàn hảo mới đi tiếp.** Chuẩn để sang bài sau là *bấm đúng phím và đúng ngón*, không phải *chơi mượt như bản thu*. Sự mượt mà đến từ việc tiếp tục tập ở những bài sau, không đến từ việc dừng lại mài mãi một bài.

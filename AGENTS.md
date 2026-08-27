@@ -29,6 +29,26 @@ Vài ràng buộc tuyệt đối, vi phạm là gây hậu quả thật:
 - **Không chạy thương mại trên gói Vercel Hobby** — gói miễn phí cấm dùng thương mại, tài khoản bị đình chỉ đồng nghĩa khách đã trả tiền mất quyền truy cập.
 - **Không hứa cập nhật miễn phí trọn đời** cho nội dung chưa tồn tại. Giai đoạn 3 và 4 là **sản phẩm riêng**, không gộp vào gói Giai đoạn 1-2, và chỉ được quảng bá khi đã soạn xong.
 
+# Quy ước đặt đường dẫn
+
+**Mọi đường dẫn tự viết trong `src/app/` phải bằng tiếng Anh, chữ thường, nối bằng dấu gạch ngang.** Áp cho cả tên tham số truy vấn và giá trị của nó.
+
+| Đúng | Sai |
+|---|---|
+| `/journal` | `/nhat-ky` |
+| `/checkout`, `/checkout/[orderId]` | `/mua` |
+| `/metronome` | `/luyen-nhip` |
+| `/note-trainer` | `/luyen-nhan-not` |
+| `/admin/payments` | `/admin/thanh-toan` |
+| `?error=not-signed-in` | `?loi=chua-dang-nhap` |
+
+Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ngữ khiến `grep` một tính năng phải nhớ nó được đặt tên ở thời kỳ nào, và dấu tiếng Việt bị mã hoá phần trăm trong URL thì đọc log gần như không ra.
+
+**Ngoại lệ có chủ ý — hai thứ sau vẫn tiếng Việt, đừng đổi:**
+
+- **Slug bài học** (`chuong-01-bai-01`) và **thư mục nội dung** (`03-exercises`, `07-doc-them`). Slug được lưu trong cột `lesson_completion.lesson_slug`, nên đổi tên là mất tiến độ đã tick của người học nếu không chuyển dữ liệu kèm theo. Chúng cũng bị ràng bởi regex ở `src/lib/lessons.ts`, `scripts/check-lessons.mjs` và mọi chỉ thị `{{sheet:}}`.
+- **Chữ hiển thị cho người học** luôn là tiếng Việt có dấu. Quy định này chỉ nói về đường dẫn.
+
 # Quy ước tài liệu
 
 **Mọi tài liệu trong `docs/` có mục "Lịch sử cập nhật" thì phải ghi thêm dòng mới, không được ghi đè.** Không dùng dòng "Cập nhật lần cuối" nữa — nó chỉ giữ được trạng thái mới nhất và xóa mất bối cảnh vì sao một quyết định bị sửa.

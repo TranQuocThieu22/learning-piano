@@ -149,27 +149,27 @@ export function AppLayout({
       <AppShell.Navbar p="md">
         <ScrollArea>
           <NavLink
-            href="/nhat-ky"
+            href="/journal"
             component={Link}
             label="Nhật ký học tập"
             leftSection={<IconChecklist size={18} />}
-            active={pathname === '/nhat-ky'}
+            active={pathname === '/journal'}
             onClick={() => { if (mobileOpened) toggleMobile(); }}
           />
           <NavLink
-            href="/luyen-nhip"
+            href="/metronome"
             component={Link}
             label="Máy đánh nhịp"
             leftSection={<IconMetronome size={18} />}
-            active={pathname === '/luyen-nhip'}
+            active={pathname === '/metronome'}
             onClick={() => { if (mobileOpened) toggleMobile(); }}
           />
           <NavLink
-            href="/luyen-nhan-not"
+            href="/note-trainer"
             component={Link}
             label="Luyện nhận nốt"
             leftSection={<IconMusicSearch size={18} />}
-            active={pathname === '/luyen-nhan-not'}
+            active={pathname === '/note-trainer'}
             mb="md"
             onClick={() => { if (mobileOpened) toggleMobile(); }}
           />

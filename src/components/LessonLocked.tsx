@@ -1,6 +1,6 @@
 'use client';
 
-import { Alert, Button, Card, Group, List, Stack, Text, Title } from '@mantine/core';
+import { Button, Card, Group, List, Stack, Text, Title } from '@mantine/core';
 import Link from 'next/link';
 import { findPackage } from '@/lib/packages';
 import { formatVnd } from '@/lib/payment/vietqr';
@@ -68,24 +68,21 @@ export function LessonLocked({
         </Card>
       )}
 
-      <Alert variant="light" title="Chưa mở bán">
-        Gói này đang hoàn thiện nốt phần cuối giáo trình nên chưa bán. Bạn cứ tập
-        hết phần miễn phí trước — khi mở bán, những bài bạn đã tick vẫn còn
-        nguyên trong nhật ký.
-      </Alert>
-
       {!signedIn && (
         <Text size="sm" c="dimmed">
-          Bạn chưa đăng nhập. Nếu đã có quyền truy cập, hãy đăng nhập bằng đúng
-          tài khoản Google đã dùng khi mua.
+          Nếu bạn đã mua, hãy đăng nhập bằng đúng tài khoản Google đã dùng khi
+          mua — quyền truy cập gắn với tài khoản đó.
         </Text>
       )}
 
       <Group>
+        <Button component={Link} href="/checkout" size="md">
+          Xem gói và mở khoá
+        </Button>
         <Button component={Link} href="/01-roadmap/roadmap" variant="default">
           Xem lộ trình
         </Button>
-        <Button component={Link} href="/nhat-ky" variant="subtle">
+        <Button component={Link} href="/journal" variant="subtle">
           Về nhật ký
         </Button>
       </Group>

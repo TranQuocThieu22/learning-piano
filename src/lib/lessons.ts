@@ -13,7 +13,7 @@ export interface ChapterGroup {
   lessons: LessonInfo[];
 }
 
-const EXERCISES_CATEGORY = '03-exercises';
+export const EXERCISES_CATEGORY = '03-exercises';
 const SLUG_PATTERN = /^chuong-(\d+)-bai-(\d+)$/;
 
 /**
