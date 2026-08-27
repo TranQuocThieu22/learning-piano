@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
+import { viewerHasFullAccess } from '@/lib/access-server';
 import { NavAnchor } from '@/components/NavAnchor';
 import { LessonTickButton } from '@/components/LessonTickButton';
 import { auth } from '@/auth';
@@ -29,6 +30,9 @@ export default async function LearningLogPage() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
 
+  // Để thanh bên biết bài nào cần gắn ổ khoá.
+  const hasFullAccess = await viewerHasFullAccess(session);
+
   const completedCount = allLessons.filter((l) =>
     completedSlugs.has(l.slug)
   ).length;
@@ -36,7 +40,7 @@ export default async function LearningLogPage() {
   const currentLesson = allLessons.find((l) => !completedSlugs.has(l.slug));
 
   return (
-    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs}>
+    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Nhật ký học tập

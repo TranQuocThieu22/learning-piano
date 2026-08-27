@@ -1,5 +1,6 @@
 import { Container, Stack, Text, Title } from '@mantine/core';
 import { AppLayout } from '@/components/AppLayout';
+import { viewerHasFullAccess } from '@/lib/access-server';
 import { NoteRecognitionDrill } from '@/components/NoteRecognitionDrill';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
@@ -16,8 +17,11 @@ export default async function NoteRecognitionPage() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
 
+  // Để thanh bên biết bài nào cần gắn ổ khoá.
+  const hasFullAccess = await viewerHasFullAccess(session);
+
   return (
-    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs}>
+    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">Luyện nhận nốt</Title>
         <Text c="dimmed" mb="lg">

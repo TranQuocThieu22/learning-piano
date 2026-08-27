@@ -1,10 +1,11 @@
 'use client';
 import { AppShell, Avatar, Burger, Button, Group, NavLink, Title, ScrollArea, Box, Text } from '@mantine/core';
-import { IconChecklist, IconMetronome, IconMusicSearch } from '@tabler/icons-react';
+import { IconChecklist, IconLock, IconMetronome, IconMusicSearch } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { MarkdownFile } from '@/lib/markdown';
+import { isFreeContent } from '@/lib/access';
 import { ThemeToggle } from './ThemeToggle';
 import { signInWithGoogle, signOutAction } from '@/lib/auth-actions';
 
@@ -63,11 +64,14 @@ export function AppLayout({
   files,
   user = null,
   completedSlugs,
+  hasFullAccess = false,
 }: {
   children: React.ReactNode;
   files: MarkdownFile[];
   user?: AppSessionUser | null;
   completedSlugs?: Set<string>;
+  /** Người xem đã mở khoá toàn bộ giáo trình chưa. Tính ở server, xem access-server.ts. */
+  hasFullAccess?: boolean;
 }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
@@ -75,6 +79,32 @@ export function AppLayout({
 
   const withTick = (label: string, slug: string) =>
     completedSlugs?.has(slug) ? `✓ ${label}` : label;
+
+  const isLocked = (file: MarkdownFile) =>
+    !hasFullAccess && !isFreeContent(file.category, file.slug);
+
+  /**
+   * Ổ khoá bên phải mục. Chỉ báo hiệu, KHÔNG chặn bấm — việc chặn nằm ở server
+   * (src/app/[category]/[slug]/page.tsx). Vẫn cho bấm vào để người học đọc được
+   * màn hình giải thích gói, thay vì bấm mãi mà không có phản hồi gì.
+   */
+  const lockIcon = (file: MarkdownFile) =>
+    isLocked(file) ? (
+      <IconLock size={14} opacity={0.5} aria-label="Bài trả phí" />
+    ) : undefined;
+
+  /**
+   * Ổ khoá cho tiêu đề nhóm, chỉ khi CẢ nhóm bị khoá.
+   *
+   * Cần cái này vì Mantine chỉ render các mục con sau khi nhóm được bung ra —
+   * không có nó thì thanh bên lúc đóng chẳng báo hiệu gì, người học vẫn phải
+   * bấm vào mới biết. Nhóm nửa khoá nửa mở thì để trống, vì gắn khoá lên cả
+   * nhóm sẽ nói dối về những bài miễn phí bên trong.
+   */
+  const groupLockIcon = (groupFiles: MarkdownFile[]) =>
+    groupFiles.length > 0 && groupFiles.every(isLocked) ? (
+      <IconLock size={14} opacity={0.5} aria-label="Cả nhóm là bài trả phí" />
+    ) : undefined;
 
   const categories = files.reduce((acc, file) => {
     if (!acc[file.category]) acc[file.category] = [];
@@ -189,6 +219,7 @@ export function AppLayout({
                         href={href}
                         component={Link}
                         label={withTick(file.title, file.slug)}
+                        rightSection={lockIcon(file)}
                         active={pathname === href}
                         onClick={() => { if (mobileOpened) toggleMobile(); }}
                       />
@@ -201,6 +232,7 @@ export function AppLayout({
                       key={groupName}
                       label={groupInfo.label}
                       childrenOffset={28}
+                      rightSection={groupLockIcon(files)}
                       defaultOpened={files.some(f => pathname === `/${f.category}/${f.slug}`)}
                     >
                       {files.map(file => {
@@ -214,6 +246,7 @@ export function AppLayout({
                             href={href}
                             component={Link}
                             label={withTick(label, file.slug)}
+                            rightSection={lockIcon(file)}
                             active={pathname === href}
                             onClick={() => { if (mobileOpened) toggleMobile(); }}
                           />
@@ -232,6 +265,7 @@ export function AppLayout({
                       href={href}
                       component={Link}
                       label={withTick(file.title, file.slug)}
+                      rightSection={lockIcon(file)}
                       active={pathname === href}
                       onClick={() => { if (mobileOpened) toggleMobile(); }}
                     />
