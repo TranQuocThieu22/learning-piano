@@ -72,6 +72,10 @@ function extractScore(tune: TuneObject): ExtractedScore {
 
 const WRONG_CLASS = 'practice-wrong';
 const MISSING_CLASS = 'practice-missing';
+const CORRECT_CLASS = 'practice-correct';
+const MISS_FLASH_CLASS = 'practice-miss-flash';
+/** Phải khớp thời lượng keyframes `practice-miss-flash` trong globals.css. */
+const MISS_FLASH_MS = 450;
 
 export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   const paperRef = useRef<HTMLDivElement>(null);
@@ -98,11 +102,70 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   const [warp, setWarp] = useState(100);
   const [bpm, setBpm] = useState(0);
 
-  const clearHighlights = useCallback(() => {
+  /** Hẹn giờ gỡ lớp nháy đỏ, một cái cho mỗi nốt đang nháy. */
+  const flashTimersRef = useRef(new Map<number, number>());
+
+  const clearFlashes = useCallback(() => {
+    for (const timer of flashTimersRef.current.values()) window.clearTimeout(timer);
+    flashTimersRef.current.clear();
     for (const group of elementsRef.current) {
-      for (const el of group) el.classList?.remove(WRONG_CLASS, MISSING_CLASS);
+      for (const el of group) el.classList?.remove(MISS_FLASH_CLASS);
     }
   }, []);
+
+  const clearHighlights = useCallback(() => {
+    clearFlashes();
+    for (const group of elementsRef.current) {
+      for (const el of group) el.classList?.remove(WRONG_CLASS, MISSING_CLASS, CORRECT_CLASS);
+    }
+  }, [clearFlashes]);
+
+  /**
+   * Nháy đỏ và rung nhẹ nốt người học đáng lẽ phải đánh.
+   *
+   * Nháy rồi tắt hẳn, không để lại vết trên khuông: mục đích là "ê, chỗ này
+   * này", không phải ghi sổ lỗi. Bấm sai liên tiếp thì phải cho hiệu ứng chạy
+   * lại từ đầu — gỡ lớp ra, ép trình duyệt tính lại bố cục, rồi mới gắn vào.
+   * Thiếu bước ép tính lại thì trình duyệt gộp hai thao tác làm một và hiệu ứng
+   * đứng im ở lần nháy đầu.
+   */
+  const flashWrongNote = useCallback((expectedIndex: number) => {
+    const group = elementsRef.current[expectedIndex];
+    if (!group || group.length === 0) return;
+
+    const pending = flashTimersRef.current.get(expectedIndex);
+    if (pending !== undefined) window.clearTimeout(pending);
+
+    for (const el of group) {
+      el.classList?.remove(MISS_FLASH_CLASS);
+      void el.getBoundingClientRect();
+      el.classList?.add(MISS_FLASH_CLASS);
+    }
+
+    flashTimersRef.current.set(expectedIndex, window.setTimeout(() => {
+      for (const el of group) el.classList?.remove(MISS_FLASH_CLASS);
+      flashTimersRef.current.delete(expectedIndex);
+    }, MISS_FLASH_MS));
+  }, []);
+
+  // Bản nhạc bị dựng lại (đổi bài) trong lúc còn hẹn giờ thì các hẹn giờ đó trỏ
+  // vào phần tử đã bị vứt. Dọn sạch khi rời trang.
+  useEffect(() => clearFlashes, [clearFlashes]);
+
+  /**
+   * Tô xanh những chỗ người học vừa đánh đúng, ngay trong lúc đang đánh.
+   *
+   * Vẽ lại toàn bộ thay vì chỉ thêm chỗ mới: rẻ hơn nhiều so với việc phải giữ
+   * đúng trạng thái cũ, mà mỗi lần vẽ chỉ vài trăm thao tác DOM cho một lần bấm
+   * phím. Không có nhánh nào tô màu cho nốt sai — đó là chủ ý, xem score-follow.ts.
+   */
+  const paintLiveMatches = useCallback((matchedIndexes: number[] | null) => {
+    clearHighlights();
+    if (!matchedIndexes) return;
+    for (const index of matchedIndexes) {
+      for (const el of elementsRef.current[index] ?? []) el.classList?.add(CORRECT_CLASS);
+    }
+  }, [clearHighlights]);
 
   const paintResults = useCallback((results: EventResult[] | null) => {
     clearHighlights();
@@ -306,7 +369,14 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
         </Group>
       )}
 
-      {practiceOpen && <ScorePractice expected={expected} onResults={paintResults} />}
+      {practiceOpen && (
+        <ScorePractice
+          expected={expected}
+          onResults={paintResults}
+          onLiveMatch={paintLiveMatches}
+          onWrongNote={flashWrongNote}
+        />
+      )}
     </div>
   );
 }

@@ -4,6 +4,10 @@
  * Cố ý KHÔNG chấm điểm trong lúc người học đang đánh. Toàn bộ việc so sánh diễn
  * ra sau khi bấm "Dừng" — xem lại chứ không phải chạy đua. Đây là ràng buộc sản
  * phẩm, không phải lựa chọn kỹ thuật (xem AGENTS.md).
+ *
+ * Thứ chạy trong lúc đang đánh nằm ở `score-follow.ts`, và nó cố tình chỉ biết
+ * tô xanh chỗ đúng chứ không biết phán chỗ sai. Đừng gọi hàm ở file này từ
+ * đường chạy đó — nó sinh ra cả 'wrong' lẫn 'missing'.
  */
 
 /** Một thời điểm trong bản nhạc: có thể là một nốt, hoặc nhiều nốt cùng vang (hai tay). */

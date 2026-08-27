@@ -9,37 +9,69 @@ import {
   compareToScore, ComparisonResult, describePitchList, groupPlayedNotes, PlayedNote, ScoreEvent,
 } from '@/lib/score-compare';
 import { useMidiInput } from '@/hooks/useMidiInput';
+import { createFollowState, followNote } from '@/lib/score-follow';
 import type { EventResult } from '@/lib/score-compare';
 
 export function ScorePractice({
   expected,
   onResults,
+  onLiveMatch,
+  onWrongNote,
 }: {
   expected: ScoreEvent[];
-  /** Cho khuông nhạc bên ngoài tô màu những chỗ sai. */
+  /** Cho khuông nhạc bên ngoài tô màu những chỗ sai sau khi bấm dừng. */
   onResults: (results: EventResult[] | null) => void;
+  /**
+   * Cho khuông nhạc tô xanh ngay trong lúc đánh. Nhận danh sách chỉ số sự kiện
+   * đã đánh đúng, hoặc `null` để xoá hết màu.
+   */
+  onLiveMatch: (matchedIndexes: number[] | null) => void;
+  /**
+   * Báo vừa có một nốt bấm không khớp vào đâu, kèm chỉ số nốt đang chờ để khuông
+   * nhạc nháy đỏ chỗ đó. Nháy rồi tắt, không ghi lại thành vết.
+   */
+  onWrongNote: (expectedIndex: number) => void;
 }) {
   const [recording, setRecording] = useState(false);
   const [noteCount, setNoteCount] = useState(0);
+  const [matchedCount, setMatchedCount] = useState(0);
   const [result, setResult] = useState<ComparisonResult | null>(null);
 
   const notesRef = useRef<PlayedNote[]>([]);
   const startRef = useRef(0);
   const recordingRef = useRef(false);
+  const followRef = useRef(createFollowState());
 
   const handleNoteOn = useCallback((midi: number) => {
     if (!recordingRef.current) return;
     notesRef.current.push({ midi, time: performance.now() - startRef.current });
     setNoteCount(notesRef.current.length);
-  }, []);
+
+    // Bám theo người học: tô xanh chỗ vừa đánh đúng, nháy đỏ chỗ đang chờ khi
+    // đánh trượt. Việc chấm đầy đủ vẫn nằm ở stop().
+    const previous = followRef.current;
+    const next = followNote(expected, previous, midi);
+    if (next === previous) return;
+    followRef.current = next;
+
+    if (next.matched.length > previous.matched.length) {
+      setMatchedCount(next.matched.length);
+      onLiveMatch(next.matched);
+    }
+    // Lấy con trỏ TRƯỚC khi bấm: đó mới là nốt người học đáng lẽ phải đánh.
+    if (next.misses > previous.misses) onWrongNote(previous.cursor);
+  }, [expected, onLiveMatch, onWrongNote]);
 
   const midi = useMidiInput(handleNoteOn);
 
   const start = () => {
     notesRef.current = [];
+    followRef.current = createFollowState();
     setNoteCount(0);
+    setMatchedCount(0);
     setResult(null);
     onResults(null);
+    onLiveMatch([]);
     startRef.current = performance.now();
     recordingRef.current = true;
     setRecording(true);
@@ -48,6 +80,9 @@ export function ScorePractice({
   const stop = () => {
     recordingRef.current = false;
     setRecording(false);
+    // Xoá màu xanh của lúc đang đánh trước khi tô bảng chấm đầy đủ, để hai lớp
+    // màu không chồng lên nhau.
+    onLiveMatch(null);
     const played = groupPlayedNotes(notesRef.current);
     const comparison = compareToScore(expected, played);
     setResult(comparison);
@@ -57,8 +92,11 @@ export function ScorePractice({
   const clear = () => {
     setResult(null);
     setNoteCount(0);
+    setMatchedCount(0);
     notesRef.current = [];
+    followRef.current = createFollowState();
     onResults(null);
+    onLiveMatch(null);
   };
 
   if (midi.status === 'unsupported') {
@@ -89,8 +127,9 @@ export function ScorePractice({
           <Box style={{ flex: 1, minWidth: 220 }}>
             <Text fw={500}>Tập bài này với đàn</Text>
             <Text size="sm" c="dimmed">
-              Cắm đàn vào máy, đánh trọn bài, rồi xem lại chỗ nào chưa đúng. Không chấm điểm trong
-              lúc bạn đang đánh.
+              Cắm đàn vào máy rồi đánh. Nốt nào đúng sẽ xanh lên ngay trên khuông nhạc; đánh trượt
+              thì nốt đang chờ nháy đỏ một cái để bạn biết mình đang ở đâu. Không đếm giờ, không trừ
+              điểm — cứ đánh lại tới khi được. Đánh xong bấm dừng để xem lại toàn bài.
             </Text>
           </Box>
           <Button onClick={midi.connect} loading={midi.status === 'connecting'} data-testid="practice-connect">
@@ -148,7 +187,9 @@ export function ScorePractice({
       {recording && (
         <Alert color="red" title="Đang ghi" data-testid="recording-alert">
           Cứ đánh theo tốc độ của bạn, chậm cũng được, dừng giữa chừng cũng được. Đã ghi{' '}
-          <b data-testid="note-count">{noteCount}</b> nốt. Đánh xong thì bấm &quot;Dừng và xem lại&quot;.
+          <b data-testid="note-count">{noteCount}</b> nốt, xanh được{' '}
+          <b data-testid="matched-count">{matchedCount}</b>/{expected.length} chỗ trên khuông. Đánh
+          xong thì bấm &quot;Dừng và xem lại&quot;.
         </Alert>
       )}
 

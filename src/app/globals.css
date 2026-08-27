@@ -223,6 +223,56 @@ body {
   stroke: #ff4757 !important;
 }
 
+/* Nốt vừa đánh đúng, tô ngay trong lúc người học đang tập.
+   Đây là lời xác nhận "đúng rồi", KHÔNG phải chấm điểm: không có lớp màu nào
+   bật lên khi đánh sai, khuông nhạc chỉ đứng yên chờ. Xem src/lib/score-follow.ts. */
+.practice-correct,
+.practice-correct * {
+  fill: #2f9e44 !important;
+  stroke: #2f9e44 !important;
+}
+
+/* Nốt đang chờ, nháy đỏ và rung nhẹ khi người học bấm trượt.
+   Nháy rồi tắt hẳn, không để lại vết — báo "chỗ này này", không phải ghi sổ lỗi.
+
+   Ở đây KHÔNG cần !important dù abcjs đặt fill thẳng lên từng phần tử: giá trị
+   do animation sinh ra đứng trên mọi khai báo thường của tác giả, kể cả style
+   nội tuyến. Khung cuối để #000 vì bản nhạc luôn vẽ đen trên nền trắng (khối
+   .sheet-music-paper ép cứng hai màu này), nên lúc hiệu ứng kết thúc là khớp
+   sẵn với màu thật, không thấy giật. */
+@keyframes practice-miss-color {
+  0%   { fill: #e03131; stroke: #e03131; }
+  30%  { fill: #e03131; stroke: #e03131; }
+  45%  { fill: #000000; stroke: #000000; }
+  60%  { fill: #e03131; stroke: #e03131; }
+  100% { fill: #000000; stroke: #000000; }
+}
+
+/* Rung chỉ dịch ngang nên không phụ thuộc gốc toạ độ — an toàn với SVG.
+   Chỉ gắn lên thẻ <g> của cả nốt, không gắn lên con, nếu không sẽ rung chồng. */
+@keyframes practice-miss-shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-2.5px); }
+  45%      { transform: translateX(2.5px); }
+  70%      { transform: translateX(-1.5px); }
+  88%      { transform: translateX(1px); }
+}
+
+.practice-miss-flash {
+  animation: practice-miss-color 450ms ease-in-out, practice-miss-shake 450ms ease-in-out;
+}
+
+.practice-miss-flash * {
+  animation: practice-miss-color 450ms ease-in-out;
+}
+
+/* Người đặt máy giảm chuyển động vẫn phải nhận được tín hiệu, chỉ bỏ phần rung. */
+@media (prefers-reduced-motion: reduce) {
+  .practice-miss-flash {
+    animation: practice-miss-color 450ms ease-in-out;
+  }
+}
+
 /* Tô màu kết quả chấm bài trên khuông nhạc.
    Dùng !important vì abcjs đặt fill thẳng trên từng path khi vẽ. */
 .practice-wrong,

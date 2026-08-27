@@ -213,6 +213,41 @@ khi kiểm bằng công cụ điều khiển trình duyệt: `window.scrollTo()`
 - Xác nhận nghi ngờ bằng `el.getAnimations()` — thấy `playState: 'running'` mà
   `currentTime: 0` là đúng triệu chứng này.
 
+Kèm theo: tab bị ẩn còn **bóp `setTimeout` về khoảng một giây**. Kịch bản kiểm
+thử nào chờ vài chục lần liên tiếp (ví dụ bắn từng nốt MIDI giả rồi `await`
+giữa mỗi nốt) sẽ chạy hàng chục giây rồi hết giờ. Bắn đồng bộ cả loạt rồi chờ
+một lần ở cuối.
+
+---
+
+## 11. Tô màu lên bản nhạc abcjs: khi nào cần `!important`, khi nào không
+
+**Triệu chứng.** Luật CSS đổi màu nốt nhạc trông đúng hết nhưng nốt vẫn đen sì.
+Thêm `!important` vào thì ăn.
+
+**Nguyên nhân.** abcjs vẽ xong thì đặt màu thẳng lên từng phần tử SVG, nên một
+luật thường của tác giả không thắng nổi. Nhưng **giá trị do animation sinh ra
+thì thắng**: trong thứ tự xếp tầng của CSS, animation đứng trên mọi khai báo
+thường của tác giả, kể cả style nội tuyến.
+
+**Cách sửa.** Tuỳ loại hiệu ứng:
+
+- Màu **đứng yên** (`.practice-correct`, `.practice-wrong`, `.practice-missing`)
+  → phải có `!important`, và phải nhắm cả thẻ con: `.practice-wrong, .practice-wrong *`.
+- Màu **chạy bằng `@keyframes`** (`.practice-miss-flash`) → không cần `!important`.
+  Đừng thêm vào cho chắc: `!important` bên trong khối `@keyframes` bị bỏ qua
+  theo đúng đặc tả, nên nó chỉ làm người đọc sau tưởng nhầm là cần.
+
+**Hai chuyện kèm theo khi làm hiệu ứng trên SVG của abcjs:**
+
+- Muốn hiệu ứng **chạy lại từ đầu** khi kích hoạt liên tiếp thì phải gỡ lớp ra,
+  ép trình duyệt tính lại bố cục (`void el.getBoundingClientRect()`), rồi mới
+  gắn vào. Thiếu bước giữa thì hai thao tác bị gộp làm một và hiệu ứng đứng im.
+- Thẻ `<g class="abcjs-note">` **không có sẵn thuộc tính `transform`** (đã kiểm),
+  nên gắn `transform` bằng CSS để rung là an toàn. Chỉ dịch ngang thôi —
+  `translateX` không phụ thuộc gốc toạ độ nên khỏi lo `transform-box`. Và chỉ
+  gắn lên thẻ `<g>`, đừng gắn lên thẻ con, kẻo rung chồng lên nhau.
+
 ---
 
 ## Lịch sử cập nhật
@@ -223,5 +258,6 @@ khi kiểm bằng công cụ điều khiển trình duyệt: `window.scrollTo()`
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Phản hồi từng nốt ngay khi tập bài với đàn` | Thêm bẫy 11 (màu tĩnh trên bản nhạc abcjs cần !important, màu chạy bằng keyframes thì không) và bổ sung vào bẫy 10 chuyện tab bị ẩn bóp setTimeout về khoảng một giây |
 | 28/08/2026 | `fix: Trả lại chỗ cho nội dung trên màn hình điện thoại` | Thêm bẫy 9 (tắt `header.offset` của AppShell thì thanh bên trùm lên nút hamburger) và bẫy 10 (tab bị ẩn không phát sự kiện cuộn nên tưởng hiệu ứng headroom hỏng) |
 | 27/08/2026 | `docs(internal): Ghi lại các bẫy kỹ thuật đã giẫm phải` | Tạo file — tám bẫy gặp trong đợt làm cổng chặn trả phí, trang mua, đổi route và gom biến môi trường |
