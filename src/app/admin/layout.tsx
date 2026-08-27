@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { Container, Group, Text, Title } from '@mantine/core';
-import Link from 'next/link';
+import { Container, Group, Title } from '@mantine/core';
+import { NavAnchor } from '@/components/NavAnchor';
 import { isCurrentUserAdmin } from '@/lib/admin';
 
 /**
@@ -25,15 +25,15 @@ export default async function AdminLayout({
       <Group justify="space-between" mb="lg" wrap="wrap">
         <Title order={2}>Quản trị</Title>
         <Group gap="md">
-          <Text component={Link} href="/admin" size="sm" c="blue">
+          <NavAnchor href="/admin" size="sm" c="blue">
             Người học
-          </Text>
-          <Text component={Link} href="/admin/thanh-toan" size="sm" c="blue">
+          </NavAnchor>
+          <NavAnchor href="/admin/thanh-toan" size="sm" c="blue">
             Thanh toán
-          </Text>
-          <Text component={Link} href="/" size="sm" c="dimmed">
+          </NavAnchor>
+          <NavAnchor href="/" size="sm" c="dimmed">
             Về trang học
-          </Text>
+          </NavAnchor>
         </Group>
       </Group>
       {children}
