@@ -71,7 +71,7 @@ Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ng�
 
 - **Không tự chạy `git commit`, `git push`, `git reset`.** Chỉ in nội dung commit message ra khối mã để người dùng dán vào Fork — xem `.claude/skills/git-commit-messages/SKILL.md`. Repo commit thẳng vào `main` nên lần đọc diff của người làm là lưới đỡ duy nhất.
 - **Chốt tiêu đề commit TRƯỚC khi ghi dòng lịch sử cập nhật**, vì bảng đó chép y hệt tiêu đề. Đổi tiêu đề lúc commit thì phải quay lại sửa dòng đã ghi.
-- **`pnpm db:push` lên production là việc của người dùng, không phải của Claude.** Nhánh dev thì Claude chạy được. `drizzle.config.ts` ưu tiên `DATABASE_URL_UNPOOLED`, đặt nhầm biến là lại đẩy vào dev mà không báo gì.
+- **Đổi cấu trúc bảng phải qua migration có file.** `pnpm db:generate` sinh file `.sql` trong `drizzle/` — đọc file đó rồi commit kèm; Vercel chạy `drizzle-kit migrate` lúc build nên production tự cập nhật. Không còn `db:push`. Trong suốt beta **chỉ được THÊM** cột/bảng/index, không xoá, không đổi tên, không đổi kiểu.
 
 # Quy ước tài liệu
 

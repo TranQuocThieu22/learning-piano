@@ -19,9 +19,9 @@ Một người làm thì không có ai review, nên thay chỗ đó là **cổng
 | Việc | Ai làm |
 |---|---|
 | Viết mã, sửa tài liệu, chạy cổng kiểm tra | Claude |
-| `pnpm db:push` lên nhánh **dev** | Claude |
+| `pnpm db:generate`, `pnpm db:migrate` trên nhánh **dev** | Claude |
 | `git add`, `git commit`, `git push` | Người dùng, trong Fork |
-| `pnpm db:push` lên **production** | Người dùng |
+| Chạy script đụng vào **production** (baseline, cấp quyền) | Người dùng |
 
 **Claude không tự chạy `git commit`, `git push`, `git reset`** — chỉ in nội dung message
 ra khối mã để dán vào Fork. Quy ước ở `.claude/skills/git-commit-messages/SKILL.md`.
@@ -88,28 +88,53 @@ Không bao giờ `git reset --hard` rồi force-push `main`.
 
 ## 7. Đổi cấu trúc bảng
 
-Repo dùng `drizzle-kit push`, **không có file migration** (`/drizzle` bị `.gitignore`
-chặn). Không có bản ghi và không có đường lùi tự động.
-
-Thứ tự: sửa schema → `pnpm db:push` vào **dev** → kiểm lại cột → chạy thử → mới tới
-production. Nếu mã sắp deploy có **đọc** cột mới thì phải đẩy schema lên production
-**trước** khi push mã.
+Repo dùng **migration có file**: mỗi lần đổi schema sinh ra một file `.sql` trong
+`drizzle/`, commit vào git, và **Vercel tự áp lúc build**. Không còn bước đẩy tay lên
+production.
 
 ```powershell
-$env:DATABASE_URL_UNPOOLED='<chuỗi kết nối TRỰC TIẾP nhánh main>'; pnpm db:push
-Remove-Item Env:DATABASE_URL_UNPOOLED
+# sau khi sửa src/db/schema/*.ts
+pnpm db:generate     # sinh drizzle/NNNN_*.sql — MỞ RA ĐỌC
+pnpm db:migrate      # áp lên dev
+pnpm dev             # bấm thử
 ```
 
-Ba chỗ hỏng, cả ba đều **không báo lỗi**:
+Rồi commit **kèm file `.sql`** và push. Vercel chạy `drizzle-kit migrate` trong bước
+build; migrate trượt thì build trượt và deploy không xảy ra — hỏng theo hướng an toàn,
+bản đang chạy vẫn nguyên.
 
-- Đặt nhầm `DATABASE_URL` thay vì `DATABASE_URL_UNPOOLED` → lệnh lại chạy vào dev.
-- Quên `Remove-Item` → lần `db:push` sau, kể cả cho việc khác, vào thẳng production.
-- Cột mới `NOT NULL` không có `DEFAULT` → trượt, hoặc drizzle đề nghị xoá dữ liệu.
-  Nhớ `$defaultFn` không tạo default trong database — bẫy 6.
+Ba điều bắt buộc:
 
-**Trong suốt beta, schema chỉ được THÊM:** thêm cột có `DEFAULT`, thêm bảng, thêm index.
-Không xoá cột, không đổi tên, không đổi kiểu. Muốn đổi tên thì thêm cột mới, cho mã ghi
-cả hai, hết beta mới xoá cột cũ.
+- **Đọc file `.sql` trước khi commit.** Đây là toàn bộ giá trị của cách làm này.
+  `generate` suy ra SQL từ chênh lệch schema, và nó có thể hiểu một lần đổi tên thành
+  "xoá cột cũ, thêm cột mới".
+- **Không sửa file migration đã push.** Nó đã chạy trên production rồi. Sai thì sinh
+  migration mới đè lên.
+- **Trong suốt beta, schema chỉ được THÊM**: thêm cột có `DEFAULT`, thêm bảng, thêm
+  index. Không xoá cột, không đổi tên, không đổi kiểu. Lý do ở mục 6 — quay lui không
+  lùi được database.
+
+Nhớ `$defaultFn` chạy ở tầng Drizzle, **không** tạo `DEFAULT` trong database (bẫy 6);
+cột mới `NOT NULL` phải dùng `.defaultNow()` hoặc `.default(...)`.
+
+**Baseline — chỉ làm một lần cho mỗi database.** Database đã có sẵn bảng từ thời dùng
+`drizzle-kit push` thì bảng theo dõi migration còn trống, và `migrate` sẽ áp lại từ
+`0000` rồi gặp `CREATE TABLE` trên bảng đã tồn tại. Đánh dấu trước:
+
+```powershell
+node scripts/baseline-migrations.mjs --through <tag>
+```
+
+Script này đọc `.env.local` như mọi script khác, nên nó nối vào **nhánh dev**. Muốn
+baseline production thì đặt biến đè lên, và nhớ xoá đi ngay sau đó — bẫy 12:
+
+```powershell
+$env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/baseline-migrations.mjs --through <tag>
+Remove-Item Env:DATABASE_URL
+```
+
+Chọn sai mốc `--through` là nguy hiểm: đánh dấu cả migration mà database chưa thật sự
+có thì thay đổi đó **bị bỏ qua vĩnh viễn** và không ai báo gì cả.
 
 ## 8. Khi nào tạo nhánh
 
@@ -136,7 +161,7 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 
 - `git push --force` lên `main`.
 - Commit `.env.local`.
-- `pnpm db:push` khi chưa biết mình đang trỏ vào đâu.
+- Chạy script đụng database khi chưa biết mình đang trỏ vào nhánh nào.
 - Gỡ khối `AGENTS.md` do `next dev` sinh ra khỏi diff.
 - Dùng dòng "Cập nhật lần cuối" trong tài liệu — cộng dồn bằng bảng lịch sử.
 
@@ -150,4 +175,5 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Viết lại mục 7: chuyển từ `drizzle-kit push` sang `generate` + `migrate`, Vercel tự áp lúc build nên bỏ hẳn bước đẩy schema lên production bằng tay; thêm phần baseline cho database đã có bảng từ trước |
 | 28/08/2026 | `docs(internal): Đặc tả quy trình làm việc với git` | Tạo file — chốt mô hình commit thẳng vào `main`, ranh giới việc nào Claude làm việc nào người dùng làm trong Fork, cổng kiểm tra trước commit, đường quay lui khi production hỏng, và quy tắc schema chỉ được thêm trong suốt beta vì quay lui không lùi được database |

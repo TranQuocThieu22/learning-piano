@@ -34,8 +34,8 @@ yarn-error.log*
 .env*
 !.env.example
 
-# drizzle-kit local migration metadata
-/drizzle
+# Migration của drizzle-kit: PHẢI commit. Đây là bản ghi duy nhất của những lần
+# đổi cấu trúc bảng, và Vercel chạy chúng lúc build. Xem docs/_internal/quy-trinh-lam-viec.md.
 
 # vercel
 .vercel

@@ -104,8 +104,8 @@ $env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/beta-metrics
 Remove-Item Env:DATABASE_URL
 ```
 
-Dòng `Remove-Item` không thừa — quên xoá thì lệnh `pnpm db:push` gõ sau đó sẽ sửa
-cấu trúc bảng production. Xem bẫy 12 trong [`bay-ky-thuat.md`](bay-ky-thuat.md).
+Dòng `Remove-Item` không thừa — quên xoá thì script đụng database gõ sau đó sẽ chạy vào
+production. Xem bẫy 12 trong [`bay-ky-thuat.md`](bay-ky-thuat.md).
 
 Script in ra: **nguồn dữ liệu** (đang đọc database nào, cohort bao nhiêu người),
 **phễu T2 → T3 → T4**, **số người đăng ký mà chưa bao giờ tick bài nào**, phễu rơi
@@ -165,7 +165,7 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       (endpoint `ep-dry-voice-aw3jnw02`); `.env.local` trỏ vào đó, production giữ
       nhánh `main` (`ep-still-bird-awjmxd8d`). Đã kiểm bằng dấu vết: ghi một đơn
       vào `dev` thì production **không** thấy nó. Đây là nửa quan trọng — nơi
-      `pnpm db:push` và các script chạy tay dễ trượt nhất.
+      các script chạy tay dễ trượt nhất.
 - [x] **Tách nốt Preview deployment.** Đã bật *Create Database Branch For
       Deployment → Preview* trong tích hợp Neon, nên **mỗi preview deployment có
       một nhánh database riêng**, tự tạo lúc deploy và tự dọn — tốt hơn phương án
@@ -184,21 +184,24 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       `SEPAY_*`). Đã kiểm trên production: `/admin` và `/admin/payments` trả 200.
 - [x] **Thử đăng nhập trên điện thoại thật** — chạy được, và đã đi hết luồng
       `/checkout` tới trang mã QR bằng một tài khoản không phải admin.
-- [ ] **Đẩy cột `user.created_at` lên production.** Đã khai trong
-      `src/db/schema/auth.ts` và đã chạy `pnpm db:push` trên nhánh `dev`; production
-      vẫn chưa có. Thiếu cột này thì tầng T2→T3 của phễu và quy tắc "quá hai tuần là
-      rơi" ở mục 4 đều không tính được — và **ngày đăng ký không ghi ngay lúc đó thì
-      về sau không dựng lại được**, nên việc này phải xong TRƯỚC khi người beta đầu
-      tiên đăng nhập.
+- [ ] **Baseline migration cho database production, rồi deploy.** Repo đã chuyển từ
+      `drizzle-kit push` sang migration có file, nên production cần đánh dấu một lần
+      là đã có cấu trúc `0000`; sau đó `0001` (cột `user.created_at`) được Vercel áp
+      **tự động** ngay lần build kế tiếp.
 
       ```powershell
-      $env:DATABASE_URL_UNPOOLED='<chuỗi kết nối TRỰC TIẾP nhánh main>'; pnpm db:push
-      Remove-Item Env:DATABASE_URL_UNPOOLED
+      $env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/baseline-migrations.mjs --through 0000_little_cassandra_nova
+      Remove-Item Env:DATABASE_URL
       ```
 
-      Phải đặt đúng biến `DATABASE_URL_UNPOOLED`: `drizzle.config.ts` ưu tiên nó hơn
-      `DATABASE_URL`, nên chỉ đặt `DATABASE_URL` thì biến trong `.env.local` vẫn
-      thắng và lệnh lại chạy vào nhánh dev mà không báo gì.
+      Chạy **trước** khi push commit chuyển đổi. Quên thì build trên Vercel trượt ở
+      bước migrate và deploy không xảy ra — bản đang chạy vẫn nguyên, không mất gì,
+      chỉ là phải quay lại làm bước này.
+
+      Vì sao gấp: thiếu cột `created_at` thì tầng T2→T3 của phễu và quy tắc "quá hai
+      tuần là rơi" ở mục 4 đều không tính được, và **ngày đăng ký không ghi ngay lúc
+      đó thì về sau không dựng lại được**. Phải xong TRƯỚC khi người beta đầu tiên
+      đăng nhập.
 - [ ] **Điều khoản sử dụng** — mục 7 tài liệu định hướng đã yêu cầu: tài khoản dùng
       cá nhân, không chia sẻ. Miễn phí vẫn cần, vì nó đặt chuẩn mực ngay từ đầu.
 - [ ] Một kênh liên hệ để người beta báo lỗi.
@@ -227,6 +230,7 @@ cấm hứa nội dung chưa tồn tại.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Thay ô đẩy cột `user.created_at` bằng ô baseline migration cho production — sau khi baseline thì cột được áp tự động ở lần deploy kế tiếp |
 | 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Viết lại mục 5 cho khớp bản in mới của beta-metrics (lọc cohort theo entitlement.note, chỉ số quyết định tính trên nhóm đủ 14 ngày, in ra database đang đọc); thêm vào mục 8 việc đẩy cột user.created_at lên production vì ngày đăng ký không ghi lúc đó thì không dựng lại được |
 | 27/08/2026 | `docs(internal): Bật nhánh database riêng cho mỗi preview deployment` | Ghi lại rằng Preview đã tách xong bằng cách ngắt–nối lại tích hợp Neon, kèm hai cái bẫy: đừng xoá store, và để trống ô tiền tố biến |
 | 27/08/2026 | `docs(internal): Tách database dev khỏi production bằng nhánh Neon` | Đánh dấu xong phần cách ly máy làm việc, ghi rõ vì sao hoãn phần Preview deployment thay vì mạo hiểm ngắt kết nối production |

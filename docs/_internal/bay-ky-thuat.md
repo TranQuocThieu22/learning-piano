@@ -150,7 +150,7 @@ nhưng 2E ở `##`. Regex nào quét bài tập cũng phải nhận cả hai.
 
 **Nguyên nhân.** Tích hợp Neon đặt `DATABASE_URL` cho **mọi môi trường**, nên
 preview deploy và `vercel env pull` đều trỏ vào đúng database production. Một
-`pnpm db:push` chạy nhầm là sửa cấu trúc bảng thật, không có đường lùi.
+lệnh đổi cấu trúc bảng chạy nhầm là sửa database thật, không có đường lùi.
 
 **Cách sửa.** Tạo nhánh dev trên Neon, đặt riêng `DATABASE_URL` cho Development
 và Preview. Cũng đừng chạy `vercel env pull` một cách máy móc — chính nó bơm 16
@@ -285,7 +285,7 @@ y hệt như "chưa có ai học".
    ```
 
    Dòng `Remove-Item` không thừa: PowerShell giữ biến suốt cả phiên, quên xoá thì
-   lệnh `pnpm db:push` gõ sau đó sẽ **sửa cấu trúc bảng production** — đúng tai nạn
+   script đụng database gõ sau đó sẽ chạy thẳng vào **production** — đúng tai nạn
    mà bẫy 8 đã cảnh báo, chỉ khác đường vào.
 
 ---
@@ -324,6 +324,7 @@ ORDER BY ordinal_position;
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Sửa bẫy 8 và 12 cho khớp: `pnpm db:push` không còn tồn tại, rủi ro giờ nằm ở script chạy tay và biến môi trường quên xoá |
 | 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Thêm bẫy 12 (script chạy tay nạp `.env.local` nên đọc nhánh dev, kết quả rỗng trông y hệt "chưa có ai học") và bẫy 13 (song song `neon_auth.user` với `public.user` làm `information_schema` trả về cột nhân đôi mâu thuẫn) |
 | 28/08/2026 | `feat: Phản hồi từng nốt ngay khi tập bài với đàn` | Thêm bẫy 11 (màu tĩnh trên bản nhạc abcjs cần !important, màu chạy bằng keyframes thì không) và bổ sung vào bẫy 10 chuyện tab bị ẩn bóp setTimeout về khoảng một giây |
 | 28/08/2026 | `fix: Trả lại chỗ cho nội dung trên màn hình điện thoại` | Thêm bẫy 9 (tắt `header.offset` của AppShell thì thanh bên trùm lên nút hamburger) và bẫy 10 (tab bị ẩn không phát sự kiện cuộn nên tưởng hiệu ứng headroom hỏng) |

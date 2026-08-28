@@ -23,7 +23,7 @@ này thêm biến `NEXT_PUBLIC_*` thì phải coi giá trị đó là công khai
 | Chạy cái gì | Có tự đọc `.env.local` không |
 |---|---|
 | `next dev` / `next build` | **Có**, Next.js tự lo |
-| `drizzle-kit` (`pnpm db:push`) | **Không** — nên `drizzle.config.ts` phải gọi `dotenv` thủ công |
+| `drizzle-kit` (`pnpm db:generate`, `pnpm db:migrate`) | **Không** — nên `drizzle.config.ts` phải gọi `dotenv` thủ công |
 | Script trong `scripts/` | **Không** — mỗi script tự gọi `config({ path: '.env.local' })` |
 
 Đây là lý do các file đó có dòng `import { config } from 'dotenv'` ở đầu. Bỏ đi là
@@ -70,7 +70,7 @@ Chuỗi kết nối **trực tiếp**, không qua pooler.
 
 - Đọc bởi: chỉ `drizzle.config.ts`.
 - Thiếu thì sao: tự lùi về `DATABASE_URL`, vẫn chạy được. Nhưng lệnh đổi cấu trúc
-  bảng (`pnpm db:push`) chạy ổn định hơn khi đi thẳng, không qua pooler.
+  bảng (`drizzle-kit migrate`) chạy ổn định hơn khi đi thẳng, không qua pooler.
 
 ---
 
@@ -186,7 +186,9 @@ Vercel **không** đọc `.env.local` — mọi biến phải khai lại trong b
 - [ ] `SEPAY_WEBHOOK_API_KEY` — **khác** khoá thử ở máy mình, và dán y hệt vào SePay
 - [ ] Trỏ webhook SePay tới `https://<tên-miền>/api/webhooks/sepay`
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
-- [ ] Chạy `pnpm db:push` trỏ vào database production
+- [ ] Không cần chạy lệnh đổi cấu trúc bảng bằng tay — `pnpm build` trên Vercel đã
+      chạy `drizzle-kit migrate`. Chỉ database CHƯA từng dùng migration mới cần
+      baseline một lần: `node scripts/baseline-migrations.mjs --through <tag>`
 - [ ] Kiểm tra đang ở gói Vercel **Pro**, không phải Hobby — xem mục 6 của
       [`dinh-huong-kinh-doanh.md`](dinh-huong-kinh-doanh.md)
 
@@ -204,6 +206,7 @@ tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Đổi mọi tham chiếu `pnpm db:push` sang `db:generate`/`db:migrate`, và bỏ mục đẩy schema bằng tay khỏi danh sách việc trước khi mở bán vì Vercel đã tự chạy migrate |
 | 27/08/2026 | `refactor: Gom việc đọc biến môi trường về một chỗ và canh bằng test` | Ghi lại rằng src/lib/env.ts là nơi duy nhất đọc process.env, kèm ba tầng bắt buộc / đóng cửa an toàn / tuỳ chọn và lý do không gộp chúng |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
 | 25/08/2026 | `feat: Thêm trang quản trị người học và tài liệu biến môi trường` | Tạo file — liệt kê mọi biến ứng dụng thật sự đọc, ba nơi nạp biến, checklist deploy lên Vercel |
