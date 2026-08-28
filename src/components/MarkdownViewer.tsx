@@ -1,5 +1,5 @@
 'use client';
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import { AbcjsViewer } from './AbcjsViewer';
@@ -25,6 +25,55 @@ function renderAlertMarkers(markdown: string): string {
   );
 }
 
+/**
+ * Cố ý KHÔNG trải `...props` xuống thẻ DOM.
+ *
+ * react-markdown truyền kèm một prop `node` (cây hast) cho mọi component. Trải
+ * nguyên props là ném `node` vào thẻ thật, React cảnh báo thuộc tính lạ. Nội dung
+ * ở đây là Markdown thuần, không bật `rehype-raw`, nên thuộc tính duy nhất cần
+ * giữ là `title` của liên kết — liệt kê thẳng ra vừa đúng vừa khỏi phải lọc `node`.
+ */
+const components: Components = {
+  pre({ children }) {
+    // react-markdown bọc khối mã trong <pre>. Nếu con là AbcjsViewer thì không
+    // muốn thẻ <pre> nữa.
+    return <div className="markdown-pre-wrapper">{children}</div>;
+  },
+
+  a({ href, title, children }) {
+    // Liên kết nội bộ đi qua next/link để chuyển trang không tải lại;
+    // liên kết ngoài mở tab mới.
+    if (href?.startsWith('/')) {
+      return <Link href={href}>{children}</Link>;
+    }
+    return (
+      <a href={href} title={title} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  },
+
+  table({ children }) {
+    // Bọc thêm một lớp để bảng rộng tự cuộn ngang, thay vì bắt cả trang
+    // cuộn ngang trên điện thoại.
+    return (
+      <div className="markdown-table-wrapper">
+        <table>{children}</table>
+      </div>
+    );
+  },
+
+  code({ className, children }) {
+    // Từ react-markdown v9 không còn prop `inline` nữa; phân biệt khối mã với
+    // mã nội dòng bằng chính lớp `language-*` mà GFM gắn cho khối có tên ngôn ngữ.
+    const match = /language-(\w+)/.exec(className ?? '');
+    if (match?.[1] === 'abc') {
+      return <AbcjsViewer abcNotation={String(children).replace(/\n$/, '')} />;
+    }
+    return <code className={className}>{children}</code>;
+  },
+};
+
 export function MarkdownViewer({ content }: { content: string }) {
   return (
     <div className="markdown-body">
@@ -32,44 +81,7 @@ export function MarkdownViewer({ content }: { content: string }) {
         // remark-gfm adds tables, strikethrough, task lists and autolinks,
         // none of which react-markdown supports out of the box.
         remarkPlugins={[remarkGfm]}
-        components={{
-          pre({ children }: any) {
-            // react-markdown wraps code blocks in pre. If the child is our AbcjsViewer, we don't want the pre tag.
-            return <div className="markdown-pre-wrapper">{children}</div>;
-          },
-          a({ href, children, ...props }: any) {
-            // Internal links go through next/link for client-side navigation;
-            // external ones open in a new tab.
-            if (href?.startsWith('/')) {
-              return <Link href={href}>{children}</Link>;
-            }
-            return (
-              <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
-                {children}
-              </a>
-            );
-          },
-          table({ children }: any) {
-            // Wrapper lets wide tables scroll on their own instead of
-            // forcing the whole page to scroll sideways on mobile.
-            return (
-              <div className="markdown-table-wrapper">
-                <table>{children}</table>
-              </div>
-            );
-          },
-          code({ node, inline, className, children, ...props }: any) {
-            const match = /language-(\w+)/.exec(className || '');
-            if (!inline && match && match[1] === 'abc') {
-              return <AbcjsViewer abcNotation={String(children).replace(/\n$/, '')} />;
-            }
-            return (
-              <code className={className} {...props}>
-                {children}
-              </code>
-            );
-          }
-        }}
+        components={components}
       >
         {renderAlertMarkers(content)}
       </ReactMarkdown>

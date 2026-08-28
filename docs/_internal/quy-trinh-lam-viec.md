@@ -38,13 +38,26 @@ npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons
 | Lệnh | Bẫy đã biết |
 |---|---|
 | `tsc --noEmit` | Đổi tên thư mục route thì phải `rm -rf .next` trước — bẫy 5 |
-| `pnpm lint` | Đã có sẵn 4 lỗi `no-explicit-any` trong `MarkdownViewer.tsx`, không phải bạn vừa gây ra |
+| `pnpm lint` | Phải **sạch tuyệt đối**, không lỗi không cảnh báo. Dòng nào hiện ra cũng là của bạn |
 | `pnpm test` | **Đọc dòng `Test Files`, không chỉ dòng `Tests`** — bẫy 3 |
 | `pnpm check:lessons` | Chỉ cần khi sửa `docs/03-exercises/` hoặc chỉ thị nhúng bản nhạc |
-| `pnpm build` | Chạy thêm khi đụng cấu hình hay route — bắt lỗi Server Component mà `tsc` không thấy |
+| `pnpm build` | Chạy cả chuỗi như Vercel — xem ngay dưới |
 
 Rồi `git status`: **`.env.local` phải không xuất hiện**. Khối `AGENTS.md` do `next dev`
 sinh ra thì commit kèm, gỡ ra chỉ làm nó hiện lại lần sau.
+
+**Vercel cũng gác một phần.** Lệnh build là:
+
+```
+vitest run && drizzle-kit migrate && next build
+```
+
+Nên **test đỏ hoặc lỗi kiểu thì deploy không xảy ra**, và test chạy *trước* migrate nên
+database còn chưa bị đụng tới. Đã kiểm bằng một test cố ý trượt: build dừng ở
+`exit 1`, chuỗi `applying migrations` không xuất hiện lần nào.
+
+Nhưng `pnpm lint` và `pnpm check:lessons` **không** chạy trên Vercel. Hai cái đó vẫn
+hoàn toàn là kỷ luật của bạn — đó là lý do dòng lệnh ở đầu mục này vẫn cần gõ tay.
 
 ## 4. Chốt tiêu đề commit TRƯỚC khi sửa tài liệu
 
@@ -175,5 +188,6 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `fix: Dọn sạch lỗi lint và cho Vercel chạy test trước khi deploy` | Cập nhật mục 3: lint giờ sạch tuyệt đối nên bỏ dòng "có sẵn 4 lỗi, không phải bạn gây ra"; ghi rõ Vercel gác được test và kiểu nhưng KHÔNG gác lint với check:lessons, để khỏi tưởng đã có máy lo hết |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Viết lại mục 7: chuyển từ `drizzle-kit push` sang `generate` + `migrate`, Vercel tự áp lúc build nên bỏ hẳn bước đẩy schema lên production bằng tay; thêm phần baseline cho database đã có bảng từ trước |
 | 28/08/2026 | `docs(internal): Đặc tả quy trình làm việc với git` | Tạo file — chốt mô hình commit thẳng vào `main`, ranh giới việc nào Claude làm việc nào người dùng làm trong Fork, cổng kiểm tra trước commit, đường quay lui khi production hỏng, và quy tắc schema chỉ được thêm trong suốt beta vì quay lui không lùi được database |
