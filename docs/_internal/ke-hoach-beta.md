@@ -147,15 +147,80 @@ Quan trọng: đừng đổi tiêu chí sau khi thấy kết quả. Viết trư�
 
 ## 7. Phản hồi định tính
 
-Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. Cần thêm:
+Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. `beta-metrics.mjs`
+chỉ ra được **ai** dừng ở bài nào; phần dưới đây là cách hỏi cho ra **vì sao**.
 
-- **Một biểu mẫu ngắn** (Google Form) gửi ở cuối tuần 2, tối đa 5 câu. Câu quan
-  trọng nhất: *"Lần gần nhất bạn định ngồi vào đàn mà rốt cuộc không ngồi — chuyện
-  gì đã xảy ra?"*
-- **Phỏng vấn 5 người**, mỗi người 20 phút, ở cuối đợt. Ưu tiên **người đã bỏ giữa
-  chừng** — họ biết điều mà người học xong không biết.
-- **Đừng hỏi về giá trong đợt này.** Người đang dùng miễn phí trả lời câu hỏi giá
-  không đáng tin. Giá tính sau, khi có nội dung đủ để bán.
+**Nguyên tắc xuyên suốt: hỏi về việc đã xảy ra, đừng hỏi ý kiến.** "Buổi tập gần
+nhất của bạn diễn ra thế nào" cho câu trả lời dùng được; "bạn thấy giáo trình có
+dễ hiểu không" chỉ cho ra lời khen lịch sự. Người ta nhớ việc mình đã làm khá
+chính xác, còn ý kiến thì họ nghĩ ra ngay lúc được hỏi.
+
+### 7.1 Biểu mẫu — gửi cuối tuần 2
+
+Google Form, đúng năm câu, trả lời trên điện thoại trong ba phút.
+
+**1.** *(chọn một)* Hai tuần vừa rồi bạn ngồi vào đàn được mấy buổi?
+`0` · `1-2` · `3-5` · `6 buổi trở lên`
+
+> Đối chiếu với số bài đã tick. Lệch nhiều nghĩa là người ta có tập mà không tick
+> — và nếu vậy thì **chỉ số quyết định ở mục 6 đang bị đọc thấp hơn thực tế**.
+
+**2.** *(mở)* **Lần gần nhất bạn định ngồi vào đàn mà rốt cuộc không ngồi — chuyện
+gì đã xảy ra?**
+
+> Câu quan trọng nhất của cả biểu mẫu. Nó hỏi một sự việc cụ thể, nên người ta kể
+> lại được; hỏi "vì sao bạn ít tập" thì chỉ nhận về "bận quá".
+
+**3.** *(mở)* Có bài nào hoặc đoạn nào bạn phải đọc lại nhiều lần mà vẫn thấy mơ
+hồ không? Nhớ tên bài thì ghi giúp.
+
+> Chỉ thẳng chỗ cần viết lại. Đây là câu cho ra việc sửa được ngay.
+
+**4.** *(chọn một + ô "khác")* Nếu bạn đã ngừng tập, lý do gần nhất là gì?
+`Chưa ngừng, vẫn đang tập` · `Không sắp xếp được thời gian` · `Bài khó quá, thấy
+nản` · `Bài dễ quá, thấy chán` · `Không biết mình có đang tập đúng không` ·
+`Đàn không tiện dùng` · `Khác`
+
+> Hai lựa chọn "khó quá" và "dễ quá" cố ý đặt cạnh nhau. Nếu kết quả nghiêng hẳn
+> một bên thì đó là vấn đề nhịp độ giáo trình, không phải vấn đề động lực.
+
+**5.** *(mở, không bắt buộc)* Còn điều gì bạn muốn nói mà bốn câu trên chưa hỏi tới?
+
+> Câu bắt được thứ người soạn biểu mẫu không nghĩ ra. Thường là câu cho nhiều
+> nhất, và cũng là lý do biểu mẫu dừng ở năm câu chứ không mười.
+
+**Về email:** bật thu thập email nhưng **để không bắt buộc**, và nói rõ trong phần
+mô tả rằng nó dùng để đối chiếu với tiến độ và để mời phỏng vấn. Bắt buộc điền thì
+người định bỏ cuộc sẽ không trả lời — mà họ đúng là nhóm cần nghe nhất.
+
+**Đừng hỏi về giá.** Người đang dùng miễn phí trả lời câu hỏi giá không đáng tin.
+Giá tính sau, khi có nội dung đủ để bán.
+
+### 7.2 Phỏng vấn — cuối đợt
+
+**Năm người, mỗi người 20 phút.** Ưu tiên **người đã bỏ giữa chừng** — họ biết điều
+mà người học xong không biết. `beta-metrics.mjs` in sẵn danh sách email của người
+quá hạn chưa xong Chương 1; lấy từ đó.
+
+Khung 20 phút:
+
+| Phút | Hỏi gì |
+|---|---|
+| 0-3 | Trước khi biết tới trang này, bạn đã thử học piano bằng cách nào chưa? Chuyện gì xảy ra? |
+| 3-10 | **Kể lại buổi tập gần nhất của bạn.** Ngồi xuống lúc mấy giờ, mở cái gì trước, làm gì tiếp — càng chi tiết càng tốt |
+| 10-15 | Tới lúc nào thì bạn thấy khó ở? Lúc đó bạn làm gì? |
+| 15-18 | Điều gì bạn tưởng sẽ có mà hoá ra không có? |
+| 18-20 | Nếu có một thứ được sửa để bạn quay lại tập, đó là gì? |
+
+Ba điều đừng làm:
+
+- **Đừng giải thích, đừng bào chữa.** Họ nói "chỗ này khó hiểu" mà mình đáp "thật
+  ra ý là..." thì cuộc phỏng vấn kết thúc ngay tại đó — họ sẽ chỉ gật cho xong.
+- **Đừng hỏi họ muốn tính năng gì.** Người dùng giỏi mô tả vấn đề, không giỏi thiết
+  kế giải pháp. Hỏi vấn đề, phần giải pháp là việc của mình.
+- **Đừng ngắt lời khi họ im lặng.** Chỗ ngập ngừng thường là chỗ sắp nói thật.
+
+Ghi âm nếu họ đồng ý — vừa nghe vừa ghi chép thì sẽ bỏ sót đúng câu đáng giá.
 
 ---
 
@@ -201,14 +266,31 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       deploy không xảy ra, production vẫn phục vụ bản cũ, không mất gì.
 - [ ] **Điều khoản sử dụng** — mục 7 tài liệu định hướng đã yêu cầu: tài khoản dùng
       cá nhân, không chia sẻ. Miễn phí vẫn cần, vì nó đặt chuẩn mực ngay từ đầu.
-- [ ] **Kênh liên hệ cho người beta.** Đã chốt hai kênh, ghi ở mục 7
+- [x] **Kênh liên hệ cho người beta.** Đã chốt hai kênh, ghi ở mục 7
       [`docs/legal/terms.md`](../legal/terms.md):
 
-      - **Email `pianojourney@rehover.io`** — tên miền `rehover.io` đã mua (tầng
-        công ty **reHover**, để sản phẩm sau dùng chung). Còn phải dựng chuyển
-        tiếp về Gmail và kiểm nhận được thư thật trước khi mở cổng.
-      - **Nhắn tin riêng cho Trang Facebook Piano Journey** — chưa tạo. Tên đề
-        xuất `Piano Journey — Tự học piano cho người mới`, handle `@pianojourney.vn`.
+      - **Email `pianojourney@rehover.io` — XONG, đã gửi thư thử và nhận được.**
+        Tên miền `rehover.io` mua thẳng tại Cloudflare Registrar (tầng công ty
+        **reHover**, để sản phẩm sau dùng chung), nên không phải đổi nameserver.
+        Chuyển tiếp dựng bằng **Cloudflare Email Routing**: MX trỏ về
+        `route1/2/3.mx.cloudflare.net`, SPF `v=spf1 include:_spf.mx.cloudflare.net ~all`.
+
+        Hai chỗ dễ mắc: (1) phải bấm **link xác nhận** Cloudflare gửi tới hộp thư
+        đích, không bấm thì không thư nào được chuyển; (2) thêm Destination
+        Address **chưa đủ** — vẫn phải tạo Routing rule cho từng địa chỉ, vì
+        Destination là cấu hình ở tầng tài khoản còn MX chỉ sinh ra khi bật
+        routing cho đúng tên miền.
+
+        **Catch-all cố ý để tắt.** Bật lên thì mọi địa chỉ bịa ra ở `@rehover.io`
+        đều vào hộp thư, và tên miền mới bị quét bằng danh sách từ điển chỉ trong
+        vài tuần. Người gõ sai địa chỉ sẽ nhận thư báo lỗi và gửi lại — tốt hơn là
+        im lặng biến mất giữa đống rác.
+      - **Nhắn tin riêng cho Trang Facebook Piano Journey — ĐÃ TẠO.**
+        facebook.com/profile.php?id=61593938880341 — hiện còn là đường dẫn dạng số
+        vì chưa đặt được tên người dùng. Trong điều khoản đã để chữ dễ đọc và giấu
+        đường dẫn phía sau, nên đặt tên người dùng sau cũng không phải sửa lại.
+
+        Facebook không cho gạch dài trong tên Trang, phải dùng gạch nối thường.
 
       **Trang ở tầng sản phẩm, không phải tầng công ty**, và địa chỉ ghi trong điều
       khoản là **Trang** chứ không phải nhóm. Lý do: không ai vào một nhóm công khai
@@ -258,6 +340,9 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 27/08/2026 | `docs(internal): Soạn xong biểu mẫu và khung phỏng vấn cho mục Phản hồi định tính` | Mục 7 từ phác thảo thành thứ dùng được ngay: năm câu hỏi cụ thể kèm lý do từng câu, và khung phỏng vấn 20 phút hỏi về việc đã xảy ra thay vì hỏi ý kiến |
+| 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Đã tạo Trang Facebook và điền link vào mục 7 điều khoản, chốt xong cả hai kênh liên hệ |
+| 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Ghi lại cách dựng chuyển tiếp thư bằng Cloudflare Email Routing, hai chỗ dễ mắc, và lý do cố ý tắt catch-all |
 | 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Chốt hai kênh liên hệ và ghi lý do đặt Trang Facebook ở tầng sản phẩm chứ không phải nhóm, vì nhóm công khai không cho ra phản hồi của người bỏ cuộc |
 | 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Chuyển Giai đoạn 2 từ dự định thành cam kết ghi trong điều khoản, kèm lý do vì sao không phạm mục 6 và hệ quả phải báo nếu chậm |
 | 28/08/2026 | `chore: Tick ô baseline và sửa dòng gợi ý database của beta-metrics` | Tick ô baseline ở mục 8 kèm bằng chứng đã kiểm, và ghi lại dấu vết lần build trượt trước đó để lần sau nhận ra đó là fail-closed đang hoạt động chứ không phải hỏng |
