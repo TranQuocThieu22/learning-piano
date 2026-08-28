@@ -76,5 +76,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/du-phong-7-nam.md`
 - `docs/_internal/bien-moi-truong.md`
 - `docs/_internal/bay-ky-thuat.md`
+- `docs/_internal/ke-hoach-beta.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
