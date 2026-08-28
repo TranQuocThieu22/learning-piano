@@ -88,7 +88,7 @@ xoá tài khoản.
 Có gì cần hỏi, báo lỗi, hay muốn xoá dữ liệu:
 
 - **Email:** pianojourney@rehover.io
-- **Facebook:** nhắn tin cho Trang Piano Journey
+- **Facebook:** nhắn tin cho [Trang Piano Journey](https://www.facebook.com/profile.php?id=61593938880341)
 
 Báo lỗi thì cứ nhắn thẳng, không cần khách sáo. Kể cả khi bạn không chắc đó có
 phải lỗi hay không — chúng tôi thà nhận mười tin nhắn thừa còn hơn để sót một lỗi
