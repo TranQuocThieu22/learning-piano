@@ -7,7 +7,7 @@ import { getAllMarkdownFiles } from '@/lib/markdown';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 
 export const metadata = {
-  title: 'Luyện nhận nốt — Piano Journey',
+  title: 'Luyện nhận nốt',
 };
 
 export default async function NoteRecognitionPage() {

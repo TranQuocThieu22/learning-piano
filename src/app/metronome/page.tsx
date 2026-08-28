@@ -7,7 +7,7 @@ import { getAllMarkdownFiles } from '@/lib/markdown';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 
 export const metadata = {
-  title: 'Máy đánh nhịp — Piano Journey',
+  title: 'Máy đánh nhịp',
 };
 
 export default async function MetronomePage() {
