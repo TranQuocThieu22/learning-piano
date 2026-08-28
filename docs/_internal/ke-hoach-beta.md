@@ -201,7 +201,26 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       deploy không xảy ra, production vẫn phục vụ bản cũ, không mất gì.
 - [ ] **Điều khoản sử dụng** — mục 7 tài liệu định hướng đã yêu cầu: tài khoản dùng
       cá nhân, không chia sẻ. Miễn phí vẫn cần, vì nó đặt chuẩn mực ngay từ đầu.
-- [ ] Một kênh liên hệ để người beta báo lỗi.
+- [ ] **Kênh liên hệ cho người beta.** Đã chốt hai kênh, ghi ở mục 7
+      [`docs/legal/terms.md`](../legal/terms.md):
+
+      - **Email `pianojourney@rehover.io`** — tên miền `rehover.io` đã mua (tầng
+        công ty **reHover**, để sản phẩm sau dùng chung). Còn phải dựng chuyển
+        tiếp về Gmail và kiểm nhận được thư thật trước khi mở cổng.
+      - **Nhắn tin riêng cho Trang Facebook Piano Journey** — chưa tạo. Tên đề
+        xuất `Piano Journey — Tự học piano cho người mới`, handle `@pianojourney.vn`.
+
+      **Trang ở tầng sản phẩm, không phải tầng công ty**, và địa chỉ ghi trong điều
+      khoản là **Trang** chứ không phải nhóm. Lý do: không ai vào một nhóm công khai
+      để viết "tôi tập ba hôm rồi bỏ" trước mặt hai chục người khác và trước mặt tác
+      giả — mà đó đúng là phản hồi mục 7 cần nhất. Nhóm (nếu lập) chỉ để tuyển người
+      và thông báo, và phải để chế độ kín vì danh sách thành viên chính là danh sách
+      người học.
+
+      **Chuyển tiếp miễn phí chỉ lo chiều nhận.** Trả lời vẫn đi từ địa chỉ Gmail.
+      Chấp nhận được trong beta; trước khi mở bán thì phải có gửi-đúng-tên, vì hoá
+      đơn gửi từ `@gmail.com` trông không đáng tin. Việc đó đi cùng đợt nâng Vercel
+      Pro và đăng ký kinh doanh.
 
 **Chưa cần** trong đợt này: chính sách hoàn tiền, đăng ký kinh doanh, nâng Vercel
 Pro. Cả ba chỉ bắt buộc khi bắt đầu thu tiền.
@@ -214,8 +233,20 @@ Beta kéo dài 6 tuần. Dùng đúng quãng đó để **viết Chương 8, 9, 
 thiếu của Giai đoạn 2. Kết thúc beta mà nội dung cũng vừa đủ thì mở bán được ngay,
 thay vì phải chờ thêm một vòng nữa.
 
-Đừng hứa mốc cụ thể với người beta về ba chương này. Mục 6 tài liệu định hướng đã
-cấm hứa nội dung chưa tồn tại.
+**Đây là cam kết đã ghi vào điều khoản, không còn là dự định.** Mục 4 của
+[`docs/legal/terms.md`](../legal/terms.md) hứa với người beta rằng Giai đoạn 2 sẽ
+hoàn thiện trước khi đợt beta kết thúc, và người beta giữ trọn quyền truy cập Giai
+đoạn 1 + 2 mà không phải trả thêm.
+
+Vì sao hứa được mà không phạm mục 6 tài liệu định hướng: điều bị cấm ở đó là *"cập
+nhật miễn phí trọn đời"* — nghĩa vụ vô hạn cho nội dung chưa hình dung ra. Ba chương
+này đã có tên, có phạm vi, và nằm trong đúng gói `nen-tang` đã chốt. Lịch sử soạn
+bài cũng ủng hộ: Chương 6 và Chương 7 viết xong trong **cùng một ngày** (26/08/2026),
+nên ba chương trong sáu tuần là khả thi.
+
+Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người beta**, không được im lặng
+— điều khoản đã viết vậy. Và không được hứa thêm gì cho Giai đoạn 3, 4; hai giai
+đoạn đó vẫn là sản phẩm riêng, chưa soạn, không được nhắc tới như một lời hứa.
 
 ---
 
@@ -227,6 +258,8 @@ cấm hứa nội dung chưa tồn tại.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Chốt hai kênh liên hệ và ghi lý do đặt Trang Facebook ở tầng sản phẩm chứ không phải nhóm, vì nhóm công khai không cho ra phản hồi của người bỏ cuộc |
+| 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Chuyển Giai đoạn 2 từ dự định thành cam kết ghi trong điều khoản, kèm lý do vì sao không phạm mục 6 và hệ quả phải báo nếu chậm |
 | 28/08/2026 | `chore: Tick ô baseline và sửa dòng gợi ý database của beta-metrics` | Tick ô baseline ở mục 8 kèm bằng chứng đã kiểm, và ghi lại dấu vết lần build trượt trước đó để lần sau nhận ra đó là fail-closed đang hoạt động chứ không phải hỏng |
 | 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Ô baseline ở mục 8 đổi sang cờ --prod: dán chuỗi kết nối production vào dòng lệnh là để mật khẩu nằm luôn trong lịch sử lệnh PowerShell |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Thay ô đẩy cột `user.created_at` bằng ô baseline migration cho production — sau khi baseline thì cột được áp tự động ở lần deploy kế tiếp |

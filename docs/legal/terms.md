@@ -1,84 +1,103 @@
 # Điều khoản sử dụng
 
-*Áp dụng từ 27/08/2026 — giai đoạn thử nghiệm (beta).*
+Trang này nói rõ bạn được gì và cần giữ điều gì khi dùng Piano Journey. Viết bằng
+tiếng Việt thường ngày, không vòng vo.
 
-Trang này đang trong **giai đoạn thử nghiệm miễn phí**. Bản điều khoản dưới đây
-viết ngắn và bằng tiếng Việt thường ngày, để bạn đọc hết trong hai phút thay vì
-bấm đồng ý mà không biết mình đồng ý cái gì.
+Bản áp dụng cho **giai đoạn thử nghiệm (beta)**, khi toàn bộ nội dung đang được mở
+miễn phí. Khi bắt đầu bán, trang này sẽ được viết lại và bạn sẽ được báo trước.
 
-## Tóm tắt trong bốn dòng
+*Bản này áp dụng từ 27/08/2026.*
 
-- Tài khoản là **của riêng bạn**, đừng chia sẻ cho người khác dùng chung.
-- Nội dung bài học **đừng đăng lại** ở nơi khác.
-- Đây là bản thử nghiệm: có thể có lỗi, có thể thay đổi, có thể gián đoạn.
-- Chúng tôi lưu tên, email, ảnh đại diện Google và tiến độ tick bài của bạn — chỉ để trang hoạt động.
+## 1. Đây là gì
 
-## 1. Tài khoản
+Piano Journey là một giáo trình tự học piano cho người mới, dạng chữ và bản nhạc,
+kèm vài công cụ nhỏ như máy đánh nhịp và bài luyện nhận nốt.
 
-Bạn đăng nhập bằng tài khoản Google. Tài khoản dùng cho **một người**, chính bạn.
-Đừng đưa cho người khác mượn hay dùng chung — tiến độ học được ghi theo tài khoản,
-dùng chung là số liệu của bạn lẫn lộn với người khác.
+Nó **không** thay thế giáo viên. Không ai nhìn tay bạn, không ai sửa tư thế cho bạn.
+Giáo trình cố gắng giải thích kỹ để bạn tự nhận ra lỗi, nhưng đó vẫn là tự học.
 
-Bạn tự chịu trách nhiệm giữ an toàn cho tài khoản Google của mình.
+Bạn cần **một cây đàn thật** — piano hoặc keyboard. App không có bàn phím ảo, và đó
+là lựa chọn có chủ đích ([đọc lý do](/07-doc-them/khong-lam-piano-ao)).
 
-## 2. Nội dung bài học
+Một điều về sức khoẻ, vì không có ai ngồi cạnh nhắc bạn: tập sai tư thế hoặc tập
+quá lâu một lúc có thể gây đau cổ tay, ngón và vai. Bài học luôn nhắc giữ tay thả
+lỏng và nghỉ giữa chừng — hãy làm theo. **Thấy đau thì dừng**, và đi khám nếu cơn
+đau kéo dài. Bạn tự quyết định mình tập bao lâu, không có gì phải chạy đua.
 
-Toàn bộ bài viết, cách sắp xếp lộ trình và phần soạn bản nhạc trên trang này thuộc
-quyền của người làm ra trang. Bạn được **dùng thoải mái cho việc học của chính
-mình** — đọc, in ra để lên giá nhạc, ghi chú lên đó, tập bao nhiêu lâu tùy thích.
+## 2. Tài khoản
 
-Điều **không** được làm: đăng lại nội dung lên nơi khác, bán lại, hay dùng để dạy
-lớp thu phí, nếu chưa hỏi và được đồng ý.
+Bạn đăng nhập bằng tài khoản Google. Chúng tôi không đặt mật khẩu riêng, nên không
+có mật khẩu nào của bạn nằm ở đây.
 
-Riêng các bản nhạc cổ điển và dân ca được dùng trong bài (Ode to Joy, Jingle Bells,
-Twinkle Twinkle, Mary Had A Little Lamb) vốn đã hết hạn bảo hộ bản quyền — phần
-thuộc về trang này là cách soạn lại và phần hướng dẫn đi kèm.
+**Tài khoản dùng cho một người.** Đừng chia sẻ để nhiều người cùng học chung một
+tài khoản — tiến độ sẽ lẫn vào nhau và chính bạn là người khó chịu trước.
 
-## 3. Giai đoạn thử nghiệm
+## 3. Nội dung thuộc về ai
 
-Trong giai đoạn này:
+Bài học, cách sắp xếp lộ trình và phần soạn nhạc trên trang này là của chúng tôi.
+Bạn được **dùng thoải mái để tự học**: đọc, in ra để lên giá nhạc, chép tay vào sổ,
+chỉ cho người nhà cùng tập.
 
-- Trang **miễn phí**, không thu tiền dưới bất kỳ hình thức nào.
-- Có thể còn lỗi. Gặp lỗi thì báo giúp — đó chính là lý do có giai đoạn này.
-- Nội dung và tính năng có thể thay đổi hoặc tạm ngừng mà không báo trước.
-- Chúng tôi cố giữ tiến độ học của bạn an toàn, nhưng **không cam kết** dữ liệu
-  trong giai đoạn thử nghiệm sẽ tồn tại vĩnh viễn.
+Điều không nên làm là **đăng lại toàn bộ nội dung ở nơi khác như của mình**, hoặc
+bán lại. Trích một đoạn kèm dẫn nguồn thì hoàn toàn được, và chúng tôi rất hoan
+nghênh.
 
-Chúng tôi **không hứa** về những phần nội dung chưa được viết xong. Lộ trình hiển
-thị trên trang là dự định, không phải cam kết về thời điểm.
+Riêng các bản nhạc kinh điển (Ode to Joy, Jingle Bells...) vốn đã hết hạn bảo hộ
+bản quyền từ lâu — phần soạn lại cho người mới là của chúng tôi, còn giai điệu thì
+thuộc về tất cả mọi người.
 
-## 4. Dữ liệu của bạn
+## 4. Riêng trong giai đoạn beta
 
-Khi bạn đăng nhập bằng Google, trang lưu **tên, địa chỉ email và ảnh đại diện** mà
-Google cung cấp. Khi bạn tick một bài là đã học xong, trang lưu **bài nào và lúc
-nào**.
+- **Giai đoạn 2 sẽ hoàn thiện trong đợt beta này.** Giai đoạn 1 đã đủ và Chương 7
+  đã xong; ba chương còn lại — mẫu đệm tay trái, pedal, và đệm trọn một bài — sẽ
+  được viết xong trước khi beta kết thúc. Nếu có gì khiến chậm lại, chúng tôi báo
+  cho bạn chứ không im lặng.
+- **Nội dung có thể thay đổi.** Bài học sẽ được sửa dựa trên chính phản hồi của bạn.
+- **Có thể gặp lỗi.** Đó là lý do có đợt beta. Gặp lỗi thì báo giúp, đừng ngại.
+- **Không cam kết trang luôn chạy.** Trang có thể tạm dừng để bảo trì.
+- Người tham gia beta **giữ quyền truy cập trọn Giai đoạn 1 và 2**, kể cả sau khi
+  chúng tôi bắt đầu bán và kể cả với những chương viết xong sau khi bạn tham gia.
+  Không phải trả thêm gì.
 
-Dùng để làm gì:
+## 5. Dữ liệu của bạn
 
-- Cho bạn đăng nhập và thấy đúng tiến độ của mình.
-- Xem tổng thể có bao nhiêu người đi tới đâu trong lộ trình, để biết chỗ nào trong
-  giáo trình đang khiến người học bỏ cuộc mà sửa.
+Chúng tôi lưu đúng những thứ cần để trang hoạt động:
 
-Chúng tôi **không bán** dữ liệu của bạn cho ai, và không dùng nó để chạy quảng cáo.
+| Lưu gì | Vì sao |
+|---|---|
+| Tên, email, ảnh đại diện từ Google | Để biết bạn là ai khi đăng nhập |
+| Danh sách bài bạn đã tick, kèm thời điểm | Để hiện tiến độ và biết chỗ nào người học hay dừng lại |
 
-Muốn xóa tài khoản cùng toàn bộ tiến độ thì liên hệ, chúng tôi xóa.
+**Không** lưu mật khẩu, **không** lưu thông tin thẻ, **không** bán dữ liệu cho ai.
+Dữ liệu nằm trên máy chủ của bên cung cấp hạ tầng mà chúng tôi thuê.
 
-## 5. Về việc tập đàn
+Muốn xem lại hoặc **xoá toàn bộ dữ liệu của mình**, nhắn cho chúng tôi. Chúng tôi
+xoá và xác nhận lại với bạn.
 
-Giáo trình này để **tự học tại nhà** và không thay thế được giáo viên trực tiếp.
+## 6. Khi nào tài khoản bị dừng
 
-Tập đàn sai cách hoặc tập quá nhiều có thể gây đau tay, cổ tay hoặc vai. Bài học
-luôn nhắc giữ tay thả lỏng và nghỉ giữa chừng — hãy làm theo. **Thấy đau thì dừng
-lại**, và đi khám nếu cơn đau kéo dài. Bạn tự quyết định mình tập bao lâu và tập
-thế nào.
+Hiếm, nhưng nói trước cho rõ: nếu một tài khoản được dùng để phát tán lại nội dung
+ở quy mô lớn, hoặc phá hoại hệ thống, chúng tôi sẽ dừng tài khoản đó. Chúng tôi sẽ
+báo cho bạn trước, trừ trường hợp phải xử lý gấp.
 
-## 6. Thay đổi điều khoản
-
-Khi trang chuyển từ thử nghiệm sang có bán, bản điều khoản này sẽ được viết lại và
-bạn sẽ được báo trước. Việc bạn tiếp tục dùng trang sau khi có bản mới được hiểu là
-bạn đồng ý với bản đó.
+Bạn muốn dừng lúc nào cũng được — chỉ cần thôi đăng nhập, hoặc nhắn để chúng tôi
+xoá tài khoản.
 
 ## 7. Liên hệ
 
-Có câu hỏi về điều khoản, muốn xóa dữ liệu, hoặc muốn xin phép dùng lại nội dung —
-liên hệ qua kênh ghi ở trang chủ.
+Có gì cần hỏi, báo lỗi, hay muốn xoá dữ liệu:
+
+- **Email:** pianojourney@rehover.io
+- **Facebook:** nhắn tin cho Trang Piano Journey
+
+Báo lỗi thì cứ nhắn thẳng, không cần khách sáo. Kể cả khi bạn không chắc đó có
+phải lỗi hay không — chúng tôi thà nhận mười tin nhắn thừa còn hơn để sót một lỗi
+khiến người khác bỏ cuộc.
+
+Nếu bạn định thôi không học tiếp, và có thể nói cho chúng tôi biết vì sao, đó là
+phản hồi giá trị nhất trong cả đợt beta này. Không có gì phải ngại.
+
+---
+
+*Cập nhật lần này áp dụng cho giai đoạn beta. Chúng tôi sẽ ghi rõ trên trang khi có
+thay đổi đáng kể.*
