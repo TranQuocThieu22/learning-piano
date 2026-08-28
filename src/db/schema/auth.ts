@@ -24,6 +24,22 @@ export const users = pgTable('user', {
   emailVerified: timestamp('emailVerified', { mode: 'date' }),
   image: text('image'),
   role: text('role').$type<UserRole>().notNull().default('member'),
+  /**
+   * Ngày tạo tài khoản.
+   *
+   * KHÔNG nằm trong hợp đồng adapter của Auth.js — adapter chỉ ghi những cột nó
+   * biết, nên giá trị phải do chính Postgres điền. Vì vậy ở đây là `.defaultNow()`
+   * (sinh ra `DEFAULT now()` thật trong database) chứ KHÔNG phải `$defaultFn`
+   * như cột `id` — cái đó chỉ chạy ở tầng Drizzle, đi đường khác vào là bỏ trống.
+   * Xem bẫy 6 trong `docs/_internal/bay-ky-thuat.md`.
+   *
+   * Có cột này mới đo được tầng T2→T3 của phễu (đăng ký rồi không bao giờ tick
+   * bài nào — thường là chỗ rơi to nhất), và mới biết từng người đã tham gia bao
+   * lâu, thứ mà quy tắc "sau hai tuần chưa xong Chương 1 thì coi như đã rơi"
+   * của `docs/_internal/ke-hoach-beta.md` bắt buộc phải có. Không ghi lúc đó thì
+   * sau này không dựng lại được.
+   */
+  createdAt: timestamp('created_at', { mode: 'date' }).notNull().defaultNow(),
 });
 
 export const accounts = pgTable(

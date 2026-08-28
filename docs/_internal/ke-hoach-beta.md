@@ -95,12 +95,36 @@ vẫn chưa xong thì coi như đã rơi — đừng chờ thêm, chính chỗ r
 Không cần công cụ phân tích nào. Bảng `lesson_completion` đã ghi `completed_at` cho
 từng bài, đó chính là dữ liệu. Chạy:
 
-```bash
+```powershell
+# Ở máy làm việc: .env.local trỏ nhánh dev, số ở đây là số để thử
 node scripts/beta-metrics.mjs
+
+# Số thật của người beta nằm ở production, phải đặt biến đè lên
+$env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/beta-metrics.mjs
+Remove-Item Env:DATABASE_URL
 ```
 
-Script in ra bốn thứ: số người đăng nhập, phễu rơi rụng theo từng bài, tỷ lệ đi hết
-Chương 1, và thời gian trung vị từ bài đầu tới hết Chương 1.
+Dòng `Remove-Item` không thừa — quên xoá thì lệnh `pnpm db:push` gõ sau đó sẽ sửa
+cấu trúc bảng production. Xem bẫy 12 trong [`bay-ky-thuat.md`](bay-ky-thuat.md).
+
+Script in ra: **nguồn dữ liệu** (đang đọc database nào, cohort bao nhiêu người),
+**phễu T2 → T3 → T4**, **số người đăng ký mà chưa bao giờ tick bài nào**, phễu rơi
+rụng theo từng bài, **chỉ số quyết định**, và danh sách email của người quá hạn chưa
+xong Chương 1 để xếp lịch phỏng vấn ở mục 7.
+
+Hai điều đã đóng sẵn vào script, đừng lặng lẽ nới ra:
+
+- **Chỉ đếm người trong cohort beta**, nhận ra bằng ghi chú ở `entitlement.note` mà
+  mục 2 đã quy định — nên tài khoản admin và tài khoản thử luồng thanh toán không lọt
+  vào mẫu số. Ở cỡ mẫu 20-30, hai ba tài khoản rác đã lệch cả chục phần trăm. Đợt sau
+  thì chạy với `--cohort "beta dot 2"`.
+- **Chỉ số quyết định tính trên nhóm đã đủ 14 ngày kể từ bài đầu tiên.** Quy tắc "sau
+  hai tuần chưa xong thì coi như đã rơi" ở mục 4 đếm riêng cho từng người, nên ai mới
+  bắt đầu ba hôm thì chưa phải người rơi — gộp họ vào mẫu số là tự kéo tỷ lệ xuống.
+  Tỷ lệ thô vẫn in ngay bên cạnh để đối chiếu, không giấu đi.
+
+Khoảng cách giữa hai con số đó không nhỏ: với dữ liệu thử, cùng một tập người cho
+44% khi tính thô và 55% khi tính đúng — một bên trượt ngưỡng, một bên đạt.
 
 **Một cảnh báo khi đọc số:** tick là hành động tự nguyện. Có người tập mà không tick,
 có người tick mà chưa tập. Con số này là **chỉ dấu**, không phải sự thật tuyệt đối —
@@ -160,6 +184,21 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       `SEPAY_*`). Đã kiểm trên production: `/admin` và `/admin/payments` trả 200.
 - [x] **Thử đăng nhập trên điện thoại thật** — chạy được, và đã đi hết luồng
       `/checkout` tới trang mã QR bằng một tài khoản không phải admin.
+- [ ] **Đẩy cột `user.created_at` lên production.** Đã khai trong
+      `src/db/schema/auth.ts` và đã chạy `pnpm db:push` trên nhánh `dev`; production
+      vẫn chưa có. Thiếu cột này thì tầng T2→T3 của phễu và quy tắc "quá hai tuần là
+      rơi" ở mục 4 đều không tính được — và **ngày đăng ký không ghi ngay lúc đó thì
+      về sau không dựng lại được**, nên việc này phải xong TRƯỚC khi người beta đầu
+      tiên đăng nhập.
+
+      ```powershell
+      $env:DATABASE_URL_UNPOOLED='<chuỗi kết nối TRỰC TIẾP nhánh main>'; pnpm db:push
+      Remove-Item Env:DATABASE_URL_UNPOOLED
+      ```
+
+      Phải đặt đúng biến `DATABASE_URL_UNPOOLED`: `drizzle.config.ts` ưu tiên nó hơn
+      `DATABASE_URL`, nên chỉ đặt `DATABASE_URL` thì biến trong `.env.local` vẫn
+      thắng và lệnh lại chạy vào nhánh dev mà không báo gì.
 - [ ] **Điều khoản sử dụng** — mục 7 tài liệu định hướng đã yêu cầu: tài khoản dùng
       cá nhân, không chia sẻ. Miễn phí vẫn cần, vì nó đặt chuẩn mực ngay từ đầu.
 - [ ] Một kênh liên hệ để người beta báo lỗi.
@@ -188,6 +227,7 @@ cấm hứa nội dung chưa tồn tại.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Viết lại mục 5 cho khớp bản in mới của beta-metrics (lọc cohort theo entitlement.note, chỉ số quyết định tính trên nhóm đủ 14 ngày, in ra database đang đọc); thêm vào mục 8 việc đẩy cột user.created_at lên production vì ngày đăng ký không ghi lúc đó thì không dựng lại được |
 | 27/08/2026 | `docs(internal): Bật nhánh database riêng cho mỗi preview deployment` | Ghi lại rằng Preview đã tách xong bằng cách ngắt–nối lại tích hợp Neon, kèm hai cái bẫy: đừng xoá store, và để trống ô tiền tố biến |
 | 27/08/2026 | `docs(internal): Tách database dev khỏi production bằng nhánh Neon` | Đánh dấu xong phần cách ly máy làm việc, ghi rõ vì sao hoãn phần Preview deployment thay vì mạo hiểm ngắt kết nối production |
 | 27/08/2026 | `docs(internal): Lên kế hoạch chạy beta trước khi mở bán` | Tạo file — chốt mục tiêu đo tỷ lệ hết Chương 1, cách cấp quyền cho người beta, mốc thời gian và tiêu chí quyết định |

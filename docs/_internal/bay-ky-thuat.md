@@ -250,6 +250,72 @@ thường của tác giả, kể cả style nội tuyến.
 
 ---
 
+## 12. Script chạy tay đọc nhầm nhánh database, không báo gì cả
+
+**Triệu chứng.** `node scripts/beta-metrics.mjs` in ra toàn số 0 hoặc "Không có ai
+trong cohort", trong khi production rõ ràng đang có người học. Kiểu ngược lại còn
+khó chịu hơn: `grant-access.mjs` báo "Đã mở khoá nen-tang cho ..." nhưng người học
+đăng nhập vào vẫn bị chặn.
+
+**Nguyên nhân.** Mọi script trong `scripts/` đều nạp `.env.local` trước:
+
+```js
+config({ path: '.env.local', quiet: true });
+config({ quiet: true });
+```
+
+Từ lúc tách database (mục 8 `ke-hoach-beta.md`), `.env.local` trỏ vào **nhánh dev**
+(`ep-dry-voice-…`), còn production nằm ở nhánh `main` (`ep-still-bird-…`). Nên chạy
+script ở máy làm việc là đang đọc và ghi vào dev. Việc tách nhánh là đúng và cần —
+cái sai là **script không nói cho biết nó vừa nối vào đâu**, nên kết quả rỗng trông
+y hệt như "chưa có ai học".
+
+**Cách sửa.** Hai lớp:
+
+1. **Script tự khai báo.** `beta-metrics.mjs` in host và tên database ngay dòng đầu,
+   không kèm tài khoản mật khẩu (`new URL(...).hostname + pathname`). Script nào
+   đụng vào dữ liệu thật cũng nên làm vậy.
+2. **Đặt biến ngay trên dòng lệnh khi cần chạy với production.** `dotenv` mặc định
+   **không ghi đè** biến đã có trong `process.env`, nên biến đặt bên ngoài luôn thắng
+   `.env.local`:
+
+   ```powershell
+   $env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/beta-metrics.mjs
+   Remove-Item Env:DATABASE_URL
+   ```
+
+   Dòng `Remove-Item` không thừa: PowerShell giữ biến suốt cả phiên, quên xoá thì
+   lệnh `pnpm db:push` gõ sau đó sẽ **sửa cấu trúc bảng production** — đúng tai nạn
+   mà bẫy 8 đã cảnh báo, chỉ khác đường vào.
+
+---
+
+## 13. Có hai bảng tên `user` trong database
+
+**Triệu chứng.** Truy vấn `information_schema.columns WHERE table_name = 'user'` trả
+về danh sách cột nhân đôi và mâu thuẫn — `id` vừa là `text` vừa là `uuid`, `emailVerified`
+vừa là `boolean` vừa là `timestamp`, kèm những cột chưa từng khai trong `src/db/schema/`
+như `banned`, `banReason`, `updatedAt`.
+
+**Nguyên nhân.** Tích hợp Neon Auth tạo bảng riêng của nó ở schema `neon_auth`, nên
+tồn tại song song `neon_auth.user` và `public.user`. Ứng dụng chỉ dùng cái thứ hai.
+`information_schema` không lọc schema giúp, còn `search_path` (`"$user", public`) thì
+lặng lẽ chọn `public.user` — nên truy vấn thường vẫn đúng, chỉ có việc *đọc kết quả
+information_schema* là sai.
+
+**Cách sửa.** Mọi truy vấn vào `information_schema` phải kèm `table_schema = 'public'`:
+
+```sql
+SELECT column_name, data_type, column_default
+FROM information_schema.columns
+WHERE table_schema = 'public' AND table_name = 'user'
+ORDER BY ordinal_position;
+```
+
+Đừng "sửa" bằng cách xoá `neon_auth` — đó là bảng của tích hợp, không phải rác.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -258,6 +324,7 @@ thường của tác giả, kể cả style nội tuyến.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Thêm bẫy 12 (script chạy tay nạp `.env.local` nên đọc nhánh dev, kết quả rỗng trông y hệt "chưa có ai học") và bẫy 13 (song song `neon_auth.user` với `public.user` làm `information_schema` trả về cột nhân đôi mâu thuẫn) |
 | 28/08/2026 | `feat: Phản hồi từng nốt ngay khi tập bài với đàn` | Thêm bẫy 11 (màu tĩnh trên bản nhạc abcjs cần !important, màu chạy bằng keyframes thì không) và bổ sung vào bẫy 10 chuyện tab bị ẩn bóp setTimeout về khoảng một giây |
 | 28/08/2026 | `fix: Trả lại chỗ cho nội dung trên màn hình điện thoại` | Thêm bẫy 9 (tắt `header.offset` của AppShell thì thanh bên trùm lên nút hamburger) và bẫy 10 (tab bị ẩn không phát sự kiện cuộn nên tưởng hiệu ứng headroom hỏng) |
 | 27/08/2026 | `docs(internal): Ghi lại các bẫy kỹ thuật đã giẫm phải` | Tạo file — tám bẫy gặp trong đợt làm cổng chặn trả phí, trang mua, đổi route và gom biến môi trường |
