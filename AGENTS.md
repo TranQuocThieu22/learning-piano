@@ -64,6 +64,15 @@ Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ng�
 - **Slug bài học** (`chuong-01-bai-01`) và **thư mục nội dung** (`03-exercises`, `07-doc-them`). Slug được lưu trong cột `lesson_completion.lesson_slug`, nên đổi tên là mất tiến độ đã tick của người học nếu không chuyển dữ liệu kèm theo. Chúng cũng bị ràng bởi regex ở `src/lib/lessons.ts`, `scripts/check-lessons.mjs` và mọi chỉ thị `{{sheet:}}`.
 - **Chữ hiển thị cho người học** luôn là tiếng Việt có dấu. Quy định này chỉ nói về đường dẫn.
 
+
+# Quy trình làm việc
+
+**Đọc `docs/_internal/quy-trinh-lam-viec.md`** trước khi commit hoặc đổi cấu trúc bảng. Ba điều hay bị vi phạm nhất:
+
+- **Không tự chạy `git commit`, `git push`, `git reset`.** Chỉ in nội dung commit message ra khối mã để người dùng dán vào Fork — xem `.claude/skills/git-commit-messages/SKILL.md`. Repo commit thẳng vào `main` nên lần đọc diff của người làm là lưới đỡ duy nhất.
+- **Chốt tiêu đề commit TRƯỚC khi ghi dòng lịch sử cập nhật**, vì bảng đó chép y hệt tiêu đề. Đổi tiêu đề lúc commit thì phải quay lại sửa dòng đã ghi.
+- **`pnpm db:push` lên production là việc của người dùng, không phải của Claude.** Nhánh dev thì Claude chạy được. `drizzle.config.ts` ưu tiên `DATABASE_URL_UNPOOLED`, đặt nhầm biến là lại đẩy vào dev mà không báo gì.
+
 # Quy ước tài liệu
 
 **Mọi tài liệu trong `docs/` có mục "Lịch sử cập nhật" thì phải ghi thêm dòng mới, không được ghi đè.** Không dùng dòng "Cập nhật lần cuối" nữa — nó chỉ giữ được trạng thái mới nhất và xóa mất bối cảnh vì sao một quyết định bị sửa.
@@ -77,5 +86,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/bien-moi-truong.md`
 - `docs/_internal/bay-ky-thuat.md`
 - `docs/_internal/ke-hoach-beta.md`
+- `docs/_internal/quy-trinh-lam-viec.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
