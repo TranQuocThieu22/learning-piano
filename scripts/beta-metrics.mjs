@@ -32,7 +32,7 @@
  */
 import { config } from 'dotenv';
 import postgres from 'postgres';
-import { readdirSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 
 config({ path: '.env.local', quiet: true });
 config({ quiet: true });
@@ -70,6 +70,25 @@ function moTaDatabase(url) {
   }
 }
 
+/**
+ * Lần chạy này có bị đặt biến đè lên `.env.local` không.
+ *
+ * Đọc thẳng file thay vì tin `process.env`: `dotenv` không ghi đè biến đã có, nên
+ * khi đặt `DATABASE_URL` ngoài dòng lệnh thì `process.env` giữ giá trị đè, còn
+ * `.env.local` vẫn ghi giá trị cũ. So hai cái mới biết đang nối vào đâu — nói
+ * cứng "đây là nhánh dev" là sai đúng lúc người ta cần biết nhất.
+ */
+function dangDatBienDe() {
+  try {
+    const m = /^\s*DATABASE_URL\s*=\s*["']?([^"'\r\n]+)/m.exec(
+      readFileSync('.env.local', 'utf8')
+    );
+    return Boolean(m) && m[1] !== process.env.DATABASE_URL;
+  } catch {
+    return false;
+  }
+}
+
 /** Slug bài học theo đúng thứ tự chương/bài, đọc thẳng từ giáo trình. */
 const lessons = readdirSync('docs/03-exercises')
   .filter((f) => /^chuong-\d+-bai-\d+\.md$/.test(f))
@@ -100,8 +119,11 @@ function inDanhSach(nhan, ds, toiDa = 10) {
 try {
   console.log('=== Nguồn dữ liệu ===');
   console.log(`  Database : ${moTaDatabase(process.env.DATABASE_URL)}`);
-  console.log('             (đối chiếu endpoint với mục 8 ke-hoach-beta.md — chạy ở');
-  console.log('              máy làm việc là đọc nhánh dev, không phải production)');
+  console.log(
+    dangDatBienDe()
+      ? '             (biến đặt ngoài đang đè lên .env.local — nhớ xoá nó sau khi xong)'
+      : '             (lấy từ .env.local — đối chiếu endpoint với mục 8 ke-hoach-beta.md)'
+  );
 
   // Admin không phải người học. Quyền admin đọc từ ADMIN_EMAILS chứ không từ
   // bảng entitlement, nên lọc theo note thường đã loại họ — đây là lớp thứ hai.
