@@ -77,7 +77,9 @@ const canhDau = journal.entries.slice(0, moc + 1).map((e) => ({
     .digest('hex'),
 }));
 
-const sql = postgres(process.env.DATABASE_URL, { prepare: false });
+// onnotice tắt đi: CREATE ... IF NOT EXISTS luôn kêu NOTICE, làm output ngập
+// nhiễu đúng lúc cần đọc kỹ nhất — script này chạy cả với production.
+const sql = postgres(process.env.DATABASE_URL, { prepare: false, onnotice: () => {} });
 
 try {
   console.log(`Database : ${moTaDatabase(process.env.DATABASE_URL)}`);

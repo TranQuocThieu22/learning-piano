@@ -21,16 +21,18 @@
 
 ## 1. Khoảng cách lớn nhất hiện nay
 
-Trạng thái thật của sản phẩm (kiểm tra ngày 26/08/2026):
+Trạng thái thật của sản phẩm (kiểm lại trong mã ngày 28/08/2026):
 
 | Thứ | Trạng thái |
 |---|---|
 | Nội dung | Giai đoạn 1 xong (Chương 0-6), Giai đoạn 2 mới có Chương 7 — tổng 25 bài |
 | Backend thanh toán | Xong: đơn hàng, VietQR, webhook SePay, trang admin đối soát |
-| **Trang mua cho người học** | **Chưa có** |
-| **Khóa nội dung theo gói** | **Chưa có** |
+| Trang mua cho người học | **Xong** — `/checkout` và `/checkout/[orderId]`, vào từ nút ở `LessonLocked.tsx` |
+| Khoá nội dung theo gói | **Xong** — `src/lib/access.ts` khoá từ Chương 2 trở đi |
+| Đổi cấu trúc bảng | **Xong** — migration có file trong `drizzle/`, Vercel tự áp lúc build |
+| **Trang bán hàng cho người lạ** | **Chưa có** — `src/app/page.tsx` chỉ chuyển hướng sang lộ trình, không có chỗ nào nói sản phẩm là gì và giá bao nhiêu |
 | Nguồn khách | Chưa có gì — không SEO, không kênh nào |
-| Người học thật | **0** |
+| Người học thật | **0** (production có 2 tài khoản thử của chính mình) |
 
 Hai khoảng cách, và chúng khác nhau về mức độ cấp bách:
 
@@ -278,5 +280,6 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `fix: Tắt nhiễu NOTICE của script baseline và cập nhật bảng trạng thái` | Bảng mục 1 vẫn ghi "Chưa có" cho trang mua và khoá nội dung dù cả hai đã chạy từ lâu — kiểm lại trong mã rồi sửa, và tách ra dòng riêng cho thứ thật sự còn thiếu là trang bán hàng cho người lạ |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang bản mở rộng 7 năm `du-phong-7-nam.md` |
 | 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Tạo file — phễu T1-T7, ba kịch bản doanh thu, mô hình sản phẩm bốn lớp, lộ trình A-E có cổng quyết định |
