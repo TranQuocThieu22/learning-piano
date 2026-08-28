@@ -190,9 +190,12 @@ Số liệu cho biết *bao nhiêu người rơi*, không cho biết *vì sao*. 
       **tự động** ngay lần build kế tiếp.
 
       ```powershell
-      $env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/baseline-migrations.mjs --through 0000_little_cassandra_nova
-      Remove-Item Env:DATABASE_URL
+      node scripts/baseline-migrations.mjs --prod --through 0000_little_cassandra_nova
       ```
+
+      Cờ `--prod` lấy `POSTGRES_URL_NON_POOLING` có sẵn trong `.env.local`, khỏi phải
+      dán chuỗi kết nối vào dòng lệnh. Đọc dòng `Database :` nó in ra, phải là
+      `ep-still-bird-awjmxd8d`.
 
       Chạy **trước** khi push commit chuyển đổi. Quên thì build trên Vercel trượt ở
       bước migrate và deploy không xảy ra — bản đang chạy vẫn nguyên, không mất gì,
@@ -230,6 +233,7 @@ cấm hứa nội dung chưa tồn tại.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Ô baseline ở mục 8 đổi sang cờ --prod: dán chuỗi kết nối production vào dòng lệnh là để mật khẩu nằm luôn trong lịch sử lệnh PowerShell |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Thay ô đẩy cột `user.created_at` bằng ô baseline migration cho production — sau khi baseline thì cột được áp tự động ở lần deploy kế tiếp |
 | 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Viết lại mục 5 cho khớp bản in mới của beta-metrics (lọc cohort theo entitlement.note, chỉ số quyết định tính trên nhóm đủ 14 ngày, in ra database đang đọc); thêm vào mục 8 việc đẩy cột user.created_at lên production vì ngày đăng ký không ghi lúc đó thì không dựng lại được |
 | 27/08/2026 | `docs(internal): Bật nhánh database riêng cho mỗi preview deployment` | Ghi lại rằng Preview đã tách xong bằng cách ngắt–nối lại tích hợp Neon, kèm hai cái bẫy: đừng xoá store, và để trống ô tiền tố biến |

@@ -37,6 +37,22 @@ const doiSo = (ten) => {
 const THROUGH = doiSo('through');
 const FORCE = argv.includes('--force');
 
+/**
+ * `--prod` trỏ vào production mà KHÔNG phải dán chuỗi kết nối vào dòng lệnh.
+ *
+ * `.env.local` đã có sẵn `POSTGRES_URL_NON_POOLING` do `vercel env pull` bơm vào
+ * (xem bẫy 8) — đó chính là nhánh `main`, bản không qua pooler, đúng thứ cần cho
+ * lệnh đổi cấu trúc. Dán chuỗi kết nối bằng tay là để mật khẩu production nằm
+ * luôn trong lịch sử lệnh của PowerShell, nên tránh được thì tránh.
+ *
+ * Vẫn phải tự đọc dòng `Database :` in ra để xác nhận đúng endpoint — biến này
+ * do công cụ ngoài bơm vào, không có gì bảo đảm nó luôn trỏ đúng chỗ.
+ */
+const DUNG_PROD = argv.includes('--prod');
+const URL_DB = DUNG_PROD
+  ? process.env.POSTGRES_URL_NON_POOLING || process.env.POSTGRES_URL
+  : process.env.DATABASE_URL;
+
 if (!THROUGH) {
   console.error('Thiếu --through <tag>. Ví dụ:');
   console.error('  node scripts/baseline-migrations.mjs --through 0000_little_cassandra_nova');
@@ -47,8 +63,12 @@ if (!THROUGH) {
   process.exit(1);
 }
 
-if (!process.env.DATABASE_URL) {
-  console.error('Thiếu DATABASE_URL trong .env.local');
+if (!URL_DB) {
+  console.error(
+    DUNG_PROD
+      ? 'Thiếu POSTGRES_URL_NON_POOLING trong .env.local — chạy `vercel env pull` hoặc bỏ --prod và tự đặt DATABASE_URL.'
+      : 'Thiếu DATABASE_URL trong .env.local'
+  );
   process.exit(1);
 }
 
@@ -79,10 +99,13 @@ const canhDau = journal.entries.slice(0, moc + 1).map((e) => ({
 
 // onnotice tắt đi: CREATE ... IF NOT EXISTS luôn kêu NOTICE, làm output ngập
 // nhiễu đúng lúc cần đọc kỹ nhất — script này chạy cả với production.
-const sql = postgres(process.env.DATABASE_URL, { prepare: false, onnotice: () => {} });
+// connect_timeout rộng tay: nhánh Neon ngủ theo scale-to-zero, lần gọi đầu tiên
+// phải chờ compute tỉnh dậy và mặc định 30 giây có lúc không đủ.
+const sql = postgres(URL_DB, { prepare: false, onnotice: () => {}, connect_timeout: 90 });
 
 try {
-  console.log(`Database : ${moTaDatabase(process.env.DATABASE_URL)}`);
+  console.log(`Database : ${moTaDatabase(URL_DB)}`);
+  if (DUNG_PROD) console.log('           ↑ ĐỌC KỸ DÒNG TRÊN — đang trỏ vào production');
   console.log(`Baseline : tới hết "${THROUGH}" (${canhDau.length} migration)\n`);
 
   await sql`CREATE SCHEMA IF NOT EXISTS "drizzle"`;

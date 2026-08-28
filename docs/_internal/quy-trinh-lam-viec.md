@@ -138,13 +138,17 @@ cột mới `NOT NULL` phải dùng `.defaultNow()` hoặc `.default(...)`.
 node scripts/baseline-migrations.mjs --through <tag>
 ```
 
-Script này đọc `.env.local` như mọi script khác, nên nó nối vào **nhánh dev**. Muốn
-baseline production thì đặt biến đè lên, và nhớ xoá đi ngay sau đó — bẫy 12:
+Script này đọc `.env.local` như mọi script khác, nên mặc định nó nối vào **nhánh dev**.
+Baseline production thì thêm cờ `--prod` — nó lấy `POSTGRES_URL_NON_POOLING` có sẵn
+trong `.env.local`, khỏi phải dán chuỗi kết nối vào dòng lệnh (dán vào là mật khẩu
+production nằm luôn trong lịch sử lệnh của PowerShell):
 
 ```powershell
-$env:DATABASE_URL='<chuỗi kết nối nhánh main>'; node scripts/baseline-migrations.mjs --through <tag>
-Remove-Item Env:DATABASE_URL
+node scripts/baseline-migrations.mjs --prod --through <tag>
 ```
+
+Vẫn phải **tự đọc dòng `Database :`** nó in ra và xác nhận đúng endpoint production,
+trước khi tin phần còn lại.
 
 Chọn sai mốc `--through` là nguy hiểm: đánh dấu cả migration mà database chưa thật sự
 có thì thay đổi đó **bị bỏ qua vĩnh viễn** và không ai báo gì cả.
@@ -188,6 +192,7 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Mục 7: baseline production dùng cờ --prod thay vì dán chuỗi kết nối vào dòng lệnh, vì dán vào là mật khẩu production nằm luôn trong lịch sử lệnh của PowerShell |
 | 28/08/2026 | `fix: Dọn sạch lỗi lint và cho Vercel chạy test trước khi deploy` | Cập nhật mục 3: lint giờ sạch tuyệt đối nên bỏ dòng "có sẵn 4 lỗi, không phải bạn gây ra"; ghi rõ Vercel gác được test và kiểu nhưng KHÔNG gác lint với check:lessons, để khỏi tưởng đã có máy lo hết |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Viết lại mục 7: chuyển từ `drizzle-kit push` sang `generate` + `migrate`, Vercel tự áp lúc build nên bỏ hẳn bước đẩy schema lên production bằng tay; thêm phần baseline cho database đã có bảng từ trước |
 | 28/08/2026 | `docs(internal): Đặc tả quy trình làm việc với git` | Tạo file — chốt mô hình commit thẳng vào `main`, ranh giới việc nào Claude làm việc nào người dùng làm trong Fork, cổng kiểm tra trước commit, đường quay lui khi production hỏng, và quy tắc schema chỉ được thêm trong suốt beta vì quay lui không lùi được database |
