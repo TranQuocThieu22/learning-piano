@@ -290,6 +290,21 @@ export function AppLayout({
               </Box>
             );
           })}
+
+          {/*
+            Điều khoản đặt cuối thanh bên, chữ nhỏ và mờ: phải tìm ra được nhưng
+            không tranh chỗ với nội dung học. Không nằm trong `categories` vì file
+            của nó cố ý để ngoài contentDirs — xem src/app/terms/page.tsx.
+          */}
+          <Box mt="xl" pt="md" style={{ borderTop: '1px solid var(--mantine-color-default-border)' }}>
+            <NavLink
+              href="/terms"
+              component={Link}
+              label={<Text size="xs" c="dimmed">Điều khoản sử dụng</Text>}
+              active={pathname === '/terms'}
+              onClick={() => { if (mobileOpened) toggleMobile(); }}
+            />
+          </Box>
         </ScrollArea>
       </AppShell.Navbar>
 
