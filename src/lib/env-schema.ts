@@ -30,6 +30,8 @@ export const envSchema = z.object({
   // --- 2. Đóng cửa an toàn khi thiếu ---
   ADMIN_EMAILS: tuyChon,
   SEPAY_WEBHOOK_API_KEY: tuyChon,
+  /** Thiếu hoặc khác "true" thì KHÔNG bán — xem `dangBan()` bên dưới. */
+  SELLING_ENABLED: tuyChon,
 
   // --- 3. Tuỳ chọn ---
   /** Chuỗi không qua pooler, chỉ drizzle-kit dùng. Thiếu thì lùi về DATABASE_URL. */
@@ -40,6 +42,27 @@ export const envSchema = z.object({
 });
 
 export type Env = z.infer<typeof envSchema>;
+
+/**
+ * Có đang mở bán không.
+ *
+ * **Chiều của cờ này là cố ý ngược với trực giác:** không đặt gì thì KHÔNG bán.
+ * Cùng tầng đóng cửa an toàn với `ADMIN_EMAILS`, và lý do cũng vậy — hai kiểu
+ * quên dẫn tới hai hậu quả rất khác nhau:
+ *
+ * - Quên BẬT lúc mở bán: không ai mua được. Bạn phát hiện ngay lần thử đầu tiên,
+ *   sửa bằng một biến môi trường.
+ * - Quên TẮT trong lúc beta: người thử thấy bảng giá 399k và tạo được đơn thật,
+ *   trên gói Vercel Hobby vốn cấm dùng thương mại (mục 6 của
+ *   dinh-huong-kinh-doanh.md). Không có triệu chứng nào cả — đó mới là kiểu hỏng
+ *   đáng sợ.
+ *
+ * Nhận đúng chuỗi "true", không nhận "1" hay "yes": một giá trị duy nhất thì
+ * không có chuyện bật hụt vì gõ khác kiểu.
+ */
+export function dangBan(raw: string | undefined | null): boolean {
+  return raw?.trim().toLowerCase() === 'true';
+}
 
 /** Tên mọi biến ứng dụng dùng, để test đối chiếu với .env.example. */
 export const ENV_KEYS = Object.keys(envSchema.shape) as (keyof Env)[];

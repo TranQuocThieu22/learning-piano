@@ -7,6 +7,8 @@ import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
 import { canReadLesson } from '@/lib/access';
+import { env } from '@/lib/env';
+import { dangBan } from '@/lib/env-schema';
 import { viewerHasFullAccess } from '@/lib/access-server';
 
 export async function generateStaticParams() {
@@ -56,7 +58,11 @@ export default async function Page({ params }: { params: Promise<{ category: str
           <MarkdownViewer content={content} />
         </>
       ) : (
-        <LessonLocked title={fileTitle} signedIn={Boolean(session?.user)} />
+        <LessonLocked
+          title={fileTitle}
+          signedIn={Boolean(session?.user)}
+          sellingEnabled={dangBan(env.SELLING_ENABLED)}
+        />
       )}
     </AppLayout>
   );

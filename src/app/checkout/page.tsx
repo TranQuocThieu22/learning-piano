@@ -1,4 +1,5 @@
 import { Alert, Button, Card, Container, Group, Stack, Text, Title } from '@mantine/core';
+import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { NavAnchor } from '@/components/NavAnchor';
 import { auth } from '@/auth';
@@ -11,6 +12,8 @@ import { formatVnd } from '@/lib/payment/vietqr';
 import { getOwnedPackageIds } from '@/lib/payment/orders';
 import { createOrderAction } from '@/lib/payment/order-actions';
 import { signInWithGoogle } from '@/lib/auth-actions';
+import { env } from '@/lib/env';
+import { dangBan } from '@/lib/env-schema';
 
 const ERROR_MESSAGES: Record<string, string> = {
   'not-signed-in': 'Bạn cần đăng nhập trước khi tạo đơn.',
@@ -24,6 +27,10 @@ export default async function MuaPage({
 }: {
   searchParams: Promise<{ error?: string }>;
 }) {
+  // Chưa mở bán thì cả đường thanh toán biến mất, không phải chỉ ẩn cái nút:
+  // trang này tạo được đơn thật và dựng mã QR thật.
+  if (!dangBan(env.SELLING_ENABLED)) notFound();
+
   const { error } = await searchParams;
   const session = await auth();
   const allFiles = getAllMarkdownFiles();

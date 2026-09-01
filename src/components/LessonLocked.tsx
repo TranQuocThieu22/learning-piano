@@ -6,6 +6,9 @@ import { findPackage } from '@/lib/packages';
 import { formatVnd } from '@/lib/payment/vietqr';
 import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
 
+/** Trang Facebook ở mục 7 của docs/legal/terms.md — nơi duy nhất nhận tin nhắn. */
+const TRANG_FACEBOOK = 'https://www.facebook.com/profile.php?id=61593938880341';
+
 /**
  * Màn hình thay cho nội dung bài khi người học chưa sở hữu gói.
  *
@@ -20,11 +23,60 @@ import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
 export function LessonLocked({
   title,
   signedIn,
+  sellingEnabled,
 }: {
   title: string;
   signedIn: boolean;
+  /** Chưa mở bán thì màn hình này không được nhắc tới giá hay đường mua. */
+  sellingEnabled: boolean;
 }) {
   const pkg = findPackage(REQUIRED_PACKAGE_ID);
+
+  if (!sellingEnabled) {
+    return (
+      <Stack gap="lg" maw={640}>
+        <div>
+          <Text size="sm" c="dimmed">
+            Phần này chưa mở
+          </Text>
+          <Title order={2} mt={4}>
+            {title}
+          </Title>
+        </div>
+
+        <Text>
+          Giáo trình đang trong <strong>đợt thử nghiệm miễn phí</strong>, chưa mở
+          bán. Chương {FREE_THROUGH_CHAPTER} mở cho tất cả mọi người; từ Chương{' '}
+          {FREE_THROUGH_CHAPTER + 1} trở đi hiện chỉ mở cho người tham gia thử
+          nghiệm.
+        </Text>
+
+        <Text>
+          {signedIn
+            ? 'Bạn đã đăng nhập rồi — nhắn cho mình kèm email đang dùng, mình mở toàn bộ giáo trình cho bạn, miễn phí và giữ vĩnh viễn.'
+            : 'Đăng nhập bằng Google một lần rồi nhắn cho mình, mình sẽ mở toàn bộ giáo trình cho bạn, miễn phí và giữ vĩnh viễn.'}
+        </Text>
+
+        <Group>
+          <Button
+            component="a"
+            href={TRANG_FACEBOOK}
+            target="_blank"
+            rel="noopener noreferrer"
+            size="md"
+          >
+            Nhắn xin tham gia thử nghiệm
+          </Button>
+          <Button component={Link} href="/01-roadmap/roadmap" variant="default">
+            Xem lộ trình
+          </Button>
+          <Button component={Link} href="/journal" variant="subtle">
+            Về nhật ký
+          </Button>
+        </Group>
+      </Stack>
+    );
+  }
 
   return (
     <Stack gap="lg" maw={640}>

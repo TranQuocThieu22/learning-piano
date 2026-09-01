@@ -41,10 +41,10 @@ chủ ý — đừng gộp**:
 | Tầng | Biến | Thiếu thì |
 |---|---|---|
 | Bắt buộc | `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | ném lỗi ngay lúc khởi động, nêu đủ mọi biến thiếu cùng lúc |
-| Đóng cửa an toàn | `ADMIN_EMAILS`, `SEPAY_WEBHOOK_API_KEY` | tính năng đó tự khoá lại, ứng dụng vẫn sống |
+| Đóng cửa an toàn | `ADMIN_EMAILS`, `SEPAY_WEBHOOK_API_KEY`, `SELLING_ENABLED` | tính năng đó tự khoá lại, ứng dụng vẫn sống |
 | Tuỳ chọn | `DATABASE_URL_UNPOOLED`, `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME` | lùi về mặc định |
 
-Nâng hai biến tầng giữa lên tầng bắt buộc nghe có vẻ chặt hơn nhưng là **làm yếu
+Nâng ba biến tầng giữa lên tầng bắt buộc nghe có vẻ chặt hơn nhưng là **làm yếu
 đi**: thà site chạy ở chế độ an toàn còn hơn site chết vì thiếu một khoá.
 
 **Bí mật không bao giờ được commit.** `.env.local` đã nằm trong `.gitignore` —
@@ -147,6 +147,28 @@ thực API Key).
 > khớp khoá được làm không phụ thuộc thời gian (`timingSafeEqual` trên bản băm) để
 > không lộ dần từng ký tự.
 
+### `SELLING_ENABLED` — đóng cửa an toàn, chiều ngược với trực giác
+
+Công tắc mở bán. **Để trống hoặc điền bất cứ gì khác `true` thì KHÔNG bán.**
+
+- Đọc bởi: `dangBan()` trong `src/lib/env-schema.ts`, dùng ở ba chỗ — màn hình bài
+  khoá (`LessonLocked`), trang `/checkout` và `/checkout/[orderId]` (trả 404), và
+  Server Action `createOrderAction`.
+- Chặn ở cả Server Action chứ không chỉ ở trang: action là một endpoint HTTP thật,
+  gọi được mà không cần nhìn thấy giao diện — cùng lý do mọi hàm trong
+  `admin-actions.ts` phải tự gọi `requireAdmin()`.
+- Tắt thì màn hình bài khoá **không nhắc tới giá**, chỉ mời nhắn tin xin tham gia
+  thử nghiệm.
+
+**Vì sao chiều cờ lại ngược.** Hai kiểu quên dẫn tới hai hậu quả rất khác nhau:
+quên **bật** lúc mở bán thì không ai mua được, phát hiện ngay lần thử đầu tiên, sửa
+bằng một biến môi trường; quên **tắt** trong lúc beta thì người thử thấy bảng giá
+399k và tạo được đơn thật, trên gói Vercel Hobby vốn cấm dùng thương mại — mà chuyện
+đó **không có triệu chứng nào cả**. Mặc định phải rơi về phía kiểu hỏng ồn ào.
+
+Chỉ nhận đúng chuỗi `true`, không nhận `1` hay `yes`: một giá trị duy nhất thì
+không có chuyện bật hụt vì gõ khác kiểu.
+
 ### `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
 
 Tài khoản nhận tiền, dùng để dựng mã VietQR hiển thị cho người học.
@@ -205,6 +227,8 @@ hướng). `learning-piano.vercel.app` vẫn chạy song song, không mất.
       `https://piano.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
       này, endpoint tự từ chối mọi request khi thiếu khoá
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
+- [ ] `SELLING_ENABLED` — **trong beta để trống**. Chỉ đặt `true` vào ngày mở bán,
+      và chỉ sau khi đã nâng gói Vercel Pro
 - [ ] Không cần chạy lệnh đổi cấu trúc bảng bằng tay — `pnpm build` trên Vercel đã
       chạy `drizzle-kit migrate`. Chỉ database CHƯA từng dùng migration mới cần
       baseline một lần: `node scripts/baseline-migrations.mjs --through <tag>`
@@ -229,6 +253,7 @@ production. Chưa có SePay thì phép thử nhẹ hơn là gọi thẳng endpoi
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Thêm `SELLING_ENABLED` vào tầng đóng cửa an toàn và giải thích vì sao chiều cờ ngược với trực giác — quên bật thì phát hiện ngay, quên tắt thì người beta tạo được đơn thật trên gói Hobby mà không có triệu chứng nào |
 | 01/09/2026 | `feat: Chuyển sang tên miền piano.rehover.io và làm rõ vai trò của SePay` | Ghi rõ mã QR dùng dịch vụ ảnh công khai nên không cần tài khoản SePay — tiền tố `SEPAY_` ở ba biến ngân hàng từng khiến hiểu nhầm là phải đăng ký mới hiện được QR; chốt tên miền production kèm bẫy proxy Cloudflare, và hạ hai mục webhook xuống thành tuỳ chọn vì đối soát tự động chưa bật |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Đổi mọi tham chiếu `pnpm db:push` sang `db:generate`/`db:migrate`, và bỏ mục đẩy schema bằng tay khỏi danh sách việc trước khi mở bán vì Vercel đã tự chạy migrate |
 | 27/08/2026 | `refactor: Gom việc đọc biến môi trường về một chỗ và canh bằng test` | Ghi lại rằng src/lib/env.ts là nơi duy nhất đọc process.env, kèm ba tầng bắt buộc / đóng cửa an toàn / tuỳ chọn và lý do không gộp chúng |

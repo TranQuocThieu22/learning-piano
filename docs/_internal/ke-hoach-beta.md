@@ -44,6 +44,20 @@ Cách mở: cấp quyền thật bằng script sẵn có, **không sửa code**,
 node scripts/grant-access.mjs <email> nen-tang "beta dot 1"
 ```
 
+**Đường thanh toán bị ẩn trong suốt đợt.** Biến `SELLING_ENABLED` để trống thì
+`/checkout` trả 404, Server Action tạo đơn từ chối, và màn hình bài khoá không nhắc
+tới giá — chỉ mời nhắn tin xin tham gia. Người beta chưa kịp cấp quyền mà mở Chương 2
+sẽ không thấy bảng giá 399k rồi tưởng phải trả tiền, và cũng không tạo nổi đơn thật
+trên gói Vercel Hobby vốn cấm dùng thương mại. Chi tiết ở
+[`bien-moi-truong.md`](bien-moi-truong.md).
+
+**Thứ tự thực tế:** tuyển ngoài app bằng biểu mẫu → họ **đăng nhập Google một lần**
+→ bạn mở `/admin`, thấy tài khoản mới ở đầu bảng (sắp xếp theo ngày đăng ký) và bấm
+*Cấp gói*. Cấp **trước**, không cấp giữa chừng: đặt cổng xin quyền ở cuối Chương 1 là
+tự dựng một điểm rơi giả ngay chỗ người học đang có đà, và sau đó không tách được ai
+bỏ vì sản phẩm, ai bỏ vì phải ngồi chờ được duyệt — mà đó đúng là con số cả đợt beta
+sinh ra để đo.
+
 Ba lý do chọn cách này:
 
 - Người beta chạm được cả phần trả phí, nên đo được rơi rụng **sau** paywall chứ
@@ -342,6 +356,7 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Mục 2: ghi rõ đường thanh toán bị ẩn bằng `SELLING_ENABLED` và chốt thứ tự tuyển → đăng nhập → cấp quyền trước, kèm lý do không đặt cổng xin quyền ở cuối Chương 1 vì nó tạo điểm rơi giả làm bẩn chính con số cần đo |
 | 01/09/2026 | `docs(internal): Tick xong danh sách trước beta` | Điều khoản đã lên production ở tên miền mới piano.rehover.io — danh sách việc phải xong trước khi mở cổng đã đủ 7/7 |
 | 27/08/2026 | `docs(internal): Soạn xong biểu mẫu và khung phỏng vấn cho mục Phản hồi định tính` | Mục 7 từ phác thảo thành thứ dùng được ngay: năm câu hỏi cụ thể kèm lý do từng câu, và khung phỏng vấn 20 phút hỏi về việc đã xảy ra thay vì hỏi ý kiến |
 | 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Đã tạo Trang Facebook và điền link vào mục 7 điều khoản, chốt xong cả hai kênh liên hệ |

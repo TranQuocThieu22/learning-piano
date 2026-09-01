@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { ENV_KEYS } from './env-schema';
+import { dangBan, ENV_KEYS } from './env-schema';
 
 /**
  * Canh gác: mọi biến môi trường code đọc đều phải được ghi trong .env.example.
@@ -77,5 +77,19 @@ describe('src/lib/env.ts là nơi duy nhất đọc biến môi trường phía 
       .map(([key, files]) => `${key} — ${files.join(', ')}`);
 
     expect(trongSrc).toEqual([]);
+  });
+});
+
+describe('công tắc mở bán', () => {
+  it('chỉ đúng chuỗi "true" mới là mở bán', () => {
+    expect(dangBan('true')).toBe(true);
+    expect(dangBan('TRUE')).toBe(true);
+    expect(dangBan('  true  ')).toBe(true);
+  });
+
+  it('mặc định là KHÔNG bán — thiếu biến, chuỗi rỗng, hay giá trị lạ đều đóng', () => {
+    for (const raw of [undefined, null, '', '  ', '1', 'yes', 'false', 'bật']) {
+      expect(dangBan(raw)).toBe(false);
+    }
   });
 });

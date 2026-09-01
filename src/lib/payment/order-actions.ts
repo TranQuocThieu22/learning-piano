@@ -1,8 +1,10 @@
 'use server';
 
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { z } from 'zod';
 import { auth } from '@/auth';
+import { env } from '@/lib/env';
+import { dangBan } from '@/lib/env-schema';
 import { idSchema } from '@/lib/validation';
 import { createOrder, hasEntitlement, PaymentError } from './orders';
 
@@ -16,6 +18,11 @@ const createOrderInput = z.object({ packageId: idSchema });
  * tài khoản thì tiền vào cũng không biết mở khoá cho ai.
  */
 export async function createOrderAction(formData: FormData): Promise<void> {
+  // Chặn ở trang là chưa đủ. Server Action là một endpoint HTTP thật, gọi được
+  // mà không cần nhìn thấy giao diện — giống lý do mọi action trong
+  // admin-actions.ts phải tự gọi requireAdmin().
+  if (!dangBan(env.SELLING_ENABLED)) notFound();
+
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) redirect('/checkout?error=not-signed-in');

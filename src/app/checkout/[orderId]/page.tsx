@@ -10,6 +10,7 @@ import { findPackage } from '@/lib/packages';
 import { getOrder } from '@/lib/payment/orders';
 import { buildVietQrUrl, formatVnd, getBankAccount } from '@/lib/payment/vietqr';
 import { env } from '@/lib/env';
+import { dangBan } from '@/lib/env-schema';
 
 /**
  * Hướng dẫn chuyển khoản cho một đơn.
@@ -23,6 +24,8 @@ export default async function DonHangPage({
 }: {
   params: Promise<{ orderId: string }>;
 }) {
+  if (!dangBan(env.SELLING_ENABLED)) notFound();
+
   const { orderId } = await params;
   const session = await auth();
 
