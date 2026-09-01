@@ -21,7 +21,7 @@ export const metadata: Metadata = {
    * thiếu nó thì ô xem trước lúc chia sẻ link không có ảnh. **Đổi tên miền thì
    * phải sửa dòng này.**
    */
-  metadataBase: new URL('https://learning-piano.vercel.app'),
+  metadataBase: new URL('https://piano.rehover.io'),
 
   title: {
     default: TEN_DAY_DU,
