@@ -1,0 +1,63 @@
+# Cổng kiểm tra tự động — chạy đúng bốn lệnh ở mục 3 của
+# docs/_internal/quy-trinh-lam-viec.md trên mọi lần đẩy nhánh lên GitHub.
+#
+# Vì sao cần: lệnh build của Vercel chỉ có `vitest run && drizzle-kit migrate &&
+# next build`, nên `pnpm lint` và `pnpm check:lessons` trước nay hoàn toàn trông
+# vào việc người làm nhớ gõ. Kỷ luật hỏng đúng vào hôm mệt; máy thì không.
+name: Cổng kiểm tra
+
+on:
+  push:
+  workflow_dispatch:
+
+# Đẩy tiếp lên cùng một nhánh thì huỷ lần chạy đang dở, khỏi chờ kết quả đã cũ.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kiem-tra:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Không có trường `packageManager` trong package.json nên phải nói rõ bản.
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Cài dependency
+        run: pnpm install --frozen-lockfile
+
+      # `tsc --noEmit` một mình sẽ trượt trên máy CI: `next-env.d.ts` nằm trong
+      # .gitignore, mà nó lại tham chiếu `.next/dev/types/routes.d.ts` do Next
+      # sinh ra. `next typegen` (Next 16) sinh đúng hai thứ đó mà không phải
+      # build cả ứng dụng — xem 06-cli/next.md trong node_modules/next/dist/docs.
+      - name: Sinh kiểu cho route
+        run: pnpm exec next typegen
+
+      - name: Kiểu
+        run: pnpm exec tsc --noEmit
+
+      # `!cancelled()` để một lần chạy báo về TẤT CẢ chỗ hỏng thay vì dừng ở cái
+      # đầu tiên — cùng tinh thần với src/lib/env.ts báo thiếu mọi biến cùng lúc.
+      # Sửa một lượt vẫn rẻ hơn ba vòng đẩy lên chờ CI.
+      - name: Lint
+        if: ${{ !cancelled() }}
+        run: pnpm lint
+
+      # Đọc dòng `Test Files` trong log, không chỉ dòng `Tests` — một file test
+      # không nạp được thì test trong đó biến mất khỏi tổng số chứ không đỏ.
+      - name: Test
+        if: ${{ !cancelled() }}
+        run: pnpm test
+
+      - name: Bài học và chỉ thị nhúng bản nhạc
+        if: ${{ !cancelled() }}
+        run: pnpm check:lessons

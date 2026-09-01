@@ -20,14 +20,27 @@ Một người làm thì không có ai review, nên thay chỗ đó là **cổng
 |---|---|
 | Viết mã, sửa tài liệu, chạy cổng kiểm tra | Claude |
 | `pnpm db:generate`, `pnpm db:migrate` trên nhánh **dev** | Claude |
-| `git add`, `git commit`, `git push` | Người dùng, trong Fork |
+| `git add`, `git commit`, `git push` | Người dùng, trong Fork — **trừ khi nói "commit luôn"** |
 | Chạy script đụng vào **production** (baseline, cấp quyền) | Người dùng |
 
-**Claude không tự chạy `git commit`, `git push`, `git reset`** — chỉ in nội dung message
-ra khối mã để dán vào Fork. Quy ước ở `.claude/skills/git-commit-messages/SKILL.md`.
+**Mặc định Claude không tự chạy `git commit`, `git push`, `git reset`** — chỉ in nội
+dung message ra khối mã để dán vào Fork.
 
 Lý do: commit là lần cuối cùng người làm nhìn thấy toàn bộ thay đổi trước khi nó thành
 lịch sử, và trên repo đẩy thẳng vào `main` thì đó là lưới đỡ duy nhất.
+
+**Ngoại lệ: "commit luôn".** Nói đúng câu đó thì Claude tự làm trọn `git add` /
+`commit` / `push`. Quy ước đầy đủ ở `.claude/skills/git-commit-messages/SKILL.md`;
+tóm tắt bốn ràng buộc:
+
+1. Đọc hết `git status` và `git diff` **trước**, kể cả thay đổi do phiên khác để lại.
+2. Chạy đủ bốn lệnh ở mục 3 bên dưới, có `next typegen` đứng đầu.
+3. Lệnh nào đỏ thì **dừng**, không commit.
+4. Tách commit theo chủ đề, đừng gom hết vào một.
+
+Đánh đổi phải chấp nhận: bỏ đi lần đọc diff của người làm. CI ở
+`.github/workflows/ci.yml` gánh phần nào, nhưng nó báo **sau** khi commit đã vào lịch
+sử và production đã bắt đầu deploy — nên bốn ràng buộc trên không được bỏ bớt.
 
 ## 3. Cổng kiểm tra trước khi commit
 
@@ -56,8 +69,20 @@ Nên **test đỏ hoặc lỗi kiểu thì deploy không xảy ra**, và test ch
 database còn chưa bị đụng tới. Đã kiểm bằng một test cố ý trượt: build dừng ở
 `exit 1`, chuỗi `applying migrations` không xuất hiện lần nào.
 
-Nhưng `pnpm lint` và `pnpm check:lessons` **không** chạy trên Vercel. Hai cái đó vẫn
-hoàn toàn là kỷ luật của bạn — đó là lý do dòng lệnh ở đầu mục này vẫn cần gõ tay.
+Nhưng `pnpm lint` và `pnpm check:lessons` **không** chạy trên Vercel.
+
+**GitHub Actions gác đủ bốn lệnh.** `.github/workflows/ci.yml` chạy `next typegen` →
+`tsc --noEmit` → `lint` → `test` → `check:lessons` trên **mọi** lần đẩy nhánh, kể cả
+nhánh phụ. Bốn bước cuối để `if: !cancelled()` nên một lần chạy báo về *tất cả* chỗ
+hỏng thay vì dừng ở cái đầu tiên — sửa một lượt vẫn rẻ hơn ba vòng đẩy lên chờ kết quả.
+
+`next typegen` là bước bắt buộc chứ không phải trang trí: `next-env.d.ts` nằm trong
+`.gitignore` mà nó lại tham chiếu `.next/dev/types/routes.d.ts`, nên trên máy CI vừa
+checkout xong thì `tsc --noEmit` chạy một mình sẽ trượt.
+
+**Nhưng CI báo SAU khi đã commit.** Nó bắt được thứ bạn quên, không thay được việc gõ
+dòng lệnh ở đầu mục này *trước* khi commit: repo đẩy thẳng `main`, nên lúc CI đỏ thì
+commit hỏng đã nằm trong lịch sử và production đã bắt đầu deploy. CI là lưới thứ hai.
 
 ## 4. Chốt tiêu đề commit TRƯỚC khi sửa tài liệu
 
@@ -84,7 +109,14 @@ flowchart TD
     D -->|"có"| E["Thêm dòng, chép y hệt tiêu đề"]
     D -->|"không"| F["Commit trong Fork"]
     E --> F
-    F --> G["Push main → Vercel deploy production"]
+    F --> G{"Cần nhìn tận mắt<br/>trước khi lên thật?"}
+    G -->|"không"| H["Push main → deploy production"]
+    G -->|"có"| I["Push nhánh phụ → preview URL"]
+    I --> J["Mở trên điện thoại, bấm thử"]
+    J -->|"chưa ưng"| A
+    J -->|"ưng"| K["Merge vào main, push"]
+    H --> L["GitHub Actions chạy lại cả bốn lệnh"]
+    K --> L
 ```
 
 ## 6. Khi production hỏng
@@ -174,6 +206,31 @@ git push origin --delete feat/ten-viec
 
 Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là một nhánh database lơ lửng.
 
+**Muốn thử ĐĂNG NHẬP trên preview thì đặt tên nhánh là `preview`.** Vercel sinh URL
+theo tên nhánh (`<project>-git-<nhánh>-<scope>.vercel.app`), mà Google Cloud Console
+không nhận redirect URI có ký tự đại diện — mỗi nhánh một tên là mỗi lần phải thêm một
+URI vào danh sách. Dùng đúng một tên nhánh cố định thì khai một lần là xong, và có thể
+gán hẳn `preview.rehover.io` cho nhánh đó trong Vercel Domains cho gọn. Nhánh
+`feat/...` đặt tên tự do vẫn xem được giao diện, chỉ là không đăng nhập được.
+
+Preview bật Deployment Protection thì mở trên điện thoại sẽ bị hỏi đăng nhập Vercel —
+cứ đăng nhập một lần trên trình duyệt đó. **Đừng tắt bảo vệ:** tắt là nội dung chưa
+phát hành thành công khai với bất kỳ ai có link.
+
+> [!CAUTION]
+> **Trước lần preview đầu tiên, kiểm xem preview đang nối vào database nào.** Lệnh
+> build của Vercel có `drizzle-kit migrate`, nên câu trả lời quyết định chuyện một bản
+> build preview có áp migration lên **database production** hay không.
+>
+> Hai cơ chế đang chồng lên nhau, phải biết cái nào thắng: tích hợp Neon đặt
+> `DATABASE_URL` cho *All Environments* (bẫy 8), còn tính năng *Create Database Branch
+> For Deployment* thì cấp riêng cho mỗi bản preview một nhánh database (bẫy 14). Mở
+> Vercel → Settings → Environment Variables xem giá trị của môi trường Preview, và
+> Neon Console xem có nhánh nào mọc thêm sau lần deploy preview đầu tiên không.
+>
+> Bẫy 14 cũng ghi nghi vấn rằng chính tính năng đó đã **xoá nhầm nhánh `dev`**. Dùng
+> preview nhiều thì nhớ dấu hiệu nhận biết ở đó: lỗi hiện ra là "sai mật khẩu".
+
 ## 9. Không làm
 
 - `git push --force` lên `main`.
@@ -181,6 +238,7 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 - Chạy script đụng database khi chưa biết mình đang trỏ vào nhánh nào.
 - Gỡ khối `AGENTS.md` do `next dev` sinh ra khỏi diff.
 - Dùng dòng "Cập nhật lần cuối" trong tài liệu — cộng dồn bằng bảng lịch sử.
+- Merge vào `main` khi cổng kiểm tra trên GitHub đang đỏ, hoặc tắt nó đi cho nhanh.
 
 ---
 
@@ -192,6 +250,8 @@ Xong là **xoá nhánh** — nhánh còn sống là preview còn sống, là m�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |
+| 01/09/2026 | `chore: Thêm cổng kiểm tra tự động và chốt cách dùng nhánh preview` | Mục 3: bốn lệnh của cổng kiểm tra giờ chạy tự động trên GitHub Actions nên bỏ câu "hoàn toàn là kỷ luật của bạn", nhưng ghi rõ CI báo sau khi commit nên không thay được lần gõ tay trước đó; mục 8: chốt tên nhánh `preview` để URL ổn định mà khai redirect URI cho Google đúng một lần, kèm cảnh báo `DATABASE_URL` của môi trường Preview vì build preview có chạy migrate |
 | 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Mục 7: baseline production dùng cờ --prod thay vì dán chuỗi kết nối vào dòng lệnh, vì dán vào là mật khẩu production nằm luôn trong lịch sử lệnh của PowerShell |
 | 28/08/2026 | `fix: Dọn sạch lỗi lint và cho Vercel chạy test trước khi deploy` | Cập nhật mục 3: lint giờ sạch tuyệt đối nên bỏ dòng "có sẵn 4 lỗi, không phải bạn gây ra"; ghi rõ Vercel gác được test và kiểu nhưng KHÔNG gác lint với check:lessons, để khỏi tưởng đã có máy lo hết |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Viết lại mục 7: chuyển từ `drizzle-kit push` sang `generate` + `migrate`, Vercel tự áp lúc build nên bỏ hẳn bước đẩy schema lên production bằng tay; thêm phần baseline cho database đã có bảng từ trước |
