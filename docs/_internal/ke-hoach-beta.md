@@ -227,7 +227,7 @@ Ghi âm nếu họ đồng ý — vừa nghe vừa ghi chép thì sẽ bỏ sót
 ## 8. Việc phải xong trước khi mở cổng
 
 - [x] **Tách database của MÁY LÀM VIỆC khỏi production.** Đã tạo nhánh Neon `dev`
-      (endpoint `ep-dry-voice-aw3jnw02`); `.env.local` trỏ vào đó, production giữ
+      (endpoint `ep-solitary-sky-awgimu1s`); `.env.local` trỏ vào đó, production giữ
       nhánh `main` (`ep-still-bird-awjmxd8d`). Đã kiểm bằng dấu vết: ghi một đơn
       vào `dev` thì production **không** thấy nó. Đây là nửa quan trọng — nơi
       các script chạy tay dễ trượt nhất.

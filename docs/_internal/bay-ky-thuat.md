@@ -316,6 +316,46 @@ ORDER BY ordinal_position;
 
 ---
 
+---
+
+## 14. Nhánh `dev` trên Neon biến mất, triệu chứng lại là "sai mật khẩu"
+
+**Triệu chứng.** Sau một thời gian không đụng tới, mọi script chạy tay và cả
+`pnpm dev` đều báo:
+
+```
+PostgresError: password authentication failed for user 'neondb_owner'
+```
+
+Production vẫn chạy bình thường — chỉ máy làm việc bị.
+
+**Nguyên nhân.** Không phải mật khẩu. **Nhánh `dev` đã bị xoá**, và Neon trả về
+lỗi xác thực cho endpoint không còn tồn tại. Mật khẩu trong `.env.local` vẫn đúng
+nguyên — lần gặp thật, chuỗi mới do Neon cấp có mật khẩu **giống hệt** chuỗi cũ,
+chỉ khác phần endpoint.
+
+Đây là chỗ dễ mất thời gian nhất: thông báo lỗi chỉ thẳng vào mật khẩu, nên phản
+xạ đầu tiên là đi xoay khoá và cập nhật biến môi trường — sai hướng hoàn toàn.
+
+**Cách nhận ra nhanh.** Mở Neon Console, nhìn cột **Branches** của project. Đang
+là `1` trong khi lẽ ra phải là `2` thì nhánh `dev` đã mất. Đừng tra DNS để kiểm:
+Neon dùng DNS ký tự đại diện cho `*.neon.tech` nên endpoint **đã xoá vẫn phân giải
+bình thường**, cho cảm giác an tâm sai.
+
+**Cách sửa.** Tạo lại nhánh: Branches → New Branch, name `dev`, parent `main`,
+*Current point in time*. Rồi lấy **cả hai** chuỗi (pooled và direct) thay vào
+`.env.local`, và chạy lại phép thử dấu vết — ghi một đơn vào `dev`, kiểm
+production không thấy nó.
+
+**Nghi phạm.** Chưa xác định chắc. Khả năng cao nhất là tính năng *Create Database
+Branch For Deployment → Preview* của tích hợp Neon–Vercel: nó tự tạo và **tự xoá**
+nhánh cho mỗi bản preview, và có thể đã dọn nhầm `dev`. Nếu nhánh lại biến mất lần
+nữa thì gần như chắc là do đây, và phải xem lại cấu hình tích hợp.
+
+**Bài học chung.** Sự cách ly dev/production **không tự duy trì**. Sau mỗi đợt
+nghỉ dài, việc đầu tiên nên làm là chạy `node scripts/beta-metrics.mjs` — nó in ra
+endpoint đang nối vào, nên hỏng cái gì cũng lộ ra ngay ở dòng đầu.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -324,6 +364,7 @@ ORDER BY ordinal_position;
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `docs(internal): Ghi lại bẫy nhánh dev biến mất trên Neon` | Nhánh dev bị xoá nhưng lỗi lại hiện ra là sai mật khẩu, dẫn người ta đi dò nhầm hướng; ghi cả cách nhận ra nhanh bằng cột Branches |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Sửa bẫy 8 và 12 cho khớp: `pnpm db:push` không còn tồn tại, rủi ro giờ nằm ở script chạy tay và biến môi trường quên xoá |
 | 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Thêm bẫy 12 (script chạy tay nạp `.env.local` nên đọc nhánh dev, kết quả rỗng trông y hệt "chưa có ai học") và bẫy 13 (song song `neon_auth.user` với `public.user` làm `information_schema` trả về cột nhân đôi mâu thuẫn) |
 | 28/08/2026 | `feat: Phản hồi từng nốt ngay khi tập bài với đàn` | Thêm bẫy 11 (màu tĩnh trên bản nhạc abcjs cần !important, màu chạy bằng keyframes thì không) và bổ sung vào bẫy 10 chuyện tab bị ẩn bóp setTimeout về khoảng một giây |
