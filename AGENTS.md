@@ -27,7 +27,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 Trước khi đụng tới bất cứ thứ gì liên quan tới giá, gói bán, phân quyền hay thanh toán, **đọc `docs/_internal/dinh-huong-kinh-doanh.md`**.
 
-Thư mục `_internal` **không hiển thị trên web** (nằm ngoài `contentDirs` trong `src/lib/markdown.ts`) — đây là tài liệu nội bộ, đừng đưa nội dung của nó ra giao diện người học.
+Thư mục `_internal` **không hiển thị cho người học** (nằm ngoài `contentDirs` trong `src/lib/markdown.ts`), nhưng **quản trị viên đọc được ở `/admin/docs`** — dựng từ `src/lib/internal-docs.ts`, một đường đọc tách hẳn khỏi `markdown.ts`. Đừng thêm `_internal` vào `contentDirs` và đừng đưa nội dung của nó ra giao diện người học.
 
 Vài ràng buộc tuyệt đối, vi phạm là gây hậu quả thật:
 
