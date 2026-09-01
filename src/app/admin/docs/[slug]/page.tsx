@@ -1,4 +1,4 @@
-import { Container } from '@mantine/core';
+import { Box } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import { MarkdownViewer } from '@/components/MarkdownViewer';
 import { NavAnchor } from '@/components/NavAnchor';
@@ -35,9 +35,11 @@ export default async function AdminDocPage({
       <NavAnchor href="/admin/docs" size="sm" c="dimmed">
         ← Mục lục tài liệu
       </NavAnchor>
-      <Container size="sm" px={0} mt="md">
+      {/* Không bọc Container như trang bài học: tài liệu nội bộ đầy bảng nhiều
+          cột và khối mã, giới hạn bề ngang là bắt chúng cuộn ngang liên tục. */}
+      <Box mt="md">
         <MarkdownViewer content={content} />
-      </Container>
+      </Box>
     </>
   );
 }
