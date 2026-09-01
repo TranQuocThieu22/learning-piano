@@ -1,5 +1,13 @@
 # Lộ trình học Piano (Dành cho người mới bắt đầu từ số 0)
 
+> **Đang mở 40 suất học thử miễn phí.**
+>
+> Giáo trình chưa mở bán. Người tham gia đợt thử nghiệm được mở **toàn bộ nội dung hiện có** — miễn phí, và giữ vĩnh viễn kể cả sau khi mở bán. Đổi lại, mình cần bạn tập thật và thỉnh thoảng nhắn lại chỗ nào khó hiểu.
+>
+> Điều kiện: có đàn thật (piano hoặc keyboard từ 61 phím) và tập được vài buổi mỗi tuần.
+>
+> **Chương 1 mở sẵn cho tất cả mọi người, không cần đăng ký gì** — cứ học thử trước đã. Thấy hợp thì [điền form đăng ký](https://forms.gle/aSPhbC82fRXPdciK6), khoảng một phút.
+
 Vì bạn là người mới bắt đầu hoàn toàn, chúng ta sẽ chia nhỏ lộ trình ra **từng ngày một** thay vì từng tuần. Mục tiêu là để não bộ và các ngón tay có đủ thời gian thích nghi mà không bị ngợp. Mỗi ngày bạn chỉ cần dành 30-45 phút tập trung.
 
 > [!TIP]

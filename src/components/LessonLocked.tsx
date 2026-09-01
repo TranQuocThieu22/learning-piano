@@ -10,6 +10,18 @@ import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
 const TRANG_FACEBOOK = 'https://www.facebook.com/profile.php?id=61593938880341';
 
 /**
+ * Form đăng ký đợt thử nghiệm.
+ *
+ * Đặt trước Trang Facebook vì nhắn tin là một bước CHỜ: người học phải mở
+ * Messenger, nghĩ xem viết gì, rồi đợi tới lúc có người rảnh trả lời. Form thì
+ * họ tự làm xong trong ba mươi giây và bạn xử lý theo lô mỗi ngày một lần.
+ *
+ * Gỡ cả khối này khi đóng đợt beta — xem mục "Còn treo" của
+ * docs/_internal/lam-viec-hang-ngay.md.
+ */
+const FORM_DANG_KY = 'https://forms.gle/aSPhbC82fRXPdciK6';
+
+/**
  * Màn hình thay cho nội dung bài khi người học chưa sở hữu gói.
  *
  * Cố ý KHÔNG hiện một phần bài rồi làm mờ phần còn lại: nội dung vẫn nằm trong
@@ -48,30 +60,38 @@ export function LessonLocked({
           Giáo trình đang trong <strong>đợt thử nghiệm miễn phí</strong>, chưa mở
           bán. Chương {FREE_THROUGH_CHAPTER} mở cho tất cả mọi người; từ Chương{' '}
           {FREE_THROUGH_CHAPTER + 1} trở đi hiện chỉ mở cho người tham gia thử
-          nghiệm.
+          nghiệm — <strong>hiện còn nhận đăng ký</strong>.
         </Text>
 
         <Text>
+          Điền form khoảng một phút, trong vòng 24 giờ mình mở toàn bộ giáo trình
+          cho tài khoản của bạn — miễn phí và giữ vĩnh viễn, kể cả sau khi mở bán.
           {signedIn
-            ? 'Bạn đã đăng nhập rồi — nhắn cho mình kèm email đang dùng, mình mở toàn bộ giáo trình cho bạn, miễn phí và giữ vĩnh viễn.'
-            : 'Đăng nhập bằng Google một lần rồi nhắn cho mình, mình sẽ mở toàn bộ giáo trình cho bạn, miễn phí và giữ vĩnh viễn.'}
+            ? ' Bạn đã đăng nhập rồi, nhớ điền đúng email đang dùng.'
+            : ' Sau khi điền form, nhớ đăng nhập bằng Google một lần để mình có tài khoản mà mở.'}
         </Text>
 
         <Group>
           <Button
             component="a"
-            href={TRANG_FACEBOOK}
+            href={FORM_DANG_KY}
             target="_blank"
             rel="noopener noreferrer"
             size="md"
           >
-            Nhắn xin tham gia thử nghiệm
+            Đăng ký học thử miễn phí
           </Button>
-          <Button component={Link} href="/01-roadmap/roadmap" variant="default">
+          <Button
+            component="a"
+            href={TRANG_FACEBOOK}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="default"
+          >
+            Nhắn qua Facebook
+          </Button>
+          <Button component={Link} href="/01-roadmap/roadmap" variant="subtle">
             Xem lộ trình
-          </Button>
-          <Button component={Link} href="/journal" variant="subtle">
-            Về nhật ký
           </Button>
         </Group>
       </Stack>

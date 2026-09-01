@@ -83,6 +83,10 @@ khẩu" (bẫy 14).
 
 Không gấp, xoá dòng nào đã xong:
 
+- [ ] **Khi đóng đợt beta:** gỡ khối mời đăng ký ở đầu `docs/01-roadmap/roadmap.md`
+      và hằng số `FORM_DANG_KY` cùng nút của nó trong `src/components/LessonLocked.tsx`.
+      Hai chỗ này chỉ đúng trong lúc còn nhận người thử.
+
 - [ ] Gán `preview.rehover.io` cho nhánh `preview` trong Vercel Domains (thêm một bản
       ghi CNAME nữa ở Cloudflare, vẫn **DNS only**).
 - [ ] Thêm redirect URI của địa chỉ đó vào Google Cloud Console.
@@ -100,5 +104,6 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 02/09/2026 | `feat: Dẫn thẳng tới form đăng ký beta thay vì bắt nhắn tin` | Thêm vào mục 6 việc phải gỡ khối mời đăng ký và nút form khi đóng đợt beta — hai chỗ đó chỉ đúng trong lúc còn nhận người thử, để sót lại thì người mua sau này bấm vào một form đã đóng |
 | 01/09/2026 | `docs(internal): Ghi vòng đổi cấu trúc bảng khi làm việc cùng AI` | Thêm mục 4 — ba lệnh migration vốn đã là việc của Claude theo mục 2 của quy trình, nhưng chưa chỗ nào nói người dùng còn giữ lại việc gì; chốt rằng phần không được bỏ là người đọc file .sql, và ghi cửa chặn Claude tự dừng khi SQL có DROP/RENAME. Thêm lối đọc tài liệu nội bộ trên web ở /admin/docs |
 | 01/09/2026 | `docs(internal): Thêm bản một trang cho quy trình làm việc hàng ngày` | Tạo file — tách phần "làm gì tiếp" ra khỏi `quy-trinh-lam-viec.md` để lúc đang làm không phải đọc lại toàn bộ lý do; gom ba nhịp thường dùng (commit thẳng, xem trước bằng nhánh, xem thứ chưa commit bằng tunnel) và danh sách việc còn treo sau khi đổi tên miền |
