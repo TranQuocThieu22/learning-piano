@@ -14,6 +14,31 @@ import { grantAccessAction, revokeAccessAction } from '@/lib/admin-actions';
 import type { AdminUserRow } from '@/lib/admin-data';
 import type { Package } from '@/lib/packages';
 
+/**
+ * Ngưỡng "coi như đã rơi", theo mục 4 của ke-hoach-beta.md: im lặng chừng này
+ * ngày thì người đó không còn tập nữa, dù đã tick được mấy bài.
+ */
+const NGAY_COI_LA_ROI = 14;
+
+/**
+ * Định dạng ngày cố định múi giờ.
+ *
+ * Bảng này render cả trên máy chủ lẫn trình duyệt. Để `Intl` tự lấy múi giờ
+ * của máy thì hai lần render ra hai chuỗi khác nhau và React kêu lệch nội dung
+ * lúc hydrate.
+ */
+const DINH_DANG_NGAY = new Intl.DateTimeFormat('vi-VN', {
+  day: '2-digit',
+  month: '2-digit',
+  year: 'numeric',
+  timeZone: 'Asia/Ho_Chi_Minh',
+});
+
+function ngay(value: Date | string | null): string {
+  if (!value) return '—';
+  return DINH_DANG_NGAY.format(new Date(value));
+}
+
 export function AdminUserTable({
   users,
   packages,
@@ -43,13 +68,16 @@ export function AdminUserTable({
         </Text>
       )}
 
-      <Table.ScrollContainer minWidth={720}>
+      <Table.ScrollContainer minWidth={1080}>
         <Table striped highlightOnHover>
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Email</Table.Th>
               <Table.Th>Tên</Table.Th>
+              <Table.Th>Đăng ký</Table.Th>
               <Table.Th>Bài đã tick</Table.Th>
+              <Table.Th>Chương xa nhất</Table.Th>
+              <Table.Th>Tick gần nhất</Table.Th>
               <Table.Th>Gói đang có</Table.Th>
               <Table.Th />
             </Table.Tr>
@@ -59,7 +87,43 @@ export function AdminUserTable({
               <Table.Tr key={user.id}>
                 <Table.Td>{user.email}</Table.Td>
                 <Table.Td>{user.name ?? '—'}</Table.Td>
+                <Table.Td>
+                  {ngay(user.createdAt)}
+                  <Text size="xs" c="dimmed">
+                    {user.daysSinceSignup} ngày trước
+                  </Text>
+                </Table.Td>
                 <Table.Td>{user.lessonsDone}</Table.Td>
+                <Table.Td>
+                  {user.farthestChapter === null ? (
+                    <Text size="sm" c="dimmed">
+                      Chưa bắt đầu
+                    </Text>
+                  ) : (
+                    `Chương ${user.farthestChapter}`
+                  )}
+                </Table.Td>
+                <Table.Td>
+                  {user.lastTickAt === null ? (
+                    <Text size="sm" c="dimmed">
+                      —
+                    </Text>
+                  ) : (
+                    <>
+                      {ngay(user.lastTickAt)}
+                      <Text
+                        size="xs"
+                        c={
+                          (user.daysSinceLastTick ?? 0) >= NGAY_COI_LA_ROI
+                            ? 'red'
+                            : 'dimmed'
+                        }
+                      >
+                        im {user.daysSinceLastTick} ngày
+                      </Text>
+                    </>
+                  )}
+                </Table.Td>
                 <Table.Td>
                   {user.packages.length === 0 ? (
                     <Text size="sm" c="dimmed">
@@ -73,6 +137,11 @@ export function AdminUserTable({
                         </Badge>
                       ))}
                     </Group>
+                  )}
+                  {user.notes.length > 0 && (
+                    <Text size="xs" c="dimmed" mt={2}>
+                      {user.notes.join(', ')}
+                    </Text>
                   )}
                 </Table.Td>
                 <Table.Td>
