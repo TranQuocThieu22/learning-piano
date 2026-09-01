@@ -69,7 +69,7 @@ Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ng�
 
 **Đọc `docs/_internal/quy-trinh-lam-viec.md`** trước khi commit hoặc đổi cấu trúc bảng. Ba điều hay bị vi phạm nhất:
 
-- **Không tự chạy `git commit`, `git push`, `git reset`.** Chỉ in nội dung commit message ra khối mã để người dùng dán vào Fork — xem `.claude/skills/git-commit-messages/SKILL.md`. Repo commit thẳng vào `main` nên lần đọc diff của người làm là lưới đỡ duy nhất.
+- **Mặc định không tự chạy `git commit`, `git push`, `git reset`** — chỉ in commit message ra khối mã để người dùng dán vào Fork. **Ngoại lệ duy nhất: người dùng nói "commit luôn"**, khi đó tự chạy trọn `git add` / `commit` / `push`, nhưng phải đọc hết `git diff` (kể cả thay đổi của phiên khác) và chạy đủ bốn lệnh kiểm trước — xem `.claude/skills/git-commit-messages/SKILL.md`. Repo đẩy thẳng `main` và Vercel deploy production ngay sau đó; CI ở `.github/workflows/ci.yml` là lưới thứ hai nhưng nó báo **sau** khi commit đã vào lịch sử.
 - **Chốt tiêu đề commit TRƯỚC khi ghi dòng lịch sử cập nhật**, vì bảng đó chép y hệt tiêu đề. Đổi tiêu đề lúc commit thì phải quay lại sửa dòng đã ghi.
 - **Đổi cấu trúc bảng phải qua migration có file.** `pnpm db:generate` sinh file `.sql` trong `drizzle/` — đọc file đó rồi commit kèm; Vercel chạy `drizzle-kit migrate` lúc build nên production tự cập nhật. Không còn `db:push`. Trong suốt beta **chỉ được THÊM** cột/bảng/index, không xoá, không đổi tên, không đổi kiểu.
 
