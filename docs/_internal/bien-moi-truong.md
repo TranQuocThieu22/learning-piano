@@ -123,6 +123,13 @@ khoảng trắng. Không phân biệt hoa thường.
 
 ## 5. Thanh toán (SePay)
 
+> **Tiền tố `SEPAY_` gây hiểu nhầm: mã QR KHÔNG cần tài khoản SePay.**
+> `src/lib/payment/vietqr.ts` chỉ ghép một URL ảnh tĩnh tới `qr.sepay.vn/img` —
+> dịch vụ mở công khai, không đăng nhập, không khoá. Ba biến `SEPAY_BANK_CODE`,
+> `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME` là **số tài khoản ngân hàng của
+> bạn**, không phải thông tin đăng nhập SePay. Chỉ `SEPAY_WEBHOOK_API_KEY` và
+> webhook đối soát mới cần đăng ký tại my.sepay.vn.
+
 Xem thêm mục 7 của [`dinh-huong-kinh-doanh.md`](dinh-huong-kinh-doanh.md) về quy trình thu tiền.
 
 ### `SEPAY_WEBHOOK_API_KEY` — **bắt buộc, nhạy cảm nhất**
@@ -149,6 +156,9 @@ Tài khoản nhận tiền, dùng để dựng mã VietQR hiển thị cho ngư�
 - Thiếu thì sao: `getBankAccount()` trả `null`, giao diện không dựng được mã QR.
   Không ảnh hưởng webhook — tiền vẫn được đối soát bình thường.
 - `SEPAY_ACCOUNT_NAME` chỉ để hiển thị, không tham gia đối soát.
+- **Không cần tài khoản SePay.** Chưa đăng ký gì ở my.sepay.vn thì mã QR vẫn hiện
+  bình thường, người học vẫn chuyển khoản được — chỉ là không có gì tự phát hiện
+  tiền vào, phải mở khoá tay ở `/admin/payments`.
 
 ### `TEST_BASE_URL` — tuỳ chọn
 
@@ -177,14 +187,23 @@ Xoá được, nhưng tích hợp sẽ tự thêm lại. Cứ để yên, chỉ 
 Vercel **không** đọc `.env.local` — mọi biến phải khai lại trong bảng điều khiển
 (Settings → Environment Variables).
 
+**Tên miền production: `piano.rehover.io`** — mua ở Cloudflare Registrar, DNS giữ
+tại Cloudflare, bản ghi `CNAME piano` trỏ về giá trị Vercel cấp và **để DNS only**
+(bật proxy mây cam thì Vercel không cấp được SSL, triệu chứng là vòng lặp chuyển
+hướng). `learning-piano.vercel.app` vẫn chạy song song, không mất.
+
 - [ ] `DATABASE_URL` — chuỗi có pooler
 - [ ] `DATABASE_URL_UNPOOLED` — chuỗi trực tiếp
 - [ ] `AUTH_SECRET` — **khác** khoá đang dùng ở máy mình
 - [ ] `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`
-- [ ] Thêm đường dẫn chuyển hướng của tên miền thật vào Google Cloud Console
+- [ ] Thêm `https://piano.rehover.io/api/auth/callback/google` vào Authorized
+      redirect URIs ở Google Cloud Console, giữ nguyên mục cũ của `vercel.app`
+      trong lúc chuyển tiếp
 - [ ] `ADMIN_EMAILS`
-- [ ] `SEPAY_WEBHOOK_API_KEY` — **khác** khoá thử ở máy mình, và dán y hệt vào SePay
-- [ ] Trỏ webhook SePay tới `https://<tên-miền>/api/webhooks/sepay`
+- [ ] **Chỉ khi đã đăng ký SePay:** `SEPAY_WEBHOOK_API_KEY` — **khác** khoá thử ở
+      máy mình, dán y hệt vào SePay, và trỏ webhook tới
+      `https://piano.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
+      này, endpoint tự từ chối mọi request khi thiếu khoá
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
 - [ ] Không cần chạy lệnh đổi cấu trúc bảng bằng tay — `pnpm build` trên Vercel đã
       chạy `drizzle-kit migrate`. Chỉ database CHƯA từng dùng migration mới cần
@@ -194,7 +213,11 @@ Vercel **không** đọc `.env.local` — mọi biến phải khai lại trong b
 
 Sau khi deploy, thử một lần bằng
 `TEST_BASE_URL=https://<tên-miền> node scripts/test-webhook.mjs <email>` — script tự
-tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch.
+tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch. Chỉ chạy được khi đã có
+`SEPAY_WEBHOOK_API_KEY` thật, và `.env.local` lúc đó phải trỏ vào database
+production. Chưa có SePay thì phép thử nhẹ hơn là gọi thẳng endpoint và **mong đợi
+401**: `curl -i -X POST https://piano.rehover.io/api/webhooks/sepay -d '{}'` —
+401 chứng minh tên miền, SSL và route đều sống, còn 404 là sai đường dẫn.
 
 ---
 
@@ -206,6 +229,7 @@ tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `feat: Chuyển sang tên miền piano.rehover.io và làm rõ vai trò của SePay` | Ghi rõ mã QR dùng dịch vụ ảnh công khai nên không cần tài khoản SePay — tiền tố `SEPAY_` ở ba biến ngân hàng từng khiến hiểu nhầm là phải đăng ký mới hiện được QR; chốt tên miền production kèm bẫy proxy Cloudflare, và hạ hai mục webhook xuống thành tuỳ chọn vì đối soát tự động chưa bật |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Đổi mọi tham chiếu `pnpm db:push` sang `db:generate`/`db:migrate`, và bỏ mục đẩy schema bằng tay khỏi danh sách việc trước khi mở bán vì Vercel đã tự chạy migrate |
 | 27/08/2026 | `refactor: Gom việc đọc biến môi trường về một chỗ và canh bằng test` | Ghi lại rằng src/lib/env.ts là nơi duy nhất đọc process.env, kèm ba tầng bắt buộc / đóng cửa an toàn / tuỳ chọn và lý do không gộp chúng |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |
