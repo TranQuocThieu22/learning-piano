@@ -264,8 +264,10 @@ Ghi âm nếu họ đồng ý — vừa nghe vừa ghi chép thì sẽ bỏ sót
       (`relation "account" already exists`) và chỉ để lại bảng
       `drizzle.__drizzle_migrations` rỗng. Fail-closed hoạt động như thiết kế —
       deploy không xảy ra, production vẫn phục vụ bản cũ, không mất gì.
-- [ ] **Điều khoản sử dụng** — mục 7 tài liệu định hướng đã yêu cầu: tài khoản dùng
-      cá nhân, không chia sẻ. Miễn phí vẫn cần, vì nó đặt chuẩn mực ngay từ đầu.
+- [x] **Điều khoản sử dụng — đã lên production.** `piano.rehover.io/terms` trả 200,
+      có đủ email liên hệ, link Trang Facebook, và lời hứa hoàn thiện Giai đoạn 2
+      trong đợt beta. Mục 7 tài liệu định hướng yêu cầu nêu rõ tài khoản dùng cá
+      nhân, không chia sẻ — đã có ở mục 2 của điều khoản.
 - [x] **Kênh liên hệ cho người beta.** Đã chốt hai kênh, ghi ở mục 7
       [`docs/legal/terms.md`](../legal/terms.md):
 
@@ -340,6 +342,7 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 01/09/2026 | `docs(internal): Tick xong danh sách trước beta` | Điều khoản đã lên production ở tên miền mới piano.rehover.io — danh sách việc phải xong trước khi mở cổng đã đủ 7/7 |
 | 27/08/2026 | `docs(internal): Soạn xong biểu mẫu và khung phỏng vấn cho mục Phản hồi định tính` | Mục 7 từ phác thảo thành thứ dùng được ngay: năm câu hỏi cụ thể kèm lý do từng câu, và khung phỏng vấn 20 phút hỏi về việc đã xảy ra thay vì hỏi ý kiến |
 | 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Đã tạo Trang Facebook và điền link vào mục 7 điều khoản, chốt xong cả hai kênh liên hệ |
 | 27/08/2026 | `feat: Thêm trang Điều khoản sử dụng cho giai đoạn beta` | Ghi lại cách dựng chuyển tiếp thư bằng Cloudflare Email Routing, hai chỗ dễ mắc, và lý do cố ý tắt catch-all |
