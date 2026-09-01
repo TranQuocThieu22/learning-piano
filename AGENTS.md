@@ -67,7 +67,7 @@ Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ng�
 
 # Quy trình làm việc
 
-**Đọc `docs/_internal/quy-trinh-lam-viec.md`** trước khi commit hoặc đổi cấu trúc bảng. Ba điều hay bị vi phạm nhất:
+**Đọc `docs/_internal/quy-trinh-lam-viec.md`** trước khi commit hoặc đổi cấu trúc bảng. Cần bản rút gọn để mở ra lúc đang làm thì dùng `docs/_internal/lam-viec-hang-ngay.md` — nó chỉ trả lời *làm gì tiếp*, còn *vì sao* vẫn nằm ở file đầy đủ. Ba điều hay bị vi phạm nhất:
 
 - **Mặc định không tự chạy `git commit`, `git push`, `git reset`** — chỉ in commit message ra khối mã để người dùng dán vào Fork. **Ngoại lệ duy nhất: người dùng nói "commit luôn"**, khi đó tự chạy trọn `git add` / `commit` / `push`, nhưng phải đọc hết `git diff` (kể cả thay đổi của phiên khác) và chạy đủ bốn lệnh kiểm trước — xem `.claude/skills/git-commit-messages/SKILL.md`. Repo đẩy thẳng `main` và Vercel deploy production ngay sau đó; CI ở `.github/workflows/ci.yml` là lưới thứ hai nhưng nó báo **sau** khi commit đã vào lịch sử.
 - **Chốt tiêu đề commit TRƯỚC khi ghi dòng lịch sử cập nhật**, vì bảng đó chép y hệt tiêu đề. Đổi tiêu đề lúc commit thì phải quay lại sửa dòng đã ghi.
@@ -87,5 +87,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/bay-ky-thuat.md`
 - `docs/_internal/ke-hoach-beta.md`
 - `docs/_internal/quy-trinh-lam-viec.md`
+- `docs/_internal/lam-viec-hang-ngay.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
