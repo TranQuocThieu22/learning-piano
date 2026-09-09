@@ -54,6 +54,9 @@
   gọi thẳng `/api/auth/signin/google`: app sinh đúng `redirect_uri` mới, Google
   nhận và trả về trang nhập email chứ không phải `redirect_uri_mismatch`.
   Phép thử này không cần tài khoản thật nên lần sau đổi tên miền cứ dùng lại.
+- **Gắn Vercel Web Analytics.** Trước đó không đo gì cả, nên câu "bao nhiêu người vào
+  trang" không có số để trả lời. Chọn cái này thay vì Google Analytics vì nó không đặt
+  cookie, đỡ phải dựng banner xin đồng ý cho một trang đang có hai chục người.
 - Dọn 7 phiên chat cũ và rút toàn bộ lịch sử ra thành `nhat-ky-quyet-dinh.md`, chốt quy
   ước chia phiên ở mục 9 của `quy-trinh-lam-viec.md`.
 

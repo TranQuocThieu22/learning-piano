@@ -237,6 +237,11 @@ Google Cloud Console, xem ô ngay bên dưới.
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
 - [ ] `SELLING_ENABLED` — **trong beta để trống**. Chỉ đặt `true` vào ngày mở bán,
       và chỉ sau khi đã nâng gói Vercel Pro
+- [ ] Bật **Web Analytics** trong bảng điều khiển Vercel (project → Analytics →
+      *Enable*). Đây là một nút bấm, **không** phải biến môi trường. `<Analytics />`
+      đã nằm sẵn trong `src/app/layout.tsx`, nhưng chưa bật ở bảng điều khiển thì nó
+      im lặng và không có số nào cả — mà cũng chẳng có cảnh báo nào nhắc bạn, nên
+      triệu chứng duy nhất là bảng số liệu trống trơn trông y hệt "chưa ai vào"
 - [ ] Không cần chạy lệnh đổi cấu trúc bảng bằng tay — `pnpm build` trên Vercel đã
       chạy `drizzle-kit migrate`. Chỉ database CHƯA từng dùng migration mới cần
       baseline một lần: `node scripts/baseline-migrations.mjs --through <tag>`
@@ -280,6 +285,7 @@ người dùng bấm đồng ý — chỗ đó cần tài khoản thật.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 09/09/2026 | `feat: Đếm lượt truy cập bằng Vercel Web Analytics` | Thêm ô bật Web Analytics vào danh sách kiểm khi deploy. Đây là **nút bấm ở bảng điều khiển**, không phải biến môi trường — nên nó không lọt vào ba tầng biến ở mục 2 và cũng không có test nào canh. Quên bấm thì `<Analytics />` im lặng và bảng số liệu trống trơn, trông hệt như chưa có ai vào; đó là lý do ô này phải nằm trong danh sách chứ không chỉ nằm trong trí nhớ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Thêm `SELLING_ENABLED` vào tầng đóng cửa an toàn và giải thích vì sao chiều cờ ngược với trực giác — quên bật thì phát hiện ngay, quên tắt thì người beta tạo được đơn thật trên gói Hobby mà không có triệu chứng nào |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi tên miền ở mục 7 sang `pianojourney.rehover.io` (bản ghi CNAME, redirect URI Google, webhook SePay, phép thử 401). Ghi rõ tên miền cũ vẫn trả 308 nên đừng gỡ — link đã phát ra trong beta trỏ vào đó — nhưng chuyển hướng không mang theo redirect URI, nên tên miền mới phải có mục riêng ở Google Console, thiếu thì báo `redirect_uri_mismatch` chứ không báo lỗi app. Thêm phép thử đăng nhập Google không cần tài khoản thật: một bước hỏi app sinh ra `redirect_uri` nào, một bước hỏi Google có nhận không — tách được hai nguyên nhân vốn cho cùng một triệu chứng |
 | 01/09/2026 | `feat: Chuyển sang tên miền piano.rehover.io và làm rõ vai trò của SePay` | Ghi rõ mã QR dùng dịch vụ ảnh công khai nên không cần tài khoản SePay — tiền tố `SEPAY_` ở ba biến ngân hàng từng khiến hiểu nhầm là phải đăng ký mới hiện được QR; chốt tên miền production kèm bẫy proxy Cloudflare, và hạ hai mục webhook xuống thành tuỳ chọn vì đối soát tự động chưa bật |

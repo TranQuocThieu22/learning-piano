@@ -3,6 +3,7 @@ import { Be_Vietnam_Pro } from "next/font/google";
 import '@mantine/core/styles.css';
 import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { Analytics } from '@vercel/analytics/next';
 import { ThemeColorMeta } from '@/components/ThemeColorMeta';
 
 const beVietnamPro = Be_Vietnam_Pro({ 
@@ -92,6 +93,19 @@ export default function RootLayout({
           <ThemeColorMeta />
           {children}
         </MantineProvider>
+        {/*
+          Đếm lượt truy cập. Không đặt cookie nên không phải dựng banner xin đồng
+          ý, và chỉ gửi dữ liệu khi đã bật Web Analytics trong bảng điều khiển
+          Vercel — chưa bật thì component này im lặng, không hỏng gì.
+
+          Ở `pnpm dev` nó cố ý không gửi gì, chỉ ghi ra console trình duyệt. Nên
+          muốn biết đã chạy thật chưa thì phải xem trên production, đừng ngồi chờ
+          số ở máy mình.
+
+          Trình chặn quảng cáo chặn được script này, nên số đo luôn thấp hơn số
+          thật. Đọc như xu hướng, đừng đọc như con số tuyệt đối.
+        */}
+        <Analytics />
       </body>
     </html>
   );
