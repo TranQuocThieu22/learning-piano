@@ -10,6 +10,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Quyết định sản phẩm đã chốt
 
+**Trước khi đề xuất đổi hướng gì lớn, đọc `docs/_internal/nhat-ky-quyet-dinh.md`** — nó ghi các câu đã hỏi và đã chốt kèm *lý do*, dựng lại từ lịch sử phiên làm việc. Mục 1 là bảng "đừng hỏi lại": app mobile, backend riêng, thuê bao tháng, bỏ beta, chuyển hết sang video — đều đã có kết luận và lý do.
+
 Đọc `docs/07-doc-them/` trước khi đề xuất tính năng mới. Thư mục này **hiển thị trên web** (mục "Đọc thêm" ở cuối sidebar) nên hãy viết cho người học đọc, không viết theo văn phong tài liệu kỹ thuật nội bộ. Đây cũng là chỗ chứa các bài bên lề không nằm trong lộ trình tập — ví dụ lịch sử piano (`lich-su-piano.md`) đã được tách khỏi Chương 0. Các quyết định đã chốt:
 
 - **Không làm piano ảo bấm chuột/chạm màn hình** — xem `docs/07-doc-them/khong-lam-piano-ao.md`. Lý do ngắn gọn: giáo trình dạy kỹ thuật vật lý (form tay, độc lập ngón, lực đánh) mà bàn phím ảo không rèn được, lại tạo cảm giác sai về tiến bộ và cạnh tranh thời gian với cây đàn thật người học đang có. Hai hướng thay thế được chấp nhận là **bài luyện nhận nốt** và **kết nối Web MIDI với đàn thật**.
@@ -88,5 +90,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/ke-hoach-beta.md`
 - `docs/_internal/quy-trinh-lam-viec.md`
 - `docs/_internal/lam-viec-hang-ngay.md`
+- `docs/_internal/nhat-ky-quyet-dinh.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
