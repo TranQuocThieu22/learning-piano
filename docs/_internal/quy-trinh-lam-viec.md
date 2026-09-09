@@ -276,12 +276,22 @@ với điều kiện mọi thứ đáng nhớ đã rơi xuống file **trước 
 ### Ba thói quen
 
 1. **Mở phiên mới cho việc mới**, đừng resume phiên cũ chỉ vì nó đang mở sẵn.
-2. **Đặt tên phiên ngay lúc bắt đầu.** Tên tốt là tên tìm lại được sau ba tuần — *"Mô tả
-   hợp lí"* hay *"Chỉnh sửa kỹ thuật"* thì không.
+2. **Đặt tên phiên theo *việc*, không theo *loại việc*.** `Ẩn thanh toán trong beta`,
+   `Soạn Chương 8`, `Đổi tên miền sang pianojourney` — nhìn là biết và tìm lại được.
+   *"Mô tả hợp lí"*, *"Chỉnh sửa kỹ thuật"*, *"Commit message"* thì không.
+
+   Hệ quả: **đừng giữ một phiên cố định cho mỗi danh mục** (một phiên "Chỉnh code" dùng
+   mãi). Nó hỏng theo ba đường — ngữ cảnh bị nén nên trả lời tụt dần, việc thứ 30 phải
+   lọc qua 29 việc cũ không liên quan, và cái tên danh mục không nói lên bên trong có
+   gì. Bốn loại việc ở bảng trên là **ngăn tủ để xếp phiên vào** (nhóm trong thanh bên),
+   không phải phiên.
 3. **Đóng phiên bằng một câu**: *"trước khi đóng, có gì cần ghi vào tài liệu không"*.
    Đó là chỗ duy nhất kiến thức thoát ra khỏi phiên chat.
 
 Mở phiên buổi sáng bằng *"đọc `lam-viec-hang-ngay.md` rồi nói tôi làm gì tiếp"*.
+
+**Archive khi việc *xong*, không phải khi *hết ngày*.** Việc kéo dài nhiều ngày — soạn
+xong một chương chẳng hạn — thì giữ nguyên phiên đó qua đêm; cắt giữa chừng là mất mạch.
 
 **Archive không xoá gì.** Phiên archive mở lại được từ danh sách Archived, nội dung vẫn
 tìm được, và file `.jsonl` gốc trong `~/.claude/projects/` nằm nguyên tại chỗ. Nên cứ
@@ -306,7 +316,7 @@ archive mạnh tay khi việc đã xong.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
-| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên làm việc với AI` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên |
+| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên làm việc với AI` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì |
 | 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |
 | 01/09/2026 | `ci: Thêm GitHub Actions gác đủ bốn lệnh kiểm trên mọi lần đẩy` | Mục 3: bốn lệnh của cổng kiểm tra giờ chạy tự động trên GitHub Actions nên bỏ câu "hoàn toàn là kỷ luật của bạn", nhưng ghi rõ CI báo sau khi commit nên không thay được lần gõ tay trước đó; mục 8: chốt tên nhánh `preview` để URL ổn định mà khai redirect URI cho Google đúng một lần, kèm cảnh báo `DATABASE_URL` của môi trường Preview vì build preview có chạy migrate |
 | 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Mục 7: baseline production dùng cờ --prod thay vì dán chuỗi kết nối vào dòng lệnh, vì dán vào là mật khẩu production nằm luôn trong lịch sử lệnh của PowerShell |
