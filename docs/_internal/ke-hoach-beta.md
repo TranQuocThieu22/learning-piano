@@ -278,7 +278,7 @@ Ghi âm nếu họ đồng ý — vừa nghe vừa ghi chép thì sẽ bỏ sót
       (`relation "account" already exists`) và chỉ để lại bảng
       `drizzle.__drizzle_migrations` rỗng. Fail-closed hoạt động như thiết kế —
       deploy không xảy ra, production vẫn phục vụ bản cũ, không mất gì.
-- [x] **Điều khoản sử dụng — đã lên production.** `piano.rehover.io/terms` trả 200,
+- [x] **Điều khoản sử dụng — đã lên production.** `pianojourney.rehover.io/terms` trả 200,
       có đủ email liên hệ, link Trang Facebook, và lời hứa hoàn thiện Giai đoạn 2
       trong đợt beta. Mục 7 tài liệu định hướng yêu cầu nêu rõ tài khoản dùng cá
       nhân, không chia sẻ — đã có ở mục 2 của điều khoản.
@@ -356,6 +356,7 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Sửa địa chỉ trang điều khoản ở mục 8 sang tên miền mới — ô đó tick kèm bằng chứng "trả 200", mà bằng chứng ghi sai địa chỉ thì lần sau kiểm lại sẽ kiểm nhầm chỗ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Mục 2: ghi rõ đường thanh toán bị ẩn bằng `SELLING_ENABLED` và chốt thứ tự tuyển → đăng nhập → cấp quyền trước, kèm lý do không đặt cổng xin quyền ở cuối Chương 1 vì nó tạo điểm rơi giả làm bẩn chính con số cần đo |
 | 01/09/2026 | `docs(internal): Tick xong danh sách trước beta` | Điều khoản đã lên production ở tên miền mới piano.rehover.io — danh sách việc phải xong trước khi mở cổng đã đủ 7/7 |
 | 27/08/2026 | `docs(internal): Soạn xong biểu mẫu và khung phỏng vấn cho mục Phản hồi định tính` | Mục 7 từ phác thảo thành thứ dùng được ngay: năm câu hỏi cụ thể kèm lý do từng câu, và khung phỏng vấn 20 phút hỏi về việc đã xảy ra thay vì hỏi ý kiến |

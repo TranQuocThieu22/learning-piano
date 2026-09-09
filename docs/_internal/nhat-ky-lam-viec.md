@@ -48,6 +48,12 @@
   `/checkout` trả 404, màn hình bài khoá không nhắc tới giá, Chương 1 mở cho mọi người.
   Hôm nay là ngày bắt đầu tính mốc.
 - **Đăng bài đầu tiên trên Facebook.**
+- **Đổi tên miền production sang `pianojourney.rehover.io`.** Tên miền cũ
+  `piano.rehover.io` vẫn trả 308 về địa chỉ mới nên link đã phát ra không chết.
+  Đã thêm redirect URI của tên miền mới ở Google Cloud Console và kiểm bằng cách
+  gọi thẳng `/api/auth/signin/google`: app sinh đúng `redirect_uri` mới, Google
+  nhận và trả về trang nhập email chứ không phải `redirect_uri_mismatch`.
+  Phép thử này không cần tài khoản thật nên lần sau đổi tên miền cứ dùng lại.
 - Dọn 7 phiên chat cũ và rút toàn bộ lịch sử ra thành `nhat-ky-quyet-dinh.md`, chốt quy
   ước chia phiên ở mục 9 của `quy-trinh-lam-viec.md`.
 

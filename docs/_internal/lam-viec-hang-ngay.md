@@ -21,7 +21,7 @@ repo ra.
 2. Chốt **tiêu đề commit**, rồi mới ghi dòng lịch sử vào những tài liệu vừa sửa.
 3. Claude in commit message → **bạn đọc diff trong Fork** → commit → push `main`.
 4. Vercel deploy production. GitHub Actions chạy lại cả bốn lệnh, đỏ thì báo về.
-5. Xem kết quả ở <https://piano.rehover.io>.
+5. Xem kết quả ở <https://pianojourney.rehover.io>.
 
 Nói **"commit luôn"** thì Claude tự chạy `git add/commit/push`. Tiện khi bạn đang ở
 điện thoại, đổi lại mất bước bạn đọc diff — mà trên repo đẩy thẳng `main` thì đó là
@@ -121,6 +121,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi địa chỉ xem kết quả ở bước 5 sang tên miền mới — bước này được đọc mỗi ngày nên để tên miền cũ ở đây là chỗ dễ tin nhầm nhất |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 6 — câu mở và câu đóng một phiên chat, vì kiến thức chỉ thoát ra khỏi phiên nếu có người hỏi trước khi đóng; câu mở đọc thêm khối mới nhất của `nhat-ky-lam-viec.md` vì mục "Còn treo" chỉ ghi việc chưa làm nên không trả lời được "hôm qua dừng ở đâu"; nói rõ đặt tên phiên theo việc chứ không theo loại việc; mục "Còn treo" dời xuống thành mục 7 |
 | 02/09/2026 | `feat: Dẫn thẳng tới form đăng ký beta thay vì bắt nhắn tin` | Thêm vào mục 6 việc phải gỡ khối mời đăng ký và nút form khi đóng đợt beta — hai chỗ đó chỉ đúng trong lúc còn nhận người thử, để sót lại thì người mua sau này bấm vào một form đã đóng |
 | 01/09/2026 | `docs(internal): Ghi vòng đổi cấu trúc bảng khi làm việc cùng AI` | Thêm mục 4 — ba lệnh migration vốn đã là việc của Claude theo mục 2 của quy trình, nhưng chưa chỗ nào nói người dùng còn giữ lại việc gì; chốt rằng phần không được bỏ là người đọc file .sql, và ghi cửa chặn Claude tự dừng khi SQL có DROP/RENAME. Thêm lối đọc tài liệu nội bộ trên web ở /admin/docs |

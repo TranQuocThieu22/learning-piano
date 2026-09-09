@@ -209,22 +209,30 @@ Xoá được, nhưng tích hợp sẽ tự thêm lại. Cứ để yên, chỉ 
 Vercel **không** đọc `.env.local` — mọi biến phải khai lại trong bảng điều khiển
 (Settings → Environment Variables).
 
-**Tên miền production: `piano.rehover.io`** — mua ở Cloudflare Registrar, DNS giữ
-tại Cloudflare, bản ghi `CNAME piano` trỏ về giá trị Vercel cấp và **để DNS only**
+**Tên miền production: `pianojourney.rehover.io`** — mua ở Cloudflare Registrar, DNS giữ
+tại Cloudflare, bản ghi `CNAME pianojourney` trỏ về giá trị Vercel cấp và **để DNS only**
 (bật proxy mây cam thì Vercel không cấp được SSL, triệu chứng là vòng lặp chuyển
 hướng). `learning-piano.vercel.app` vẫn chạy song song, không mất.
+
+**Tên miền cũ `piano.rehover.io` vẫn sống và trả 308 về tên miền mới** (kiểm ngày
+09/09/2026). Cứ để nguyên — link đã phát ra ngoài trong đợt beta đều trỏ vào đó, gỡ
+bản ghi đi là chúng chết. Nhưng **chuyển hướng không cứu được đăng nhập Google**:
+OAuth so khớp đúng chuỗi redirect URI đã khai, nên tên miền mới phải có mục riêng ở
+Google Cloud Console, xem ô ngay bên dưới.
 
 - [ ] `DATABASE_URL` — chuỗi có pooler
 - [ ] `DATABASE_URL_UNPOOLED` — chuỗi trực tiếp
 - [ ] `AUTH_SECRET` — **khác** khoá đang dùng ở máy mình
 - [ ] `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET`
-- [ ] Thêm `https://piano.rehover.io/api/auth/callback/google` vào Authorized
-      redirect URIs ở Google Cloud Console, giữ nguyên mục cũ của `vercel.app`
-      trong lúc chuyển tiếp
+- [ ] Thêm `https://pianojourney.rehover.io/api/auth/callback/google` vào Authorized
+      redirect URIs ở Google Cloud Console, giữ nguyên mục cũ của `piano.rehover.io`
+      và `vercel.app` — người beta đang giữ link cũ, mà chuyển hướng 308 không mang
+      redirect URI theo. Thiếu mục mới thì triệu chứng là `redirect_uri_mismatch`
+      ngay lúc bấm đăng nhập, không phải lỗi ở app
 - [ ] `ADMIN_EMAILS`
 - [ ] **Chỉ khi đã đăng ký SePay:** `SEPAY_WEBHOOK_API_KEY` — **khác** khoá thử ở
       máy mình, dán y hệt vào SePay, và trỏ webhook tới
-      `https://piano.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
+      `https://pianojourney.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
       này, endpoint tự từ chối mọi request khi thiếu khoá
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
 - [ ] `SELLING_ENABLED` — **trong beta để trống**. Chỉ đặt `true` vào ngày mở bán,
@@ -240,8 +248,27 @@ Sau khi deploy, thử một lần bằng
 tạo đơn giả, giả lập webhook, kiểm tra rồi dọn sạch. Chỉ chạy được khi đã có
 `SEPAY_WEBHOOK_API_KEY` thật, và `.env.local` lúc đó phải trỏ vào database
 production. Chưa có SePay thì phép thử nhẹ hơn là gọi thẳng endpoint và **mong đợi
-401**: `curl -i -X POST https://piano.rehover.io/api/webhooks/sepay -d '{}'` —
+401**: `curl -i -X POST https://pianojourney.rehover.io/api/webhooks/sepay -d '{}'` —
 401 chứng minh tên miền, SSL và route đều sống, còn 404 là sai đường dẫn.
+
+**Kiểm đăng nhập Google mà không cần tài khoản thật.** Sau khi đổi tên miền hoặc
+sửa redirect URI, chạy hai bước sau — bước một cho biết *app* sinh ra địa chỉ nào,
+bước hai cho biết *Google* có nhận địa chỉ đó không. Hai câu hỏi khác nhau: khai
+đúng ở Google Console mà biến môi trường trên Vercel còn trỏ tên miền cũ thì vẫn hỏng.
+
+```bash
+CSRF=$(curl -s -c jar.txt https://<tên-miền>/api/auth/csrf | sed 's/.*"csrfToken":"\([^"]*\)".*/\1/')
+curl -s -o /dev/null -b jar.txt -w '%{redirect_url}\n' \
+  -d "csrfToken=$CSRF" https://<tên-miền>/api/auth/signin/google
+```
+
+Dòng in ra là URL của Google, đọc tham số `redirect_uri` trong đó xem có đúng tên
+miền mới không. Rồi mở chính URL đó bằng `curl -sL`: dừng ở
+`accounts.google.com/v3/signin/identifier` là Google đã nhận; còn thấy
+`redirect_uri_mismatch` thì mục khai ở Console chưa khớp từng ký tự.
+
+Phần duy nhất phép thử này **không** phủ được là bước đổi mã lấy phiên sau khi
+người dùng bấm đồng ý — chỗ đó cần tài khoản thật.
 
 ---
 
@@ -254,6 +281,7 @@ production. Chưa có SePay thì phép thử nhẹ hơn là gọi thẳng endpoi
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Thêm `SELLING_ENABLED` vào tầng đóng cửa an toàn và giải thích vì sao chiều cờ ngược với trực giác — quên bật thì phát hiện ngay, quên tắt thì người beta tạo được đơn thật trên gói Hobby mà không có triệu chứng nào |
+| 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi tên miền ở mục 7 sang `pianojourney.rehover.io` (bản ghi CNAME, redirect URI Google, webhook SePay, phép thử 401). Ghi rõ tên miền cũ vẫn trả 308 nên đừng gỡ — link đã phát ra trong beta trỏ vào đó — nhưng chuyển hướng không mang theo redirect URI, nên tên miền mới phải có mục riêng ở Google Console, thiếu thì báo `redirect_uri_mismatch` chứ không báo lỗi app. Thêm phép thử đăng nhập Google không cần tài khoản thật: một bước hỏi app sinh ra `redirect_uri` nào, một bước hỏi Google có nhận không — tách được hai nguyên nhân vốn cho cùng một triệu chứng |
 | 01/09/2026 | `feat: Chuyển sang tên miền piano.rehover.io và làm rõ vai trò của SePay` | Ghi rõ mã QR dùng dịch vụ ảnh công khai nên không cần tài khoản SePay — tiền tố `SEPAY_` ở ba biến ngân hàng từng khiến hiểu nhầm là phải đăng ký mới hiện được QR; chốt tên miền production kèm bẫy proxy Cloudflare, và hạ hai mục webhook xuống thành tuỳ chọn vì đối soát tự động chưa bật |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Đổi mọi tham chiếu `pnpm db:push` sang `db:generate`/`db:migrate`, và bỏ mục đẩy schema bằng tay khỏi danh sách việc trước khi mở bán vì Vercel đã tự chạy migrate |
 | 27/08/2026 | `refactor: Gom việc đọc biến môi trường về một chỗ và canh bằng test` | Ghi lại rằng src/lib/env.ts là nơi duy nhất đọc process.env, kèm ba tầng bắt buộc / đóng cửa an toàn / tuỳ chọn và lý do không gộp chúng |
