@@ -268,6 +268,7 @@ với điều kiện mọi thứ đáng nhớ đã rơi xuống file **trước 
 
 | Thứ cần giữ | Rơi xuống đâu |
 |---|---|
+| Hôm nay đã xảy ra gì, nhất là việc ngoài repo | `nhat-ky-lam-viec.md` |
 | Quyết định và lý do | `nhat-ky-quyet-dinh.md` |
 | Lỗi lạ vừa dò ra | `bay-ky-thuat.md` |
 | Việc tiếp theo | `lam-viec-hang-ngay.md` |
@@ -316,7 +317,7 @@ archive mạnh tay khi việc đã xong.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
-| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên làm việc với AI` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì |
+| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì; bảng "thứ cần giữ" nhận thêm `nhat-ky-lam-viec.md` cho việc xảy ra ngoài repo |
 | 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |
 | 01/09/2026 | `ci: Thêm GitHub Actions gác đủ bốn lệnh kiểm trên mọi lần đẩy` | Mục 3: bốn lệnh của cổng kiểm tra giờ chạy tự động trên GitHub Actions nên bỏ câu "hoàn toàn là kỷ luật của bạn", nhưng ghi rõ CI báo sau khi commit nên không thay được lần gõ tay trước đó; mục 8: chốt tên nhánh `preview` để URL ổn định mà khai redirect URI cho Google đúng một lần, kèm cảnh báo `DATABASE_URL` của môi trường Preview vì build preview có chạy migrate |
 | 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Mục 7: baseline production dùng cờ --prod thay vì dán chuỗi kết nối vào dòng lệnh, vì dán vào là mật khẩu production nằm luôn trong lịch sử lệnh của PowerShell |

@@ -85,10 +85,14 @@ khẩu" (bẫy 14).
 *vận hành* (Vercel, Cloudflare, Form) / *chiến lược*. Đặt tên **theo việc** ngay lúc bắt
 đầu (`Soạn Chương 8`), không đặt theo loại việc (`Chỉnh code`) rồi dùng phiên đó mãi.
 
-Buổi sáng mở bằng: *"đọc `lam-viec-hang-ngay.md` rồi nói tôi làm gì tiếp"*.
+Buổi sáng mở bằng: *"đọc `lam-viec-hang-ngay.md` và khối mới nhất trong
+`nhat-ky-lam-viec.md` rồi nói tôi làm gì tiếp"*. File thứ hai là thứ trả lời được
+*"hôm qua tôi dừng ở đâu"*.
 
-**Đóng:** hỏi *"trước khi đóng, có gì cần ghi vào tài liệu không"*, rồi archive phiên.
-Archive không xoá gì, mở lại được bất cứ lúc nào.
+**Đóng:** kể lại hôm nay đã làm gì và thấy gì — kể cả việc ngoài repo như đăng bài, gửi
+link, có người nhắn — rồi nói *"ghi vào nhật ký"*. Tôi thêm một khối vào đầu
+[`nhat-ky-lam-viec.md`](nhat-ky-lam-viec.md) và ghi những thứ khác vào đúng file của
+chúng. Xong thì archive phiên; archive không xoá gì, mở lại được bất cứ lúc nào.
 
 Lý do đầy đủ ở mục 9 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-viec.md).
 
@@ -117,7 +121,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
-| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên làm việc với AI` | Thêm mục 6 — câu mở và câu đóng một phiên chat, vì kiến thức chỉ thoát ra khỏi phiên nếu có người hỏi trước khi đóng; nói rõ đặt tên theo việc chứ không theo loại việc; mục "Còn treo" dời xuống thành mục 7 |
+| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 6 — câu mở và câu đóng một phiên chat, vì kiến thức chỉ thoát ra khỏi phiên nếu có người hỏi trước khi đóng; câu mở đọc thêm khối mới nhất của `nhat-ky-lam-viec.md` vì mục "Còn treo" chỉ ghi việc chưa làm nên không trả lời được "hôm qua dừng ở đâu"; nói rõ đặt tên phiên theo việc chứ không theo loại việc; mục "Còn treo" dời xuống thành mục 7 |
 | 02/09/2026 | `feat: Dẫn thẳng tới form đăng ký beta thay vì bắt nhắn tin` | Thêm vào mục 6 việc phải gỡ khối mời đăng ký và nút form khi đóng đợt beta — hai chỗ đó chỉ đúng trong lúc còn nhận người thử, để sót lại thì người mua sau này bấm vào một form đã đóng |
 | 01/09/2026 | `docs(internal): Ghi vòng đổi cấu trúc bảng khi làm việc cùng AI` | Thêm mục 4 — ba lệnh migration vốn đã là việc của Claude theo mục 2 của quy trình, nhưng chưa chỗ nào nói người dùng còn giữ lại việc gì; chốt rằng phần không được bỏ là người đọc file .sql, và ghi cửa chặn Claude tự dừng khi SQL có DROP/RENAME. Thêm lối đọc tài liệu nội bộ trên web ở /admin/docs |
 | 01/09/2026 | `docs(internal): Thêm bản một trang cho quy trình làm việc hàng ngày` | Tạo file — tách phần "làm gì tiếp" ra khỏi `quy-trinh-lam-viec.md` để lúc đang làm không phải đọc lại toàn bộ lý do; gom ba nhịp thường dùng (commit thẳng, xem trước bằng nhánh, xem thứ chưa commit bằng tunnel) và danh sách việc còn treo sau khi đổi tên miền |
