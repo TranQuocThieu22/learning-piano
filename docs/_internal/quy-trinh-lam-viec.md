@@ -231,7 +231,63 @@ phát hành thành công khai với bất kỳ ai có link.
 > Bẫy 14 cũng ghi nghi vấn rằng chính tính năng đó đã **xoá nhầm nhánh `dev`**. Dùng
 > preview nhiều thì nhớ dấu hiệu nhận biết ở đó: lỗi hiện ra là "sai mật khẩu".
 
-## 9. Không làm
+## 9. Chia phiên làm việc với AI
+
+**Một phiên = một việc đi được tới đích.** Đích là một commit, hoặc một quyết định đã
+ghi xuống tài liệu. Xong thì đóng phiên và archive nó.
+
+Cách chia sai — và là cách đã thực sự xảy ra trong tháng 8 — là chia theo *thời gian*:
+mở một phiên buổi sáng rồi hỏi mọi thứ trong đó tới tối. Ba triệu chứng của kiểu chia
+đó, đều lấy từ lịch sử phiên thật:
+
+- Cùng một câu (*"cải thiện Chương 1 cho người học đi hết"*) được hỏi ở **ba phiên khác
+  nhau trong một ngày**, vì không nhớ đã hỏi ở đâu.
+- Việc mua tên miền và dựng email trải qua **năm phiên**.
+- Một commit code nằm trong phiên tên *"Tư vấn kinh doanh và mô hình"*.
+
+Có thêm lý do kỹ thuật: phiên càng dài thì ngữ cảnh càng bị nén lại, câu trả lời tụt dần
+về cuối. Vài file phiên trong tháng 8 nặng 8–12 MB.
+
+### Bốn loại việc, bốn loại ngữ cảnh
+
+| Loại | Ví dụ | Ngữ cảnh cần |
+|---|---|---|
+| **Nội dung** | soạn chương, sửa bài, Trạm dừng chân | `02-chapters`, `03-exercises`, skill `daily-practice-structure` |
+| **Code** | tính năng, sửa lỗi, migration | `src/`, file này |
+| **Vận hành** | Vercel, Neon, Cloudflare, Google Form, Facebook | `bien-moi-truong.md`, `ke-hoach-beta.md` — gần như không đụng code |
+| **Chiến lược** | giá, gói bán, beta, mô hình kinh doanh | `OVERVIEW.md`, `dinh-huong-kinh-doanh.md` |
+
+Trộn hai loại vào một phiên là thứ tạo ra mớ lộn xộn, vì mỗi loại kéo theo một bộ file
+khác hẳn và chúng lấn chỗ của nhau.
+
+### Cái giữ các phiên gắn kết không phải phiên chat
+
+**Repo là bộ nhớ chung; phiên chat là thứ dùng một lần rồi bỏ.** `AGENTS.md` tự nạp vào
+mọi phiên và trỏ sang `_internal/`, nên phiên mới không cần biết phiên cũ đã nói gì —
+với điều kiện mọi thứ đáng nhớ đã rơi xuống file **trước khi** đóng phiên:
+
+| Thứ cần giữ | Rơi xuống đâu |
+|---|---|
+| Quyết định và lý do | `nhat-ky-quyet-dinh.md` |
+| Lỗi lạ vừa dò ra | `bay-ky-thuat.md` |
+| Việc tiếp theo | `lam-viec-hang-ngay.md` |
+| Thay đổi code | commit |
+
+### Ba thói quen
+
+1. **Mở phiên mới cho việc mới**, đừng resume phiên cũ chỉ vì nó đang mở sẵn.
+2. **Đặt tên phiên ngay lúc bắt đầu.** Tên tốt là tên tìm lại được sau ba tuần — *"Mô tả
+   hợp lí"* hay *"Chỉnh sửa kỹ thuật"* thì không.
+3. **Đóng phiên bằng một câu**: *"trước khi đóng, có gì cần ghi vào tài liệu không"*.
+   Đó là chỗ duy nhất kiến thức thoát ra khỏi phiên chat.
+
+Mở phiên buổi sáng bằng *"đọc `lam-viec-hang-ngay.md` rồi nói tôi làm gì tiếp"*.
+
+**Archive không xoá gì.** Phiên archive mở lại được từ danh sách Archived, nội dung vẫn
+tìm được, và file `.jsonl` gốc trong `~/.claude/projects/` nằm nguyên tại chỗ. Nên cứ
+archive mạnh tay khi việc đã xong.
+
+## 10. Không làm
 
 - `git push --force` lên `main`.
 - Commit `.env.local`.
@@ -250,6 +306,7 @@ phát hành thành công khai với bất kỳ ai có link.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 09/09/2026 | `docs(internal): Chốt quy ước chia phiên làm việc với AI` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên |
 | 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |
 | 01/09/2026 | `ci: Thêm GitHub Actions gác đủ bốn lệnh kiểm trên mọi lần đẩy` | Mục 3: bốn lệnh của cổng kiểm tra giờ chạy tự động trên GitHub Actions nên bỏ câu "hoàn toàn là kỷ luật của bạn", nhưng ghi rõ CI báo sau khi commit nên không thay được lần gõ tay trước đó; mục 8: chốt tên nhánh `preview` để URL ổn định mà khai redirect URI cho Google đúng một lần, kèm cảnh báo `DATABASE_URL` của môi trường Preview vì build preview có chạy migrate |
 | 28/08/2026 | `feat: Baseline trỏ được vào production bằng cờ --prod` | Mục 7: baseline production dùng cờ --prod thay vì dán chuỗi kết nối vào dòng lệnh, vì dán vào là mật khẩu production nằm luôn trong lịch sử lệnh của PowerShell |
