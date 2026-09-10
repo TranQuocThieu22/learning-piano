@@ -121,6 +121,7 @@ CMS, không có bảng bài học trong database.
 | Đường dẫn | Chức năng |
 |---|---|
 | `/` | Màn hình chủ — nút *Học tiếp*, tiến độ, và các ô đường tắt |
+| `/library` | Mục lục phần chữ: lý thuyết, lộ trình, đọc thêm |
 | `/exercises` | Bản đồ chặng: 25 bài tập xếp theo chương, ô tròn bấm được |
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm), cuối bài có nút *Bài trước* / *Bài tiếp theo* |
 | `/journal` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
@@ -128,11 +129,12 @@ CMS, không có bảng bài học trong database.
 | `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
 | `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
 
-**Điều hướng trên điện thoại.** Ba lớp, cố ý không thay thế nhau: **thanh tab dưới đáy**
-(bốn việc làm hằng ngày, trong tầm ngón cái) → **màn hình chủ và bản đồ chặng** (chọn
-bài, nhìn mình đang ở đâu) → **thanh bên** (mục lục đầy đủ hơn bốn mươi mục, vẫn là nơi
-duy nhất liệt kê hết). Lưới biểu tượng kiểu game không thay được thanh bên: giáo trình
-có hơn bốn mươi trang và đi theo một đường thẳng.
+**Điều hướng.** Không còn `AppShell` và thanh bên — đã bỏ hẳn ngày 10/09/2026. Khung app
+giờ là **thanh mỏng trên đỉnh** (quay lại, đăng nhập, đổi nền) + **thanh tab dưới đáy**
+(Trang chủ · Mục lục · Bài tập · Nhịp · Nhật ký), giống một app điện thoại. Mục lục đầy
+đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/library` cho phần chữ và
+`/exercises` cho phần bài tập — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà không có
+hai trang đó thì mới là làm mất đường đi.
 
 **Tính năng đáng chú ý:**
 
@@ -267,6 +269,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Bỏ thanh bên và nút hamburger: trên điện thoại nó nằm ở góc xa ngón cái nhất mà lại là đường duy nhất đi bất cứ đâu, và kéo theo cả chùm việc phải bù cho `offset: false`; mục lục dời sang `/library` và `/exercises` |
 | 10/09/2026 | `feat: Thêm màn hình chủ, thanh tab và bản đồ chặng cho điện thoại` | `/` không còn chuyển hướng mà thành màn hình chủ; thêm `/exercises` và nút chuyển bài cuối trang, vì mở app ra là rơi thẳng vào tài liệu dài và mọi đường đi khác đều phải qua nút hamburger ở góc xa ngón cái nhất |
 | 27/08/2026 | `refactor: Đổi đường dẫn tự viết sang tiếng Anh và chốt quy ước` | Đường dẫn trong tài liệu đổi theo quy ước mới: /nhat-ky thành /journal, /admin/thanh-toan thành /admin/payments |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Chuyển từ "Cập nhật lần cuối" sang bảng lịch sử cập nhật |

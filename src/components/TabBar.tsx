@@ -1,20 +1,21 @@
 'use client';
 
 import { Text, UnstyledButton } from '@mantine/core';
-import { IconChecklist, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
+import { IconBook2, IconChecklist, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 /**
- * Thanh tab dưới đáy, chỉ trên điện thoại.
+ * Thanh tab dưới đáy — đường điều hướng chính của app.
  *
- * Vì sao ở dưới đáy chứ không ở trên: đó là vùng ngón cái với tới được khi cầm
- * máy một tay. Nút hamburger nằm ở góc trên bên trái — góc xa ngón cái nhất trên
- * một màn hình 6 inch, mà lại là đường duy nhất để đi bất cứ đâu.
+ * Vì sao ở dưới đáy: đó là vùng ngón cái với tới được khi cầm máy một tay. Thanh
+ * bên cũ nằm sau nút hamburger ở góc trên bên trái, góc xa ngón cái nhất trên
+ * một màn hình 6 inch, mà lại là đường duy nhất để đi bất cứ đâu — nay đã bỏ hẳn
+ * (xem `AppLayout.tsx`).
  *
- * Bốn mục là bốn việc làm hằng ngày, không phải bốn mục lục: mở app, chọn bài
- * tập, bật máy đánh nhịp, tick bài đã xong. Mục lục đầy đủ vẫn ở thanh bên —
- * thanh này KHÔNG thay thế nó, chỉ rút ngắn đường đi cho những việc lặp lại.
+ * Năm mục là năm việc làm hằng ngày. Hai trong số đó — Mục lục và Bài tập — liệt
+ * kê đầy đủ toàn bộ nội dung, nên bỏ thanh bên không làm mất đường đi tới trang
+ * nào.
  *
  * z-index 200 đứng dưới thanh mời cài đặt (300) và lớp phủ tập trung (350), nên
  * lúc đang tập với đàn thì nó khuất hẳn, đúng ý chế độ tập trung.
@@ -22,16 +23,17 @@ import { usePathname } from 'next/navigation';
 
 const TABS = [
   { href: '/', label: 'Trang chủ', Icon: IconHome },
+  { href: '/library', label: 'Mục lục', Icon: IconBook2 },
   { href: '/exercises', label: 'Bài tập', Icon: IconMap2 },
   { href: '/metronome', label: 'Nhịp', Icon: IconMetronome },
   { href: '/journal', label: 'Nhật ký', Icon: IconChecklist },
 ];
 
-export function MobileTabBar() {
+export function TabBar() {
   const pathname = usePathname();
 
   return (
-    <nav className="mobile-tab-bar" aria-label="Điều hướng nhanh">
+    <nav className="tab-bar" aria-label="Điều hướng nhanh">
       {TABS.map(({ href, label, Icon }) => {
         // So khớp chính xác: `/` là tiền tố của mọi đường dẫn nên so kiểu
         // startsWith sẽ làm tab Trang chủ luôn sáng.

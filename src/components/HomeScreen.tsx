@@ -14,9 +14,6 @@ import {
 } from '@mantine/core';
 import {
   IconBook2,
-  IconChecklist,
-  IconMap2,
-  IconMetronome,
   IconRoute,
   IconMusicSearch,
   IconPlayerPlayFilled,
@@ -55,8 +52,7 @@ export interface HomeScreenProps {
   continueLesson: { title: string; href: string } | null;
   /** Bài đầu tiên của giáo trình, để người chưa học lần nào có chỗ bắt đầu. */
   firstLesson: { title: string; href: string } | null;
-  /** Chương lý thuyết đầu tiên, trang lộ trình và bài đọc thêm đầu tiên — tính ở server. */
-  theoryHref: string | null;
+  /** Trang lộ trình và bài đọc thêm đầu tiên, tính ở server. */
   roadmapHref: string | null;
   extraHref: string | null;
 }
@@ -67,7 +63,6 @@ export function HomeScreen({
   totalCount,
   continueLesson,
   firstLesson,
-  theoryHref,
   roadmapHref,
   extraHref,
 }: HomeScreenProps) {
@@ -75,40 +70,21 @@ export function HomeScreen({
   const chuaHocBai = completedCount === 0;
   const dichTiepTheo = continueLesson ?? firstLesson;
 
+  /*
+   * Chỉ những đích KHÔNG có trên thanh tab. Trang chủ, Mục lục, Bài tập, Nhịp và
+   * Nhật ký đã nằm sẵn dưới đáy màn hình — bày lại thành ô ở đây chỉ làm dài
+   * trang mà không rút ngắn được đường đi nào.
+   */
   const tiles: Tile[] = [
-    {
-      href: '/exercises',
-      label: 'Bài tập',
-      hint: `${completedCount}/${totalCount} bài`,
-      Icon: IconMap2,
-      color: 'blue',
-    },
-    ...(theoryHref
-      ? [{ href: theoryHref, label: 'Lý thuyết', hint: 'Đọc hiểu vì sao', Icon: IconBook2, color: 'grape' } as Tile]
-      : []),
     ...(roadmapHref
       ? [{ href: roadmapHref, label: 'Lộ trình', hint: 'Đường đi từ số 0', Icon: IconRoute, color: 'indigo' } as Tile]
       : []),
-    {
-      href: '/metronome',
-      label: 'Máy đánh nhịp',
-      hint: 'Tự bật, tự chỉnh',
-      Icon: IconMetronome,
-      color: 'teal',
-    },
     {
       href: '/note-trainer',
       label: 'Luyện nhận nốt',
       hint: 'Vài phút mỗi ngày',
       Icon: IconMusicSearch,
       color: 'orange',
-    },
-    {
-      href: '/journal',
-      label: 'Nhật ký',
-      hint: 'Tick bài đã xong',
-      Icon: IconChecklist,
-      color: 'green',
     },
     ...(extraHref
       ? [{ href: extraHref, label: 'Đọc thêm', hint: 'Chuyện bên lề', Icon: IconBook2, color: 'gray' } as Tile]

@@ -3,8 +3,6 @@ import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { NavAnchor } from '@/components/NavAnchor';
 import { auth } from '@/auth';
-import { getAllMarkdownFiles } from '@/lib/markdown';
-import { getCompletedLessonSlugs } from '@/lib/progress';
 import { viewerHasFullAccess } from '@/lib/access-server';
 import { REQUIRED_PACKAGE_ID } from '@/lib/access';
 import { findPackage } from '@/lib/packages';
@@ -33,11 +31,7 @@ export default async function MuaPage({
 
   const { error } = await searchParams;
   const session = await auth();
-  const allFiles = getAllMarkdownFiles();
 
-  const completedSlugs = session?.user
-    ? await getCompletedLessonSlugs(session.user.id)
-    : new Set<string>();
   const hasFullAccess = await viewerHasFullAccess(session);
 
   const pkg = findPackage(REQUIRED_PACKAGE_ID);
@@ -53,7 +47,7 @@ export default async function MuaPage({
   const laQuanTri = hasFullAccess && !alreadyOwns;
 
   return (
-    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
+    <AppLayout user={session?.user ?? null}>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Mở khoá toàn bộ giáo trình

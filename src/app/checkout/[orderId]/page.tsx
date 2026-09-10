@@ -3,9 +3,6 @@ import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { NavAnchor } from '@/components/NavAnchor';
 import { auth } from '@/auth';
-import { getAllMarkdownFiles } from '@/lib/markdown';
-import { getCompletedLessonSlugs } from '@/lib/progress';
-import { viewerHasFullAccess } from '@/lib/access-server';
 import { findPackage } from '@/lib/packages';
 import { getOrder } from '@/lib/payment/orders';
 import { buildVietQrUrl, formatVnd, getBankAccount } from '@/lib/payment/vietqr';
@@ -36,16 +33,12 @@ export default async function DonHangPage({
   const order = await getOrder(orderId, session.user.id);
   if (!order) notFound();
 
-  const allFiles = getAllMarkdownFiles();
-  const completedSlugs = await getCompletedLessonSlugs(session.user.id);
-  const hasFullAccess = await viewerHasFullAccess(session);
-
   const pkg = findPackage(order.packageId);
   const account = getBankAccount(env);
   const paid = order.status === 'paid';
 
   return (
-    <AppLayout files={allFiles} user={session.user} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
+    <AppLayout user={session.user}>
       <Container size="sm" px={0}>
         <Group justify="space-between" align="center" mb="xs" wrap="wrap">
           <Title order={2}>Đơn hàng</Title>

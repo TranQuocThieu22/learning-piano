@@ -3,9 +3,8 @@ import { AppLayout } from '@/components/AppLayout';
 import { HomeScreen } from '@/components/HomeScreen';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
-import { getAllLessons, CHAPTERS_CATEGORY } from '@/lib/lessons';
+import { getAllLessons } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
-import { viewerHasFullAccess } from '@/lib/access-server';
 
 const EXTRA_CATEGORY = '07-doc-them';
 
@@ -26,20 +25,12 @@ export default async function Home() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
 
-  // Thanh bên cần biết bài nào gắn ổ khoá; tính một lần rồi truyền xuống.
-  const hasFullAccess = await viewerHasFullAccess(session);
-
   const completedCount = allLessons.filter((l) => completedSlugs.has(l.slug)).length;
   const continueLesson = allLessons.find((l) => !completedSlugs.has(l.slug)) ?? null;
   const firstLesson = allLessons[0] ?? null;
 
   return (
-    <AppLayout
-      files={allFiles}
-      user={session?.user ?? null}
-      completedSlugs={completedSlugs}
-      hasFullAccess={hasFullAccess}
-    >
+    <AppLayout user={session?.user ?? null}>
       {/* Không lặp lại tiêu đề "Piano Journey" ở đây: thanh tiêu đề ngay phía
           trên đã ghi rồi, viết lần nữa chỉ đẩy nút "Học tiếp" xuống thấp. */}
       <Container size="sm" px={0}>
@@ -51,7 +42,6 @@ export default async function Home() {
             continueLesson ? { title: continueLesson.title, href: continueLesson.href } : null
           }
           firstLesson={firstLesson ? { title: firstLesson.title, href: firstLesson.href } : null}
-          theoryHref={firstOf(allFiles, CHAPTERS_CATEGORY)}
           roadmapHref={
             // Trỏ đích danh `roadmap` chứ không lấy file đầu thư mục: xếp theo
             // slug thì `phuong-phap-luyen-tap` đứng trước, mà đó là bài phụ.

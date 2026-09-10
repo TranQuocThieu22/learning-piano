@@ -3,16 +3,14 @@ import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { MarkdownViewer } from '@/components/MarkdownViewer';
 import { auth } from '@/auth';
-import { getAllMarkdownFiles, getMarkdownContent } from '@/lib/markdown';
-import { getCompletedLessonSlugs } from '@/lib/progress';
-import { viewerHasFullAccess } from '@/lib/access-server';
+import { getMarkdownContent } from '@/lib/markdown';
 
 export const metadata = { title: 'Điều khoản sử dụng' };
 
 /**
  * Nội dung nằm ở docs/legal/terms.md — CỐ Ý để ngoài `contentDirs` của
  * markdown.ts, nên `getAllMarkdownFiles()` không quét tới và trang này không lọt
- * vào thanh bên cùng các bài học. Vẫn viết bằng markdown để sửa câu chữ không
+ * vào mục lục cùng các bài học. Vẫn viết bằng markdown để sửa câu chữ không
  * phải đụng vào code.
  */
 export default async function TermsPage() {
@@ -20,19 +18,9 @@ export default async function TermsPage() {
   if (!content) notFound();
 
   const session = await auth();
-  const allFiles = getAllMarkdownFiles();
-  const completedSlugs = session?.user
-    ? await getCompletedLessonSlugs(session.user.id)
-    : new Set<string>();
-  const hasFullAccess = await viewerHasFullAccess(session);
 
   return (
-    <AppLayout
-      files={allFiles}
-      user={session?.user ?? null}
-      completedSlugs={completedSlugs}
-      hasFullAccess={hasFullAccess}
-    >
+    <AppLayout user={session?.user ?? null}>
       <Container size="sm" px={0}>
         <MarkdownViewer content={content} />
         <Text size="xs" c="dimmed" mt="xl">

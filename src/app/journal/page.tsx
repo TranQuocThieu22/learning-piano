@@ -16,14 +16,12 @@ import { canReadLesson } from '@/lib/access';
 import { NavAnchor } from '@/components/NavAnchor';
 import { LessonTickButton } from '@/components/LessonTickButton';
 import { auth } from '@/auth';
-import { getAllMarkdownFiles } from '@/lib/markdown';
 import { EXERCISES_CATEGORY, getLessonsByChapter, getAllLessons } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { signInWithGoogle } from '@/lib/auth-actions';
 
 export default async function LearningLogPage() {
   const session = await auth();
-  const allFiles = getAllMarkdownFiles();
   const chapters = getLessonsByChapter();
   const allLessons = getAllLessons();
 
@@ -31,7 +29,7 @@ export default async function LearningLogPage() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
 
-  // Để thanh bên biết bài nào cần gắn ổ khoá.
+  // Bài nào cần gắn ổ khoá thì dựa vào đây.
   const hasFullAccess = await viewerHasFullAccess(session);
 
   const completedCount = allLessons.filter((l) =>
@@ -41,7 +39,7 @@ export default async function LearningLogPage() {
   const currentLesson = allLessons.find((l) => !completedSlugs.has(l.slug));
 
   return (
-    <AppLayout files={allFiles} user={session?.user ?? null} completedSlugs={completedSlugs} hasFullAccess={hasFullAccess}>
+    <AppLayout user={session?.user ?? null}>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Nhật ký học tập

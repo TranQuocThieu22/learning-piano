@@ -315,58 +315,56 @@ body {
 }
 
 /* Chiều cao thanh tab dưới đáy. Khai ở một chỗ vì có ba nơi phải khớp nhau:
-   chính thanh tab, phần padding trả chỗ lại cho .app-main, và thanh mời cài đặt
-   phải nổi lên trên nó. Bằng 0 từ 48em trở lên — ở đó đã có thanh bên, thêm
-   thanh tab chỉ tổ chiếm chỗ. */
+   chính thanh tab, phần padding trả chỗ lại cho .app-content, và thanh mời cài
+   đặt phải nổi lên trên nó. */
 :root {
-  --tab-bar-h: 0px;
+  --tab-bar-h: 56px;
+}
+
+/* --- KHUNG APP: thanh trên đỉnh, nội dung, thanh tab dưới đáy --- */
+/*
+ * Thay cho `AppShell` của Mantine đã bỏ. Ba lớp CSS cũ (.app-header, .app-navbar,
+ * .app-main) từng phải cộng tay chiều cao thanh tiêu đề vì AppShell dựng với
+ * `offset: false` — nay không còn AppShell thì cũng không còn phần bù đó, chỉ còn
+ * hai con số thật: chiều cao thanh trên và chiều cao thanh tab.
+ *
+ * Cả hai thanh đều `position: fixed`, nên nội dung phải tự chừa chỗ bằng padding.
+ */
+:root {
+  --topbar-h: 48px;
+}
+
+.app-topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  height: calc(var(--topbar-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  padding-inline: var(--safe-left) var(--safe-right);
+  background: var(--mantine-color-body);
+  border-bottom: 1px solid var(--mantine-color-default-border);
+}
+
+.app-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: calc(var(--topbar-h) + var(--safe-top) + var(--mantine-spacing-md));
+  /* Cộng --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và cuộn
+     hết cỡ vẫn không đọc được đoạn kết. */
+  padding-bottom: calc(
+    var(--mantine-spacing-md) + var(--safe-bottom) + var(--tab-bar-h)
+  );
+  padding-inline: calc(var(--mantine-spacing-md) + var(--safe-left))
+    calc(var(--mantine-spacing-md) + var(--safe-right));
 }
 
 @media (max-width: 48em) {
-  :root {
-    --tab-bar-h: 56px;
+  .app-content {
+    padding-inline: calc(var(--mantine-spacing-xs) + var(--safe-left))
+      calc(var(--mantine-spacing-xs) + var(--safe-right));
   }
-}
-
-/* Ba lớp dưới đây đều nhân đôi tên lớp (`.app-main.app-main`) để chắc chắn
-   thắng lớp CSS Module có sẵn của Mantine — hai bên cùng độ ưu tiên 0-1-0 nên
-   nếu không nhân đôi thì kết quả phụ thuộc vào thứ tự hai file CSS được ghép
-   lúc build, một thứ dễ đổi mà không ai để ý.
-
-   Chúng tồn tại vì AppShell được dựng với header offset: false (xem
-   AppLayout.tsx): Mantine thôi không tự chừa chỗ cho thanh tiêu đề nữa, để khi
-   nó trượt đi thì nội dung KHÔNG bị nhảy lên nhảy xuống theo. Bù lại, chỗ cho
-   thanh tiêu đề phải được cộng tay vào .app-navbar và .app-main. */
-.app-header.app-header {
-  height: calc(var(--app-shell-header-height) + var(--safe-top));
-  padding-top: var(--safe-top);
-  padding-inline: var(--safe-left) var(--safe-right);
-}
-
-.app-navbar.app-navbar {
-  top: calc(var(--app-shell-header-height) + var(--safe-top));
-  height: calc(100dvh - var(--app-shell-header-height) - var(--safe-top));
-  padding-bottom: calc(var(--mantine-spacing-md) + var(--safe-bottom));
-  padding-inline-start: calc(var(--mantine-spacing-md) + var(--safe-left));
-}
-
-.app-main.app-main {
-  padding-top: calc(
-    var(--app-shell-header-height) + var(--safe-top) + var(--app-shell-padding)
-  );
-  /* Cộng thêm --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và
-     người học cuộn hết cỡ vẫn không đọc được đoạn kết. */
-  padding-bottom: calc(
-    var(--app-shell-padding) + var(--safe-bottom) + var(--tab-bar-h)
-  );
-  /* Giữ nguyên phần cộng --app-shell-navbar-offset của Mantine, nếu bỏ thì trên
-     máy tính nội dung chui xuống dưới thanh bên. */
-  padding-inline-start: calc(
-    var(--app-shell-navbar-offset, 0rem) + var(--app-shell-padding) + var(--safe-left)
-  );
-  padding-inline-end: calc(
-    var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding) + var(--safe-right)
-  );
 }
 
 /*
@@ -588,14 +586,14 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 }
 
 
-/* --- THANH TAB DƯỚI ĐÁY (chỉ điện thoại) --- */
+/* --- THANH TAB DƯỚI ĐÁY --- */
 /*
- * Xem `src/components/MobileTabBar.tsx` để biết vì sao có nó và vì sao đúng bốn
- * mục. Ở đây chỉ là phần khung: dính đáy, chừa chỗ cho thanh điều hướng của máy,
- * và ẩn hẳn từ 48em trở lên — cùng ngưỡng `breakpoint: 'sm'` của AppShell trong
- * `AppLayout.tsx`, để không có khoảng nào vừa có thanh bên vừa có thanh tab.
+ * Xem `src/components/TabBar.tsx` để biết vì sao nó ở dưới đáy và vì sao đúng
+ * năm mục. Ở đây chỉ là phần khung: dính đáy, chừa chỗ cho thanh điều hướng của
+ * máy, và bó nội dung vào cùng bề ngang với phần bài đọc để trên màn hình rộng
+ * năm mục không giãn ra thành năm ô mênh mông.
  */
-.mobile-tab-bar {
+.tab-bar {
   position: fixed;
   left: 0;
   right: 0;
@@ -603,6 +601,8 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   z-index: 200;
   display: flex;
   align-items: stretch;
+  justify-content: center;
+  gap: 0;
   height: calc(var(--tab-bar-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
   padding-inline: var(--safe-left) var(--safe-right);
@@ -610,8 +610,6 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   border-top: 1px solid var(--mantine-color-default-border);
 }
 
-@media (min-width: 48.0625em) {
-  .mobile-tab-bar {
-    display: none;
-  }
+.tab-bar > * {
+  max-width: 180px;
 }

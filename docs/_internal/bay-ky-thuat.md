@@ -160,6 +160,13 @@ biến `PG*`/`POSTGRES_*`/`NEON_*` mà ứng dụng không đọc vào `.env.loc
 
 ## 9. `AppShell` tắt `header.offset` thì thanh bên trùm lên nút hamburger
 
+> [!NOTE]
+> **Đã hết hiệu lực từ 10/09/2026** — `AppShell` và thanh bên đã bị bỏ hẳn, khung
+> app giờ là thanh mỏng trên đỉnh + thanh tab dưới đáy (`AppLayout.tsx`). Giữ mục
+> này lại vì hai lý do: nó là bằng chứng cho thấy `AppShell` kéo theo bao nhiêu
+> việc phải bù, và nếu có ngày dựng lại thanh bên cho màn hình rộng thì cái bẫy
+> này còn nguyên đó.
+
 **Triệu chứng.** Trên điện thoại, mở thanh bên ra rồi thì không đóng lại được:
 nút hamburger biến mất, bấm vào chỗ cũ không ăn gì.
 
@@ -533,6 +540,7 @@ thì việc đầu tiên là tìm xem có `style` nội tuyến nào không.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Đánh dấu bẫy 9 đã hết hiệu lực (AppShell bị bỏ) nhưng giữ nguyên nội dung, phòng khi dựng lại thanh bên cho màn hình rộng |
 | 10/09/2026 | `fix: Dừng hẳn tiếng đàn khi rời trang đang phát` | Thêm bẫy 15 — thứ tạo ngoài React (bộ phát tiếng, đồng hồ, thiết bị) vẫn sống sau khi component bị gỡ, vì điều hướng Next.js không tải lại trang; ghi rõ `pause()` không đủ mà phải `destroy()`, và kèm cách kiểm bằng máy đếm gắn vào Web Audio thay vì nghe bằng tai |
 | 01/09/2026 | `docs(internal): Ghi lại bẫy nhánh dev biến mất trên Neon` | Nhánh dev bị xoá nhưng lỗi lại hiện ra là sai mật khẩu, dẫn người ta đi dò nhầm hướng; ghi cả cách nhận ra nhanh bằng cột Branches |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Sửa bẫy 8 và 12 cho khớp: `pnpm db:push` không còn tồn tại, rủi ro giờ nằm ở script chạy tay và biến môi trường quên xoá |

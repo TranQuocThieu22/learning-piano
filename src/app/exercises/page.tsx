@@ -2,7 +2,6 @@ import { Container, Text, Title } from '@mantine/core';
 import { AppLayout } from '@/components/AppLayout';
 import { ExerciseMap, type MapChapter } from '@/components/ExerciseMap';
 import { auth } from '@/auth';
-import { getAllMarkdownFiles } from '@/lib/markdown';
 import { EXERCISES_CATEGORY, getAllLessons, getLessonsByChapter } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { canReadLesson } from '@/lib/access';
@@ -18,7 +17,6 @@ import { viewerHasFullAccess } from '@/lib/access-server';
  */
 export default async function ExercisesPage() {
   const session = await auth();
-  const allFiles = getAllMarkdownFiles();
   const completedSlugs = session?.user
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
@@ -44,12 +42,7 @@ export default async function ExercisesPage() {
   }));
 
   return (
-    <AppLayout
-      files={allFiles}
-      user={session?.user ?? null}
-      completedSlugs={completedSlugs}
-      hasFullAccess={hasFullAccess}
-    >
+    <AppLayout user={session?.user ?? null}>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Bài tập
