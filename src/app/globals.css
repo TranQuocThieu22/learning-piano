@@ -350,3 +350,69 @@ body {
     var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding) + var(--safe-right)
   );
 }
+
+/*
+ * Chế độ tập trung khi tập với đàn.
+ *
+ * Lúc đang đánh, mắt người học phải ở trên khuông nhạc — thanh tiêu đề, thanh
+ * bên, phần chữ của bài và cả thanh mời cài đặt đều là thứ cướp chỗ. Ở đây phủ
+ * kín màn hình thay vì chỉ ẩn từng thứ một, vì ẩn lẻ tẻ thì luôn sót một cái.
+ *
+ * Cố ý KHÔNG dùng Fullscreen API: trên iPhone, Safari chỉ cho video vào toàn màn
+ * hình, nên phần lớn người học sẽ không được gì. Lớp phủ bằng CSS chạy ở mọi nơi.
+ *
+ * z-index 350 nằm trên thanh mời cài đặt (300) và thanh tiêu đề của AppShell.
+ */
+.sheet-music-wrapper.is-focused {
+  position: fixed;
+  inset: 0;
+  z-index: 350;
+  margin: 0 !important;
+  border: none;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow-y: auto;
+  /* Cuộn hết bản nhạc thì dừng ở đó, không kéo trang phía dưới trôi theo. */
+  overscroll-behavior: contain;
+  padding:
+    calc(0.75rem + env(safe-area-inset-top))
+    calc(0.75rem + env(safe-area-inset-right))
+    calc(0.75rem + env(safe-area-inset-bottom))
+    calc(0.75rem + env(safe-area-inset-left));
+}
+
+/*
+ * Bản nhạc lấy đúng chiều cao nó cần, KHÔNG giãn ra chiếm chỗ thừa (`flex-grow`
+ * để 0): bài ngắn mà cho giãn thì giữa khuông nhạc và thẻ điều khiển hở ra một
+ * mảng trắng lớn. Vẫn cho co lại (`flex-shrink` 1) kèm `min-height: 0` và
+ * `overflow: auto`, để bài dài hơn màn hình thì cuộn bên trong chứ không đẩy
+ * thẻ điều khiển ra khỏi tầm mắt.
+ */
+.sheet-music-wrapper.is-focused .sheet-music-paper {
+  flex: 0 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Khoá cuộn nền, nếu không thì trang phía sau vẫn trôi khi vuốt. */
+body.sheet-focus-lock {
+  overflow: hidden;
+}
+
+/*
+ * Vô hiệu hoá backdrop-filter của khung bài đọc trong lúc tập trung.
+ *
+ * BẮT BUỘC, không phải để cho đẹp. `backdrop-filter` khác `none` tạo ra một
+ * "khối chứa" cho mọi con dùng position: fixed — y hệt `transform`. Thiếu dòng
+ * này thì lớp phủ tập trung neo vào .markdown-body chứ không vào khung nhìn:
+ * nó hiện ra lệch 1px so với khung bài và cao bằng cả bài học, thay vì phủ kín
+ * màn hình. Triệu chứng đánh lừa vì `position` vẫn tính ra `fixed` và
+ * `top/left/right/bottom` vẫn tính ra `0px` — chỉ có toạ độ thật là sai.
+ *
+ * Bỏ blur trong lúc này không mất gì: lớp phủ đang che kín khung bài đọc rồi.
+ */
+body.sheet-focus-lock .markdown-body {
+  backdrop-filter: none;
+}

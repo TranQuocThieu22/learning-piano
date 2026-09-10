@@ -2,8 +2,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent, TuneObject } from 'abcjs';
-import { Button, Group, Select } from '@mantine/core';
-import { IconDeviceGamepad2 } from '@tabler/icons-react';
+import { Button, Group, Select, Text } from '@mantine/core';
+import { IconArrowsMaximize, IconArrowsMinimize, IconDeviceGamepad2 } from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
 import { SheetAudioControls } from './SheetAudioControls';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
@@ -90,6 +90,14 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
 
   const [expected, setExpected] = useState<ScoreEvent[]>([]);
   const [practiceOpen, setPracticeOpen] = useState(false);
+  /**
+   * Chế độ tập trung: bản nhạc phủ kín màn hình, giấu hết phần còn lại của trang.
+   *
+   * Chỉ dùng lúc tập với đàn. Khi đó mắt người học phải ở trên khuông nhạc, mà
+   * thanh tiêu đề, thanh bên và phần chữ của bài đều đang tranh chỗ với nó —
+   * trên điện thoại thì gay gắt nhất, có khi chỉ còn thấy hai dòng nhạc.
+   */
+  const [focused, setFocused] = useState(false);
   /** Bật khi SynthController đã gắn xong, để effect nạp tiếng đàn biết lúc chạy. */
   const [audioReady, setAudioReady] = useState(false);
   // Đọc localStorage ngay lúc khởi tạo state được, không lo lệch hydration:
@@ -196,6 +204,7 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     tuneRef.current = visualObj[0];
     setExpected(score.events);
     setPracticeOpen(false);
+    setFocused(false);
     setAudioReady(false);
     setIsPlaying(false);
     setIsLooping(false);
@@ -326,13 +335,54 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
 
   const showPracticeButton = expected.length > 0 && !practiceOpen;
 
+  /**
+   * Khoá cuộn nền và cho phím Esc thoát, chỉ trong lúc đang tập trung.
+   *
+   * Khoá cuộn đặt trên `body` chứ không trên lớp phủ: lớp phủ cuộn được bên trong
+   * nó, còn trang phía sau thì phải đứng yên — thiếu cái này thì vuốt quá đáy bản
+   * nhạc là cả bài học phía dưới trôi theo.
+   */
+  useEffect(() => {
+    if (!focused) return;
+
+    document.body.classList.add('sheet-focus-lock');
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFocused(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.classList.remove('sheet-focus-lock');
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [focused]);
+
   return (
-    <div className="sheet-music-wrapper" style={{ margin: '2rem 0', background: 'var(--mantine-color-body)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--mantine-color-default-border)' }}>
+    <div className={`sheet-music-wrapper${focused ? ' is-focused' : ''}`} style={{ margin: '2rem 0', background: 'var(--mantine-color-body)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--mantine-color-default-border)' }}>
+      {focused && (
+        <Group justify="space-between" wrap="nowrap" gap="xs">
+          <Text size="sm" fw={600} c="dimmed">
+            Đang tập trung
+          </Text>
+          <Button
+            variant="light"
+            size="xs"
+            leftSection={<IconArrowsMinimize size={16} />}
+            onClick={() => setFocused(false)}
+            data-testid="exit-focus"
+          >
+            Thoát
+          </Button>
+        </Group>
+      )}
+
       <div ref={paperRef} className="sheet-music-paper" style={{ background: '#fff', color: '#000', padding: '1rem', borderRadius: '4px', overflowX: 'auto' }}></div>
       {/* Thanh mặc định của abcjs — ẩn đi, chỉ giữ làm chỗ cho nó ghi trạng thái. */}
       <div ref={audioRef} className="sheet-music-audio" style={{ display: 'none' }}></div>
 
-      {audioReady && (
+      {/* Lúc tập trung thì giấu phần nghe mẫu: người học đang đánh bằng tay, không
+          nghe máy phát, và mỗi thứ còn trên màn hình đều lấy mất chỗ của khuông nhạc. */}
+      {audioReady && !focused && (
         <SheetAudioControls
           isPlaying={isPlaying}
           isLooping={isLooping}
@@ -349,7 +399,7 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
       )}
 
       {/* Canh đáy để nút thẳng hàng với ô chọn — ô chọn bị nhãn đẩy xuống thấp hơn. */}
-      {(audioReady || showPracticeButton) && (
+      {(audioReady || showPracticeButton || practiceOpen) && !focused && (
         <Group mt="sm" gap="sm" align="flex-end">
           {audioReady && (
             <Select
@@ -383,6 +433,20 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
               data-testid="open-practice"
             >
               Tập bài này với đàn
+            </Button>
+          )}
+
+          {/* Chỉ hiện khi đã mở phần tập với đàn: ngoài lúc đó thì phủ kín màn hình
+              bằng mỗi bản nhạc không giúp gì, người học vẫn cần đọc phần chữ của bài. */}
+          {practiceOpen && (
+            <Button
+              variant="light"
+              size="xs"
+              leftSection={<IconArrowsMaximize size={16} />}
+              onClick={() => setFocused(true)}
+              data-testid="enter-focus"
+            >
+              Chế độ tập trung
             </Button>
           )}
         </Group>
