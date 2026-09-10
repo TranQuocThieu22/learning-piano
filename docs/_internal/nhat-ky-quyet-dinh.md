@@ -33,6 +33,7 @@ cũng ra.
 | Đường dẫn tiếng Việt hay tiếng Anh? | **Tiếng Anh**, trừ slug bài học và thư mục nội dung | Đã thành quy ước trong `AGENTS.md`. Slug giữ nguyên vì nằm trong cột `lesson_completion.lesson_slug` — đổi là mất tiến độ người học đã tick |
 | Tài liệu ghi "cập nhật lần cuối" hay ghi lịch sử? | **Bảng lịch sử cộng dồn**, cột giữa là **tiêu đề commit** chứ không phải mã commit | Ghi đè thì mất bối cảnh vì sao một quyết định bị sửa. Không ghi mã commit vì lúc soạn thay đổi chưa có mã, phải quay lại điền sau và luôn quên |
 | `pnpm db:push` hay migration có file? | **Migration có file.** `db:push` đã gỡ khỏi dự án | Beta là có dữ liệu người thật. `db:push` so sánh schema rồi tự sửa — một lần chạy nhầm vào production là mất dữ liệu không có đường lùi. Vercel chạy `drizzle-kit migrate` lúc build nên production tự cập nhật |
+| App cài ngoài màn hình chính nên chạy `standalone` hay `fullscreen`? | **`fullscreen`.** Ẩn luôn thanh trạng thái | Chiều cao là thứ khan hiếm nhất lúc tập: điện thoại xoay ngang chỉ còn khoảng 360px, một dòng khuông nhạc đã ăn gần hết, thanh trạng thái lấy thêm 24-30px nữa. Đổi lại là không còn thấy đồng hồ ở bất cứ trang nào — đã cân nhắc và chấp nhận. Kéo theo: `InstallPrompt` phải hỏi cả ba kiểu hiển thị, vì `display-mode` chỉ khớp đúng kiểu đang chạy nên app đã cài sẽ tự mời cài lại chính nó |
 | Có nên làm nhánh `dev`/`preview`? | **Có đường sẵn nhưng tạm chưa dùng.** Beta vẫn test local rồi đẩy thẳng `main` | Một người làm; mỗi thay đổi nhỏ mà phải qua preview thì chậm hơn phần lợi thu được. Quy trình nhánh đã viết sẵn ở `quy-trinh-lam-viec.md` để bật lên khi có khách thật |
 
 ---
@@ -185,4 +186,5 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `feat: Ẩn thanh trạng thái khi mở app từ màn hình chính` | Chốt `display: fullscreen` cho manifest và ghi rõ cái giá phải trả (mất đồng hồ ở mọi trang) cùng hệ quả kéo theo ở thanh mời cài đặt |
 | 09/09/2026 | `docs(internal): Dựng nhật ký quyết định từ lịch sử phiên làm việc` | Tạo file — dựng lại các câu đã hỏi và đã chốt trong 25/08–08/09 kèm lý do, vì lý do vốn chỉ nằm trong lịch sử chat và sẽ mất khi phiên cũ bị dọn |

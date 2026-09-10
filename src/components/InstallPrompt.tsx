@@ -36,9 +36,18 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-/** Đang chạy từ biểu tượng ngoài màn hình chính rồi thì không mời nữa. */
+/**
+ * Đang chạy từ biểu tượng ngoài màn hình chính rồi thì không mời nữa.
+ *
+ * Phải hỏi cả BA kiểu hiển thị, không riêng `standalone`: `display-mode` chỉ khớp
+ * đúng kiểu đang chạy, mà manifest khai `fullscreen` (xem `src/app/manifest.ts`).
+ * Chỉ hỏi `standalone` thì app đã cài vẫn bị coi là chưa cài, và 25 giây sau khi
+ * mở là hiện thanh mời "thêm vào màn hình chính" ngay bên trong chính nó.
+ * `minimal-ui` để phòng trình duyệt lùi về kiểu đó theo chuỗi dự phòng của manifest.
+ */
 function alreadyInstalled(): boolean {
-  if (window.matchMedia('(display-mode: standalone)').matches) return true;
+  const modes = '(display-mode: fullscreen), (display-mode: standalone), (display-mode: minimal-ui)';
+  if (window.matchMedia(modes).matches) return true;
   // iOS không hỗ trợ display-mode, nó dùng thuộc tính riêng trên navigator.
   return (window.navigator as Navigator & { standalone?: boolean }).standalone === true;
 }
