@@ -21,10 +21,12 @@ Không phải một đoạn. Cả bài.
 > **🎹 Bạn cần cây đàn như thế nào?**
 >
 > Giáo trình viết cho **đàn phím nói chung**, không phụ thuộc hãng nào. Đàn gì cũng theo được, miễn là:
-> - **Tối thiểu 61 phím** (88 phím là lý tưởng vì đúng như piano thật).
-> - **Ưu tiên phím nặng (weighted / hammer action)** — loại có sức nặng giống đàn cơ. Phần lớn kỹ thuật trong giáo trình là học điều khiển lực ngón tay, nên điểm này quan trọng nhất. Phím nhẹ kiểu organ vẫn tập được, chỉ là sau này chuyển sang piano thật phải làm quen lại.
+> - **Phím cảm ứng lực** (*Touch Response*) — bấm nhẹ ra tiếng nhỏ, bấm mạnh ra tiếng to. Đây là điều kiện **bắt buộc**, vì Chương 5 dạy chơi to và nhỏ; nhiều đàn giá thấp không có chức năng này. Thử ngay: bấm một phím thật nhẹ rồi bấm lại thật dứt khoát, hai tiếng phải khác nhau rõ.
+> - **Tối thiểu 61 phím**, phím cỡ chuẩn (88 phím là lý tưởng vì đúng như piano thật).
+> - **Có cổng cắm pedal** — Chương 9 là cả một chương về pedal. Bàn đạp mua rời sau cũng được.
+> - **Ưu tiên phím nặng (weighted / hammer action)** — loại có sức nặng giống đàn cơ. Phần lớn kỹ thuật trong giáo trình là học điều khiển lực ngón tay. Phím nhẹ kiểu organ vẫn tập được, chỉ là sau này chuyển sang piano thật phải làm quen lại.
 >
-> Chưa có đàn và đang cân nhắc mua? Một gợi ý tầm phổ thông là **Roland FP-30X** (88 phím, phím nặng) — giáo trình ban đầu được soạn quanh cây đàn đó. Đây chỉ là ví dụ tham khảo, không bắt buộc; các dòng tương đương của Yamaha, Casio, Kawai đều tốt.
+> Chưa có đàn và ngân sách hẹp? Đọc **[Chọn cây đàn đầu tiên khi ngân sách hẹp](/07-doc-them/chon-dan-dau-tien)** — trong đó có ba mức ngân sách, những thứ không đáng trả tiền, và cách kiểm một cây đàn cũ.
 
 ## 1. Bảy nốt nhạc cơ bản và Phím đàn
 

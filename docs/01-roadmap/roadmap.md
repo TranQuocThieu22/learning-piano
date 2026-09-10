@@ -4,7 +4,7 @@
 >
 > Giáo trình chưa mở bán. Người tham gia đợt thử nghiệm được mở **toàn bộ nội dung hiện có** — miễn phí, và giữ vĩnh viễn kể cả sau khi mở bán. Đổi lại, mình cần bạn tập thật và thỉnh thoảng nhắn lại chỗ nào khó hiểu.
 >
-> Điều kiện: có đàn thật (piano hoặc keyboard từ 61 phím) và tập được vài buổi mỗi tuần.
+> Điều kiện: có đàn thật (piano hoặc keyboard từ 61 phím) và tập được vài buổi mỗi tuần. Chưa có đàn? Xem [Chọn cây đàn đầu tiên khi ngân sách hẹp](/07-doc-them/chon-dan-dau-tien) — không cần đàn đắt, nhưng có một thứ không được thiếu.
 >
 > **Chương 1 mở sẵn cho tất cả mọi người, không cần đăng ký gì** — cứ học thử trước đã. Thấy hợp thì [điền form đăng ký](https://forms.gle/aSPhbC82fRXPdciK6), khoảng một phút.
 
