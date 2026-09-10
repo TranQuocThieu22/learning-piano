@@ -159,8 +159,10 @@ export function InstallPrompt() {
         left: 8,
         right: 8,
         // Chừa chỗ cho thanh điều hướng của điện thoại, giống các lớp .safe-*
-        // trong globals.css — thiếu nó thì nút bị thanh dưới đáy che mất.
-        bottom: 'calc(8px + env(safe-area-inset-bottom))',
+        // trong globals.css — thiếu nó thì nút bị thanh dưới đáy che mất. Cộng
+        // thêm --tab-bar-h để thanh mời nổi TRÊN thanh tab chứ không đè lên nó;
+        // biến này bằng 0 từ 48em trở lên nên trên máy tính không đổi gì.
+        bottom: 'calc(8px + env(safe-area-inset-bottom) + var(--tab-bar-h, 0px))',
         zIndex: 300,
       }}
     >

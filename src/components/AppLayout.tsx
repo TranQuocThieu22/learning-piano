@@ -8,6 +8,7 @@ import { MarkdownFile } from '@/lib/markdown';
 import { isFreeContent } from '@/lib/access';
 import { ThemeToggle } from './ThemeToggle';
 import { InstallPrompt } from './InstallPrompt';
+import { MobileTabBar } from './MobileTabBar';
 import { signInWithGoogle, signOutAction } from '@/lib/auth-actions';
 
 /** Vietnamese sidebar headings; falls back to the folder name if unlisted. */
@@ -315,6 +316,10 @@ export function AppLayout({
 
       {/* Đặt ngoài Main để thanh mời nổi trên nội dung, không đẩy bài đọc xuống. */}
       <InstallPrompt />
+
+      {/* Cũng ngoài Main, vì nó dính vào đáy khung nhìn. Chỗ nó chiếm được trả
+          lại bằng padding-bottom của .app-main trong globals.css. */}
+      <MobileTabBar />
     </AppShell>
   );
 }

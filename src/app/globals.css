@@ -314,6 +314,20 @@ body {
   --safe-right: env(safe-area-inset-right, 0px);
 }
 
+/* Chiều cao thanh tab dưới đáy. Khai ở một chỗ vì có ba nơi phải khớp nhau:
+   chính thanh tab, phần padding trả chỗ lại cho .app-main, và thanh mời cài đặt
+   phải nổi lên trên nó. Bằng 0 từ 48em trở lên — ở đó đã có thanh bên, thêm
+   thanh tab chỉ tổ chiếm chỗ. */
+:root {
+  --tab-bar-h: 0px;
+}
+
+@media (max-width: 48em) {
+  :root {
+    --tab-bar-h: 56px;
+  }
+}
+
 /* Ba lớp dưới đây đều nhân đôi tên lớp (`.app-main.app-main`) để chắc chắn
    thắng lớp CSS Module có sẵn của Mantine — hai bên cùng độ ưu tiên 0-1-0 nên
    nếu không nhân đôi thì kết quả phụ thuộc vào thứ tự hai file CSS được ghép
@@ -340,7 +354,11 @@ body {
   padding-top: calc(
     var(--app-shell-header-height) + var(--safe-top) + var(--app-shell-padding)
   );
-  padding-bottom: calc(var(--app-shell-padding) + var(--safe-bottom));
+  /* Cộng thêm --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và
+     người học cuộn hết cỡ vẫn không đọc được đoạn kết. */
+  padding-bottom: calc(
+    var(--app-shell-padding) + var(--safe-bottom) + var(--tab-bar-h)
+  );
   /* Giữ nguyên phần cộng --app-shell-navbar-offset của Mantine, nếu bỏ thì trên
      máy tính nội dung chui xuống dưới thanh bên. */
   padding-inline-start: calc(
@@ -349,6 +367,15 @@ body {
   padding-inline-end: calc(
     var(--app-shell-aside-offset, 0rem) + var(--app-shell-padding) + var(--safe-right)
   );
+}
+
+/*
+ * Padding nằm ở đây chứ không ở `style` nội tuyến của `AbcjsViewer.tsx`: style nội
+ * tuyến thắng mọi luật CSS không `!important`, nên để ở đó thì chế độ tập trung
+ * bên dưới không đổi được padding — kể cả phần chừa cho tai thỏ.
+ */
+.sheet-music-wrapper {
+  padding: 1rem;
 }
 
 /*
@@ -363,15 +390,6 @@ body {
  *
  * z-index 350 nằm trên thanh mời cài đặt (300) và thanh tiêu đề của AppShell.
  */
-/*
- * Padding nằm ở đây chứ không ở `style` nội tuyến của `AbcjsViewer.tsx`: style nội
- * tuyến thắng mọi luật CSS không `!important`, nên để ở đó thì chế độ tập trung
- * bên dưới không đổi được padding — kể cả phần chừa cho tai thỏ.
- */
-.sheet-music-wrapper {
-  padding: 1rem;
-}
-
 .sheet-music-wrapper.is-focused {
   position: fixed;
   inset: 0;
@@ -567,4 +585,33 @@ body.sheet-focus-lock .markdown-pre-wrapper,
 body.sheet-focus-lock .markdown-pre-wrapper:hover {
   transform: none;
   transition: none;
+}
+
+
+/* --- THANH TAB DƯỚI ĐÁY (chỉ điện thoại) --- */
+/*
+ * Xem `src/components/MobileTabBar.tsx` để biết vì sao có nó và vì sao đúng bốn
+ * mục. Ở đây chỉ là phần khung: dính đáy, chừa chỗ cho thanh điều hướng của máy,
+ * và ẩn hẳn từ 48em trở lên — cùng ngưỡng `breakpoint: 'sm'` của AppShell trong
+ * `AppLayout.tsx`, để không có khoảng nào vừa có thanh bên vừa có thanh tab.
+ */
+.mobile-tab-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 200;
+  display: flex;
+  align-items: stretch;
+  height: calc(var(--tab-bar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  padding-inline: var(--safe-left) var(--safe-right);
+  background: var(--mantine-color-body);
+  border-top: 1px solid var(--mantine-color-default-border);
+}
+
+@media (min-width: 48.0625em) {
+  .mobile-tab-bar {
+    display: none;
+  }
 }

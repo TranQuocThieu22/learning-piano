@@ -6,6 +6,8 @@ import { LessonTickButton } from '@/components/LessonTickButton';
 import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
+import { LessonNav } from '@/components/LessonNav';
+import { getLessonNeighbors } from '@/lib/lessons';
 import { canReadLesson } from '@/lib/access';
 import { env } from '@/lib/env';
 import { dangBan } from '@/lib/env-schema';
@@ -56,6 +58,10 @@ export default async function Page({ params }: { params: Promise<{ category: str
             />
           )}
           <MarkdownViewer content={content} />
+          {/* Cuối bài mới là lúc người học cần chuyển bài, nên nút nằm ở đây chứ
+              không ở đầu trang. Bài lẻ (Lộ trình, Đọc thêm) không có chuỗi thứ
+              tự nên `getLessonNeighbors` trả về hai null và không hiện gì. */}
+          <LessonNav {...getLessonNeighbors(category, slug)} />
         </>
       ) : (
         <LessonLocked

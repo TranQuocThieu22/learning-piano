@@ -65,3 +65,59 @@ export function getLessonsByChapter(): ChapterGroup[] {
       lessons: chapterLessons,
     }));
 }
+
+/** Một mắt xích trong chuỗi bài, đủ để dựng nút Bài trước / Bài tiếp theo. */
+export interface LessonLink {
+  slug: string;
+  title: string;
+  href: string;
+}
+
+export const CHAPTERS_CATEGORY = '02-chapters';
+
+/**
+ * Hai bài kề trước và kề sau trong một chuỗi đã sắp thứ tự.
+ *
+ * Tách riêng phần thuần này (không chạm ổ đĩa) để kiểm thử được mọi nhánh, giống
+ * cách `access.ts` tách khỏi `access-server.ts`. Bài không có trong chuỗi thì trả
+ * về hai `null` — an toàn hơn là đoán bừa vị trí.
+ */
+export function neighborsOf<T extends { slug: string }>(
+  ordered: T[],
+  slug: string
+): { prev: T | null; next: T | null } {
+  const index = ordered.findIndex((item) => item.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  return {
+    prev: index > 0 ? ordered[index - 1] : null,
+    next: index < ordered.length - 1 ? ordered[index + 1] : null,
+  };
+}
+
+/**
+ * Chuỗi bài của một thư mục nội dung, theo đúng thứ tự học.
+ *
+ * Chỉ hai thư mục có thứ tự thật: bài tập (chương/bài) và lý thuyết (chương).
+ * Lộ trình và Đọc thêm là các bài rời, xâu chúng thành chuỗi chỉ tạo ra một thứ
+ * tự giả rồi người học tưởng phải đọc lần lượt.
+ */
+export function getOrderedLessons(category: string): LessonLink[] {
+  if (category === EXERCISES_CATEGORY) {
+    return getAllLessons().map(({ slug, title, href }) => ({ slug, title, href }));
+  }
+
+  if (category === CHAPTERS_CATEGORY) {
+    return getAllMarkdownFiles()
+      .filter((f) => f.category === CHAPTERS_CATEGORY)
+      // Slug dạng `chuong-00`, số luôn hai chữ số nên so sánh chuỗi là đủ.
+      .sort((a, b) => a.slug.localeCompare(b.slug))
+      .map((f) => ({ slug: f.slug, title: f.title, href: `/${f.category}/${f.slug}` }));
+  }
+
+  return [];
+}
+
+/** Bài trước và bài sau của một bài đang mở. */
+export function getLessonNeighbors(category: string, slug: string) {
+  return neighborsOf(getOrderedLessons(category), slug);
+}
