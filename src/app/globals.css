@@ -384,16 +384,95 @@ body {
 }
 
 /*
- * Bản nhạc lấy đúng chiều cao nó cần, KHÔNG giãn ra chiếm chỗ thừa (`flex-grow`
- * để 0): bài ngắn mà cho giãn thì giữa khuông nhạc và thẻ điều khiển hở ra một
- * mảng trắng lớn. Vẫn cho co lại (`flex-shrink` 1) kèm `min-height: 0` và
- * `overflow: auto`, để bài dài hơn màn hình thì cuộn bên trong chứ không đẩy
- * thẻ điều khiển ra khỏi tầm mắt.
+ * Bản nhạc lấy ĐÚNG chiều cao nó cần — không giãn ra chiếm chỗ thừa, cũng không
+ * bị bóp lại.
+ *
+ * Cả hai chiều đều từng sai một lần, nên ghi rõ:
+ *
+ * - `flex-grow: 0` — cho giãn thì bài ngắn hở ra một mảng trắng lớn giữa khuông
+ *   nhạc và thẻ điều khiển.
+ * - `flex-shrink: 0` — cho co thì lúc phóng to, khung giữ nguyên chiều cao cũ
+ *   trong khi bản nhạc đã cao lên, thành ra cắt mất dòng tên nốt phía dưới dù
+ *   bên dưới màn hình vẫn còn cả mảng trống.
+ * - `max-height: 100%` — chặn trên đúng bằng chỗ còn lại của lớp phủ, để bài dài
+ *   hơn màn hình thì cuộn bên trong chứ không đẩy thẻ điều khiển ra khỏi tầm mắt.
  */
 .sheet-music-wrapper.is-focused .sheet-music-paper {
-  flex: 0 1 auto;
+  flex: 0 0 auto;
+  max-height: 100%;
   min-height: 0;
   overflow: auto;
+}
+
+/*
+ * Phóng to bản nhạc trong chế độ tập trung.
+ *
+ * Dùng `zoom` chứ KHÔNG nhân bề ngang của thẻ `<svg>`, và đây là chỗ dễ mất công
+ * nhất: ở chế độ `responsive: 'resize'`, abcjs đặt `position: absolute` cho SVG
+ * rồi giữ chỗ cho nó bằng `padding-bottom` tính sẵn trên chính khung này. SVG
+ * nằm ngoài dòng chảy, nên nhân bề ngang nó lên thì phần chỗ giữ sẵn không đổi
+ * theo — bản nhạc to ra rồi tràn xuống và bị cắt mất dòng tên nốt, dù dưới màn
+ * hình vẫn còn cả mảng trống.
+ *
+ * `zoom` cũng không dùng được, dù nghe có vẻ đúng: abcjs luôn co bản nhạc vừa
+ * đúng bề ngang khung, nên khung bị `zoom` thu nhỏ bao nhiêu thì SVG dựng to lại
+ * bấy nhiêu — đo ra nốt vẫn y nguyên 43px ở mọi mức.
+ *
+ * Đòn bẩy đúng là NỚI BỀ NGANG CHÍNH CÁI KHUNG. abcjs theo dõi kích thước khung
+ * và tự dựng lại cho vừa, nên khung rộng gấp đôi thì bản nhạc to gấp đôi, và
+ * `padding-bottom` giữ chỗ cũng được nó tính lại cho khớp — không còn bị cắt.
+ *
+ * Cũng KHÔNG dựng lại bản nhạc bằng tay: `renderAbc` tạo mới toàn bộ phần tử SVG,
+ * mất hết màu đã tô của lần tập đang chạy và phải dựng lại cả chuỗi âm thanh.
+ * Đổi bề ngang thì abcjs tự lo phần đó bên trong, giữ nguyên phần tử.
+ *
+ * Đổi lại: to hơn bề ngang màn hình thì phải cuộn ngang. Cố ý để người học tự
+ * quyết mức phóng thay vì đoán hộ — họ biết mình cần nốt to cỡ nào.
+ */
+/*
+ * `!important` là bắt buộc, không phải cho chắc: abcjs ghi thẳng `width: 100%`
+ * và `overflow: hidden` vào style nội tuyến của khung, mà style nội tuyến thắng
+ * mọi luật thường của tác giả. Thiếu nó thì luật này im lặng không có tác dụng —
+ * đo ra bề ngang khung đứng yên 341px ở mọi mức phóng.
+ *
+ * Phần giữ chỗ theo tỉ lệ mà abcjs đặt là `padding-bottom` tính theo PHẦN TRĂM,
+ * mà phần trăm của padding luôn quy chiếu theo bề ngang — nên nới bề ngang thì
+ * chỗ giữ tự cao lên đúng tỉ lệ. Đó là lý do cách này không bị cắt.
+ */
+.sheet-music-wrapper.is-focused .sheet-music-paper {
+  width: calc(100% * var(--sheet-zoom, 1)) !important;
+  /*
+   * Bỏ luôn mẹo giữ chỗ của abcjs. Nó đặt `padding-bottom` theo PHẦN TRĂM, mà
+   * phần trăm của padding quy chiếu theo bề ngang KHỐI CHỨA chứ không theo bề
+   * ngang của chính khung — nên nới khung ra thì chỗ giữ đứng yên, và bản nhạc
+   * to lên lại bị cắt mất phần dưới. Đo được: ở 200% nốt cao 86px nhưng khung
+   * vẫn 121px.
+   */
+  padding-bottom: 1rem !important;
+  overflow: auto !important;
+}
+
+/*
+ * Trả SVG về dòng chảy bình thường. abcjs đặt `position: absolute` cho nó để
+ * dùng chung với mẹo giữ chỗ ở trên; bỏ mẹo đó thì phải bỏ luôn cái này, nếu
+ * không SVG nằm ngoài dòng chảy và khung co về 0. Đứng trong dòng chảy thì SVG
+ * tự cao theo tỉ lệ `viewBox`, nên khung luôn vừa đúng ở mọi mức phóng.
+ */
+.sheet-music-wrapper.is-focused .sheet-music-paper svg {
+  position: static !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+/* Phóng quá bề ngang màn hình thì cuộn ngang ở đây. */
+.sheet-music-wrapper.is-focused {
+  overflow: auto;
+}
+
+/* Giữ hàng nút bám bên trái khi cuộn ngang, kẻo phóng to là mất nút Thoát. */
+.sheet-music-wrapper.is-focused > .mantine-Group-root:first-child {
+  position: sticky;
+  left: 0;
 }
 
 /* Khoá cuộn nền, nếu không thì trang phía sau vẫn trôi khi vuốt. */

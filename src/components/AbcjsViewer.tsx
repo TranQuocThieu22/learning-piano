@@ -2,8 +2,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent, TuneObject } from 'abcjs';
-import { Button, Group, Select, Text } from '@mantine/core';
-import { IconArrowsMaximize, IconArrowsMinimize, IconDeviceGamepad2 } from '@tabler/icons-react';
+import { ActionIcon, Button, Group, Select, Text } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
+import {
+  IconArrowsMaximize,
+  IconArrowsMinimize,
+  IconDeviceGamepad2,
+  IconMinus,
+  IconPlus,
+} from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
 import { SheetAudioControls } from './SheetAudioControls';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
@@ -31,6 +38,16 @@ type SynthControllerInternals = InstanceType<typeof ABCJS.synth.SynthController>
   midiBuffer?: { getAudioBuffer?: () => AudioBuffer | undefined };
   destroy?: () => void;
 };
+
+/**
+ * Khoảng phóng to cho phép trong chế độ tập trung.
+ *
+ * Chặn trên 3 lần vì to hơn nữa thì mỗi màn hình chỉ còn một hai ô nhịp, phải
+ * cuộn ngang liên tục — mà lúc đang đánh thì hai tay đang bận, không cuộn được.
+ */
+const ZOOM_MIN = 1;
+const ZOOM_MAX = 3;
+const ZOOM_STEP = 0.25;
 
 /** Nhịp mỗi phút ở tốc độ `warp`, tính lại đúng như abcjs làm trong `SynthController.go`. */
 function bpmAtWarp(tune: TuneObject, warp: number) {
@@ -98,6 +115,15 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
    * trên điện thoại thì gay gắt nhất, có khi chỉ còn thấy hai dòng nhạc.
    */
   const [focused, setFocused] = useState(false);
+  /**
+   * Mức phóng to bản nhạc trong chế độ tập trung, tính theo lần.
+   *
+   * Vì sao cần: `responsive: 'resize'` của abcjs co bản nhạc vừa đúng bề ngang
+   * khung chứa, nên trên màn hình hẹp một dòng nhạc dài bị ép nhỏ lại — đo được
+   * là còn 44% cỡ gốc, nốt cao 43px, trong khi phía dưới còn thừa 380px trống.
+   * Phủ kín màn hình mà chữ vẫn bé thì chế độ tập trung không giải quyết được gì.
+   */
+  const [zoom, setZoom] = useState(1);
   /** Bật khi SynthController đã gắn xong, để effect nạp tiếng đàn biết lúc chạy. */
   const [audioReady, setAudioReady] = useState(false);
   // Đọc localStorage ngay lúc khởi tạo state được, không lo lệch hydration:
@@ -205,6 +231,7 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     setExpected(score.events);
     setPracticeOpen(false);
     setFocused(false);
+    setZoom(1);
     setAudioReady(false);
     setIsPlaying(false);
     setIsLooping(false);
@@ -336,6 +363,12 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   const showPracticeButton = expected.length > 0 && !practiceOpen;
 
   /**
+   * Trả về `undefined` ở lần dựng đầu (Mantine bật `getInitialValueInEffect`),
+   * nên HTML của máy chủ và của trình duyệt khớp nhau — không lỗi hydration.
+   */
+  const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
+
+  /**
    * Khoá cuộn nền và cho phím Esc thoát, chỉ trong lúc đang tập trung.
    *
    * Khoá cuộn đặt trên `body` chứ không trên lớp phủ: lớp phủ cuộn được bên trong
@@ -358,12 +391,48 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
   }, [focused]);
 
   return (
-    <div className={`sheet-music-wrapper${focused ? ' is-focused' : ''}`} style={{ margin: '2rem 0', background: 'var(--mantine-color-body)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--mantine-color-default-border)' }}>
+    <div
+      className={`sheet-music-wrapper${focused ? ' is-focused' : ''}`}
+      style={{
+        margin: '2rem 0',
+        background: 'var(--mantine-color-body)',
+        padding: '1rem',
+        borderRadius: '8px',
+        border: '1px solid var(--mantine-color-default-border)',
+        // CSS đọc biến này để nhân bề ngang SVG lên; ngoài chế độ tập trung thì
+        // không luật nào dùng tới nên đặt sẵn cũng vô hại.
+        ['--sheet-zoom' as string]: String(zoom),
+      }}
+    >
       {focused && (
         <Group justify="space-between" wrap="nowrap" gap="xs">
-          <Text size="sm" fw={600} c="dimmed">
-            Đang tập trung
-          </Text>
+          <Group gap={4} wrap="nowrap">
+            <ActionIcon
+              variant="default"
+              size="lg"
+              aria-label="Thu nhỏ bản nhạc"
+              disabled={zoom <= ZOOM_MIN}
+              onClick={() => setZoom((z) => Math.max(ZOOM_MIN, Math.round((z - ZOOM_STEP) * 100) / 100))}
+              data-testid="zoom-out"
+            >
+              <IconMinus size={18} />
+            </ActionIcon>
+            {/* Bề ngang cố định để con số đổi mà nút hai bên không nhảy chỗ. */}
+            <Text size="sm" fw={600} ta="center" w={52} data-testid="zoom-level">
+              {Math.round(zoom * 100)}%
+            </Text>
+            <ActionIcon
+              variant="default"
+              size="lg"
+              aria-label="Phóng to bản nhạc"
+              disabled={zoom >= ZOOM_MAX}
+              onClick={() => setZoom((z) => Math.min(ZOOM_MAX, Math.round((z + ZOOM_STEP) * 100) / 100))}
+              data-testid="zoom-in"
+            >
+              <IconPlus size={18} />
+            </ActionIcon>
+          </Group>
+
           <Button
             variant="light"
             size="xs"
@@ -374,6 +443,19 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
             Thoát
           </Button>
         </Group>
+      )}
+
+      {/*
+        Điện thoại dựng đứng là trường hợp tệ nhất: một dòng nhạc vốn rộng và
+        thấp, ép vào bề ngang hẹp thì nốt bé lại còn phía dưới thừa cả mảng trống.
+        Không mức phóng nào chữa được — phóng lên là phải cuộn ngang, mà lúc đánh
+        thì hai tay đang bận. Xoay ngang máy tăng gần gấp đôi bề ngang, đó mới là
+        câu trả lời đúng. Manifest cố ý không khoá hướng màn hình chính vì việc này.
+      */}
+      {focused && dungDungTrenDienThoai && (
+        <Text size="xs" c="dimmed" ta="center" data-testid="rotate-hint">
+          Xoay ngang máy để bản nhạc to gần gấp đôi.
+        </Text>
       )}
 
       <div ref={paperRef} className="sheet-music-paper" style={{ background: '#fff', color: '#000', padding: '1rem', borderRadius: '4px', overflowX: 'auto' }}></div>
