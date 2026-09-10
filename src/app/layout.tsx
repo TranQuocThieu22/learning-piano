@@ -5,6 +5,7 @@ import "./globals.css";
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { Analytics } from '@vercel/analytics/next';
 import { ThemeColorMeta } from '@/components/ThemeColorMeta';
+import { AmbientMusic } from '@/components/AmbientMusic';
 
 const beVietnamPro = Be_Vietnam_Pro({ 
   subsets: ["latin", "vietnamese"],
@@ -91,6 +92,12 @@ export default function RootLayout({
       <body className={beVietnamPro.className} suppressHydrationWarning>
         <MantineProvider defaultColorScheme="light">
           <ThemeColorMeta />
+          {/*
+            Nhạc nền phải nằm ở layout GỐC, không nằm trong `AppLayout`: mỗi trang
+            tự dựng `AppLayout` của nó, nên chuyển trang là React gỡ cây cũ đi và
+            nhạc sẽ đứt rồi bắt đầu lại ở mỗi lần bấm.
+          */}
+          <AmbientMusic />
           {children}
         </MantineProvider>
         {/*

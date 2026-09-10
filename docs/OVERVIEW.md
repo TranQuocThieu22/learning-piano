@@ -146,6 +146,12 @@ app đã cài lại sau lần đổi manifest), và `FullscreenOnFirstTap.tsx` g
 lần chạm đầu tiên để phủ nốt hai trường hợp còn lại — mở bằng tab trình duyệt, và app cài
 từ trước vẫn đang chạy ở `standalone`. Chỉ áp cho màn hình hẹp; máy tính không tự bung.
 
+**Nhạc nền.** Tự sinh bằng Web Audio ngay trên máy người học, không tải tệp nhạc nào và
+không dính bản quyền của ai — xem `src/lib/ambient.ts`. **Mặc định TẮT**, bật ở thẻ *Nhạc
+nền* trên màn hình chủ, và **tự tắt** khi vào bài học, máy đánh nhịp hay bài luyện nhận
+nốt, rồi tự bật lại khi quay ra. Nhạc nền chồng lên tiếng đàn mẫu thì không còn là dễ
+chịu, nó thành thứ cản đường học.
+
 **Tính năng đáng chú ý:**
 
 - **Phát nhạc mẫu:** mọi khối ABC trong bài đều bấm nghe được, đúng nhịp và tốc độ ghi
@@ -279,6 +285,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Nhạc nền dựng bằng Web Audio thay vì tải tệp về, vì sản phẩm có bán nên nhạc "miễn phí" trên mạng là rủi ro bản quyền thật; ghi rõ luật tự tắt ở trang có tiếng khác |
 | 10/09/2026 | `refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình` | Bỏ thanh cố định cuối cùng ở trên đỉnh và ghi lại hai lớp làm nên chế độ toàn màn hình, vì lớp manifest chỉ ăn khi cài lại app nên dễ tưởng là không chạy |
 | 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Bỏ thanh bên và nút hamburger: trên điện thoại nó nằm ở góc xa ngón cái nhất mà lại là đường duy nhất đi bất cứ đâu, và kéo theo cả chùm việc phải bù cho `offset: false`; mục lục dời sang `/library` và `/exercises` |
 | 10/09/2026 | `feat: Thêm màn hình chủ, thanh tab và bản đồ chặng cho điện thoại` | `/` không còn chuyển hướng mà thành màn hình chủ; thêm `/exercises` và nút chuyển bài cuối trang, vì mở app ra là rơi thẳng vào tài liệu dài và mọi đường đi khác đều phải qua nút hamburger ở góc xa ngón cái nhất |

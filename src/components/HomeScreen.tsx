@@ -22,6 +22,7 @@ import {
 import Link from 'next/link';
 import type { ComponentType } from 'react';
 import { AccountCard } from './AccountCard';
+import { AmbientControl } from './AmbientControl';
 import type { AppSessionUser } from './AppLayout';
 
 /**
@@ -167,6 +168,8 @@ export function HomeScreen({
         thẻ này nói rõ mất gì (không lưu được tick), nhưng vẫn không chặn đường:
         Chương 0 và Chương 1 vốn miễn phí, không đăng nhập vẫn đọc và tập được.
       */}
+      <AmbientControl />
+
       <AccountCard user={user} />
     </Stack>
   );
