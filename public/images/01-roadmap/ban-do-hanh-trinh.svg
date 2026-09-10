@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 300" width="100%" style="max-width:880px;height:auto" role="img" aria-label="Bản đồ hành trình: Giai đoạn 1 gồm Chương 0 tới 6 với hai Trạm dừng chân, Giai đoạn 2 gồm Chương 7 tới 10 và Trạm dừng chân số 3">
+<style>
+  .lbl { font-family: system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  .muted { fill: #8792a6; }
+</style>
+
+<!-- Vùng Giai đoạn 1 -->
+<rect x="24" y="86" width="536" height="128" rx="14" fill="#4dabf7" fill-opacity="0.10" stroke="#4dabf7" stroke-width="2"/>
+<text class="lbl" x="292" y="70" font-size="17" font-weight="700" fill="#4dabf7" text-anchor="middle">GIAI ĐOẠN 1 — Nền tảng</text>
+<text class="lbl muted" x="292" y="238" font-size="13" font-weight="500" text-anchor="middle">Khoảng 60 ngày · 30-45 phút mỗi buổi</text>
+
+<!-- Vùng Giai đoạn 2 -->
+<rect x="576" y="86" width="280" height="128" rx="14" fill="#a78bfa" fill-opacity="0.10" stroke="#a78bfa" stroke-width="2"/>
+<text class="lbl" x="716" y="70" font-size="17" font-weight="700" fill="#a78bfa" text-anchor="middle">GIAI ĐOẠN 2 — Đệm hát</text>
+<text class="lbl muted" x="716" y="238" font-size="13" font-weight="500" text-anchor="middle">Tự đệm trọn một bài hát</text>
+
+<!-- Đường đi -->
+<line x1="50" y1="150" x2="830" y2="150" stroke="#8792a6" stroke-width="2" stroke-opacity="0.45"/>
+
+<!-- Chương 0 - 3 -->
+<circle cx="50"  cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="50"  y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">0</text>
+<circle cx="110" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="110" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">1</text>
+<circle cx="170" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="170" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">2</text>
+<circle cx="230" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="230" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">3</text>
+
+<!-- Trạm 1 -->
+<path d="M290 124 L308 150 L290 176 L272 150 Z" fill="#fab005" fill-opacity="0.28" stroke="#fab005" stroke-width="2.5"/>
+<text class="lbl" x="290" y="156" font-size="15" font-weight="800" fill="#fab005" text-anchor="middle">★</text>
+<text class="lbl" x="290" y="200" font-size="12" font-weight="700" fill="#fab005" text-anchor="middle">Trạm 1</text>
+
+<!-- Chương 4 - 6 -->
+<circle cx="350" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="350" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">4</text>
+<circle cx="410" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="410" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">5</text>
+<circle cx="470" cy="150" r="21" fill="#4dabf7" fill-opacity="0.20" stroke="#4dabf7" stroke-width="2.5"/>
+<text class="lbl" x="470" y="157" font-size="18" font-weight="800" fill="#4dabf7" text-anchor="middle">6</text>
+
+<!-- Trạm 2 -->
+<path d="M530 124 L548 150 L530 176 L512 150 Z" fill="#fab005" fill-opacity="0.28" stroke="#fab005" stroke-width="2.5"/>
+<text class="lbl" x="530" y="156" font-size="15" font-weight="800" fill="#fab005" text-anchor="middle">★</text>
+<text class="lbl" x="530" y="200" font-size="12" font-weight="700" fill="#fab005" text-anchor="middle">Trạm 2</text>
+
+<!-- Chương 7 (đã có) -->
+<circle cx="602" cy="150" r="21" fill="#a78bfa" fill-opacity="0.20" stroke="#a78bfa" stroke-width="2.5"/>
+<text class="lbl" x="602" y="157" font-size="18" font-weight="800" fill="#a78bfa" text-anchor="middle">7</text>
+
+<!-- Chương 8 - 10 (đang soạn: nét đứt) -->
+<circle cx="660" cy="150" r="21" fill="none" stroke="#a78bfa" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="5 4"/>
+<text class="lbl" x="660" y="157" font-size="18" font-weight="800" fill="#a78bfa" fill-opacity="0.6" text-anchor="middle">8</text>
+<circle cx="718" cy="150" r="21" fill="none" stroke="#a78bfa" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="5 4"/>
+<text class="lbl" x="718" y="157" font-size="18" font-weight="800" fill="#a78bfa" fill-opacity="0.6" text-anchor="middle">9</text>
+<circle cx="776" cy="150" r="21" fill="none" stroke="#a78bfa" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="5 4"/>
+<text class="lbl" x="776" y="157" font-size="16" font-weight="800" fill="#a78bfa" fill-opacity="0.6" text-anchor="middle">10</text>
+
+<!-- Trạm 3 -->
+<path d="M830 124 L848 150 L830 176 L812 150 Z" fill="none" stroke="#fab005" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="5 4"/>
+<text class="lbl" x="830" y="156" font-size="15" font-weight="800" fill="#fab005" fill-opacity="0.6" text-anchor="middle">★</text>
+<text class="lbl" x="830" y="200" font-size="12" font-weight="700" fill="#fab005" fill-opacity="0.6" text-anchor="middle">Trạm 3</text>
+
+<!-- Chú giải -->
+<circle cx="620" cy="272" r="7" fill="#8792a6" fill-opacity="0.20" stroke="#8792a6" stroke-width="2"/>
+<text class="lbl muted" x="634" y="277" font-size="12" font-weight="500">đã có đầy đủ bài tập</text>
+<circle cx="762" cy="272" r="7" fill="none" stroke="#8792a6" stroke-width="2" stroke-opacity="0.6" stroke-dasharray="4 3"/>
+<text class="lbl muted" x="776" y="277" font-size="12" font-weight="500">đang soạn</text>
+
+<text class="lbl muted" x="24" y="277" font-size="12" font-weight="500">★ Trạm dừng chân — chơi trọn một bản nhạc, không học kỹ năng mới</text>
+</svg>

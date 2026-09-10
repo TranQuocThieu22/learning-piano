@@ -10,14 +10,37 @@
 
 Vì bạn là người mới bắt đầu hoàn toàn, chúng ta sẽ chia nhỏ lộ trình ra **từng ngày một** thay vì từng tuần. Mục tiêu là để não bộ và các ngón tay có đủ thời gian thích nghi mà không bị ngợp. Mỗi ngày bạn chỉ cần dành 30-45 phút tập trung.
 
+## Toàn bộ hành trình trong một hình
+
+![Bản đồ hành trình: Giai đoạn 1 gồm Chương 0 đến 6 với hai Trạm dừng chân, Giai đoạn 2 gồm Chương 7 đến 10 và Trạm dừng chân số 3](/images/01-roadmap/ban-do-hanh-trinh.svg)
+
+Đọc từ trái sang phải. Mỗi vòng tròn là một chương, mỗi ngôi sao là một **Trạm dừng chân** — chỗ bạn dừng học kỹ năng mới và chơi trọn một bản nhạc từ đầu đến cuối.
+
+Vòng nét đứt là phần **đang được soạn tiếp**. Ghi rõ ở đây để bạn biết mình đang đứng ở đâu trong một giáo trình còn đang lớn lên, thay vì phát hiện ra khi đã đi tới nơi.
+
 > [!TIP]
 > Trước khi bắt đầu, hãy đọc qua **[Phương pháp luyện tập hiệu quả](/01-roadmap/phuong-phap-luyen-tap)** để biết một buổi tập gồm những phần nào, và vì sao mỗi bài đều có bài tập không cần đàn.
+
+## Buổi tập đầu tiên bạn chơi được gì?
+
+Không phải bài tập ngón khô khan. Ngay trong Bài 1 của Chương 1, sau khi làm quen năm nốt đầu tiên, bạn chơi câu mở đầu của **Ode to Joy** — một câu nhạc thật, của Beethoven, mà bạn nghe ra được:
+
+{{sheet: chuong-01-bai-01#1B}}
+
+Bấm **Nghe thử** để biết nó ra làm sao. Đây là bản nhạc thật lấy thẳng từ bài học chứ không phải ảnh minh hoạ — nốt chạy tới đâu sáng tới đó, và bạn chỉnh được tốc độ.
+
+Cả giáo trình đi theo đúng nguyên tắc này: **mỗi thứ học được đều dẫn tới một câu nhạc nghe ra được**, chứ không phải một bài tập để đó rồi mai học tiếp.
 
 ## Giai đoạn 1: Nền tảng vững chắc (Khoảng 60 ngày / 2 tháng)
 Mục tiêu: Biết cách xác định nốt trên đàn, hiểu nhịp phách, và điều khiển các ngón tay độc lập. Lộ trình được thiết kế theo tiến độ kỹ năng (Self-paced), bạn hoàn toàn làm chủ tốc độ của mình:
 
 - **Chương 0: Vì sao bạn muốn chơi piano?**: Bài đọc ngắn, không có bài tập. Nhắc lại lý do bạn tìm tới cây đàn, bạn sẽ chơi được gì và khi nào, cùng một ý duy nhất cần mang theo: cây đàn này được đặt tên theo khả năng chơi to và nhỏ. Phần lịch sử piano nằm ở trang **Đọc thêm** đi kèm, hoàn toàn không bắt buộc.
 - **Chương 1: Nền tảng phím đàn và nốt nhạc**: Làm quen với vị trí 5 nốt đầu tiên (C, D, E, F, G) và luyện tập 5 ngón tay độc lập. Đánh chậm rãi để ngón áp út và ngón út không bị dính vào nhau.
+
+![Thế tay Đô: 5 ngón tay phải đặt trên Đô, Rê, Mi, Pha, Sol](/images/chuong-01/keyboard-c-position.svg)
+
+Đây là thế tay bạn học ở Chương 1 — năm ngón, năm nốt liền nhau, không phải di chuyển đi đâu cả. Tay còn ở nguyên một chỗ suốt tới Chương 6.
+
 - **Chương 2: Nhịp điệu và Phối hợp 2 tay**: Làm quen với nốt Đen, Trắng, Tròn. Thực hành đếm nhịp ra miệng, đánh luân phiên 2 tay và tiến tới đánh độc lập 2 tay cùng lúc.
 - **Chương 3: Đọc bản nhạc (Sight-reading) cơ bản**: Học cách nhìn và đọc nốt nhạc trên Khuông nhạc (Khóa Sol cho tay phải, Khóa Pha cho tay trái), nối 2 khóa lại thành **Khuông nhạc kép (Grand Staff)**, hiểu **số chỉ nhịp** và làm quen **nhịp 3/4 (điệu Waltz)**. Kết thúc bằng một **Trạm dừng chân** chơi trọn vẹn bản nhạc hoàn chỉnh.
 - **Chương 4: Phím đen và Dấu hóa (Accidentals)**: Làm quen với Dấu Thăng (#), Dấu Giáng (b), Dấu Bình (♮) và khái niệm nửa cung / nguyên cung. Thực hành vươn ngón tay lên các phím đen mà không bị trượt, cảm nhận sự khác biệt màu sắc Trưởng - Thứ, và chơi được câu Blues đầu tiên.
@@ -41,9 +64,11 @@ Cứ sau mỗi cụm chương lớn, lộ trình có một **Bài Tổng ôn** �
 
 Mục đích không chỉ là ôn tập. Việc tập từng ô nhịp rời rạc rất khác với việc chơi liền mạch cả bài — và cảm giác "mình vừa chơi xong một bản nhạc thật" chính là thứ giữ cho bạn không bỏ cuộc.
 
-- **Trạm 1 — sau Chương 3**: Jingle Bells (2 tay), Ode to Joy (bản đầy đủ), Waltz nhỏ.
-- **Trạm 2 — sau Chương 6**: Twinkle Twinkle Little Star (2 tay — bài cần nốt La nên tới đây mới chơi được), Thang âm Đô trưởng 2 tay lên xuống, Waltz nhỏ số 2 (nhịp 3/4, dùng trọn quãng tám).
-- **Trạm 3 — sau Chương 10**: *(khép lại Giai đoạn 2 — sẽ được lên chi tiết khi bạn tới nơi)*
+| Trạm | Sau chương | Bạn chơi được gì |
+|---|---|---|
+| **Trạm 1** | Chương 3 | Jingle Bells (2 tay), Ode to Joy (bản đầy đủ), Waltz nhỏ |
+| **Trạm 2** | Chương 6 | Twinkle Twinkle Little Star (2 tay — bài cần nốt La nên tới đây mới chơi được), Thang âm Đô trưởng 2 tay lên xuống, Waltz nhỏ số 2 (nhịp 3/4, dùng trọn quãng tám) |
+| **Trạm 3** | Chương 10 | *Khép lại Giai đoạn 2 — sẽ được lên chi tiết khi bạn tới nơi* |
 
 **Nguyên tắc chọn bài cho Trạm dừng chân:** bản nhạc **chỉ được dùng những nốt đã thực sự được dạy**. Không đưa bài có nốt nằm ngoài tầm tay hiện tại — điều đó chỉ tạo cảm giác thất bại chứ không dạy được gì.
 
