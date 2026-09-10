@@ -405,6 +405,72 @@ chính là bằng chứng đó là điều hướng phía client chứ không ph
 
 ---
 
+## 16. `position: fixed` bị tổ tiên kéo về, lớp phủ tập trung không thoát ra được
+
+**Triệu chứng.** Bấm *Chế độ tập trung* ở một bản nhạc. Lớp phủ hiện ra sai chỗ —
+có lúc chỉ là một dải mỏng, có lúc nằm hẳn ngoài màn hình — và **không thoát ra
+được** vì nút *Thoát* trôi theo nó. Nền lại đang bị khoá cuộn nên cuộn tới cũng
+không được. Trên máy tính thì lúc bấm được lúc không, càng khó tin là lỗi thật.
+
+**Nguyên nhân.** `position: fixed` chỉ neo vào khung nhìn khi **không tổ tiên nào
+tạo khối chứa**. Bốn thuộc tính sau, chỉ cần khác `none`, là tạo khối chứa và kéo
+mọi con `fixed` về mình: `transform`, `filter`, `backdrop-filter`, `perspective`
+(`will-change` và `contain: paint` cũng vậy).
+
+Bản nhạc nằm sâu trong hai lớp đều dính:
+
+| Tổ tiên | Thuộc tính | Bật lúc nào |
+|---|---|---|
+| 10/09/2026 | `fix: Bấm được nút Thoát của chế độ tập trung` | Thêm bẫy 16 — `transform`/`backdrop-filter` ở tổ tiên kéo lớp phủ `position: fixed` ra khỏi khung nhìn, làm chế độ tập trung không thoát được; ghi rõ vì sao triệu chứng chập chờn và cách đo bằng `getBoundingClientRect` thay vì `getComputedStyle` |
+| `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
+| `.markdown-pre-wrapper` | `transform: translateY(-2px)` | khi rê chuột vào khối |
+
+Cái thứ hai độc hơn vì nó **chập chờn**: lớp phủ neo vào khối mã thì con trỏ không
+còn nằm trên khối nữa → hết `:hover` → lớp phủ lại phủ kín màn hình → con trỏ nằm
+trên con của khối → `:hover` bật lại. Đo bằng Playwright thấy nó nhảy qua nhảy lại
+liên tục, nên nút *Thoát* lúc bấm trúng lúc không. Trên điện thoại thì ngược lại,
+dính chắc: chạm vào nút để bật là trạng thái `:hover` bám lại cho tới khi chạm chỗ
+khác, mà cả màn hình lúc đó là lớp phủ.
+
+**Triệu chứng đánh lừa ở chỗ mọi thứ tính ra vẫn đúng:** `position` vẫn là `fixed`,
+`top/left/right/bottom` vẫn là `0px`. Chỉ toạ độ thật là sai. Nên đừng đọc
+`getComputedStyle` của chính lớp phủ, hãy đo `getBoundingClientRect()` của nó và
+so với `innerWidth`/`innerHeight`:
+
+```js
+const ov = document.querySelector('.sheet-music-wrapper.is-focused');
+ov.getBoundingClientRect();   // phải là 0,0 và bằng đúng cỡ khung nhìn
+// Rồi lần ngược lên tìm thủ phạm:
+for (let e = ov.parentElement; e; e = e.parentElement) {
+  const cs = getComputedStyle(e);
+  if ([cs.transform, cs.filter, cs.backdropFilter, cs.perspective].some(v => v !== 'none'))
+    console.log(e.className, cs.transform, cs.filter, cs.backdropFilter);
+}
+```
+
+**Cách sửa.** Trong lúc đang tập trung thì tắt các thuộc tính đó ở tổ tiên. Lớp
+`sheet-focus-lock` mà `AbcjsViewer.tsx` gắn lên `body` chính là công tắc sẵn có:
+
+```css
+body.sheet-focus-lock .markdown-body { backdrop-filter: none; }
+body.sheet-focus-lock .markdown-pre-wrapper,
+body.sheet-focus-lock .markdown-pre-wrapper:hover { transform: none; transition: none; }
+```
+
+Cần cả `transition: none`: bỏ đi thì transform chạy nốt 0.2s về 0, mà trong 0.2s
+đó giá trị vẫn là một ma trận nên vẫn tạo khối chứa. Cũng cần cả bộ chọn không
+`:hover` để thắng điểm ưu tiên của `.markdown-pre-wrapper:hover`.
+
+**Đừng chữa bằng cách chuyển lớp phủ sang React portal.** Nghe thì gọn hơn, nhưng
+`portal` bật/tắt là React dựng lại phần tử DOM mới, mất sạch SVG mà abcjs đã vẽ
+thẳng vào `paperRef` — bản nhạc trắng trơn, màu đang tô của lần tập cũng mất theo.
+
+**Bài học chung.** Thêm bất cứ hiệu ứng kính mờ hay hiệu ứng nhấc lên nào cho một
+khối *bao ngoài* bản nhạc là phải nghĩ tới chế độ tập trung. Cách kiểm rẻ nhất:
+bật chế độ tập trung rồi rê chuột khắp màn hình, lớp phủ phải đứng yên.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột

@@ -495,3 +495,31 @@ body.sheet-focus-lock {
 body.sheet-focus-lock .markdown-body {
   backdrop-filter: none;
 }
+
+/*
+ * Vô hiệu hoá luôn hiệu ứng nhấc khối mã lên khi rê chuột, trong lúc tập trung.
+ *
+ * Cùng một cái bẫy với backdrop-filter ở trên, nhưng lần này khó thấy hơn nhiều
+ * vì nó chỉ bật lên lúc con trỏ đang ở trên khối: `.markdown-pre-wrapper:hover`
+ * đặt `transform: translateY(-2px)`, mà `transform` khác `none` cũng tạo ra khối
+ * chứa cho con dùng `position: fixed`. Bản nhạc nằm TRONG khối mã đó, nên lớp phủ
+ * tập trung neo vào khối mã chứ không vào khung nhìn.
+ *
+ * Triệu chứng: bật chế độ tập trung xong KHÔNG THOÁT RA ĐƯỢC. Lớp phủ co lại
+ * đúng bằng khối mã và nằm ở vị trí của khối mã trong trang — mà nền đang bị khoá
+ * cuộn, nên nút Thoát trôi ra ngoài màn hình, bấm không tới. Trên điện thoại còn
+ * chắc chắn dính hơn: chạm vào nút để bật là trạng thái :hover bám lại luôn.
+ *
+ * Tệ hơn nữa, nó tự dao động: lớp phủ neo vào khối mã thì con trỏ không còn nằm
+ * trên khối nữa → hết :hover → lớp phủ lại phủ kín màn hình → con trỏ nằm trên
+ * con của khối → :hover bật lại. Đo được là nó nhảy qua nhảy lại giữa hai trạng
+ * thái, nên bấm nút Thoát lúc được lúc không, càng khó lần ra nguyên nhân.
+ *
+ * `transition: none` để lúc bật chế độ tập trung thì transform tắt ngay, không
+ * chạy nốt 0.2s về 0 — trong 0.2s đó giá trị vẫn là một ma trận, vẫn tạo khối chứa.
+ */
+body.sheet-focus-lock .markdown-pre-wrapper,
+body.sheet-focus-lock .markdown-pre-wrapper:hover {
+  transform: none;
+  transition: none;
+}
