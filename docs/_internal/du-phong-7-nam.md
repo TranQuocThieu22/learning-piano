@@ -7,7 +7,7 @@
 > không thay thế tài liệu nào.** File định hướng trả lời *bán cái gì, giá bao nhiêu,
 > vì sao*. File lộ trình trả lời *làm theo thứ tự nào, đo bằng gì*. File này trả lời
 > đúng một câu hỏi: *nếu mọi thứ diễn ra như kế hoạch thì con số cuối cùng là bao nhiêu,
-> và cái gì có thể làm nó sai*.
+> và cái gì có thể làm nó sai*. Mục 6 mở rộng câu hỏi đó ra ngoài biên giới.
 >
 > **Lịch sử cập nhật:** xem mục cuối file — mỗi lần sửa thêm một dòng, không ghi đè dòng cũ.
 >
@@ -36,6 +36,11 @@
 **Xác suất dừng hẳn: khoảng 45%** — không phải vì sản phẩm dở, mà vì phễu chưa từng
 được đo một lần nào. Điều quyết định không nằm trong tài liệu này; nó nằm ở chỉ số
 **T3→T4** của mục 8 `dinh-huong-kinh-doanh.md`, và hiện tại chỉ số đó chưa tồn tại.
+
+**Về chuyện đưa ra quốc tế (mục 6):** thứ đáng làm là **người Việt ở nước ngoài** —
+cùng ngôn ngữ, cùng nội dung, chỉ thiếu một cách trả tiền — cộng thêm khoảng **15%**
+doanh thu ở kịch bản Cơ sở với chi phí gần bằng không. Còn **dịch sang tiếng Anh thì
+không nên làm**: nó vứt bỏ đúng lợi thế duy nhất của sản phẩm.
 
 ## 1. Năm rào cản thật, xếp theo mức nguy hiểm
 
@@ -261,7 +266,172 @@ kịch bản Cơ sở" — nó là **một sản phẩm khác**.
 > Hỏi vài cửa hàng nhạc cụ về sản lượng bán đàn phím mỗi năm là thay được nó bằng số
 > thật, và **toàn bộ trần doanh thu dịch theo**. Chi phí kiểm chứng: vài cuộc gọi.
 
-## 6. Ba việc thay đổi bức tranh nhiều nhất
+## 6. Nhánh quốc tế
+
+Mục 5 vừa kết luận thị trường trong nước có trần khoảng **100-1.800 khách/năm**. Câu hỏi
+tự nhiên tiếp theo là ra ngoài biên giới thì trần đó dịch đi đâu. Câu trả lời phụ thuộc
+hoàn toàn vào việc **giữ hay bỏ tiếng Việt**, và hai lựa chọn đó khác nhau tới mức không
+được gộp chung vào một chữ "quốc tế".
+
+### 6.1. Vì sao phải tách làm hai lớp
+
+Mục 1 `dinh-huong-kinh-doanh.md` ghi lợi thế cạnh tranh thật sự là **tiếng Việt + giải
+thích nguyên nhân + phương pháp tập xa đàn**. Trong ba vế đó, vế đầu là vế duy nhất đối
+thủ quốc tế không thể sao chép trong một sớm một chiều — hai vế sau thì Pianote hay một
+khóa của giáo viên thật ở Mỹ đã làm, có video, có người thật, có cộng đồng.
+
+Nghĩa là:
+
+| Lớp | Giữ tiếng Việt? | Lợi thế còn lại | Chi phí thêm |
+|---|---|---|---|
+| **Lớp D — Người Việt ở nước ngoài** | Có | **Nguyên vẹn** | Gần bằng không |
+| **Lớp E — Thị trường ngoài tiếng Việt** | Không | **Mất vế mạnh nhất** | Rất lớn |
+
+Toàn bộ giá trị của nhánh quốc tế nằm ở Lớp D. Lớp E có mặt trong tài liệu này chủ yếu
+để **ghi lại lý do không làm**, đúng tinh thần mục 8 `lo-trinh-phat-trien.md`.
+
+### 6.2. Lớp D — người Việt ở nước ngoài
+
+> [!IMPORTANT]
+> **Đây không phải một dự án mở rộng. Đây là một ô còn thiếu ở trang thanh toán.**
+>
+> SEO tiếng Việt **đã** phục vụ nhóm này rồi: Google trả kết quả theo ngôn ngữ truy vấn,
+> không theo biên giới. Một người Việt ở Nagoya gõ *"tự học piano bắt đầu từ đâu"* nhận
+> về đúng trang mà một người ở Cầu Giấy nhận về. Họ đọc được Chương 0, tick được bài, đi
+> hết Chương 1 — rồi chạm paywall và **không có cách nào trả tiền**, vì `packages.ts`
+> chỉ có `priceVnd` và `checkout` chỉ sinh VietQR.
+>
+> Nói cách khác, kênh này **không cần mở**; nó đang mở sẵn và đang rò. Cái cần làm là một
+> mức giá ngoại tệ và một cổng thanh toán thứ hai.
+
+**Ước lượng tệp khách** — làm theo đúng cách của mục 5, và cũng thừa hưởng đúng độ tin
+cậy thấp của mục 5:
+
+| Bước | Ước tính | Ghi chú |
+|---|---|---|
+| Người Việt ở nước ngoài | ~6 triệu | Con số hay được dẫn từ công bố của Ủy ban Nhà nước về người Việt Nam ở nước ngoài. **Chưa tra lại nguồn gốc khi viết mục này** — nhưng đây cũng là bước ít ảnh hưởng nhất, vì ba bước lọc bên dưới mới là chỗ sai số dồn lại |
+| Trừ thế hệ 2-3 không đọc trôi chảy tiếng Việt, trừ nhóm lao động thời vụ ở ký túc xá không có chỗ đặt đàn | **~1,5-2,5 triệu người lớn** | Suy đoán, biên độ rộng |
+| Mỗi năm mua đàn phím rồi tự mò học — lấy tỷ lệ trong nước nhân 1,5 (thu nhập cao hơn, nhà rộng hơn) | 0,3-0,6% → **5.000-15.000/năm** | Suy luận |
+| Trong đó chịu trả tiền cho một giáo trình có cấu trúc | **5-10%** → 250-1.500/năm | Cao hơn hẳn mức 1-3% trong nước — xem lý do bên dưới |
+| Thị phần sau 5-7 năm | 10-20% → **25-300 khách/năm** | Suy luận |
+
+**Vì sao tỷ lệ chịu trả tiền cao hơn trong nước 3-5 lần.** Ba lý do, xếp theo sức nặng:
+
+1. **Rào cản 1.2 yếu đi rõ rệt.** Trần giá sẵn sàng trả trong nước bị neo bởi 0đ của
+   YouTube tiếng Việt. Ở nước ngoài cái neo ấy vẫn còn, nhưng **1 triệu đồng ở Sydney
+   không phải là một quyết định** — nó ngang hai bữa ăn ngoài. Cùng một sản phẩm, cùng
+   một đối thủ miễn phí, nhưng chi phí của việc thử giảm gần về không.
+2. **Lựa chọn thay thế mạnh nhất biến mất.** Người ở Việt Nam không thích tự học thì đi
+   tìm gia sư nói tiếng Việt, giá 500k-5tr/tháng. Người ở Munich thì không — hoặc học
+   thầy nói tiếng Đức, hoặc tự học. Sản phẩm này rơi đúng vào khoảng trống đó.
+3. **Rào cản 1.5 nhẹ hơn.** Nhóm quen trả tiền cho phần mềm và khóa học thì ít chuyền
+   file hơn.
+
+**Giá đề xuất: 39 USD** (~1,0tr theo tỷ giá ~26.000). Vẫn rẻ hơn nhiều so với mốc
+2,3-4,4tr/năm của app quốc tế ở mục 2 `dinh-huong-kinh-doanh.md`, nên không cần bịa lý
+do gì để bảo vệ mức giá này.
+
+> [!WARNING]
+> **Chênh 2,5 lần giữa giá VND và giá USD là định giá theo vùng, và phải gọi đúng tên nó.**
+>
+> Đây là chuyện bình thường trong ngành (phần mềm, khóa học online đều làm), nhưng nó
+> **không** được trình bày như một khuyến mại — không "giảm giá cho thị trường Việt Nam",
+> không giá gốc gạch ngang. Mục 6 `dinh-huong-kinh-doanh.md` cấm chuyện đó, và Nghị định
+> 81/2018 vẫn áp cho phần bán trong nước bất kể có bảng giá thứ hai hay không. Hiển thị
+> hai mức giá theo khu vực là được; giải thích sai lý do vì sao chúng khác nhau thì không.
+
+**Chi phí thêm — chỗ ăn mất phần lớn khoản chênh giá:**
+
+| Khoản | Ước tính | Ghi chú |
+|---|---|---|
+| Cổng thanh toán quốc tế dạng *merchant of record* (Paddle, Lemon Squeezy) | **~5% + phí giao dịch** | Đắt gần gấp đôi Stripe, đổi lại **họ đứng tên người bán và lo VAT/GST/sales tax** của cả trăm nước |
+| Công kỹ thuật lần đầu | **2-4 tuần** | Thêm `priceUsd` vào `packages.ts`, cổng thứ hai song song VietQR, chọn bảng giá theo khu vực |
+| Thuế Việt Nam | Không đổi bản chất | Doanh thu từ nước ngoài vẫn là doanh thu của hộ kinh doanh VN. Chứng từ ngoại tệ là phần **phải hỏi kế toán**, đừng đoán |
+| Hỗ trợ lệch múi giờ | Nhỏ nhưng khác 0 | |
+
+> [!NOTE]
+> **Vì sao chọn *merchant of record* dù đắt hơn Stripe.** Bán hàng số cho người tiêu dùng
+> ở EU, Úc, Canada làm phát sinh nghĩa vụ thuế tiêu dùng **tại nước người mua**, ngay từ
+> đồng đầu tiên ở một số nơi. Với vài chục đơn một năm, chi phí thật của việc tự lo phần
+> đó lớn hơn nhiều so với 2% chênh lệch phí. Đây là khoản đổi tiền lấy việc không phải
+> biết tới một vấn đề — đúng thứ nên mua khi chỉ có một người làm.
+
+**Dòng tiền, cộng vào kịch bản Cơ sở.** Giả định bật từ **N3 (2029)** — không sớm hơn,
+vì trước đó việc đúng vẫn là đo T3→T4 trong nước chứ không phải phân tán:
+
+| Năm | Khách Lớp D | Giá TB | **DT gộp thêm** |
+|---|---|---|---|
+| N3 · 2029 | 15 | 1,0tr | ~15tr |
+| N4 · 2030 | 40 | 1,0tr | ~40tr |
+| N5 · 2031 | 70 | 1,1tr | ~77tr |
+| N6 · 2032 | 100 | 1,1tr | ~110tr |
+| N7 · 2033 | 130 | 1,2tr | ~156tr |
+
+Cộng 5 năm: **~400tr gộp**, tương đương **+15%** trên nền 2,6 tỷ của kịch bản Cơ sở.
+Sau phí *merchant of record* thì phần ròng thêm khoảng **370tr**.
+
+Con số N7 (130 khách) nằm ở **khoảng giữa dưới** của ước lượng 25-300 ở bảng trên, chọn
+thận trọng vì Lớp D không có kênh riêng — nó ăn theo đúng lượng truy cập mà SEO tiếng
+Việt đã kéo về, nên nó **bị chặn trần bởi cùng những rào cản của mục 1**, không phải là
+một nguồn khách độc lập.
+
+### 6.3. Lớp E — thị trường ngoài tiếng Việt
+
+**Tiếng Anh: khuyến nghị không làm.** Bỏ tiếng Việt là bỏ vế mạnh nhất trong ba vế lợi
+thế, để bước vào thị trường đông đối thủ nhất và có chi phí kiếm khách đắt nhất của cả
+ngành giáo dục trực tuyến. Thứ còn lại trong tay — *có thứ tự, giải thích vì sao, không
+ép chạy theo bản nhạc* — là thứ các khóa của giáo viên thật ở thị trường đó đã làm từ
+lâu, kèm video và mặt người dạy mà rào cản 1.3 đang nói là ta chưa có. Chi phí: dịch
+40+ bài bởi người vừa giỏi tiếng vừa biết nhạc lý, rồi **vẫn phải quay video** vì thị
+trường ấy không mua chữ.
+
+**Ngôn ngữ Đông Nam Á thiếu giáo trình bản địa: hấp dẫn về cấu trúc, chặn về năng lực.**
+Indonesia là ví dụ rõ nhất — dân số lớn, thị trường đàn phím lớn, và **đúng cái khoảng
+trống mà sản phẩm này đang khai thác ở Việt Nam**: gần như không có giáo trình có cấu
+trúc bằng tiếng bản địa. Nhưng không nói được tiếng thì không viết được bài mới, không
+trả lời được câu hỏi của khách, không thẩm định nổi chất lượng bản dịch, và không làm
+được SEO — mà SEO lại đang là toàn bộ kế hoạch kiếm khách. Cộng thêm hệ thanh toán nội
+địa riêng và mặt bằng giá phải xuống còn 8-12 USD.
+
+Cửa duy nhất là **đối tác bản địa chia doanh thu 30-40%**, và chỉ mở sau khi bản tiếng
+Việt đã chứng minh được T3→T4 cao — vì nếu lộ trình không giữ chân được người học ở thị
+trường mình hiểu rõ nhất, nó sẽ không giữ chân được ai ở thị trường mình không hiểu gì.
+**Đóng góp của lớp này trong 7 năm: coi như 0.**
+
+### 6.4. Tổng ba kịch bản sau khi cộng nhánh quốc tế
+
+| Kịch bản | Trong nước (7 năm) | Lớp D | **Tổng gộp** | Ghi chú |
+|---|---|---|---|---|
+| **Xấu** (~45%) | ~76tr | ~0 | **~76tr** | Đã dừng trước khi kịp mở cổng quốc tế |
+| **Cơ sở** (~40%) | ~2,6 tỷ | ~400tr | **~3,0 tỷ** | Lớp E = 0 |
+| **Tốt** (~15%) | ~15,6 tỷ | ~1,2 tỷ | **~16,8 tỷ** | Nếu có đối tác Đông Nam Á thì cao hơn, nhưng lúc đó đã là công ty — xem cảnh báo mục 3.3 |
+
+> [!WARNING]
+> **Nhánh quốc tế không cứu được kịch bản Xấu, và đó là điều quan trọng nhất của cả mục 6.**
+>
+> Lớp D nhân lên từ chính lượng truy cập mà SEO tiếng Việt kéo về. Phễu trong nước hỏng
+> thì không có gì để nhân. Nghĩa là "đưa ra quốc tế" **không phải phương án dự phòng khi
+> số liệu trong nước đáng thất vọng** — mà đó lại đúng là lúc người ta hay nghĩ tới nó
+> nhất, vì làm một thị trường mới thì dễ chịu hơn nhiều so với thừa nhận sản phẩm chưa
+> giữ được người học.
+>
+> Nếu ở N2-N3 mà đang đi theo nhánh Xấu, việc đúng vẫn là mục 8 `dinh-huong-kinh-doanh.md`,
+> không phải mục 6 này.
+
+### 6.5. Việc cần làm, và thời điểm
+
+1. **Ngay bây giờ, chi phí bằng không:** ở câu hỏi lúc mua của tầng **T7**, hỏi thêm
+   *đang ở đâu*. Nếu trong nhóm khách đầu tiên đã có người ở nước ngoài — nhất là người
+   trả được bằng VietQR nhờ còn giữ tài khoản ngân hàng Việt Nam, tức du học sinh và
+   người mới đi vài năm — thì Lớp D **không còn là giả định nữa**, và toàn bộ mục 6.2
+   được thay bằng số thật.
+2. **Cùng lúc với trang bán hàng cho người lạ:** thêm mức giá USD. Chưa cần cổng thứ hai,
+   chỉ cần **biết có bao nhiêu người nhìn thấy giá rồi bỏ đi vì không trả được**.
+3. **Khi số ở bước 2 vượt khoảng 10 người/năm:** lắp *merchant of record*, và thêm một
+   dòng giá USD vào mục 4 `dinh-huong-kinh-doanh.md` — hiện bảng giá ở đó chỉ có VND.
+4. **Lớp E:** không làm. Xem lại nếu và chỉ nếu có đối tác bản địa chủ động tìm tới.
+
+## 7. Ba việc thay đổi bức tranh nhiều nhất
 
 1. **Đưa 20-30 người thật vào Chương 0-1 trong 4-8 tuần tới.** Không cần trang bán,
    không cần Vercel Pro, không cần thu tiền. Đây là việc duy nhất biến toàn bộ tài liệu
@@ -271,7 +441,11 @@ kịch bản Cơ sở" — nó là **một sản phẩm khác**.
    1.3 và 1.4. Xem tranh luận chưa chốt ở mục 1.3.
 3. **Cân nhắc ghép tên với một giáo viên thật.** Xem mục 1.3.
 
-## 7. Cái gì trong tài liệu này đáng tin, cái gì không
+Việc ở mục 6.5 bước 1 và 2 **không nằm trong danh sách này** dù chi phí gần bằng không —
+vì chúng chỉ khuếch đại một phễu chưa được đo, còn ba việc trên mới quyết định phễu ấy
+có tồn tại hay không.
+
+## 8. Cái gì trong tài liệu này đáng tin, cái gì không
 
 | Phần | Đánh giá |
 |---|---|
@@ -280,6 +454,9 @@ kịch bản Cơ sở" — nó là **một sản phẩm khác**.
 | Bảng N1-N2 (mục 3) | Sai số lớn nhưng còn dùng được để chuẩn bị |
 | Bảng N3-N7 (mục 3) | **Văn học.** Chỉ dùng để thấy hình dạng đường cong |
 | Quy mô thị trường (mục 5) | Giả định đầu tiên chưa kiểm chứng — cả mục sụp nếu nó sai |
+| Lập luận Lớp D (mục 6.2) | **Đáng tin về mặt lý lẽ** — SEO tiếng Việt phục vụ sẵn nhóm này là sự thật kiểm chứng được, không phải suy đoán |
+| Con số Lớp D (bảng mục 6.2) | Kế thừa nguyên độ bất định của mục 5, nhân thêm một tầng suy đoán về tệp người Việt ở nước ngoài. **Yếu hơn mục 5** |
+| Khuyến nghị không làm Lớp E (mục 6.3) | Đáng tin — lập luận định tính, không phụ thuộc con số nào |
 | Xác suất 45/40/15 | **Phán đoán chủ quan**, không có cơ sở thống kê |
 
 Nguồn công khai về quy mô thị trường học nhạc online Việt Nam gần như **không có gì
@@ -287,12 +464,14 @@ dùng được**. Hai tín hiệu yếu duy nhất tìm được: giáo dục tr
 20%/năm, và Liên hoan Piano toàn quốc 2026 quy tụ ~1.300 người dự thi. Cả hai đều
 **không thay thế được 20 người học thật của riêng mình**.
 
-## 8. Điều kiện xem lại tài liệu này
+## 9. Điều kiện xem lại tài liệu này
 
 - Sau khi biết **T3→T4 thật** từ 20-30 người đầu tiên — viết lại mục 2, và mục 3 tự
   động thay đổi theo.
 - Sau khi **bán được đơn đầu tiên cho người lạ** — thay giả định T4→T5.
 - Sau khi hỏi được **sản lượng đàn phím bán ra ở VN** — thay mục 5.
+- Sau khi biết **bao nhiêu phần trăm khách đầu tiên đang ở nước ngoài** (mục 6.5 bước 1)
+  — thay toàn bộ bảng ước lượng ở mục 6.2 bằng số thật.
 - Nếu sau 12 tháng kể từ đơn đầu tiên mà số khách **dưới cận dưới kịch bản Xấu**, tài
   liệu này hết giá trị; lúc đó việc cần làm là đọc lại mục 0 `dinh-huong-kinh-doanh.md`
   và xem giả thuyết nền có còn đứng được không.
@@ -315,4 +494,5 @@ dùng được**. Hai tín hiệu yếu duy nhất tìm được: giáo dục tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `docs(internal): Thêm nhánh quốc tế vào dự phóng 7 năm` | Có người hỏi doanh thu 7 năm khi đưa ra quốc tế, mà cả ba tài liệu nội bộ chưa có dòng nào về việc tự mình bán ra ngoài. Thêm mục 6 tách nhánh này làm hai lớp vì chúng khác nhau về bản chất: giữ tiếng Việt thì lợi thế còn nguyên và chi phí gần bằng không, bỏ tiếng Việt thì mất đúng vế mạnh nhất. Ghi lại lý do **không** dịch sang tiếng Anh để lần sau khỏi bàn lại, và ghi rõ nhánh quốc tế không cứu được kịch bản Xấu — đây là lúc người ta hay nghĩ tới nó nhất nên phải chặn trước bằng chữ |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Tạo file — ba kịch bản 7 năm 2027-2033, bảng phễu, quy đổi gộp sang ròng, năm rào cản thật, kiểm tra ngược bằng quy mô thị trường |

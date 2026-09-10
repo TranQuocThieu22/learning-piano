@@ -18,7 +18,10 @@
 >
 > `du-phong-7-nam.md` — dự phóng doanh thu 7 năm và đánh giá tính khả thi. Độ tin cậy
 > thấp hơn hai file này; đọc kèm cảnh báo ở đầu file đó. Mục 1.3 của nó **không đồng ý**
-> với thứ tự ưu tiên video ở mục 9 dưới đây — tranh luận chưa chốt.
+> với thứ tự ưu tiên video ở mục 9 dưới đây — tranh luận chưa chốt. **Mục 6 của nó bàn
+> chuyện bán ra nước ngoài** — kết luận: bán cho người Việt ở nước ngoài thì đáng, dịch
+> sang tiếng Anh thì không. Bảng giá ở mục 4 dưới đây sẽ cần thêm một dòng giá USD nếu
+> nhánh đó được bật, nhưng **chưa phải bây giờ**.
 
 ---
 
@@ -201,6 +204,7 @@ Chỉ nên bắt đầu thu tiền sau bước 1 và 2.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `docs(internal): Thêm nhánh quốc tế vào dự phóng 7 năm` | Trỏ sang mục 6 mới của `du-phong-7-nam.md`, đặt ngay ở đầu file thay vì để người đọc bảng giá mục 4 tự đoán — vì mục 4 hiện chỉ có giá VND và đó chính là chỗ chặn khách ở nước ngoài |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang `du-phong-7-nam.md`; đánh dấu bất đồng **chưa chốt** về thứ tự ưu tiên video quay tay ở mục 9 |
 | 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Thêm dòng "Tài liệu đi kèm" trỏ sang `lo-trinh-phat-trien.md` |
 | 24/08/2026 | `Bỏ tên đích danh sản phẩm đối thủ khỏi tài liệu định hướng` | Thay tên thương hiệu bằng mô tả theo cách làm — lý do pháp lý ghi ở mục 0 |
