@@ -61,6 +61,18 @@
   cả một chương về pedal). Cả hai đều hay bị cắt ở đàn giá thấp và người mua lần đầu
   không biết mà hỏi. Đã bổ sung vào khối gợi ý ở Chương 1 và dẫn sang trang mới; khối
   mời beta ở trang lộ trình cũng thêm link.
+- **Đăng bài vào nhóm tự học piano đầu tiên — đang chờ admin duyệt.** Đây mới là kênh
+  tuyển thật; Trang Facebook chỉ là chỗ người ta kiểm tra mình là ai sau khi thấy bài ở
+  nơi khác. Bài chưa được duyệt thì chưa đếm được gì, kể cả lượt xem.
+- **Gom bảy mẫu comment thành `mau-comment-tuyen-beta.md`.** Soạn lại mỗi lần thì mỗi
+  lần một giọng, và dễ trượt về kiểu comment chỉ có lời mời. File chốt luôn sáu nguyên
+  tắc để không bị gỡ, trong đó có ranh giới vừa chốt hôm nay: comment **không nêu mình
+  là tác giả**, nhưng cũng **không dựng lên một người học không có thật** để khen giáo
+  trình — không nói ra thì là im lặng, bịa ra một người học thì là chuyện khác hẳn.
+- **Comment vào 3 bài trong nhóm, có dán link, chưa ai trả lời.** Làm trong lúc chờ bài
+  đăng được duyệt. Chưa comment nào bị gỡ. Đây là lượt tiếp xúc đầu tiên với người lạ
+  không đi qua bài đăng của mình, và vì có dán link nên từ giờ mọi lượt truy cập lạ
+  trên Analytics đều có một đường để quy về — trước hôm nay thì không.
 
 **Quan sát**
 
@@ -76,6 +88,14 @@
 - Các việc chốt hôm 09/09 vẫn còn nguyên: **đăng vào 4-6 nhóm tự học piano** (kênh tuyển
   thật, rải ra vài ngày), **chốt chặn 1 khoảng 23/09**, và khi có người đầu tiên đăng
   nhập thì cấp gói kèm ghi chú **`beta dot 1`**.
+- **Trong lúc chờ duyệt thì đi bằng comment, không đi bằng bài đăng.** Trả lời thật vào
+  các bài người ta đang hỏi (mua đàn, bắt đầu từ đâu, hai tay không phối hợp được) rồi
+  mới nhắc tới giáo trình ở dòng cuối. Bài chỉ có mỗi lời mời thì bị xoá, còn một câu
+  trả lời có ích thì admin không có cớ gỡ. Đừng dán cùng một đoạn ở nhiều bài.
+- **Sau 1-2 ngày mở lại đúng 3 bài đã comment, và kiểm cả hộp tin nhắn chờ.** Người mới
+  thường ngại hỏi công khai mà nhắn riêng, nên tin nhắn chờ (message request) là chỗ dễ
+  bỏ sót nhất. Không ai trả lời trong vài ngày thì vấn đề nằm ở chỗ chọn bài để comment,
+  không phải ở lời văn — comment dưới bài đã cũ thì gần như không ai đọc.
 
 ## 09/09/2026 — Ngày 0 của beta
 
