@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { MarkdownFile } from '@/lib/markdown';
 import { isFreeContent } from '@/lib/access';
 import { ThemeToggle } from './ThemeToggle';
+import { InstallPrompt } from './InstallPrompt';
 import { signInWithGoogle, signOutAction } from '@/lib/auth-actions';
 
 /** Vietnamese sidebar headings; falls back to the folder name if unlisted. */
@@ -311,6 +312,9 @@ export function AppLayout({
       <AppShell.Main className="app-main">
         {children}
       </AppShell.Main>
+
+      {/* Đặt ngoài Main để thanh mời nổi trên nội dung, không đẩy bài đọc xuống. */}
+      <InstallPrompt />
     </AppShell>
   );
 }
