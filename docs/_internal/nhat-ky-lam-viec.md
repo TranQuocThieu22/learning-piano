@@ -40,6 +40,43 @@
 
 ---
 
+## 10/09/2026 — Gỡ rào cản trước cửa
+
+**Đã làm**
+
+- **Trang lộ trình có hình.** Đây là chỗ người từ Facebook đáp xuống đầu tiên, nhưng
+  trước hôm nay nó chỉ là một danh sách mười một chương toàn chữ. Thêm bản đồ hành
+  trình dạng SVG (chương thành vòng tròn, Trạm dừng chân thành ngôi sao, hai giai đoạn
+  thành hai vùng màu, Chương 8-10 vẽ nét đứt vì đang soạn), mục "Buổi tập đầu tiên bạn
+  chơi được gì?" nhúng bản nhạc thật của Bài tập 1B bằng `{{sheet:}}` để khách nghe thử
+  ngay câu mở đầu Ode to Joy, và ảnh thế tay Đô sẵn có của Chương 1. Ba Trạm dừng chân
+  đổi từ danh sách sang bảng có cột "Bạn chơi được gì".
+- **Thêm trang `07-doc-them/chon-dan-dau-tien.md`.** Điều kiện tham gia beta là "có đàn
+  thật", nhưng chỗ duy nhất nói về chuyện mua đàn lại là một khối nhỏ trong Chương 1 và
+  chỉ nêu mỗi cây tầm 15-20 triệu — với người đang cân nhắc bắt đầu thì đó là cánh cửa
+  đóng. Trang mới mở bằng câu "dưới 3 triệu là đi trọn được Giai đoạn 1 và 2", dựa trên
+  nhóm đàn gấp gọn 88 phím quanh 2-4 triệu.
+- **Ghi lại hai ràng buộc phần cứng trước nay chưa tài liệu nào ghi:** đàn bắt buộc phải
+  có **phím cảm ứng lực** (Chương 5 dạy chơi to nhỏ) và **cổng cắm pedal** (Chương 9 là
+  cả một chương về pedal). Cả hai đều hay bị cắt ở đàn giá thấp và người mua lần đầu
+  không biết mà hỏi. Đã bổ sung vào khối gợi ý ở Chương 1 và dẫn sang trang mới; khối
+  mời beta ở trang lộ trình cũng thêm link.
+
+**Quan sát**
+
+- Rào cản "có đàn" là thứ dễ bỏ quên nhất khi tuyển beta: mọi tài liệu đều viết cho
+  người **đã có** đàn, nên người chưa có đọc xong không biết đi tiếp bằng đường nào.
+  Hai thay đổi hôm nay đều nhắm vào cùng một chỗ — mấy phút đầu tiên của người lạ.
+- Giá đàn ghi theo khoảng và nói rõ phải kiểm lại; đàn thương hiệu lớn chỉ nêu theo
+  series chứ không ghim model, vì số hiệu đổi hàng năm. Lần sau sửa trang này thì giữ
+  nguyên lối viết đó.
+
+**Tiếp theo**
+
+- Các việc chốt hôm 09/09 vẫn còn nguyên: **đăng vào 4-6 nhóm tự học piano** (kênh tuyển
+  thật, rải ra vài ngày), **chốt chặn 1 khoảng 23/09**, và khi có người đầu tiên đăng
+  nhập thì cấp gói kèm ghi chú **`beta dot 1`**.
+
 ## 09/09/2026 — Ngày 0 của beta
 
 **Đã làm**
