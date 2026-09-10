@@ -47,7 +47,7 @@ export default async function MuaPage({
   const laQuanTri = hasFullAccess && !alreadyOwns;
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Mở khoá toàn bộ giáo trình

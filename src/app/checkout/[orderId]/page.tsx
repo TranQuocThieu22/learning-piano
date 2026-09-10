@@ -38,7 +38,7 @@ export default async function DonHangPage({
   const paid = order.status === 'paid';
 
   return (
-    <AppLayout user={session.user}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Group justify="space-between" align="center" mb="xs" wrap="wrap">
           <Title order={2}>Đơn hàng</Title>

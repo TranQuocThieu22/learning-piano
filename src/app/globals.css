@@ -321,36 +321,20 @@ body {
   --tab-bar-h: 56px;
 }
 
-/* --- KHUNG APP: thanh trên đỉnh, nội dung, thanh tab dưới đáy --- */
+/* --- KHUNG APP: nội dung + thanh tab dưới đáy --- */
 /*
- * Thay cho `AppShell` của Mantine đã bỏ. Ba lớp CSS cũ (.app-header, .app-navbar,
- * .app-main) từng phải cộng tay chiều cao thanh tiêu đề vì AppShell dựng với
- * `offset: false` — nay không còn AppShell thì cũng không còn phần bù đó, chỉ còn
- * hai con số thật: chiều cao thanh trên và chiều cao thanh tab.
+ * Không còn `AppShell`, cũng không còn thanh tiêu đề riêng — xem `AppLayout.tsx`
+ * để biết hai thứ đó đi đâu. Còn đúng một thanh cố định là thanh tab dưới đáy,
+ * nên nội dung chỉ phải chừa chỗ cho nó.
  *
- * Cả hai thanh đều `position: fixed`, nên nội dung phải tự chừa chỗ bằng padding.
+ * `--safe-top` vẫn phải giữ: chạy toàn màn hình thì thanh trạng thái biến mất
+ * nhưng phần khuyết (tai thỏ, camera đục lỗ) thì không, và ở chế độ
+ * `viewport-fit=cover` nội dung được phép tràn lên tận đó.
  */
-:root {
-  --topbar-h: 48px;
-}
-
-.app-topbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 200;
-  height: calc(var(--topbar-h) + var(--safe-top));
-  padding-top: var(--safe-top);
-  padding-inline: var(--safe-left) var(--safe-right);
-  background: var(--mantine-color-body);
-  border-bottom: 1px solid var(--mantine-color-default-border);
-}
-
 .app-content {
   max-width: 900px;
   margin: 0 auto;
-  padding-top: calc(var(--topbar-h) + var(--safe-top) + var(--mantine-spacing-md));
+  padding-top: calc(var(--safe-top) + var(--mantine-spacing-md));
   /* Cộng --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và cuộn
      hết cỡ vẫn không đọc được đoạn kết. */
   padding-bottom: calc(

@@ -30,12 +30,12 @@ export default async function Home() {
   const firstLesson = allLessons[0] ?? null;
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       {/* Không lặp lại tiêu đề "Piano Journey" ở đây: thanh tiêu đề ngay phía
           trên đã ghi rồi, viết lần nữa chỉ đẩy nút "Học tiếp" xuống thấp. */}
       <Container size="sm" px={0}>
         <HomeScreen
-          signedIn={Boolean(session?.user)}
+          user={session?.user ?? null}
           completedCount={completedCount}
           totalCount={allLessons.length}
           continueLesson={

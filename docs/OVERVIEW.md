@@ -129,12 +129,22 @@ CMS, không có bảng bài học trong database.
 | `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
 | `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
 
-**Điều hướng.** Không còn `AppShell` và thanh bên — đã bỏ hẳn ngày 10/09/2026. Khung app
-giờ là **thanh mỏng trên đỉnh** (quay lại, đăng nhập, đổi nền) + **thanh tab dưới đáy**
-(Trang chủ · Mục lục · Bài tập · Nhịp · Nhật ký), giống một app điện thoại. Mục lục đầy
-đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/library` cho phần chữ và
-`/exercises` cho phần bài tập — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà không có
-hai trang đó thì mới là làm mất đường đi.
+**Điều hướng.** Không còn `AppShell`, không còn thanh bên, và từ 10/09/2026 cũng không
+còn thanh tiêu đề riêng của app. Trên màn hình chỉ còn **một thanh cố định duy nhất**:
+thanh tab dưới đáy (Trang chủ · Mục lục · Bài tập · Nhịp · Nhật ký), nơi ngón cái với
+tới được. Đăng nhập/đăng xuất và đổi nền dời vào thẻ tài khoản ở cuối màn hình chủ; quay
+lại thì dùng cử chỉ vuốt của điện thoại, nút back của trình duyệt, hoặc nút *Bài trước* ở
+cuối mỗi bài.
+
+Mục lục đầy đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/library` cho phần
+chữ và `/exercises` cho phần bài tập — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà
+không có hai trang đó thì mới là làm mất đường đi.
+
+**Toàn màn hình.** App cố ý chạy không có thanh trạng thái của điện thoại, vì chiều cao
+là thứ khan hiếm nhất lúc tập. Hai lớp: manifest khai `display: 'fullscreen'` (chỉ ăn với
+app đã cài lại sau lần đổi manifest), và `FullscreenOnFirstTap.tsx` gọi Fullscreen API ở
+lần chạm đầu tiên để phủ nốt hai trường hợp còn lại — mở bằng tab trình duyệt, và app cài
+từ trước vẫn đang chạy ở `standalone`. Chỉ áp cho màn hình hẹp; máy tính không tự bung.
 
 **Tính năng đáng chú ý:**
 
@@ -269,6 +279,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình` | Bỏ thanh cố định cuối cùng ở trên đỉnh và ghi lại hai lớp làm nên chế độ toàn màn hình, vì lớp manifest chỉ ăn khi cài lại app nên dễ tưởng là không chạy |
 | 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Bỏ thanh bên và nút hamburger: trên điện thoại nó nằm ở góc xa ngón cái nhất mà lại là đường duy nhất đi bất cứ đâu, và kéo theo cả chùm việc phải bù cho `offset: false`; mục lục dời sang `/library` và `/exercises` |
 | 10/09/2026 | `feat: Thêm màn hình chủ, thanh tab và bản đồ chặng cho điện thoại` | `/` không còn chuyển hướng mà thành màn hình chủ; thêm `/exercises` và nút chuyển bài cuối trang, vì mở app ra là rơi thẳng vào tài liệu dài và mọi đường đi khác đều phải qua nút hamburger ở góc xa ngón cái nhất |
 | 27/08/2026 | `refactor: Đổi đường dẫn tự viết sang tiếng Anh và chốt quy ước` | Đường dẫn trong tài liệu đổi theo quy ước mới: /nhat-ky thành /journal, /admin/thanh-toan thành /admin/payments |

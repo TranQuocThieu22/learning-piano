@@ -2,7 +2,6 @@ import { Container, Text } from '@mantine/core';
 import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { MarkdownViewer } from '@/components/MarkdownViewer';
-import { auth } from '@/auth';
 import { getMarkdownContent } from '@/lib/markdown';
 
 export const metadata = { title: 'Điều khoản sử dụng' };
@@ -17,10 +16,8 @@ export default async function TermsPage() {
   const content = getMarkdownContent('legal/terms.md');
   if (!content) notFound();
 
-  const session = await auth();
-
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <MarkdownViewer content={content} />
         <Text size="xs" c="dimmed" mt="xl">

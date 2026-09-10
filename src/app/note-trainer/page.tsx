@@ -1,17 +1,14 @@
 import { Container, Stack, Text, Title } from '@mantine/core';
 import { AppLayout } from '@/components/AppLayout';
 import { NoteRecognitionDrill } from '@/components/NoteRecognitionDrill';
-import { auth } from '@/auth';
 
 export const metadata = {
   title: 'Luyện nhận nốt',
 };
 
 export default async function NoteRecognitionPage() {
-  const session = await auth();
-
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">Luyện nhận nốt</Title>
         <Text c="dimmed" mb="lg">

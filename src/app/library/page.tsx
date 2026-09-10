@@ -40,7 +40,7 @@ export default async function LibraryPage() {
       .sort((a, b) => a.slug.localeCompare(b.slug));
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Title order={2} mb="lg">
           Mục lục

@@ -42,7 +42,7 @@ export default async function ExercisesPage() {
   }));
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Bài tập

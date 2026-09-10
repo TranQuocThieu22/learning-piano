@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
     allFiles.find((f) => f.category === category && f.slug === slug)?.title ?? slug;
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       {allowed ? (
         <>
           {isExerciseLesson && (

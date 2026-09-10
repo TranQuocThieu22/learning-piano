@@ -21,7 +21,8 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import type { ComponentType } from 'react';
-import { signInWithGoogle } from '@/lib/auth-actions';
+import { AccountCard } from './AccountCard';
+import type { AppSessionUser } from './AppLayout';
 
 /**
  * Màn hình chủ của app.
@@ -45,7 +46,8 @@ interface Tile {
 }
 
 export interface HomeScreenProps {
-  signedIn: boolean;
+  /** Người đang đăng nhập, `null` nếu chưa. Dùng cho thẻ tài khoản cuối trang. */
+  user: AppSessionUser | null;
   completedCount: number;
   totalCount: number;
   /** Bài đầu tiên chưa tick. `null` nghĩa là đã tick hết. */
@@ -58,7 +60,7 @@ export interface HomeScreenProps {
 }
 
 export function HomeScreen({
-  signedIn,
+  user,
   completedCount,
   totalCount,
   continueLesson,
@@ -143,30 +145,6 @@ export function HomeScreen({
         )}
       </Card>
 
-      {/*
-        Chưa đăng nhập thì vẫn học được — Chương 0 và Chương 1 vốn miễn phí. Chỉ
-        nói đúng một điều: không đăng nhập thì tiến độ tick không được lưu. Không
-        chặn đường, không hứa hẹn gì thêm.
-      */}
-      {!signedIn && (
-        <Card withBorder padding="md" radius="md">
-          <Stack gap="sm">
-            <div>
-              <Text fw={600}>Đăng nhập để lưu tiến độ</Text>
-              <Text size="sm" c="dimmed">
-                Không đăng nhập vẫn đọc và tập bình thường, chỉ là những bài đã
-                tick sẽ không được nhớ lại ở lần mở sau.
-              </Text>
-            </div>
-            <form action={signInWithGoogle}>
-              <Button type="submit" variant="light" size="md">
-                Đăng nhập với Google
-              </Button>
-            </form>
-          </Stack>
-        </Card>
-      )}
-
       <SimpleGrid cols={{ base: 2, sm: 3 }} spacing="sm">
         {tiles.map(({ href, label, hint, Icon, color }) => (
           <UnstyledButton key={href + label} component={Link} href={href}>
@@ -182,6 +160,14 @@ export function HomeScreen({
           </UnstyledButton>
         ))}
       </SimpleGrid>
+
+      {/*
+        Thẻ tài khoản đứng CUỐI: đăng nhập một lần rồi thôi, đổi nền vài tháng
+        một lần — không thứ nào đáng đứng trên nút Học tiếp. Chưa đăng nhập thì
+        thẻ này nói rõ mất gì (không lưu được tick), nhưng vẫn không chặn đường:
+        Chương 0 và Chương 1 vốn miễn phí, không đăng nhập vẫn đọc và tập được.
+      */}
+      <AccountCard user={user} />
     </Stack>
   );
 }

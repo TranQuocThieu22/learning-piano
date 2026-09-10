@@ -39,7 +39,7 @@ export default async function LearningLogPage() {
   const currentLesson = allLessons.find((l) => !completedSlugs.has(l.slug));
 
   return (
-    <AppLayout user={session?.user ?? null}>
+    <AppLayout>
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">
           Nhật ký học tập
