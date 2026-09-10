@@ -363,6 +363,15 @@ body {
  *
  * z-index 350 nằm trên thanh mời cài đặt (300) và thanh tiêu đề của AppShell.
  */
+/*
+ * Padding nằm ở đây chứ không ở `style` nội tuyến của `AbcjsViewer.tsx`: style nội
+ * tuyến thắng mọi luật CSS không `!important`, nên để ở đó thì chế độ tập trung
+ * bên dưới không đổi được padding — kể cả phần chừa cho tai thỏ.
+ */
+.sheet-music-wrapper {
+  padding: 1rem;
+}
+
 .sheet-music-wrapper.is-focused {
   position: fixed;
   inset: 0;
@@ -376,8 +385,10 @@ body {
   overflow-y: auto;
   /* Cuộn hết bản nhạc thì dừng ở đó, không kéo trang phía dưới trôi theo. */
   overscroll-behavior: contain;
+  /* Không có padding trên: chỗ đó thuộc về thanh nút dính ở dưới, để lúc cuộn
+     thì bản nhạc trôi khuất hẳn sau thanh nút chứ không ló ra phía trên nó. */
   padding:
-    calc(0.75rem + env(safe-area-inset-top))
+    0
     calc(0.75rem + env(safe-area-inset-right))
     calc(0.75rem + env(safe-area-inset-bottom))
     calc(0.75rem + env(safe-area-inset-left));
@@ -469,10 +480,44 @@ body {
   overflow: auto;
 }
 
-/* Giữ hàng nút bám bên trái khi cuộn ngang, kẻo phóng to là mất nút Thoát. */
+/*
+ * Không con nào của lớp phủ được co lại.
+ *
+ * Đây là bẫy của flexbox: con mặc định `flex-shrink: 1`, nên khi lớp phủ hết chỗ
+ * thì trình duyệt BÓP NHỎ ô của con thay vì để nó tràn ra. Ô bị bóp thì phần nội
+ * dung thừa bị cắt, mà `scrollHeight` của lớp phủ lại tính theo ô đã bóp — cuộn
+ * xuống hết cỡ vẫn không thấy phần bị cắt. Đo trên điện thoại xoay ngang: thẻ
+ * *Tập bài này với đàn* cần 138px nhưng chỉ được cấp 34px, cuộn tối đa 18px là
+ * hết, đúng cái cảm giác "bị che phần dưới mà không kéo xuống thêm được".
+ *
+ * Khung bản nhạc đã có `flex: 0 0 auto` riêng ở trên vì đúng lý do này; luật này
+ * áp cho mọi con còn lại, để lần sau thêm thẻ mới vào lớp phủ là không dính lại.
+ */
+.sheet-music-wrapper.is-focused > * {
+  flex-shrink: 0;
+}
+
+/*
+ * Thanh nút bám dính cả ĐỈNH lẫn MÉP TRÁI, để nút Thoát không bao giờ trôi khỏi
+ * tầm mắt.
+ *
+ * `left: 0` cho lúc phóng to phải cuộn ngang. `top: 0` cho lúc màn hình thấp —
+ * điện thoại xoay ngang là tệ nhất: chỉ còn khoảng 360px chiều cao, cuộn xuống
+ * đọc nốt cuối là thanh nút biến mất, mà nền thì đang khoá cuộn nên trông y như
+ * treo máy. Đó cũng là lý do `max-height: 100%` ở khung bản nhạc chưa đủ: nó chỉ
+ * chặn bản nhạc, không chặn thẻ *Tập bài này với đàn* nằm dưới.
+ *
+ * `background` là bắt buộc, nếu không thì nốt nhạc cuộn qua sau thanh nút và
+ * chồng lên chữ. `z-index` để thanh nút nằm trên, vì `position: sticky` tự tạo
+ * ngữ cảnh xếp lớp riêng.
+ */
 .sheet-music-wrapper.is-focused > .mantine-Group-root:first-child {
   position: sticky;
+  top: 0;
   left: 0;
+  z-index: 1;
+  background: var(--mantine-color-body);
+  padding-top: calc(0.75rem + env(safe-area-inset-top));
 }
 
 /* Khoá cuộn nền, nếu không thì trang phía sau vẫn trôi khi vuốt. */

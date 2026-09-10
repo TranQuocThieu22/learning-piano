@@ -421,6 +421,7 @@ Bản nhạc nằm sâu trong hai lớp đều dính:
 
 | Tổ tiên | Thuộc tính | Bật lúc nào |
 |---|---|---|
+| 10/09/2026 | `fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung` | Thêm bẫy 17 — con của flexbox bị bóp làm `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt; kèm chuyện `style` nội tuyến làm luật padding chừa tai thỏ chưa từng chạy |
 | 10/09/2026 | `fix: Bấm được nút Thoát của chế độ tập trung` | Thêm bẫy 16 — `transform`/`backdrop-filter` ở tổ tiên kéo lớp phủ `position: fixed` ra khỏi khung nhìn, làm chế độ tập trung không thoát được; ghi rõ vì sao triệu chứng chập chờn và cách đo bằng `getBoundingClientRect` thay vì `getComputedStyle` |
 | `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
 | `.markdown-pre-wrapper` | `transform: translateY(-2px)` | khi rê chuột vào khối |
@@ -468,6 +469,59 @@ thẳng vào `paperRef` — bản nhạc trắng trơn, màu đang tô của l�
 **Bài học chung.** Thêm bất cứ hiệu ứng kính mờ hay hiệu ứng nhấc lên nào cho một
 khối *bao ngoài* bản nhạc là phải nghĩ tới chế độ tập trung. Cách kiểm rẻ nhất:
 bật chế độ tập trung rồi rê chuột khắp màn hình, lớp phủ phải đứng yên.
+
+---
+
+## 17. Con của flexbox bị bóp, cuộn hết cỡ vẫn không thấy phần bị cắt
+
+**Triệu chứng.** Điện thoại xoay ngang, đang ở chế độ tập trung. Thẻ *Tập bài này
+với đàn* dưới cùng **bị cắt mất một nửa** và **kéo xuống thêm không được** — cuộn
+đã chạm đáy thật, không phải kẹt. Cuộn lên thì thanh nút cũng trôi mất, nên nhìn
+như treo máy.
+
+**Nguyên nhân.** Lớp phủ tập trung là `display: flex; flex-direction: column`. Con
+của flexbox mặc định `flex-shrink: 1`, nên khi không đủ chỗ, trình duyệt **bóp nhỏ
+ô của con** chứ không để nó tràn ra. Ô bị bóp thì nội dung thừa bị cắt, mà
+`scrollHeight` của lớp phủ **tính theo ô đã bóp** — cuộn tối đa vẫn không tới được
+phần bị cắt. Đo trên màn hình cao 360px:
+
+| | Cần | Được cấp | Cuộn tối đa |
+|---|---|---|---|
+| Thẻ *Tập bài này với đàn* | 138px | 34px | 18px |
+
+Đây là lý do khung bản nhạc đã phải đặt `flex: 0 0 auto` từ trước — nhưng đặt lẻ
+cho một con thì con thêm sau vẫn dính. Điểm đánh lừa: nhìn `scrollHeight` thấy
+"đã cuộn hết" nên dễ kết luận là không còn gì bên dưới, trong khi phần bị cắt
+nằm ngay trong `scrollHeight` của **chính đứa con** (`138` so với ô `34`).
+
+**Cách sửa.** Chặn co cho *mọi* con của lớp phủ, và ghim thanh nút vào đỉnh để nó
+không bao giờ trôi khỏi tầm mắt:
+
+```css
+.sheet-music-wrapper.is-focused > * { flex-shrink: 0; }
+
+.sheet-music-wrapper.is-focused > .mantine-Group-root:first-child {
+  position: sticky; top: 0; left: 0; z-index: 1;
+  background: var(--mantine-color-body);   /* thiếu nền thì nốt nhạc cuộn chồng lên chữ */
+}
+```
+
+**Cách kiểm.** So chiều cao ô với `scrollHeight` của từng con, đừng chỉ nhìn lớp cha:
+
+```js
+const ov = document.querySelector('.sheet-music-wrapper.is-focused');
+[...ov.children].forEach(k =>
+  console.log(k.className, Math.round(k.getBoundingClientRect().height), 'vs', k.scrollHeight));
+```
+
+Con nào có `scrollHeight` lớn hơn hẳn chiều cao ô là con đang bị bóp.
+
+**Kèm theo: padding của khung phải nằm ở CSS.** `AbcjsViewer.tsx` trước đây đặt
+`padding: '1rem'` trong `style` nội tuyến, mà style nội tuyến thắng mọi luật CSS
+không `!important` — nên luật padding chừa tai thỏ của `.is-focused` trong
+`globals.css` **chưa từng có tác dụng** dù đọc mã thì tưởng là có. Đã chuyển padding
+sang `.sheet-music-wrapper` trong CSS. Gặp một luật CSS "rõ ràng đúng mà không ăn"
+thì việc đầu tiên là tìm xem có `style` nội tuyến nào không.
 
 ---
 

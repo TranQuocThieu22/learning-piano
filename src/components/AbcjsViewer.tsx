@@ -396,7 +396,9 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
       style={{
         margin: '2rem 0',
         background: 'var(--mantine-color-body)',
-        padding: '1rem',
+        // padding nằm ở globals.css (.sheet-music-wrapper), không đặt ở đây: style
+        // nội tuyến thắng mọi luật CSS thường, nên để ở đây thì chế độ tập trung
+        // không đổi được padding của khung.
         borderRadius: '8px',
         border: '1px solid var(--mantine-color-default-border)',
         // CSS đọc biến này để nhân bề ngang SVG lên; ngoài chế độ tập trung thì
