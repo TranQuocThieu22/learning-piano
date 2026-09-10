@@ -23,10 +23,13 @@ type TuneWithTimings = TuneObject & { noteTimings?: NoteTimingEvent[] };
  * - `seek` có trong SynthController nhưng thiếu khai báo.
  * - `getAudioBuffer` được khai báo trên SynthController nhưng thực tế chỉ
  *   CreateSynth mới có; SynthController giữ nó ở thuộc tính `midiBuffer`.
+ * - `destroy` có thật trong `synth-controller.js` nhưng thiếu khai báo. Đây là
+ *   thứ duy nhất dừng hẳn được tiếng: nó gọi `timer.stop()` và `midiBuffer.stop()`.
  */
 type SynthControllerInternals = InstanceType<typeof ABCJS.synth.SynthController> & {
   seek?: (percent: number, units?: string) => void;
   midiBuffer?: { getAudioBuffer?: () => AudioBuffer | undefined };
+  destroy?: () => void;
 };
 
 /** Nhịp mỗi phút ở tốc độ `warp`, tính lại đúng như abcjs làm trong `SynthController.go`. */
@@ -244,6 +247,22 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
       synthControlRef.current = synthControl;
       setAudioReady(true);
     }
+
+    return () => {
+      // Bắt buộc phải dừng tiếng khi component bị gỡ. Điều hướng trong Next.js
+      // KHÔNG tải lại trang, nên bản nhạc đang phát vẫn kêu tiếp ở trang mới —
+      // người học rời bài đi mà tiếng đàn bám theo, không có nút nào tắt được
+      // vì cái nút đó vừa biến mất cùng trang cũ.
+      //
+      // `pause()` là chưa đủ: nó chỉ dừng đồng hồ, giữ nguyên chuỗi âm thanh.
+      // `destroy()` mới gọi tới `midiBuffer.stop()`.
+      //
+      // Hàm này cũng chạy khi `abcNotation` đổi, nên dọn luôn cái controller cũ
+      // trước khi effect dựng cái mới — trước đó mỗi lần đổi bản nhạc là bỏ lại
+      // một controller còn sống.
+      (synthControlRef.current as SynthControllerInternals | null)?.destroy?.();
+      synthControlRef.current = null;
+    };
   }, [abcNotation]);
 
   /**

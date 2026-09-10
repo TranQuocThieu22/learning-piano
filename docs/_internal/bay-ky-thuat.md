@@ -356,6 +356,55 @@ nữa thì gần như chắc là do đây, và phải xem lại cấu hình tíc
 nghỉ dài, việc đầu tiên nên làm là chạy `node scripts/beta-metrics.mjs` — nó in ra
 endpoint đang nối vào, nên hỏng cái gì cũng lộ ra ngay ở dòng đầu.
 
+---
+
+## 15. Tiếng đàn vẫn kêu sau khi đã rời trang
+
+**Triệu chứng.** Đang bấm *Nghe thử* một bản nhạc rồi bấm sang trang khác. Trang mới
+hiện ra bình thường nhưng **tiếng đàn vẫn phát tiếp**, và không còn nút nào tắt được
+— cái nút đó vừa biến mất cùng trang cũ.
+
+**Nguyên nhân.** Điều hướng trong Next.js **không tải lại trang**. Component bị gỡ
+khỏi cây React, nhưng thứ nó tạo ra ngoài React — bộ phát tiếng, đồng hồ đếm, trình
+nghe sự kiện — vẫn sống nguyên. Ở đây là `SynthController` của abcjs, dựng trong một
+`useEffect` **không có hàm dọn dẹp**.
+
+Đây là bẫy của cả một *loại* mã, không riêng bản nhạc: bất cứ thứ gì phát tiếng, chạy
+`setInterval`, hay giữ thiết bị đều dính nếu quên cleanup. Lúc phát triển rất khó
+thấy, vì tải lại trang bằng F5 thì trình duyệt dọn hộ — chỉ điều hướng phía client
+mới lộ ra.
+
+**Cách sửa.** Trả về hàm dọn dẹp từ `useEffect`. Với abcjs phải gọi đúng hàm:
+
+- `pause()` **không đủ** — nó chỉ dừng đồng hồ, chuỗi âm thanh vẫn còn.
+- `destroy()` mới là hàm gọi tới `midiBuffer.stop()`. Hàm này **có thật trong
+  `synth-controller.js` nhưng thiếu trong `.d.ts`** của abcjs, nên phải khai thêm
+  vào `SynthControllerInternals` ở `AbcjsViewer.tsx` — cùng chỗ đã vá `seek` và
+  `midiBuffer` vì đúng lý do đó.
+
+Hàm dọn dẹp còn chạy mỗi khi dependency đổi, nên nó sửa luôn một rò rỉ dễ bỏ sót:
+đổi bản nhạc mà không dọn là bỏ lại một controller cũ còn sống.
+
+**Cách kiểm cho chắc, không dùng tai.** Gắn máy đếm vào Web Audio trước khi bấm phát:
+
+```js
+window.__starts = 0; window.__stops = 0;
+const P = AudioBufferSourceNode.prototype;
+const s = P.start, t = P.stop;
+P.start = function (...a) { window.__starts++; return s.apply(this, a); };
+P.stop  = function (...a) { window.__stops++;  return t.apply(this, a); };
+```
+
+Hiệu số `__starts - __stops` là số nguồn tiếng đang kêu. Bấm phát rồi chuyển trang:
+hiệu số phải về **0** và đứng yên. Máy đếm **còn sống sót** qua lần chuyển trang cũng
+chính là bằng chứng đó là điều hướng phía client chứ không phải tải lại trang — thiếu
+điều đó thì phép thử vô nghĩa.
+
+**Đã kiểm là không dính:** `Metronome.tsx` (có `useEffect(() => stop, [stop])`) và
+`useMidiInput.ts` (gỡ listener, đặt `onstatechange = null`).
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -364,6 +413,7 @@ endpoint đang nối vào, nên hỏng cái gì cũng lộ ra ngay ở dòng đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 10/09/2026 | `fix: Dừng hẳn tiếng đàn khi rời trang đang phát` | Thêm bẫy 15 — thứ tạo ngoài React (bộ phát tiếng, đồng hồ, thiết bị) vẫn sống sau khi component bị gỡ, vì điều hướng Next.js không tải lại trang; ghi rõ `pause()` không đủ mà phải `destroy()`, và kèm cách kiểm bằng máy đếm gắn vào Web Audio thay vì nghe bằng tai |
 | 01/09/2026 | `docs(internal): Ghi lại bẫy nhánh dev biến mất trên Neon` | Nhánh dev bị xoá nhưng lỗi lại hiện ra là sai mật khẩu, dẫn người ta đi dò nhầm hướng; ghi cả cách nhận ra nhanh bằng cột Branches |
 | 28/08/2026 | `feat: Đổi schema bằng migration có file thay vì drizzle-kit push` | Sửa bẫy 8 và 12 cho khớp: `pnpm db:push` không còn tồn tại, rủi ro giờ nằm ở script chạy tay và biến môi trường quên xoá |
 | 28/08/2026 | `feat: Ghi ngày tạo tài khoản và lọc cohort beta khi đo phễu` | Thêm bẫy 12 (script chạy tay nạp `.env.local` nên đọc nhánh dev, kết quả rỗng trông y hệt "chưa có ai học") và bẫy 13 (song song `neon_auth.user` với `public.user` làm `information_schema` trả về cột nhân đôi mâu thuẫn) |
