@@ -40,6 +40,64 @@
 
 ---
 
+## 11/09/2026 — Điện thoại là thiết bị chính, và app biết nghe đàn
+
+**Đã làm**
+
+- **Rạng sáng (phiên khác):** chế độ toàn màn hình, bỏ nốt thanh tiêu đề, nhạc nền chạy
+  liền mạch khi chuyển trang. Lý do và cái bẫy đi kèm đã ghi ở mục 2 của
+  [`nhat-ky-quyet-dinh.md`](nhat-ky-quyet-dinh.md), không chép lại đây.
+- **Chốt "điện thoại và tablet là thiết bị chính, máy tính là phụ"** thành quy định trong
+  `AGENTS.md` kèm bốn hệ quả. Người học đặt máy lên giá nhạc của đàn; laptop không có chỗ
+  đặt trên đàn nên gần như không ai mở lúc tập. Đợt dựng lại điều hướng mấy hôm trước đã
+  đi theo hướng này rồi, nhưng chưa ai viết nó ra thành luật.
+- **Soạn bốn bản bài đăng tuyển beta**, mỗi bản một góc nhìn (nhờ người thử / người từng
+  bỏ dở / buổi đầu chơi được gì / người sắp mua đàn), để đăng 4-6 nhóm mà không dán cùng
+  một đoạn — Facebook nhận ra, và người trong nhóm cũng nhận ra. **Bốn bản này hiện mới
+  nằm trong khung chat, chưa lưu thành file.**
+- **Bàn lại chuyện làm app đẩy lên store, kết luận vẫn là giữ web.** Vướng lớn nhất là
+  thanh toán: nội dung số bán trong app phải qua hệ thống của Apple/Google, phí 15-30%,
+  gần như chắc chắn không thu bằng VietQR được. Hai lối đã cân nhắc cho iPhone (app bọc
+  web, bảo người học cài trình duyệt riêng) ghi vào mục 8 của `lo-trinh-phat-trien.md`.
+- **Làm xong tính năng nghe tiếng đàn qua micro** — buổi sáng mới ghi là "hướng cần thử",
+  buổi chiều làm đầy đủ. Micro là cách nối mặc định ở cả trang luyện nhận nốt lẫn *Tập bài
+  này với đàn*; dây MIDI đứng thứ hai. Đo trên tiếng đàn tổng hợp: ~92% nốt nghe đúng khi
+  tập theo bản nhạc, ~1% nốt ma; luyện nhận nốt 100% đúng phím và không lần nào đánh sai
+  mà bị báo "Chính xác". Thử trong trình duyệt thật bằng micro giả lập: Ode to Joy tay
+  phải và tay trái đều 15/15.
+- **Deploy đỏ ngay sau đó, và tìm ra vì sao.** Vitest bỏ cuộc sau 5 giây mỗi ca, mà ca đo
+  độ chính xác micro mất 3 giây ngay trên máy bàn — máy dựng bản của Vercel chậm hơn vài
+  lần là trượt. Khai hạn giờ riêng cho hai ca nặng, cắt bớt khối lượng, ghi thành **bẫy 19**.
+- **Thêm `next build` vào cổng kiểm tra trước khi commit** (giờ là năm lệnh), ghi vào skill
+  soạn commit, `AGENTS.md`, quy trình làm việc và bản một trang.
+
+**Quan sát**
+
+- **Chữ trong app tụt lại sau thực tế mà không ai biết.** Suốt nhiều tháng app ghi "Web
+  MIDI chỉ chạy trên máy tính", trong khi chủ sản phẩm vẫn cắm đàn vào điện thoại Android
+  dùng hằng ngày. Nó chỉ lộ ra khi có người hỏi ngược lại một câu tưởng như ngây thơ:
+  *"iPhone không tải được Chrome hả?"*. Bài học: câu chữ viết một lần rồi chép đi chép lại
+  là chỗ sai lâu nhất, vì không có test nào gác nó.
+- **"Bốn lệnh kiểm đều xanh" không có nghĩa là deploy sẽ chạy.** Bốn lệnh đó không dựng bản
+  production — mà đó mới là thứ Vercel chạy. Đây là kiểu hỏng im lặng nhất: không ai báo
+  gì, người học chỉ đơn giản vẫn thấy bản cũ.
+- **Ca khó nhất của việc nghe đàn không phải hợp âm, mà là đánh lại đúng phím còn đang
+  ngân.** Tiếng cũ và tiếng mới cộng lệch pha nên ngay tại nốt gốc, phần "mới sáng lên" có
+  khi gần bằng 0 — máy mất nốt gốc và nhận thành hoạ âm cao hơn một quãng tám. Mà đây lại
+  đúng là thứ đầy rẫy trong giáo trình: Ode to Joy có bốn chỗ lặp nốt liền nhau.
+- **Ba ngày liên tiếp dồn hết vào sản phẩm, việc tuyển beta đứng yên.** Hôm nay không kiểm
+  bài đang chờ duyệt, không comment thêm, không đăng nhóm mới. Chốt chặn 1 còn 12 ngày.
+
+**Tiếp theo**
+
+- **Thử micro trên máy thật trước khi mời người beta dùng** — cách thử cụ thể đã ghi ở mục
+  7 của [`lam-viec-hang-ngay.md`](lam-viec-hang-ngay.md). Đây là việc duy nhất Claude không
+  làm hộ được.
+- **Việc beta vẫn còn nguyên:** mở lại 3 bài đã comment, kiểm hộp tin nhắn chờ, xem bài
+  đăng đã được duyệt chưa, và đăng nhóm thứ hai bằng một trong bốn bản đã soạn.
+- Nếu muốn dùng lại bốn bản bài đăng thì bảo Claude lưu thành
+  `docs/_internal/mau-bai-dang-tuyen-beta.md`, đặt cạnh file mẫu comment.
+
 ## 10/09/2026 — Gỡ rào cản trước cửa
 
 **Đã làm**
