@@ -616,6 +616,59 @@ tra trước khi commit — bốn lệnh kia không đụng tới nó, mà nó m
 
 ---
 
+## 20. Bộ nén đặt sau nút âm lượng: kéo thanh trượt lên mà nhạc không to thêm
+
+**Triệu chứng.** Người học kéo thanh trượt âm lượng nhạc nền lên **hết cỡ**, vặn cả
+âm lượng máy lên hết, mà nhạc nền vẫn nghe bé. Không có lỗi nào trong console, nhạc
+vẫn kêu đúng bài, đoạn dưới của thanh trượt vẫn thay đổi được — chỉ riêng đoạn trên là
+gần như giậm chân tại chỗ.
+
+**Nguyên nhân.** Chuỗi tiếng hồi đó nối theo thứ tự
+`master(âm lượng) → lọc → nén → loa`. Bộ nén đứng **sau** nút âm lượng, nên mức vào của
+nó chạy theo thanh trượt: kéo lên cao thì tín hiệu vượt ngưỡng nhiều hơn và bị nén mạnh
+hơn, đúng vào lúc người học đang xin to hơn. Với `threshold` -20dB và `ratio` 4, mỗi
+1dB kéo thêm chỉ còn ra 0,25dB ở loa.
+
+Ba thứ cộng dồn, và đo ra mới thấy nó tệ tới mức nào — kéo hết cỡ chỉ được RMS
+**-31,3dB**, tức nhỏ hơn nhạc bình thường khoảng 15dB:
+
+1. Trần âm lượng `MAX_GAIN` để 0,22, tự nó đã cắt 13dB.
+2. Bộ nén đặt sai chỗ như trên.
+3. `knee` để mặc định. Mặc định của trình duyệt là **30dB** — rộng đến mức bắt đầu nén
+   từ tận -35dB, tức nén cả phần thân của tiếng chứ không riêng phần đỉnh. Đây là con
+   số dễ quên nhất vì không ai viết nó ra trong mã.
+
+**Cách sửa.** Cho nút âm lượng xuống **cuối** chuỗi, để bộ nén luôn thấy một mức vào cố
+định; đặt `knee` bằng tay; rồi nâng trần:
+
+```ts
+filter.connect(comp).connect(master).connect(ctx.destination);
+```
+
+**Cách đo.** Đừng chỉnh bằng tai, và cũng đừng đo bằng `AnalyserNode` trên bối cảnh
+đang chạy — xem bẫy 18 để biết vì sao dễ ra số 0 đánh lừa. Dựng lại đúng chuỗi đó trong
+`OfflineAudioContext`, kết xuất một phút rồi tính đỉnh và RMS của cả đoạn:
+
+```js
+const ctx = new OfflineAudioContext(2, 44100 * 62, 44100);
+// …dựng y hệt chuỗi thật, hẹn lịch các nốt…
+const buf = await ctx.startRendering();
+```
+
+Kết xuất offline chạy nhanh hơn thời gian thực rất nhiều, nên quét được cả một dải giá
+trị trong vài giây — đủ để dò nhị phân ra mức `MAX_GAIN` lớn nhất mà đỉnh vẫn chưa chạm
+1,0. Chạy trong Chromium (`OfflineAudioContext` không có ở Node), điều khiển qua
+`--remote-debugging-port` rồi `Runtime.evaluate` với `awaitPromise`. **Không dùng
+`--dump-dom` với `--virtual-time-budget`**: DOM bị đổ ra trước khi `startRendering()`
+kịp xong, và thứ in ra là trang lúc chưa có kết quả chứ không phải lỗi gì cả.
+
+**Bài học chung.** Trong một chuỗi Web Audio, **nút âm lượng của người dùng phải là mắt
+cuối cùng**. Bất cứ thứ gì phi tuyến đặt sau nó — nén, méo, cổng tiếng — đều biến thanh
+trượt thành một đường cong không ai đoán được. Và mỗi lần đụng vào con số âm lượng thì
+đo lại đỉnh với RMS, đừng tin tai: tai quen rất nhanh với mức đang nghe.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -624,6 +677,7 @@ tra trước khi commit — bốn lệnh kia không đụng tới nó, mà nó m
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Nhạc nền to lên đúng mức khi kéo thanh trượt hết cỡ` | Thêm bẫy 20 — bộ nén đặt sau nút âm lượng làm đoạn trên của thanh trượt gần như vô tác dụng, cộng với `knee` mặc định 30dB không ai viết ra trong mã; ghi kèm cách đo bằng `OfflineAudioContext` vì đo trên bối cảnh đang chạy thì ra số đánh lừa |
 | 11/09/2026 | `fix: Cho test đo micro hạn giờ rộng để build trên Vercel không trượt` | Thêm bẫy 19 — build đỏ trên Vercel mà ở máy xanh hết, vì vitest bỏ cuộc sau 5 giây mỗi ca và ca đo độ chính xác micro mất 3 giây ngay ở máy bàn; ghi rõ đây là kiểu hỏng theo nhanh/chậm nên chạy lại ở máy vẫn xanh, dễ đổ oan cho Vercel |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Thêm bẫy 18 — bộ phát tiếng mồ côi sống lại sau `dispose()` nên `stop()` chỉ tắt được một nửa; ghi cả cách đo đúng vì máy đo bám nhầm bộ nén thì ra số 0 đánh lừa |
 | 10/09/2026 | `fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung` | Thêm bẫy 17 — con của flexbox bị bóp làm `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt; kèm chuyện `style` nội tuyến làm luật padding chừa tai thỏ chưa từng chạy |

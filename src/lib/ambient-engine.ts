@@ -42,20 +42,39 @@ const LOOKAHEAD_MS = 500;
 /**
  * Trần âm lượng. Người học kéo thanh trượt 0..1, nhân với số này ra gain thật.
  *
- * Đo bằng máy chứ không chỉnh bằng cảm giác. Ở 0,22: mặc định (thanh trượt 50%)
- * cho đỉnh 0,10 và RMS 0,014; kéo hết cỡ cho đỉnh 0,21 và RMS 0,026 — còn xa mức
- * vỡ tiếng. Chênh lệch đỉnh/RMS lớn là đúng với kiểu tiếng này: tiếng gảy nhọn
- * đỉnh nhưng tắt nhanh, nên nghe vẫn nhẹ dù đỉnh cao.
+ * Đo bằng máy chứ không chỉnh bằng cảm giác — dựng lại đúng chuỗi tiếng này
+ * trong `OfflineAudioContext`, kết xuất 62 giây rồi lấy đỉnh và RMS của cả đoạn.
+ * Ở 1,2: kéo hết cỡ cho đỉnh 0,87 và RMS 0,161 (-15,9dB), mặc định (thanh trượt
+ * 50%) cho đỉnh 0,43 và RMS 0,081 (-21,9dB). Không mẫu nào chạm mức vỡ tiếng.
+ *
+ * **Vì sao không còn là 0,22.** Con số cũ cho RMS -31,3dB lúc kéo hết cỡ, tức
+ * nhỏ hơn nhạc thường nghe khoảng 15dB: người học vặn máy hết cỡ vẫn thấy nhạc
+ * nền bé. Ba chỗ cộng lại thành ra thế, và phải sửa cả ba mới đủ:
+ *
+ * 1. Trần 0,22 tự nó đã cắt mất 13dB.
+ * 2. Bộ nén nằm SAU nút âm lượng nên nó nén theo mức người học đang để — kéo
+ *    hết cỡ thì nén nhiều nhất, đúng lúc cần to nhất. Nay nút âm lượng đứng
+ *    cuối chuỗi, bộ nén luôn thấy một mức vào cố định.
+ * 3. Ngưỡng nén -20dB với ratio 4 (và knee mặc định 30dB, rộng tới mức nén từ
+ *    -35dB) ăn gần hết phần đỉnh. Nay -18dB, knee 10dB: vẫn chặn đỉnh nhưng
+ *    tiếng gảy giữ được độ nảy. Đo ở cùng mức đỉnh 0,89, bộ nén mới cho RMS
+ *    to hơn bộ cũ 2,7dB.
  *
  * Đo thì phải lấy mẫu TRẢI RA theo thời gian. `getFloatTimeDomainData` luôn trả
  * về khung hiện tại, gọi liên tiếp trong một vòng lặp chỉ nhìn được khoảng 46ms
  * — mà tiếng gảy cách nhau 300ms, nên cửa sổ đó rơi trúng chỗ lặng là ra số 0
  * rồi tưởng nhạc không kêu.
  */
-const MAX_GAIN = 0.22;
+const MAX_GAIN = 1.2;
 
 export class AmbientEngine {
   private ctx: AudioContext | null = null;
+  /**
+   * Nơi mọi nốt cắm vào. KHÔNG phải nút âm lượng — nút âm lượng đứng ở cuối
+   * chuỗi, sau bộ nén, để bộ nén luôn thấy một mức vào cố định.
+   */
+  private bus: AudioNode | null = null;
+  /** Nút âm lượng, mắt cuối cùng trước loa. */
   private master: GainNode | null = null;
   private timer: ReturnType<typeof setInterval> | null = null;
   private nextBarTime = 0;
@@ -99,20 +118,36 @@ export class AmbientEngine {
     if (!this.ctx) {
       this.ctx = new Ctor();
 
-      const master = this.ctx.createGain();
-      master.gain.value = this.volume * MAX_GAIN;
-
       const filter = this.ctx.createBiquadFilter();
       filter.type = 'lowpass';
       filter.frequency.value = 3000;
       filter.Q.value = 0.7;
 
-      // Nén ở cuối chuỗi: rải nốt chồng lên nốt trầm có lúc trùng đỉnh sóng.
+      /*
+       * Bộ nén, đứng TRƯỚC nút âm lượng. Việc của nó là chặn mấy chỗ rải nốt
+       * chồng lên nốt trầm trúng đỉnh sóng, chứ không phải hạ âm lượng chung.
+       *
+       * Thứ tự này quan trọng: hồi nó nằm sau nút âm lượng thì kéo thanh trượt
+       * lên cao lại bị nén mạnh hơn, nên đoạn trên của thanh trượt gần như
+       * không to thêm được bao nhiêu. Nay mức vào của nó cố định, kéo tới đâu
+       * to đều tới đó.
+       *
+       * `knee` phải đặt tay: mặc định của trình duyệt là 30dB, rộng đến mức bắt
+       * đầu nén từ tận -35dB, tức nén cả phần thân của tiếng chứ không riêng
+       * đỉnh. 10dB vừa đủ để vào nén cho mềm mà không ăn mất độ nảy.
+       */
       const comp = this.ctx.createDynamicsCompressor();
-      comp.threshold.value = -20;
+      comp.threshold.value = -18;
+      comp.knee.value = 10;
       comp.ratio.value = 4;
+      comp.attack.value = 0.005;
+      comp.release.value = 0.25;
 
-      master.connect(filter).connect(comp).connect(this.ctx.destination);
+      const master = this.ctx.createGain();
+      master.gain.value = this.volume * MAX_GAIN;
+
+      filter.connect(comp).connect(master).connect(this.ctx.destination);
+      this.bus = filter;
       this.master = master;
     }
 
@@ -182,6 +217,7 @@ export class AmbientEngine {
     this.stop();
     const ctx = this.ctx;
     this.ctx = null;
+    this.bus = null;
     this.master = null;
     if (ctx) setTimeout(() => ctx.close().catch(() => {}), 1200);
   }
@@ -189,7 +225,7 @@ export class AmbientEngine {
   /** Hẹn trước các ô nhịp sắp tới, gọi lại đều đặn trong lúc đang chạy. */
   private schedule(): void {
     const ctx = this.ctx;
-    if (!ctx || !this.master) return;
+    if (!ctx || !this.bus) return;
 
     while (this.nextBarTime < ctx.currentTime + SCHEDULE_AHEAD_SECONDS) {
       const chord = chordAt(Math.floor(this.barIndex / BARS_PER_CHORD));
@@ -223,8 +259,8 @@ export class AmbientEngine {
   /** Tiếng gảy ngắn cho tầng rải — hai bộ dao động, tắt nhanh như hộp nhạc. */
   private playPluck(midi: number, at: number, step: number): void {
     const ctx = this.ctx;
-    const master = this.master;
-    if (!ctx || !master) return;
+    const bus = this.bus;
+    if (!ctx || !bus) return;
 
     const gain = ctx.createGain();
     // Phách mạnh nhấn hơn một chút, để tai nghe ra ô nhịp mà không cần trống.
@@ -237,7 +273,7 @@ export class AmbientEngine {
     // Lệch trái phải rất nhẹ theo từng móc, cho tiếng rộng ra chứ không đứng im.
     pan.pan.value = ((step % 4) - 1.5) * 0.12;
 
-    gain.connect(pan).connect(master);
+    gain.connect(pan).connect(bus);
 
     const freq = midiToFreq(midi);
     const oscs: OscillatorNode[] = [];
@@ -262,14 +298,14 @@ export class AmbientEngine {
   /** Nốt trầm, tròn và ngắn. */
   private playBass(midi: number, at: number): void {
     const ctx = this.ctx;
-    const master = this.master;
-    if (!ctx || !master) return;
+    const bus = this.bus;
+    if (!ctx || !bus) return;
 
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, at);
     gain.gain.linearRampToValueAtTime(0.55, at + 0.02);
     gain.gain.exponentialRampToValueAtTime(0.0001, at + 0.9);
-    gain.connect(master);
+    gain.connect(bus);
 
     const osc = ctx.createOscillator();
     osc.type = 'sine';
@@ -284,8 +320,8 @@ export class AmbientEngine {
   /** Nền mỏng: cả hợp âm ngân khẽ suốt hai ô nhịp, vào và ra đều mềm. */
   private playPad(chord: AmbientChord, at: number): void {
     const ctx = this.ctx;
-    const master = this.master;
-    if (!ctx || !master) return;
+    const bus = this.bus;
+    if (!ctx || !bus) return;
 
     const keoDai = BAR_SECONDS * BARS_PER_CHORD;
 
@@ -297,7 +333,7 @@ export class AmbientEngine {
       gain.gain.linearRampToValueAtTime(peak, at + 0.4);
       gain.gain.setValueAtTime(peak, at + keoDai - 0.6);
       gain.gain.linearRampToValueAtTime(0.0001, at + keoDai);
-      gain.connect(master);
+      gain.connect(bus);
 
       const osc = ctx.createOscillator();
       osc.type = 'sine';
