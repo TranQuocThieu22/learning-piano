@@ -210,7 +210,17 @@ export class AmbientEngine {
      */
     const ctx = this.ctx;
     await ctx.resume().catch(() => {});
-    if (this.ctx !== ctx || ctx.state !== 'running') return false;
+    /*
+     * Ba lý do bỏ cuộc, và cả ba đều hạ cờ `wantPlaying` xuống trước khi về.
+     *
+     * Không hạ cờ thì nó kẹt ở `true` suốt phiên sau một lần bị trình duyệt chặn,
+     * và cờ đó mất hết ý nghĩa: nó phải có nghĩa là "đang thật sự muốn kêu", chứ
+     * không phải "đã từng có lúc muốn".
+     */
+    if (this.ctx !== ctx || ctx.state !== 'running') {
+      this.wantPlaying = false;
+      return false;
+    }
     // Có ai gọi `stop()` trong lúc chờ không — xem chú thích của `wantPlaying`.
     // Thiếu dòng này là nhạc nền kêu chồng lên bản nhạc mẫu người học vừa bấm.
     if (!this.wantPlaying) return false;

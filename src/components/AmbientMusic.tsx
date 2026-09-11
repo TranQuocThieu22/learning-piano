@@ -88,14 +88,24 @@ export function AmbientMusic() {
      * Chờ cú chạm đầu tiên rồi thử lại, vì trình duyệt chỉ cho phát tiếng trong
      * một cử chỉ thật của người dùng.
      *
-     * Hai cái chốt ở đây đều đã từng thiếu và đều gây ra cùng một hậu quả — hai
-     * bộ phát cùng kêu, bấm tắt chỉ tắt được một:
+     * Bốn cái chốt ở đây, cái nào thiếu cũng ra cùng một hậu quả: nhạc nền kêu
+     * lúc lẽ ra phải im.
      *
      * - `huy`: effect đã bị thay thế thì đừng gắn gì thêm nữa.
      * - `engineRef.current === engine`: lúc cú chạm tới, bộ phát trong closure có
      *   thể đã bị thay bằng bộ khác (React ở chế độ Strict gỡ rồi gắn lại
      *   component ngay trong một nhịp). Gọi `start()` lên bộ cũ là dựng lại một
      *   bối cảnh âm thanh thứ hai, chạy song song và không đường nào tắt.
+     * - `ambientHeld()`: **hỏi lại ngay tại lúc chạm**. Cú chạm có thể là chạm vào
+     *   đúng nút *Nghe thử*, và trong khoảng giữa `pointerdown` với `click` thì
+     *   chưa ai kịp giữ chỗ — nhưng nếu một nguồn tiếng khác đã giữ từ trước
+     *   (người học đang mở phần tập với đàn rồi chạm ra ngoài) thì tuyệt đối không
+     *   được bật.
+     * - `goBoNgheCham()` gọi NGAY ĐẦU `thu`: `{ once: true }` chỉ tự gỡ đúng cái
+     *   vừa bắn, cái kia còn nguyên. Chạm màn hình thì listener `keydown` vẫn nằm
+     *   đó, và vì lần này `start()` thành công nên effect không chạy lại, hàm dọn
+     *   dẹp không bao giờ được gọi — listener ấy sống tới hết phiên. Về sau người
+     *   học bấm *Nghe thử* rồi lỡ gõ một phím là nhạc nền bật lên đè lên bản nhạc.
      */
     let goBoNgheCham: (() => void) | null = null;
     let huy = false;
@@ -103,7 +113,11 @@ export function AmbientMusic() {
     void engine.start().then((keu) => {
       if (keu || huy) return;
       const thu = () => {
-        if (engineRef.current === engine) void engine.start();
+        goBoNgheCham?.();
+        if (huy) return;
+        if (engineRef.current !== engine) return;
+        if (ambientHeld()) return;
+        void engine.start();
       };
       window.addEventListener('pointerdown', thu, { once: true });
       window.addEventListener('keydown', thu, { once: true });
