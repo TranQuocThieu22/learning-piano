@@ -4,7 +4,7 @@ import { HomeScreen } from '@/components/HomeScreen';
 import type { MapChapter } from '@/components/ExerciseMap';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
-import { EXERCISES_CATEGORY, getAllLessons, getLessonsByChapter } from '@/lib/lessons';
+import { flattenPath, getLearningPath, nextStep, shortTitle } from '@/lib/learning-path';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { canReadLesson } from '@/lib/access';
 import { viewerHasFullAccess } from '@/lib/access-server';
@@ -22,35 +22,43 @@ function firstOf(files: ReturnType<typeof getAllMarkdownFiles>, category: string
 export default async function Home() {
   const session = await auth();
   const allFiles = getAllMarkdownFiles();
-  const allLessons = getAllLessons();
+
+  /*
+   * Tính trên ĐƯỜNG ĐI (lý thuyết + bài tập), không riêng bài tập — đổi
+   * 11/09/2026. Nên "Học tiếp" nay có thể dẫn thẳng vào một chương lý thuyết, và
+   * đó là đúng: nếu chưa đọc chương thì bài tập của nó chưa có nghĩa gì.
+   */
+  const path = getLearningPath();
+  const allSteps = flattenPath(path);
 
   const completedSlugs = session?.user
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
   const hasFullAccess = await viewerHasFullAccess(session);
 
-  const completedCount = allLessons.filter((l) => completedSlugs.has(l.slug)).length;
-  const continueLesson = allLessons.find((l) => !completedSlugs.has(l.slug)) ?? null;
-  const firstLesson = allLessons[0] ?? null;
+  const completedCount = allSteps.filter((s) => completedSlugs.has(s.slug)).length;
+  const continueLesson = nextStep(allSteps, completedSlugs);
+  const firstLesson = allSteps[0] ?? null;
 
   /*
-   * Chương đang học: chương của bài đang tới, hoặc chương cuối nếu đã tick hết —
-   * lúc đó bản đồ toàn ô xanh là lời khen đúng chỗ. Dựng giống hệt `/exercises`
-   * để hai nơi không bao giờ vẽ khác nhau.
+   * Chương đang học: chương của bước đang tới, hoặc chương cuối nếu đã tick hết —
+   * lúc đó bản đồ toàn ô xanh là lời khen đúng chỗ. Dựng từ cùng một nguồn với
+   * `/path/[chapter]` để hai nơi không bao giờ đếm khác nhau.
    */
-  const chapterNumber = (continueLesson ?? allLessons.at(-1))?.chapterNumber;
-  const chapter = getLessonsByChapter().find((c) => c.chapterNumber === chapterNumber);
+  const chapterNumber = (continueLesson ?? allSteps.at(-1))?.chapterNumber;
+  const chapter = path.find((c) => c.chapterNumber === chapterNumber);
   const currentChapter: MapChapter | null = chapter
     ? {
         chapterNumber: chapter.chapterNumber,
-        lessons: chapter.lessons.map((lesson) => ({
-          slug: lesson.slug,
-          title: lesson.title,
-          href: lesson.href,
-          lessonNumber: lesson.lessonNumber,
-          done: completedSlugs.has(lesson.slug),
-          locked: !canReadLesson({ category: EXERCISES_CATEGORY, slug: lesson.slug, hasFullAccess }),
-          current: lesson.slug === continueLesson?.slug,
+        lessons: chapter.steps.map((step) => ({
+          slug: step.slug,
+          title: shortTitle(step.title),
+          href: step.href,
+          kind: step.kind,
+          lessonNumber: step.lessonNumber,
+          done: completedSlugs.has(step.slug),
+          locked: !canReadLesson({ category: step.category, slug: step.slug, hasFullAccess }),
+          current: step.slug === continueLesson?.slug,
         })),
       }
     : null;
@@ -64,11 +72,15 @@ export default async function Home() {
         <HomeScreen
           user={session?.user ?? null}
           completedCount={completedCount}
-          totalCount={allLessons.length}
+          totalCount={allSteps.length}
           continueLesson={
-            continueLesson ? { title: continueLesson.title, href: continueLesson.href } : null
+            continueLesson
+              ? { title: shortTitle(continueLesson.title), href: continueLesson.href }
+              : null
           }
-          firstLesson={firstLesson ? { title: firstLesson.title, href: firstLesson.href } : null}
+          firstLesson={
+            firstLesson ? { title: shortTitle(firstLesson.title), href: firstLesson.href } : null
+          }
           currentChapter={currentChapter}
           roadmapHref={
             // Trỏ đích danh `roadmap` chứ không lấy file đầu thư mục: xếp theo

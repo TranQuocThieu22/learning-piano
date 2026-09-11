@@ -54,7 +54,7 @@ export default async function DonHangPage({
         {paid ? (
           <Alert color="green" variant="light">
             Đã nhận được tiền và mở khoá xong.{' '}
-            <NavAnchor href="/journal">Vào học thôi</NavAnchor>
+            <NavAnchor href="/path">Vào học thôi</NavAnchor>
           </Alert>
         ) : !account ? (
           <Alert color="red" variant="light">

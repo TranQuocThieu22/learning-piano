@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { auth } from '@/auth';
 import { db } from '@/db';
 import { lessonCompletions } from '@/db/schema';
-import { EXERCISES_CATEGORY, getAllLessons } from './lessons';
+import { getAllSteps } from './learning-path';
 import { slugSchema } from './validation';
 import { canReadLesson } from './access';
 import { viewerHasFullAccess } from './access-server';
@@ -39,8 +39,19 @@ export async function toggleLessonCompletion(
   }
   const slug = parsed.data;
 
-  const isKnownLesson = getAllLessons().some((l) => l.slug === slug);
-  if (!isKnownLesson) {
+  /*
+   * Đối chiếu với ĐƯỜNG ĐI, tức cả lý thuyết lẫn bài tập (mở rộng 11/09/2026 —
+   * trước đó chỉ `getAllLessons()`, tức riêng bài tập).
+   *
+   * Lấy luôn cả bước chứ không chỉ hỏi có/không: cần `category` thật của nó cho
+   * bước kiểm quyền ngay dưới. Đóng đinh `EXERCISES_CATEGORY` như bản cũ thì nay
+   * sẽ xét một slug lý thuyết bằng luật của thư mục bài tập — hai thư mục này
+   * tình cờ cùng luật giá nên chưa sai ngay, nhưng đó là trùng hợp chứ không
+   * phải bảo đảm, và `PAID_CATEGORIES` trong `access.ts` đổi một lần là thành lỗ
+   * hổng im lặng.
+   */
+  const step = getAllSteps().find((s) => s.slug === slug);
+  if (!step) {
     return { ok: false, completed: false, error: 'unknown-lesson' };
   }
 
@@ -49,7 +60,7 @@ export async function toggleLessonCompletion(
   // nhìn thấy nút. Tick một bài chưa đọc được cũng làm hỏng chính con số tiến
   // độ mà người học dựa vào.
   const hasFullAccess = await viewerHasFullAccess(session);
-  if (!canReadLesson({ category: EXERCISES_CATEGORY, slug, hasFullAccess })) {
+  if (!canReadLesson({ category: step.category, slug, hasFullAccess })) {
     return { ok: false, completed: false, error: 'locked' };
   }
 
@@ -75,7 +86,14 @@ export async function toggleLessonCompletion(
     completed = true;
   }
 
-  revalidatePath('/journal');
+  /*
+   * Mọi nơi đang vẽ tiến độ đều phải dựng lại, nếu không người học tick xong quay
+   * ra vẫn thấy con số cũ rồi tưởng tick hỏng và tick lại — mà tick lại là BỎ
+   * tick, đúng ngược ý họ.
+   */
+  revalidatePath('/'); // màn hình chủ: nút Học tiếp và bản đồ chương
+  revalidatePath('/path'); // danh sách chương và tiến độ từng chương
+  revalidatePath('/path/[chapter]', 'page'); // các bước trong chương
   revalidatePath('/[category]/[slug]', 'page');
 
   return { ok: true, completed };

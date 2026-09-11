@@ -122,9 +122,11 @@ CMS, không có bảng bài học trong database.
 |---|---|
 | `/` | Màn hình chủ — nút *Học tiếp*, tiến độ, và các ô đường tắt |
 | `/library` | Mục lục phần chữ: lý thuyết, lộ trình, đọc thêm |
-| `/exercises` | Bản đồ chặng: 25 bài tập xếp theo chương, ô tròn bấm được |
+| `/path` | Đường đi: danh sách 8 chương kèm tiến độ từng chương |
+| `/path/[chapter]` | Một chương thành từng bước: lý thuyết rồi các bài tập, tick ngay tại chỗ |
+| `/exercises` | Chuyển hướng về `/path` (gộp 11/09/2026) |
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm), cuối bài có nút *Bài trước* / *Bài tiếp theo* |
-| `/journal` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
+| `/journal` | Chuyển hướng về `/path` (gộp 11/09/2026) |
 | `/metronome` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
 | `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc, đánh trên đàn thật (micro hoặc dây MIDI) |
 | `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
@@ -137,7 +139,7 @@ lại thì dùng cử chỉ vuốt của điện thoại, nút back của trình
 cuối mỗi bài.
 
 Mục lục đầy đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/library` cho phần
-chữ và `/exercises` cho phần bài tập — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà
+chữ và `/path` cho đường đi — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà
 không có hai trang đó thì mới là làm mất đường đi.
 
 **Toàn màn hình.** App cố ý chạy không có thanh trạng thái của điện thoại, vì chiều cao
@@ -210,7 +212,7 @@ thời gian thực. Áp cho cả micro lẫn Web MIDI.
 hàng, quảng cáo. Luôn mô tả theo *cách làm* ("app chấm điểm tự động"), không theo tên
 thương hiệu. Lý do pháp lý ở mục 0 tài liệu nội bộ.
 
-**Không dùng tệp để theo dõi tiến độ.** Tiến độ ghi bằng cách tick bài ở `/journal`,
+**Không dùng tệp để theo dõi tiến độ.** Tiến độ ghi bằng cách tick bước ở `/path/[chapter]` hoặc ở cuối mỗi bài,
 lưu vào database. Thư mục `docs/05-learning-logs` và quy trình nộp video đã gỡ, đừng
 tạo lại.
 
@@ -313,6 +315,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Bảng đường dẫn: thêm `/path` và `/path/[chapter]`, đánh dấu `/exercises` và `/journal` nay chỉ chuyển hướng; sửa dòng theo dõi tiến độ cho khớp chỗ tick mới |
 | 11/09/2026 | `feat: Thêm hai bài nhạc nền nữa, người học tự chọn` | Mục Nhạc nền: từ một bài thành ba bài chọn được, ghi rõ ràng buộc cả ba phải ở Đô trưởng để không nghịch tai với nốt người học đang bấm |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Mục 4 tách phần nghe đàn thật thành hai đường vào, micro đứng trước vì là đường duy nhất chạy được trên iPhone/iPad và đàn cơ; ghi rõ con số độ chính xác mới đo trên tiếng tổng hợp để không ai lấy nó làm con số thật. Mục 5 đổi "hai hướng thay thế piano ảo" thành "app nghe chính cây đàn thật", vì bài luyện nhận nốt nay cũng đánh trên đàn thật chứ không bấm chuột |
 | 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm ràng buộc thứ năm ở mục 5 và sửa dòng Web MIDI ở mục 4 — dòng cũ ghi "chỉ Chrome/Edge", đọc lên như chỉ máy tính dùng được, trong khi Android chạy được còn iPhone/iPad thì không; file này là thứ thả vào chat để bàn chuyện, ghi sai ở đây là mọi cuộc bàn sau đều lệch theo |

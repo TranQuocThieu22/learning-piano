@@ -7,7 +7,7 @@ import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
 import { LessonNav } from '@/components/LessonNav';
-import { getLessonNeighbors } from '@/lib/lessons';
+import { stepNeighbors } from '@/lib/learning-path';
 import { canReadLesson } from '@/lib/access';
 import { env } from '@/lib/env';
 import { dangBan } from '@/lib/env-schema';
@@ -35,7 +35,12 @@ export default async function Page({ params }: { params: Promise<{ category: str
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
 
-  const isExerciseLesson = category === '03-exercises';
+  /*
+   * Bước trên ĐƯỜNG ĐI thì tick được — cả lý thuyết lẫn bài tập (đổi 11/09/2026).
+   * Trước đó chỉ bài tập mới tick được, nên đọc xong một chương lý thuyết không
+   * có cách nào đánh dấu là đã đọc, và bước đó không đếm vào tiến độ.
+   */
+  const isPathStep = category === '02-chapters' || category === '03-exercises';
 
   // Cổng chặn nội dung trả phí. Kiểm ở server và KHÔNG gửi nội dung xuống khi
   // chưa có quyền — làm mờ ở client là khoá giả, ai xem mã nguồn cũng đọc được.
@@ -54,16 +59,17 @@ export default async function Page({ params }: { params: Promise<{ category: str
           {/* Tick và chuyển bài đều nằm CUỐI bài: đó là lúc người học vừa học
               xong, không phải lúc vừa mở ra. Hai nút liền nhau để "tick rồi sang
               bài kế" là hai lần chạm. Bài lẻ (Lộ trình, Đọc thêm) không có chuỗi
-              thứ tự nên `getLessonNeighbors` trả về hai null và không hiện gì. */}
-          {isExerciseLesson && (
+              thứ tự nên `stepNeighbors` trả về hai null và không hiện gì. */}
+          {isPathStep && (
             <LessonTickButton
               lessonSlug={slug}
               initialCompleted={completedSlugs.has(slug)}
               signedIn={Boolean(session?.user)}
               variant="card"
+              label={category === '02-chapters' ? 'Đã đọc xong chương này' : 'Đã học xong bài này'}
             />
           )}
-          <LessonNav {...getLessonNeighbors(category, slug)} />
+          <LessonNav {...stepNeighbors(slug)} />
         </>
       ) : (
         <LessonLocked

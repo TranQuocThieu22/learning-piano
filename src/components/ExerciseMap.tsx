@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { Card, Group, Progress, Stack, Text } from '@mantine/core';
-import { IconCheck, IconLock } from '@tabler/icons-react';
+import { IconBook, IconCheck, IconLock } from '@tabler/icons-react';
 import Link from 'next/link';
 import { chapterColor, chapterColorVars } from '@/lib/chapter-colors';
 
@@ -23,10 +23,19 @@ export interface MapLesson {
   slug: string;
   title: string;
   href: string;
-  lessonNumber: number;
+  /**
+   * `theory` thêm 11/09/2026, khi lý thuyết trở thành một bước tick được.
+   *
+   * Phải có mặt ở đây chứ không chỉ ở trang chương: thiếu nó thì màn hình chủ đếm
+   * "4/6" trong khi `/path/3` đếm "5/7" cho cùng một chương, và hai con số đá
+   * nhau là đúng cái bệnh mà đợt gom này sinh ra để chữa.
+   */
+  kind: 'theory' | 'exercise';
+  /** Chỉ bước bài tập mới có — lý thuyết không đánh số bài. */
+  lessonNumber?: number;
   done: boolean;
   locked: boolean;
-  /** Bài đầu tiên chưa tick — chỗ người học nên quay lại. */
+  /** Bước đầu tiên chưa tick — chỗ người học nên quay lại. */
   current: boolean;
 }
 
@@ -44,20 +53,24 @@ function LessonDot({ lesson }: { lesson: MapLesson }) {
       data-state={state}
       title={lesson.title}
       aria-current={lesson.current ? 'step' : undefined}
-      aria-label={`${lesson.title}${lesson.done ? ' — đã học xong' : ''}${
-        lesson.locked ? ' — bài trả phí' : ''
-      }${lesson.current ? ' — bài bạn đang tới' : ''}`}
+      aria-label={`${lesson.kind === 'theory' ? 'Lý thuyết: ' : ''}${lesson.title}${
+        lesson.done ? ' — đã xong' : ''
+      }${lesson.locked ? ' — bài trả phí' : ''}${lesson.current ? ' — bước bạn đang tới' : ''}`}
     >
       <span className="lesson-dot__circle">
         {lesson.done ? (
           <IconCheck size={26} stroke={3} />
         ) : lesson.locked ? (
           <IconLock size={20} />
+        ) : lesson.kind === 'theory' ? (
+          <IconBook size={22} />
         ) : (
           lesson.lessonNumber
         )}
       </span>
-      <span className="lesson-dot__label">Bài {lesson.lessonNumber}</span>
+      <span className="lesson-dot__label">
+        {lesson.kind === 'theory' ? 'Lý thuyết' : `Bài ${lesson.lessonNumber}`}
+      </span>
     </Link>
   );
 }
@@ -83,7 +96,7 @@ export function ChapterCard({ chapter, action }: { chapter: MapChapter; action?:
               Chương {chapter.chapterNumber}
             </Text>
             <Text size="xs" c="dimmed">
-              {tong > 0 && xong === tong ? 'Đã xong cả chương 🎉' : `${xong}/${tong} bài đã xong`}
+              {tong > 0 && xong === tong ? 'Đã xong cả chương 🎉' : `${xong}/${tong} bước đã xong`}
             </Text>
           </div>
         </Group>
@@ -96,7 +109,7 @@ export function ChapterCard({ chapter, action }: { chapter: MapChapter; action?:
         size="sm"
         radius="xl"
         mb="md"
-        aria-label={`Chương ${chapter.chapterNumber}: đã xong ${xong} trên ${tong} bài`}
+        aria-label={`Chương ${chapter.chapterNumber}: đã xong ${xong} trên ${tong} bước`}
       />
 
       <div className="lesson-dots">
@@ -118,8 +131,8 @@ export function ExerciseMap({ chapters }: { chapters: MapChapter[] }) {
       {/* Chú thích dựng bằng chính ô bài thu nhỏ, để nó luôn khớp với hình trên bản đồ. */}
       <Group gap="lg" justify="center" style={chapterColorVars(1)} mt="xs">
         {[
-          { state: 'done', icon: <IconCheck size={12} stroke={3} />, label: 'Đã học xong' },
-          { state: 'current', icon: null, label: 'Bài đang tới' },
+          { state: 'done', icon: <IconCheck size={12} stroke={3} />, label: 'Đã xong' },
+          { state: 'current', icon: null, label: 'Bước đang tới' },
           { state: 'locked', icon: <IconLock size={11} />, label: 'Bài trả phí' },
         ].map(({ state, icon, label }) => (
           <Group key={state} gap={6} wrap="nowrap">

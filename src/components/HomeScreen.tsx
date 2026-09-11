@@ -27,7 +27,7 @@ import { ChapterCard, type MapChapter } from './ExerciseMap';
  * Thứ tự cố ý: *Học tiếp* đứng trên cùng và to nhất, vì chín trên mười lần mở app
  * là để học tiếp chỗ đang dở. Ngay dưới là chương đang học — thấy mình đã đi được
  * bao xa là lý do để mở app lần sau. Mấy ô còn lại chỉ là đường tắt cho những
- * đích KHÔNG có trên thanh tab; mục lục đầy đủ nằm ở `/library` và `/exercises`.
+ * đích KHÔNG có trên thanh tab; mục lục đầy đủ nằm ở `/library` và `/path`.
  */
 
 interface Tile {
@@ -191,7 +191,7 @@ export function HomeScreen({
           action={
             <Button
               component={Link}
-              href="/exercises"
+              href="/path"
               variant="subtle"
               size="compact-sm"
               rightSection={<IconChevronRight size={16} />}

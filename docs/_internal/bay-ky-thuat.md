@@ -707,6 +707,44 @@ lời câu "chạm tới đây có thoải mái không". Vùng chạm sát mép 
 
 ---
 
+## 22. Năm lệnh kiểm xanh hết mà mở trang ra vẫn 500
+
+**Triệu chứng.** `tsc`, `pnpm lint`, `pnpm test`, `pnpm check:lessons` và `npx next build`
+đều xanh. Mở trang lên thì 500, log ghi *"Functions cannot be passed directly to Client
+Components unless you explicitly expose it by marking it with `use server`"*.
+
+**Nguyên nhân.** Truyền `component={Link}` cho một component của Mantine từ trong **Server
+Component**. Một component là một HÀM, mà hàm không tuần tự hoá được qua ranh giới
+server/client. Đây là bà con gần của bẫy 1 — cùng gốc "Mantine + Server Component", nhưng
+triệu chứng và chỗ sai khác hẳn nên ghi riêng.
+
+```tsx
+// ✗ trong Server Component
+<Card component={Link} href="/path/3">…</Card>
+<Button component={Link} href="/path/4">Chương 4</Button>
+```
+
+**Cách sửa.** Nhốt prop đó vào một client component rồi dùng nó ở trang — repo có sẵn
+`NavAnchor.tsx` (cho `Anchor`) và `NavButton.tsx` (cho `Button`). Cả thẻ là link thì dựng
+thẳng bằng `<Link>` với CSS riêng, đừng mượn `Card` của Mantine — xem `PathChapterCard.tsx`.
+
+**Vì sao không lệnh kiểm nào bắt được.** `tsc` thấy prop hợp kiểu (Mantine khai
+`component` là polymorphic, nhận mọi component). Lint không xét ranh giới server/client.
+Test không dựng trang. Còn `next build` **cũng qua**: trang này là `ƒ` (dựng theo từng
+lượt xem), nên lỗi chỉ nổ lúc có người mở thật, không phải lúc build. Chỉ trang `○`
+(dựng sẵn) mới làm build đỏ.
+
+**Bài học chung.** Bẫy 19 dạy "bốn lệnh xanh không có nghĩa deploy chạy". Bẫy này đi thêm
+một bước: **năm lệnh xanh cũng không có nghĩa trang mở được**. Đổi giao diện thì phải
+dựng bản, chạy `next start`, rồi `curl` hoặc mở trình duyệt thật từng đường dẫn mới:
+
+```bash
+npx next start -p 3112 &
+for u in / /path /path/3; do echo "$u -> $(curl -s -o /dev/null -w '%{http_code}' -L localhost:3112$u)"; done
+```
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -715,6 +753,7 @@ lời câu "chạm tới đây có thoải mái không". Vùng chạm sát mép 
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm bẫy 22 — `component={Link}` của Mantine trong Server Component làm trang 500 mà cả năm lệnh kiểm vẫn xanh, vì trang dựng theo từng lượt xem nên `next build` không chạm tới; kèm cách kiểm bằng `next start` + `curl` từng đường dẫn |
 | 11/09/2026 | `fix: Nới đáy thanh tab để không bị sát mép màn hình` | Thêm bẫy 21 — chạy toàn màn hình thì `env(safe-area-inset-bottom)` bằng 0 nên thanh tab tụt sát mép và chồng lên dải vuốt về màn hình chính của Android; ghi rõ phải đặt mức sàn bằng `max()` và phải sửa kèm mọi chỗ tính vị trí theo thanh tab |
 | 11/09/2026 | `fix: Nhạc nền to lên đúng mức khi kéo thanh trượt hết cỡ` | Thêm bẫy 20 — bộ nén đặt sau nút âm lượng làm đoạn trên của thanh trượt gần như vô tác dụng, cộng với `knee` mặc định 30dB không ai viết ra trong mã; ghi kèm cách đo bằng `OfflineAudioContext` vì đo trên bối cảnh đang chạy thì ra số đánh lừa |
 | 11/09/2026 | `fix: Cho test đo micro hạn giờ rộng để build trên Vercel không trượt` | Thêm bẫy 19 — build đỏ trên Vercel mà ở máy xanh hết, vì vitest bỏ cuộc sau 5 giây mỗi ca và ca đo độ chính xác micro mất 3 giây ngay ở máy bàn; ghi rõ đây là kiểu hỏng theo nhanh/chậm nên chạy lại ở máy vẫn xanh, dễ đổ oan cho Vercel |

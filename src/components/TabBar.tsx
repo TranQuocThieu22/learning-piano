@@ -1,6 +1,6 @@
 'use client';
 
-import { IconBook2, IconChecklist, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
+import { IconBook2, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -24,12 +24,22 @@ import { usePathname } from 'next/navigation';
  * lúc đang tập với đàn thì nó khuất hẳn, đúng ý chế độ tập trung.
  */
 
+/*
+ * Bốn mục, giảm từ năm ngày 11/09/2026.
+ *
+ * *Bài tập* và *Nhật ký* đã nhập thành **Đường đi**: hai trang đó vẽ cùng một
+ * danh sách bài theo hai kiểu (ô tròn để nhảy tới, hàng có ô tick để đánh dấu),
+ * nên người học phải nhớ trang nào làm việc gì — và cả hai đều bỏ sót lý thuyết.
+ * Nay một chỗ lo cả ba việc: xem tới đâu, mở bài, và tick.
+ *
+ * *Mục lục* ở lại vì nó còn Lộ trình và Đọc thêm — những bài KHÔNG nằm trên đường
+ * đi, không có thứ tự, và không tick được.
+ */
 const TABS = [
   { href: '/', label: 'Trang chủ', Icon: IconHome, section: 'home' },
   { href: '/library', label: 'Mục lục', Icon: IconBook2, section: 'library' },
-  { href: '/exercises', label: 'Bài tập', Icon: IconMap2, section: 'exercises' },
+  { href: '/path', label: 'Đường đi', Icon: IconMap2, section: 'exercises' },
   { href: '/metronome', label: 'Nhịp', Icon: IconMetronome, section: 'metronome' },
-  { href: '/journal', label: 'Nhật ký', Icon: IconChecklist, section: 'journal' },
 ];
 
 /**
@@ -40,8 +50,12 @@ const TABS = [
  * Tên thư mục nội dung giữ tiếng Việt có chủ ý — xem mục đường dẫn ở `AGENTS.md`.
  */
 function activeTabHref(pathname: string): string {
-  if (pathname.startsWith('/03-exercises/')) return '/exercises';
-  if (/^\/(01-roadmap|02-chapters|07-doc-them)\//.test(pathname)) return '/library';
+  // Mọi bước trên đường đi — lý thuyết lẫn bài tập — đều sáng tab *Đường đi*, vì
+  // đó là nơi vừa dẫn họ tới đây. Trang chương cũng vậy.
+  if (pathname.startsWith('/03-exercises/')) return '/path';
+  if (pathname.startsWith('/02-chapters/')) return '/path';
+  if (pathname.startsWith('/path')) return '/path';
+  if (/^\/(01-roadmap|07-doc-them)\//.test(pathname)) return '/library';
   // So khớp chính xác cho phần còn lại: `/` là tiền tố của mọi đường dẫn nên so
   // kiểu startsWith sẽ làm tab Trang chủ luôn sáng.
   return pathname;

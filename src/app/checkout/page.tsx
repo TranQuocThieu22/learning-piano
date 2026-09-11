@@ -100,7 +100,7 @@ export default async function MuaPage({
             {alreadyOwns ? (
               <Alert color="green" variant="light">
                 Bạn đã có quyền truy cập gói này.{' '}
-                <NavAnchor href="/journal">Về nhật ký học tập</NavAnchor>
+                <NavAnchor href="/path">Về đường đi của bạn</NavAnchor>
               </Alert>
             ) : !session?.user ? (
               <Stack gap="sm">
