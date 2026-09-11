@@ -745,6 +745,59 @@ for u in / /path /path/3; do echo "$u -> $(curl -s -o /dev/null -w '%{http_code}
 
 ---
 
+## 23. `pointerdown` bắn trước `click`, và lệnh `start()` đang chờ vẫn thắng lệnh `stop()`
+
+**Triệu chứng.** Người học bấm *Nghe thử* một bản nhạc mẫu. Bản nhạc phát bình thường,
+rồi **một hai giây sau nhạc nền kêu chồng lên**. Bấm dừng rồi bấm nghe lại thì lần này
+không sao. Sổ đăng ký giữ chỗ (`ambient-hold.ts`) đo ra vẫn đúng: có người giữ, và lệnh
+`stop()` có chạy.
+
+**Nguyên nhân.** Hai đường cùng chạy, và đường sai về đích sau:
+
+1. Mở trang, nhạc nền gọi `start()` nhưng trình duyệt chặn vì chưa có cử chỉ người dùng.
+   Nó gắn một listener `pointerdown` chờ chạm để thử lại — đây là cách duy nhất, xem
+   bẫy 21.
+2. Người học chạm nút *Nghe thử*. **`pointerdown` bắn TRƯỚC `click`**, nên listener kia
+   chạy trước, gọi `start()`, và lệnh này rơi vào `await ctx.resume()`.
+3. React mới xử lý `click`: bản nhạc phát, gọi `holdAmbient()`, hiệu ứng chạy lại và gọi
+   `stop()`. Lúc này `start()` vẫn đang chờ.
+4. `resume()` xong, `start()` đi tiếp, đặt `setInterval` và bắt đầu hẹn lịch phát.
+
+Nói cách khác: **lệnh dừng chạy xong trước khi lệnh bật kịp bắt đầu**, nên nó không có gì
+để dừng cả.
+
+**Vì sao chốt sẵn có không bắt được.** Trong `start()` đã có một chốt sau khi chờ:
+
+```ts
+if (this.ctx !== ctx || ctx.state !== 'running') return false;
+```
+
+Nhưng nó chỉ bắt được `dispose()`, vì chỉ `dispose()` mới đặt `this.ctx` về null. `stop()`
+KHÔNG đụng tới `this.ctx` — nó chỉ xoá `setInterval` và hạ tiếng. Nên sau khi chờ xong,
+mọi thứ trông y hệt lúc bắt đầu.
+
+**Cách sửa.** Một cờ "đang muốn kêu", bật ở đầu `start()`, hạ ở đầu `stop()`, và kiểm lại
+**sau** mỗi lần chờ:
+
+```ts
+this.wantPlaying = true;            // đầu start()
+await ctx.resume().catch(() => {});
+if (!this.wantPlaying) return false; // ai đó đã stop() trong lúc chờ
+```
+
+**Cách kiểm.** Đừng thử bằng tay trên trình duyệt: trên máy thật `resume()` xong gần như
+tức thì, bấm cả trăm lần chưa chắc trúng cửa sổ đua. Dựng một `AudioContext` giả mà
+`resume()` là một lời hứa **ta tự cầm** rồi mới quyết lúc nào cho xong — xem
+`ambient-engine.test.ts`. Viết xong thì **gỡ bản sửa ra chạy lại**: test không đỏ khi chưa
+sửa là test không gác gì cả.
+
+**Bài học chung.** Mọi thứ nằm sau một `await` đều phải hỏi lại *"trong lúc tôi chờ, thế
+giới có đổi không?"*. Và với cử chỉ người dùng thì nhớ thứ tự: `pointerdown` → `pointerup`
+→ `click`. Việc gắn vào `pointerdown` chạy trước mọi việc gắn vào `click`, kể cả việc của
+React.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -753,6 +806,7 @@ for u in / /path /path/3; do echo "$u -> $(curl -s -o /dev/null -w '%{http_code}
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Nhạc nền không kêu chồng lên bản nhạc mẫu nữa` | Thêm bẫy 23 — `pointerdown` bắn trước `click` nên lệnh bật nhạc nền chạy trước lệnh dừng, rồi về đích sau khi `resume()` xong; kèm cách dựng AudioContext giả để tái hiện cuộc đua và lời nhắc phải gỡ bản sửa ra thử lại |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm bẫy 22 — `component={Link}` của Mantine trong Server Component làm trang 500 mà cả năm lệnh kiểm vẫn xanh, vì trang dựng theo từng lượt xem nên `next build` không chạm tới; kèm cách kiểm bằng `next start` + `curl` từng đường dẫn |
 | 11/09/2026 | `fix: Nới đáy thanh tab để không bị sát mép màn hình` | Thêm bẫy 21 — chạy toàn màn hình thì `env(safe-area-inset-bottom)` bằng 0 nên thanh tab tụt sát mép và chồng lên dải vuốt về màn hình chính của Android; ghi rõ phải đặt mức sàn bằng `max()` và phải sửa kèm mọi chỗ tính vị trí theo thanh tab |
 | 11/09/2026 | `fix: Nhạc nền to lên đúng mức khi kéo thanh trượt hết cỡ` | Thêm bẫy 20 — bộ nén đặt sau nút âm lượng làm đoạn trên của thanh trượt gần như vô tác dụng, cộng với `knee` mặc định 30dB không ai viết ra trong mã; ghi kèm cách đo bằng `OfflineAudioContext` vì đo trên bối cảnh đang chạy thì ra số đánh lừa |

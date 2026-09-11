@@ -95,6 +95,28 @@ export class AmbientEngine {
    * dẫn tới đó.
    */
   private disposed = false;
+  /**
+   * Có ĐANG MUỐN kêu không. Khác `running`: cờ này bật ngay từ đầu `start()`,
+   * còn `running` chỉ đúng sau khi `resume()` xong.
+   *
+   * Sinh ra để chặn một cuộc đua có thật trên production: người học bấm *Nghe
+   * thử* bản nhạc mẫu, một hai giây sau nhạc nền kêu chồng lên. Đường đi của lỗi:
+   *
+   * 1. Mở trang, nhạc nền thử `start()` nhưng trình duyệt chặn vì chưa có cử chỉ
+   *    người dùng, nên nó gắn một listener `pointerdown` chờ chạm để thử lại.
+   * 2. Người học chạm nút *Nghe thử*. `pointerdown` bắn TRƯỚC `click`, nên
+   *    listener kia chạy trước và gọi `start()` — lệnh này rơi vào `await
+   *    ctx.resume()`.
+   * 3. React xử lý `click`: bản nhạc bắt đầu phát và gọi `holdAmbient()`, hiệu
+   *    ứng chạy lại rồi gọi `stop()`. Lúc này `start()` vẫn đang chờ.
+   * 4. `resume()` xong, `start()` đi tiếp và đặt lịch phát — nhạc nền kêu, dù
+   *    vừa có lệnh dừng một nhịp trước đó.
+   *
+   * Chốt `this.ctx !== ctx` sẵn có không bắt được ca này: `stop()` KHÔNG đụng tới
+   * `this.ctx` (chỉ `dispose()` mới đóng bối cảnh âm thanh), nên sau khi chờ xong
+   * mọi thứ trông vẫn y như lúc bắt đầu.
+   */
+  private wantPlaying = false;
   /** Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt. */
   private voices: { osc: OscillatorNode[]; gain: GainNode }[] = [];
 
@@ -134,6 +156,7 @@ export class AmbientEngine {
   async start(): Promise<boolean> {
     if (this.disposed) return false;
     if (this.running) return true;
+    this.wantPlaying = true;
 
     const Ctor: typeof AudioContext | undefined =
       window.AudioContext ??
@@ -188,6 +211,9 @@ export class AmbientEngine {
     const ctx = this.ctx;
     await ctx.resume().catch(() => {});
     if (this.ctx !== ctx || ctx.state !== 'running') return false;
+    // Có ai gọi `stop()` trong lúc chờ không — xem chú thích của `wantPlaying`.
+    // Thiếu dòng này là nhạc nền kêu chồng lên bản nhạc mẫu người học vừa bấm.
+    if (!this.wantPlaying) return false;
 
     // Bắt đầu lại từ đầu vòng, để lần nào bật cũng vào đúng phách 1 của hợp âm C.
     this.barIndex = 0;
@@ -199,6 +225,9 @@ export class AmbientEngine {
 
   /** Tắt nhạc, hạ dần trong một giây chứ không cắt phựt. */
   stop(): void {
+    // Hạ cờ TRƯỚC mọi việc khác: một lệnh `start()` đang chờ `resume()` sẽ đọc
+    // cờ này sau khi chờ xong và tự bỏ cuộc.
+    this.wantPlaying = false;
     if (this.timer) {
       clearInterval(this.timer);
       this.timer = null;

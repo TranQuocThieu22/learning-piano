@@ -70,7 +70,7 @@
   lần là trượt. Khai hạn giờ riêng cho hai ca nặng, cắt bớt khối lượng, ghi thành **bẫy 19**.
 - **Thêm `next build` vào cổng kiểm tra trước khi commit** (giờ là năm lệnh), ghi vào skill
   soạn commit, `AGENTS.md`, quy trình làm việc và bản một trang.
-- **Chiều tối (phiên này) — ba việc về nhạc nền và một về thanh tab:**
+- **Chiều tối và tối (phiên này):**
   - **Nhạc nền to lên đúng mức.** Kéo thanh trượt hết cỡ, vặn cả âm lượng máy lên hết mà
     vẫn nghe bé. Đo ra RMS -31,3dB lúc kéo hết cỡ, nhỏ hơn nhạc bình thường khoảng 15dB.
     Ba chỗ cộng dồn, phải sửa cả ba: trần âm lượng để 0,22; bộ nén nối SAU nút âm lượng
@@ -85,6 +85,15 @@
   - **Thêm hai bài nhạc nền nữa** (Chiều êm, Bước nhẹ), chọn trên thẻ ở màn hình chủ, bài
     cũ giữ nguyên làm mặc định. Cả ba ở Đô trưởng vì ràng buộc giáo trình, có test gác:
     mọi nốt của mọi bài phải rơi vào phím trắng.
+  - **Gom điều hướng thành Đường đi theo chương.** Trước đó một buổi học phải đi ba
+    trang: Mục lục đọc lý thuyết, Bài tập mò đúng bài, Nhật ký nhớ vừa học gì rồi tick.
+    Gốc rễ là lý thuyết và bài tập vốn là HAI chuỗi rời — đọc xong lý thuyết Chương 3 bấm
+    *Bài tiếp theo* là nhảy sang lý thuyết Chương 4, bỏ qua cả sáu bài tập. Nay một chuỗi
+    duy nhất, mỗi chương một trang có tick tại chỗ, thanh tab còn bốn mục.
+  - **Dựng Góc bài hát** (`/songs`), miễn phí, không tick. Sáu bài đều đã hết hạn bảo hộ;
+    mỗi file bắt buộc khai trường `nguon` và **có test gác** — thêm bài mà bỏ trống là đỏ.
+  - **Sửa lỗi nhạc nền kêu chồng lên bản nhạc mẫu** (bẫy 23), lỗi đang chạy trên
+    production.
 
 **Quan sát**
 
@@ -114,6 +123,21 @@
   riêng cho từng bài nhạc nền, vì bài dày nốt lẽ ra phải to hơn bài thưa nốt. Đo ra ba bài
   chênh nhau 0,6dB — dưới ngưỡng tai nghe ra được, vì bộ nén đã san sẵn. Gỡ bỏ. Một con số
   luôn bằng 1 nằm trong mã là thứ lần sau phải đoán xem nó dùng làm gì.
+- **Năm lệnh kiểm xanh vẫn chưa đủ để nói trang mở được.** Dựng `/path` xong, cả năm lệnh
+  đều xanh mà mở trang ra là 500: `component={Link}` của Mantine trong Server Component.
+  `next build` cũng qua, vì trang dựng theo từng lượt xem nên lỗi chỉ nổ khi có người mở
+  thật. Bẫy 19 dạy "bốn lệnh xanh không có nghĩa deploy chạy"; bẫy 22 đi thêm một bước.
+  Từ nay đổi giao diện là phải `next start` rồi mở từng đường dẫn.
+- **Hai lỗi hôm nay đều nằm ở chỗ "trong lúc tôi chờ, thế giới có đổi không".** Nhạc nền
+  kêu chồng lên bản nhạc mẫu là vì `pointerdown` bắn trước `click`: lệnh bật chạy trước
+  lệnh dừng nhưng về đích sau, do nó kẹt trong `await resume()`. Cùng họ với bẫy 18 (bộ
+  phát mồ côi) và với chỗ `setPiece` cố ý không tự gọi `start()`. Mọi thứ sau một `await`
+  đều phải hỏi lại trạng thái.
+- **Chỗ người dùng đẩy lại mạnh nhất là chuyện bản quyền**, và lý lẽ nghe rất hợp lý:
+  "MuseScore với mấy trang Facebook bán sheet bình thường mà, soạn bằng AI rồi ghi nguồn
+  là được". Hai chỗ sai: MuseScore **trả tiền bản quyền** chứ không phải cứ làm; và ghi
+  tên tác giả là *nghĩa vụ*, không phải *giấy phép*. Ai chép ra — người hay AI — không
+  liên quan tới bản quyền, vì thứ được bảo hộ là bản thân tác phẩm chứ không phải cái file.
 - **Việc tuyển beta sang phiên thứ hai vẫn chưa động tới.** Cả ngày hôm nay là sản phẩm.
 
 **Tiếp theo**
@@ -131,6 +155,18 @@
 - **Kiểm 16px nới đáy thanh tab trên máy thật.** Con số suy ra từ bề rộng dải cử chỉ của
   Android chứ chưa đo trên máy. Chưa đủ thoáng thì nâng lên 20-24px, sửa đúng một dòng
   trong `globals.css`.
+- **Đánh thử sáu bài trong Góc bài hát.** Claude xác minh được nốt viết ra đúng như nó
+  định và trường độ từng ô nhịp khớp, nhưng không nghe được để biết giai điệu có đúng bài
+  gốc không. Hai chỗ đáng ngờ nhất: Minuet ô nhịp thứ 3 (tiết tấu do Claude tự chọn) và
+  vòng hoà thanh của Canon.
+- **Tick thử vài bước trên Đường đi** xem con số nhảy đúng ở cả ba chỗ (trang chương,
+  `/path`, màn hình chủ). Máy dựng bản không có database nên luồng này chưa chạy được lần
+  nào.
+- **Hỏi VCPMC** nếu vẫn muốn có nhạc đang thịnh hành trong Góc bài hát. Khung đã dựng sẵn
+  chỗ ghi số giấy phép; có phép là soạn được ngay.
+- **Gửi giai điệu dân ca** (gõ tên nốt hoặc chụp bản nhạc có sẵn) để Claude soạn tiếp. Đây
+  là thứ hợp pháp mà người học Việt Nam nhiều khả năng thích nhất, nhưng Claude không dám
+  chép từ trí nhớ vì nhiều dị bản vùng miền.
 
 ## 10/09/2026 — Gỡ rào cản trước cửa
 
