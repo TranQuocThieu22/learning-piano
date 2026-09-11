@@ -24,6 +24,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
   3. **Không có bảng tỉ số chạy trong lúc đánh.** `FollowState.misses` cố ý không hiện lên màn hình: một cái nháy là báo hiệu, một con số cứ tăng trước mắt là áp lực. Phần thống kê đầy đủ chỉ xuất hiện sau khi bấm dừng.
 - **Không nêu đích danh tên app hay khóa học của đối thủ** ở bất cứ đâu — tài liệu, nội dung web, trang bán hàng, quảng cáo. Luôn mô tả theo cách làm ("app chấm điểm tự động"), không theo tên thương hiệu. Lý do pháp lý ghi ở mục 0 trong `docs/_internal/dinh-huong-kinh-doanh.md`.
 - **Không dùng tệp để theo dõi tiến độ** — tiến độ được ghi bằng cách tick bài trên trang `/nhat-ky`, lưu vào database theo tài khoản Google. Thư mục `docs/05-learning-logs` và quy trình nộp video đã được gỡ bỏ, đừng tạo lại.
+- **Điện thoại và tablet là thiết bị chính, máy tính là phụ.** Người học tập bằng cách đặt máy lên giá nhạc của cây đàn; laptop không có chỗ đặt trên đàn nên gần như không ai mở nó lúc tập. Vẫn là **web cài ra màn hình chính**, không làm app trên store — câu đó đã chốt ở mục 1 của `docs/_internal/nhat-ky-quyet-dinh.md`, hướng di động nói về màn hình chứ không mở lại chuyện kênh phân phối. Làm gì cũng giữ bốn điều:
+
+  1. **Kiểm trên khung điện thoại trước**, cả dọc lẫn xoay ngang (xoay ngang chỉ còn khoảng 360px chiều cao). Máy tính kiểm sau, để chắc là không vỡ.
+  2. **Hai tư thế cầm máy, thiết kế cho cả hai.** Đọc bài lúc rảnh thì cầm một tay, ngón cái bấm. Lúc tập thì máy nằm trên giá nhạc cách mắt nửa sải tay, hai tay đang ở trên phím đàn — bản nhạc phải đọc được từ khoảng cách đó, nút phải to và ít bước, không bắt gõ chữ.
+  3. **Chữ cho người học không giả định máy tính** — không viết "trên máy tính", "bấm chuột", "cắm vào máy tính" như thể đó là cách duy nhất.
+  4. **Web MIDI chạy trên Android (Chrome, Edge, cần cáp OTG) và máy tính, không chạy trên iPhone/iPad** — mọi trình duyệt trên iOS đều dùng WebKit, mà WebKit không có Web MIDI. Nên tính năng nào dựa trên MIDI cũng phải có đường cho người không nối được đàn, và không bài học nào được bắt buộc phải nối đàn.
 
 # Định hướng kinh doanh
 

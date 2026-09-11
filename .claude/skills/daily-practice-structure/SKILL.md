@@ -5,7 +5,7 @@ description: Soạn bài học piano mới theo cấu trúc Chương/Bài của 
 
 # Multi-day Lessons & Progress Tracking
 - The curriculum is structured into **Chương** (Chapter/Module) and **Bài** (Lesson/Topic).
-- **PROGRESS IS TRACKED IN THE APP, NOT IN A FILE.** The user marks a lesson done by ticking it on the **Nhật ký học tập** page (`/nhat-ky`), which saves to the database against their Google account. Do NOT create or update `docs/01-roadmap/progress.md` — that file has been removed and the submission workflow no longer exists. Never tell the user to record or submit a video.
+- **PROGRESS IS TRACKED IN THE APP, NOT IN A FILE.** The user marks a lesson done by ticking it on the **Nhật ký học tập** page (`/journal`), which saves to the database against their Google account. Do NOT create or update `docs/01-roadmap/progress.md` — that file has been removed and the submission workflow no longer exists. Never tell the user to record or submit a video.
 - To find out where the user currently is, ASK them which lesson they last ticked. Do not assume, and do not look for a progress file — there isn't one.
 - **NEW LESSON ESTIMATION**: Whenever you introduce a BRAND NEW lesson (e.g., Chương 2 - Bài 1), you MUST evaluate the complexity of the lesson's core topic. Then, explicitly tell the user your estimation of how many days (e.g., "This topic takes 3 days to master" - provide ONE specific number, NOT a range like "2-3 days") they should spend practicing this specific lesson before moving on.
 - When the user asks for a new day of practice but they haven't finished the estimated days for the current lesson, DO NOT create a new lesson file. Instead, advise them to continue repeating the current lesson's routine to build muscle memory.
@@ -50,5 +50,11 @@ When giving instructions for a daily piano practice session, you MUST structure 
 - After each major cluster of chapters (currently: after Chương 3, and planned after Chương 6), you MUST create a **Tổng ôn / Recital** lesson instead of a new-skill lesson.
 - A Recital lesson: introduces **NO new skill**, gives 2-3 complete pieces that combine everything learned so far, opens by reminding the user how far they have come, and defines an explicit "pass" standard (e.g., "play the whole piece start to finish without stopping to fix mistakes").
 - Name it as a normal lesson file (`chuong-03-bai-06.md`) so it appears on the Nhật ký page and can be ticked.
+
+# Write for a Phone on the Music Stand
+Learners read lessons mainly on a **phone or tablet**, and practise with that device propped on the piano's music stand — a laptop has nowhere to sit on a keyboard, so almost nobody practises with one. This is a settled product decision (see `AGENTS.md`). When writing lesson text:
+- **Never assume a computer.** Do not write "trên máy tính", "bấm chuột", "mở máy tính lên nghe". Say "trên điện thoại" or just "bấm nghe thử" — the instruction should work on whatever device the learner holds.
+- **The practice sections are read at arm's length, hands on the keys.** Keep each on-piano step short enough to take in with one glance at the stand; put the long explanation in the theory part or the away-from-piano part, which are read with the phone in hand.
+- **Never make a lesson depend on connecting the piano (Web MIDI).** It works on Android and on computers but not on iPhone/iPad, so every exercise must be fully doable with just the piano and the sheet music. "Tập bài này với đàn" can be suggested as an extra, never as a step.
 
 Always remind the user that **quality over quantity** is key. 30 minutes of highly focused practice is better than 2 hours of mindless playing.

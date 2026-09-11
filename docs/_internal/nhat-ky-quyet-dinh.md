@@ -37,6 +37,7 @@ cũng ra.
 | Giữ thanh tiêu đề của app không? | **Không.** Bỏ nốt, chỉ còn thanh tab dưới đáy | Sau khi bỏ thanh bên, thanh tiêu đề chỉ còn ba nút mà cả ba đều thỉnh thoảng mới dùng: đăng nhập (một lần rồi thôi), đổi nền (vài tháng một lần), quay lại (đã có cử chỉ vuốt của máy và nút *Bài trước* cuối bài). Một dải cố định suốt buổi tập cho ba nút đó là không đáng. Đăng nhập và đổi nền dời vào thẻ tài khoản cuối màn hình chủ |
 | Giữ thanh bên (AppShell) hay bỏ để giống app điện thoại? | **Bỏ hẳn.** Thanh tab dưới đáy + `/library` + `/exercises` | Thanh bên nằm sau nút hamburger ở góc trên bên trái — góc xa ngón cái nhất khi cầm máy một tay — mà lại là đường duy nhất đi bất cứ đâu. Nó còn kéo theo cả chùm việc phải bù cho `offset: false` (hiệu ứng headroom, ba lớp CSS cộng tay chiều cao thanh tiêu đề). Điều kiện để bỏ được: mục lục phải có nhà mới, nếu không thì tám chương lý thuyết mất đường tới |
 | App cài ngoài màn hình chính nên chạy `standalone` hay `fullscreen`? | **`fullscreen`.** Ẩn luôn thanh trạng thái | Chiều cao là thứ khan hiếm nhất lúc tập: điện thoại xoay ngang chỉ còn khoảng 360px, một dòng khuông nhạc đã ăn gần hết, thanh trạng thái lấy thêm 24-30px nữa. Đổi lại là không còn thấy đồng hồ ở bất cứ trang nào — đã cân nhắc và chấp nhận. Kéo theo: `InstallPrompt` phải hỏi cả ba kiểu hiển thị, vì `display-mode` chỉ khớp đúng kiểu đang chạy nên app đã cài sẽ tự mời cài lại chính nó. Bổ sung 10/09: thêm lớp thứ hai `FullscreenOnFirstTap.tsx` gọi Fullscreen API ở lần chạm đầu, vì lớp manifest chỉ ăn với máy cài LẠI sau khi đổi — máy cài từ trước vẫn chạy `standalone` và vẫn thấy thanh trạng thái |
+| Thiết kế cho máy tính hay cho điện thoại? | **Điện thoại và tablet là chính**, máy tính là phụ. Vẫn là web, không làm app trên store | Người học đặt máy lên giá nhạc của đàn; laptop không có chỗ đặt trên đàn nên không ai mở nó lúc tập. Đợt dựng lại điều hướng 10-11/09 đã đi theo hướng này nhưng chưa ghi thành nguyên tắc, nên chữ cũ sót lại: app và bài tuyển beta vẫn ghi Web MIDI "chỉ chạy trên máy tính", trong khi chủ sản phẩm dùng nó trên điện thoại Android hằng ngày. Chốt thành văn 11/09/2026, bốn hệ quả ghi ở `AGENTS.md`. Không mâu thuẫn với dòng đầu bảng: "di động" ở đây là cỡ màn hình, không phải kênh phân phối |
 | Có nên làm nhánh `dev`/`preview`? | **Có đường sẵn nhưng tạm chưa dùng.** Beta vẫn test local rồi đẩy thẳng `main` | Một người làm; mỗi thay đổi nhỏ mà phải qua preview thì chậm hơn phần lợi thu được. Quy trình nhánh đã viết sẵn ở `quy-trinh-lam-viec.md` để bật lên khi có khách thật |
 
 ---
@@ -208,6 +209,10 @@ Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. 
 - **Nhánh `preview` và `preview.rehover.io`** đã có quy trình viết sẵn nhưng chưa bật.
 - **Video kỹ thuật ngắn** (form tay, luồn ngón, legato) — đã chốt là cần, chưa quay.
 - **Web MIDI mở rộng ra ngoài bài luyện nhận nốt** — hướng đã chốt, chưa làm.
+- **Web MIDI trên iPhone/iPad không có đường đi trong khuôn web.** Mọi trình duyệt trên
+  iOS đều dùng WebKit, mà WebKit không có Web MIDI. Chưa biết bao nhiêu người beta dùng
+  iOS — xem mục hệ điều hành trong Vercel Analytics trước khi đổ công vào lớp MIDI. Nếu
+  phần lớn là iOS thì phải bàn lại, và chỉ lúc đó mới đụng tới câu "không làm app mobile".
 - **Giai đoạn 3 và 4** là sản phẩm riêng, chỉ quảng bá khi đã soạn xong.
 - **Năm tab ở màn hình hẹp** — 390px chia năm là 78px mỗi ô. Chưa thử trên máy cỡ chữ hệ
   thống to; chữ tràn thì rút còn bốn tab hoặc bỏ chữ chỉ giữ biểu tượng.
@@ -240,6 +245,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm dòng quyết định vào mục 1 và một việc còn treo về Web MIDI trên iPhone/iPad — hướng di động đã có trong đợt dựng lại điều hướng nhưng chưa thành nguyên tắc, nên chữ "chỉ chạy trên máy tính" còn sót trong app và suýt vào bài tuyển beta |
 | 11/09/2026 | `docs(internal): Ghi nhật ký làm việc 10-11/09` | Ghi lại hai ngày sửa chế độ tập trung, dựng lại điều hướng và thêm nhạc nền, kèm ba việc còn treo sau đợt này — để phiên sau mở ra là biết đang đứng ở đâu |
 | 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Sửa lại dòng quyết định nhạc nền cho khớp thực tế: mặc định bật và tắt theo sự kiện, kèm lý do vì sao việc này không phá ràng buộc "người học tự quyết" của phần tập |
 | 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Chốt cách làm nhạc nền và lý do bản quyền đứng trước lý do kỹ thuật |

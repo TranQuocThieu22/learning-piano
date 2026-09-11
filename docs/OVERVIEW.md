@@ -15,8 +15,8 @@
 ## 1. Sản phẩm là gì
 
 Giáo trình piano **tiếng Việt cho người mới từ số 0**, dạng web app, kèm công cụ hỗ
-trợ luyện tập. Người học đọc bài trên web, tập trên **đàn phím thật** của mình, rồi
-tick bài đã xong vào nhật ký.
+trợ luyện tập. Người học đọc bài trên web — **chủ yếu bằng điện thoại hoặc tablet đặt
+trên giá nhạc** — tập trên **đàn phím thật** của mình, rồi tick bài đã xong vào nhật ký.
 
 **Là:** lộ trình có thứ tự và có điểm dừng, dạy kỹ thuật vật lý trên đàn thật, giải
 thích *vì sao* chứ không chỉ *làm gì*.
@@ -166,7 +166,9 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
   trên bài.
 - **Web MIDI:** cắm đàn qua USB MIDI thì app nghe được nốt bạn bấm. Đã dùng cho bài
   luyện nhận nốt và cho `ScorePractice` (đánh xong → so với bản nhạc → tô màu chỗ sai).
-  Chỉ chạy trên Chrome/Edge; Safari chưa hỗ trợ Web MIDI.
+  Chạy trên **điện thoại và tablet Android** (Chrome/Edge, nối bằng cáp OTG) và trên
+  máy tính. **Không chạy trên iPhone/iPad** — mọi trình duyệt iOS đều dùng WebKit, mà
+  WebKit không có Web MIDI.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).
 
 **Thanh toán:** đã có phần backend — bảng `payment_order` / `payment_received` /
@@ -178,7 +180,7 @@ và **chưa khóa nội dung** theo gói.
 
 ## 5. Những quyết định đã chốt
 
-Bốn ràng buộc dưới đây không phải sở thích — mỗi cái có lý do cụ thể, đừng đề xuất
+Năm ràng buộc dưới đây không phải sở thích — mỗi cái có lý do cụ thể, đừng đề xuất
 ngược lại nếu chưa đọc lý do.
 
 **Không làm piano ảo bấm chuột / chạm màn hình.**
@@ -201,6 +203,14 @@ thương hiệu. Lý do pháp lý ở mục 0 tài liệu nội bộ.
 **Không dùng tệp để theo dõi tiến độ.** Tiến độ ghi bằng cách tick bài ở `/journal`,
 lưu vào database. Thư mục `docs/05-learning-logs` và quy trình nộp video đã gỡ, đừng
 tạo lại.
+
+**Điện thoại và tablet là thiết bị chính, máy tính là phụ.**
+Người học đặt máy lên giá nhạc của đàn; laptop không có chỗ đặt trên đàn nên gần như
+không ai mở lúc tập. Vẫn là web cài ra màn hình chính, không làm app trên store. Hệ quả:
+kiểm giao diện trên khung điện thoại trước (cả xoay ngang); lúc tập máy nằm cách mắt nửa
+sải tay nên bản nhạc phải đọc được từ đó và nút phải to; chữ cho người học không giả định
+máy tính; và vì iPhone/iPad không có Web MIDI, không bài học nào được bắt buộc nối đàn.
+Bốn điều đầy đủ ở `AGENTS.md`.
 
 ---
 
@@ -293,6 +303,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm ràng buộc thứ năm ở mục 5 và sửa dòng Web MIDI ở mục 4 — dòng cũ ghi "chỉ Chrome/Edge", đọc lên như chỉ máy tính dùng được, trong khi Android chạy được còn iPhone/iPad thì không; file này là thứ thả vào chat để bàn chuyện, ghi sai ở đây là mọi cuộc bàn sau đều lệch theo |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Chuyển trang không còn dừng rồi bật lại nhạc từ đầu vòng hợp âm; kèm chỗ sửa bộ phát mồ côi khiến lệnh tắt chỉ tắt được một nửa |
 | 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Nhạc nền đổi từ nền ngân kiểu thiền sang vòng I–V–vi–IV có rải nốt, vì bản cũ ru ngủ chứ không tạo hứng; mặc định bật theo yêu cầu chủ sản phẩm, và chuyển luật tắt từ theo-đường-dẫn sang theo-sự-kiện để đọc lý thuyết vẫn còn nhạc |
 | 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Nhạc nền dựng bằng Web Audio thay vì tải tệp về, vì sản phẩm có bán nên nhạc "miễn phí" trên mạng là rủi ro bản quyền thật; ghi rõ luật tự tắt ở trang có tiếng khác |

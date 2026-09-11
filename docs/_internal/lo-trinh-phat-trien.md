@@ -242,6 +242,13 @@ Gói Nền tảng là Giai đoạn 1 + 2, nên chỉ trọn vẹn khi Chương 1
 
 *Điều kiện ra:* người học dùng thật và nói được nó giúp gì.
 
+*Trước khi mở giai đoạn này, phải biết người học dùng máy gì.* Từ 11/09/2026 đã chốt
+**điện thoại và tablet là thiết bị chính** (xem `AGENTS.md`), mà Web MIDI chạy trên
+Android và máy tính, **không chạy trên iPhone/iPad**. Lớp MIDI chỉ là điểm khác biệt với
+phần người học dùng được nó. Nên đọc mục hệ điều hành trong Vercel Analytics trước: nếu
+phần lớn là iOS thì điều kiện ra ở trên không đạt được bằng web thuần, và phải bàn lại
+trước khi viết dòng mã nào — kể cả câu đã chốt "không làm app mobile".
+
 ### Giai đoạn E — Xem lại toàn bộ mô hình
 
 *Chỉ mở khi:* MIDI chạy ổn định, có từ 50 khách thật trở lên, biết tỷ lệ hoàn thành.
@@ -280,6 +287,7 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm vào Giai đoạn D việc phải đo tỷ lệ người học dùng iOS trước khi đầu tư vào lớp MIDI — người học chủ yếu tập bằng điện thoại, mà iPhone/iPad không có Web MIDI, nên điểm khác biệt này có thể chỉ tới được một phần người học |
 | 28/08/2026 | `fix: Tắt nhiễu NOTICE của script baseline và cập nhật bảng trạng thái` | Bảng mục 1 vẫn ghi "Chưa có" cho trang mua và khoá nội dung dù cả hai đã chạy từ lâu — kiểm lại trong mã rồi sửa, và tách ra dòng riêng cho thứ thật sự còn thiếu là trang bán hàng cho người lạ |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang bản mở rộng 7 năm `du-phong-7-nam.md` |
 | 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Tạo file — phễu T1-T7, ba kịch bản doanh thu, mô hình sản phẩm bốn lớp, lộ trình A-E có cổng quyết định |
