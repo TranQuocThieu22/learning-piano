@@ -185,7 +185,7 @@ export function NoteRecognitionDrill() {
               background: '#fff',
               color: '#000',
               border: '1px solid #d0d0d0',
-              borderRadius: 8,
+              borderRadius: 16,
               padding: '0.75rem 1rem',
               minHeight: 150,
               width: '100%',
@@ -220,9 +220,9 @@ export function NoteRecognitionDrill() {
             )}
           </Box>
 
-          <Group>
-            <Button variant="default" onClick={skip}>Bỏ qua nốt này</Button>
-            <Button variant="subtle" color="gray" onClick={restart}>Làm lại từ đầu</Button>
+          <Group justify="center">
+            <Button variant="default" size="md" onClick={skip}>Bỏ qua nốt này</Button>
+            <Button variant="subtle" color="gray" size="md" onClick={restart}>Làm lại từ đầu</Button>
           </Group>
         </Stack>
       </Card>

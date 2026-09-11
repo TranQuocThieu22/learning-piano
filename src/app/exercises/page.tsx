@@ -1,6 +1,8 @@
-import { Container, Text, Title } from '@mantine/core';
+import { Container } from '@mantine/core';
+import { IconMap2 } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { ExerciseMap, type MapChapter } from '@/components/ExerciseMap';
+import { PageHeader } from '@/components/PageHeader';
 import { auth } from '@/auth';
 import { EXERCISES_CATEGORY, getAllLessons, getLessonsByChapter } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
@@ -44,12 +46,12 @@ export default async function ExercisesPage() {
   return (
     <AppLayout>
       <Container size="sm" px={0}>
-        <Title order={2} mb="xs">
-          Bài tập
-        </Title>
-        <Text c="dimmed" mb="lg">
-          Bấm vào một bài để mở. Ô viền đậm là bài bạn đang tới.
-        </Text>
+        <PageHeader
+          section="exercises"
+          icon={<IconMap2 size={26} />}
+          title="Bài tập"
+          description="Bấm vào một bài để mở. Ô có vòng sáng là bài bạn đang tới."
+        />
         <ExerciseMap chapters={chapters} />
       </Container>
     </AppLayout>

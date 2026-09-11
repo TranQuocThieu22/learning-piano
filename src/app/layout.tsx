@@ -2,14 +2,24 @@ import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import '@mantine/core/styles.css';
 import "./globals.css";
-import { ColorSchemeScript, MantineProvider } from '@mantine/core';
+import { ColorSchemeScript } from '@mantine/core';
 import { Analytics } from '@vercel/analytics/next';
+import { AppProviders } from '@/components/AppProviders';
 import { ThemeColorMeta } from '@/components/ThemeColorMeta';
 import { AmbientMusic } from '@/components/AmbientMusic';
 
-const beVietnamPro = Be_Vietnam_Pro({ 
+/**
+ * Nạp font dưới dạng biến CSS để `theme.ts` trỏ tới được (`var(--font-be-vietnam)`).
+ *
+ * Biến phải gắn lên `<html>`, KHÔNG gắn lên `<body>`: Mantine khai
+ * `--mantine-font-family` ở `:root`, mà một biến CSS tham chiếu biến khác được giải
+ * ngay tại chỗ nó được khai. Gắn ở body thì tại `:root` chưa có
+ * `--font-be-vietnam`, cả chuỗi font thành không hợp lệ và chữ rơi về font chân.
+ */
+const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
-  weight: ['400', '500', '600', '700', '800'] 
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-be-vietnam',
 });
 
 const TEN_DAY_DU = 'Piano Journey — Giáo trình piano online, học từ số 0';
@@ -67,16 +77,16 @@ export const metadata: Metadata = {
  * `env(safe-area-inset-*)` — xem `.safe-*` trong globals.css. Không bật cờ này
  * thì `env(safe-area-inset-bottom)` luôn trả về 0.
  *
- * `themeColor` nhuộm thanh trạng thái theo đúng màu nền trang, để dải trên cùng
- * không còn nhìn như một thanh riêng nằm đè lên giao diện. Giá trị ở đây là màu
- * của giao diện sáng (mặc định của app); khi người học bật giao diện tối thì
- * `ThemeColorMeta` sửa lại thẻ meta này ngay trên máy.
+ * `themeColor` nhuộm thanh trạng thái theo đúng màu nền trang (`--app-bg` trong
+ * globals.css), để dải trên cùng không còn nhìn như một thanh riêng nằm đè lên
+ * giao diện. Giá trị ở đây là màu của giao diện sáng (mặc định của app); khi
+ * người học bật giao diện tối thì `ThemeColorMeta` sửa lại thẻ meta này ngay trên máy.
  */
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   viewportFit: 'cover',
-  themeColor: '#ffffff',
+  themeColor: '#f5f3fc',
 };
 
 export default function RootLayout({
@@ -85,12 +95,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="vi" suppressHydrationWarning>
+    <html lang="vi" className={beVietnamPro.variable} suppressHydrationWarning>
       <head>
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
-      <body className={beVietnamPro.className} suppressHydrationWarning>
-        <MantineProvider defaultColorScheme="light">
+      <body suppressHydrationWarning>
+        <AppProviders>
           <ThemeColorMeta />
           {/*
             Nhạc nền phải nằm ở layout GỐC, không nằm trong `AppLayout`: mỗi trang
@@ -99,7 +109,7 @@ export default function RootLayout({
           */}
           <AmbientMusic />
           {children}
-        </MantineProvider>
+        </AppProviders>
         {/*
           Đếm lượt truy cập. Không đặt cookie nên không phải dựng banner xin đồng
           ý, và chỉ gửi dữ liệu khi đã bật Web Analytics trong bảng điều khiển

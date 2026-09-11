@@ -1,6 +1,8 @@
-import { Container, Stack, Text, Title } from '@mantine/core';
+import { Card, Container, Stack, Text, Title } from '@mantine/core';
+import { IconMusicSearch } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { NoteRecognitionDrill } from '@/components/NoteRecognitionDrill';
+import { PageHeader } from '@/components/PageHeader';
 
 export const metadata = {
   title: 'Luyện nhận nốt',
@@ -10,15 +12,17 @@ export default async function NoteRecognitionPage() {
   return (
     <AppLayout>
       <Container size="sm" px={0}>
-        <Title order={2} mb="xs">Luyện nhận nốt</Title>
-        <Text c="dimmed" mb="lg">
-          Màn hình hiện một nốt, bạn bấm phím tương ứng trên đàn thật — app nghe qua micro của
-          điện thoại. Không đếm giờ, không chấm điểm khi đang chơi — cứ chậm bao nhiêu tùy bạn.
-        </Text>
+        <PageHeader
+          section="trainer"
+          icon={<IconMusicSearch size={26} />}
+          title="Luyện nhận nốt"
+          description="Màn hình hiện một nốt, bạn bấm phím tương ứng trên đàn thật — app nghe qua micro của điện thoại. Không đếm giờ, không chấm điểm khi đang chơi — cứ chậm bao nhiêu tùy bạn."
+        />
 
         <NoteRecognitionDrill />
 
-        <Stack gap="sm" mt="xl">
+        <Card withBorder padding="lg" mt="xl">
+        <Stack gap="sm">
           <Title order={4}>Vì sao bài này không chạy theo nhịp</Title>
           <Text size="sm">
             Bạn có thể đã gặp những ứng dụng cho bản nhạc trôi trên màn hình và chấm đúng sai ngay
@@ -67,6 +71,7 @@ export default async function NoteRecognitionPage() {
             vẫn học đủ mọi bài như bình thường.
           </Text>
         </Stack>
+        </Card>
       </Container>
     </AppLayout>
   );

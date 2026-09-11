@@ -413,13 +413,11 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
     <div
       className={`sheet-music-wrapper${focused ? ' is-focused' : ''}`}
       style={{
-        margin: '2rem 0',
-        background: 'var(--mantine-color-body)',
-        // padding nằm ở globals.css (.sheet-music-wrapper), không đặt ở đây: style
-        // nội tuyến thắng mọi luật CSS thường, nên để ở đây thì chế độ tập trung
-        // không đổi được padding của khung.
-        borderRadius: '8px',
-        border: '1px solid var(--mantine-color-default-border)',
+        // Lề, nền, viền, bo góc và padding của khung đều nằm ở globals.css
+        // (.sheet-music-wrapper), KHÔNG đặt ở đây: style nội tuyến thắng mọi luật
+        // CSS thường, nên để ở đây thì chế độ tập trung không gỡ được chúng — viền
+        // và bo góc từng vẫn còn nguyên trong lớp phủ vì đúng lý do này.
+        //
         // CSS đọc biến này để nhân bề ngang SVG lên; ngoài chế độ tập trung thì
         // không luật nào dùng tới nên đặt sẵn cũng vô hại.
         ['--sheet-zoom' as string]: String(zoom),
@@ -517,7 +515,8 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
               }))}
               value={String(program)}
               allowDeselect={false}
-              w={240}
+              // Cả bề ngang trên điện thoại: 240px cạnh một cái nút là tràn dòng lệch lạc.
+              w={{ base: '100%', xs: 240 }}
               onChange={(value) => {
                 if (!value) return;
                 const next = Number(value);
@@ -529,9 +528,10 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
 
           {showPracticeButton && (
             <Button
-              variant="light"
-              size="xs"
-              leftSection={<IconDeviceGamepad2 size={16} />}
+              variant="gradient"
+              size="sm"
+              w={{ base: '100%', xs: 'auto' }}
+              leftSection={<IconDeviceGamepad2 size={18} />}
               onClick={() => setPracticeOpen(true)}
               data-testid="open-practice"
             >
@@ -544,8 +544,9 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
           {practiceOpen && (
             <Button
               variant="light"
-              size="xs"
-              leftSection={<IconArrowsMaximize size={16} />}
+              size="sm"
+              w={{ base: '100%', xs: 'auto' }}
+              leftSection={<IconArrowsMaximize size={18} />}
               onClick={() => setFocused(true)}
               data-testid="enter-focus"
             >

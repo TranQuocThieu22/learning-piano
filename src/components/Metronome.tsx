@@ -140,73 +140,70 @@ export function Metronome({
     }
   };
 
+  /*
+   * Mọi thứ ở đây to hơn hẳn phần còn lại của app, có chủ ý: lúc dùng máy đánh
+   * nhịp thì điện thoại đang nằm trên giá nhạc, cách mắt nửa sải tay, và người
+   * học chạm vội bằng một ngón giữa hai lượt đánh. Con số BPM và chấm phách phải
+   * đọc được từ khoảng cách đó; nút phải trúng mà không cần nhìn kỹ.
+   */
   return (
-    <Paper withBorder p="lg" radius="md">
+    <Paper withBorder p="lg" radius="xl" shadow="sm">
       <Stack gap="lg">
-        <Group justify="center" gap="xs">
+        {/* Chiều cao cố định để chấm to lên lúc sáng không làm cả khối nhảy. */}
+        <Group justify="center" gap="md" h={48} align="center">
           {Array.from({ length: beatsPerBar }, (_, i) => (
-            <Box
+            <span
               key={i}
-              w={i === 0 ? 26 : 20}
-              h={i === 0 ? 26 : 20}
-              style={{
-                borderRadius: '50%',
-                border: `2px solid var(--mantine-color-${i === 0 ? 'orange' : 'blue'}-5)`,
-                background:
-                  currentBeat === i
-                    ? `var(--mantine-color-${i === 0 ? 'orange' : 'blue'}-5)`
-                    : 'transparent',
-                transition: 'background 60ms linear',
-              }}
+              className="beat-dot"
+              data-accent={i === 0 || undefined}
+              data-active={currentBeat === i || undefined}
             />
           ))}
         </Group>
 
         <Stack gap={4} align="center">
-          <Text fw={700} fz={44} lh={1}>
-            {bpm}
-          </Text>
+          <Text className="metronome-bpm">{bpm}</Text>
           <Text size="sm" c="dimmed">
             phách mỗi phút (BPM)
           </Text>
-          <Badge variant="light" color="gray" mt={4}>
+          <Badge variant="light" color="orange" size="lg" mt={4}>
             {tempoName(bpm)}
           </Badge>
         </Stack>
 
-        <Slider
-          value={bpm}
-          onChange={setBpm}
-          min={MIN_BPM}
-          max={MAX_BPM}
-          label={null}
-          marks={[
-            { value: 60, label: '60' },
-            { value: 90, label: '90' },
-            { value: 120, label: '120' },
-            { value: 160, label: '160' },
-          ]}
-        />
+        <Box px={4} pb="md">
+          <Slider
+            value={bpm}
+            onChange={setBpm}
+            min={MIN_BPM}
+            max={MAX_BPM}
+            label={null}
+            size="lg"
+            thumbSize={28}
+            color="orange"
+            aria-label="Tốc độ (BPM)"
+            marks={[
+              { value: 60, label: '60' },
+              { value: 90, label: '90' },
+              { value: 120, label: '120' },
+              { value: 160, label: '160' },
+            ]}
+          />
+        </Box>
 
-        <Group justify="center" gap="xs" mt="xs">
-          {[-5, -1].map((d) => (
+        <Group grow gap="xs">
+          {[-5, -1, 1, 5].map((d) => (
             <Button
               key={d}
-              variant="default"
-              size="compact-sm"
-              onClick={() => setBpm((b) => Math.max(MIN_BPM, b + d))}
+              variant="light"
+              color="orange"
+              size="md"
+              px={0}
+              onClick={() =>
+                setBpm((b) => Math.min(MAX_BPM, Math.max(MIN_BPM, b + d)))
+              }
             >
-              {d}
-            </Button>
-          ))}
-          {[1, 5].map((d) => (
-            <Button
-              key={d}
-              variant="default"
-              size="compact-sm"
-              onClick={() => setBpm((b) => Math.min(MAX_BPM, b + d))}
-            >
-              +{d}
+              {d > 0 ? `+${d}` : d}
             </Button>
           ))}
         </Group>
@@ -217,6 +214,8 @@ export function Metronome({
           </Text>
           <SegmentedControl
             fullWidth
+            size="md"
+            color="orange"
             value={String(beatsPerBar)}
             onChange={(v) => setBeatsPerBar(Number(v))}
             data={[
@@ -227,18 +226,22 @@ export function Metronome({
           />
         </div>
 
-        <Group grow>
+        <Stack gap="sm">
           <Button
-            leftSection={running ? <IconPlayerStop size={18} /> : <IconPlayerPlay size={18} />}
-            color={running ? 'red' : 'blue'}
+            size="xl"
+            fullWidth
+            variant={running ? 'filled' : 'gradient'}
+            color={running ? 'red' : undefined}
+            gradient={{ from: 'orange.6', to: 'pink.5', deg: 135 }}
+            leftSection={running ? <IconPlayerStop size={22} /> : <IconPlayerPlay size={22} />}
             onClick={running ? stop : start}
           >
             {running ? 'Dừng' : 'Bắt đầu'}
           </Button>
-          <Button variant="default" onClick={handleTap}>
+          <Button size="lg" fullWidth variant="light" color="orange" onClick={handleTap}>
             Gõ theo nhịp
           </Button>
-        </Group>
+        </Stack>
 
         <Text size="xs" c="dimmed" ta="center">
           Bấm &quot;Gõ theo nhịp&quot; vài lần đều tay để máy tự đoán tốc độ bạn muốn.

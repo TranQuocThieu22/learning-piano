@@ -1,16 +1,16 @@
 import {
   Alert,
   Badge,
+  Button,
   Card,
   Container,
-  Group,
-  Progress,
+  RingProgress,
   Stack,
   Text,
-  Title,
 } from '@mantine/core';
-import { IconInfoCircle, IconLock } from '@tabler/icons-react';
+import { IconChecklist, IconInfoCircle, IconLock } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
+import { PageHeader } from '@/components/PageHeader';
 import { viewerHasFullAccess } from '@/lib/access-server';
 import { canReadLesson } from '@/lib/access';
 import { NavAnchor } from '@/components/NavAnchor';
@@ -19,6 +19,7 @@ import { auth } from '@/auth';
 import { EXERCISES_CATEGORY, getLessonsByChapter, getAllLessons } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { signInWithGoogle } from '@/lib/auth-actions';
+import { chapterColorVars } from '@/lib/chapter-colors';
 
 export default async function LearningLogPage() {
   const session = await auth();
@@ -41,18 +42,17 @@ export default async function LearningLogPage() {
   return (
     <AppLayout>
       <Container size="sm" px={0}>
-        <Title order={2} mb="xs">
-          Nhật ký học tập
-        </Title>
-        <Text c="dimmed" mb="lg">
-          Tick vào bài nào là coi như đã học xong bài đó. Tiến độ được lưu
-          theo tài khoản Google của bạn.
-        </Text>
+        <PageHeader
+          section="journal"
+          icon={<IconChecklist size={26} />}
+          title="Nhật ký học tập"
+          description="Tick vào bài nào là coi như đã học xong bài đó. Tiến độ được lưu theo tài khoản Google của bạn."
+        />
 
         {!session?.user && (
           <Alert
             icon={<IconInfoCircle size={18} />}
-            color="blue"
+            color="brand"
             variant="light"
             mb="lg"
             title="Chưa đăng nhập"
@@ -63,105 +63,95 @@ export default async function LearningLogPage() {
                 tiến độ sẽ không được ghi nhớ.
               </Text>
               <form action={signInWithGoogle}>
-                <button
-                  type="submit"
-                  style={{
-                    padding: '8px 14px',
-                    borderRadius: 6,
-                    border: 'none',
-                    background: 'var(--mantine-color-blue-6)',
-                    color: 'white',
-                    cursor: 'pointer',
-                    width: 'fit-content',
-                  }}
-                >
-                  Đăng nhập với Google
-                </button>
+                <Button type="submit">Đăng nhập với Google</Button>
               </form>
             </Stack>
           </Alert>
         )}
 
         {totalCount > 0 && (
-          <Card withBorder mb="lg" padding="md">
-            <Group justify="space-between" mb="xs">
-              <Text fw={600}>Tiến độ tổng</Text>
-              <Text size="sm" c="dimmed">
-                {completedCount}/{totalCount} bài
+          <div className="gradient-card" data-section="journal">
+            <RingProgress
+              size={84}
+              thickness={8}
+              // Ở 0% đầu bo tròn vẫn vẽ ra một chấm, trông như đã học được chút ít.
+              roundCaps={completedCount > 0}
+              rootColor="rgba(255, 255, 255, 0.28)"
+              sections={[{ value: (completedCount / totalCount) * 100, color: 'white' }]}
+              aria-label={`Đã học ${completedCount} trên ${totalCount} bài`}
+              label={
+                <Text ta="center" fw={800} size="sm" c="white">
+                  {completedCount}/{totalCount}
+                </Text>
+              }
+              style={{ flexShrink: 0 }}
+            />
+            <div style={{ minWidth: 0 }}>
+              <Text fw={800} c="white" size="lg" lh={1.25}>
+                {currentLesson ? 'Tiến độ tổng' : 'Bạn đã tick hết tất cả các bài hiện có 🎉'}
               </Text>
-            </Group>
-            <Progress value={(completedCount / totalCount) * 100} />
-            {currentLesson && (
-              <Text size="sm" mt="sm">
-                Bài hiện tại:{' '}
-                <NavAnchor href={currentLesson.href}>
-                  {currentLesson.title}
-                </NavAnchor>
-              </Text>
-            )}
-            {!currentLesson && totalCount > 0 && (
-              <Text size="sm" mt="sm" c="green">
-                Bạn đã tick hết tất cả các bài hiện có 🎉
-              </Text>
-            )}
-          </Card>
+              {currentLesson && (
+                <Text size="sm" c="white" mt={4} className="gradient-card__soft">
+                  Bài hiện tại:{' '}
+                  <NavAnchor href={currentLesson.href} c="white" fw={700} underline="always">
+                    {currentLesson.title}
+                  </NavAnchor>
+                </Text>
+              )}
+            </div>
+          </div>
         )}
 
-        <Stack gap="xl">
+        <Stack gap="lg" mt="lg">
           {chapters.map((chapter) => (
-            <div key={chapter.chapterNumber}>
-              <Title order={4} mb="sm">
+            <div key={chapter.chapterNumber} style={chapterColorVars(chapter.chapterNumber)}>
+              <Text fw={800} mb="xs">
                 Chương {chapter.chapterNumber}
-              </Title>
-              <Stack gap="xs">
+              </Text>
+              <Card withBorder padding={0}>
                 {chapter.lessons.map((lesson) => {
                   const locked = !canReadLesson({
                     category: EXERCISES_CATEGORY,
                     slug: lesson.slug,
                     hasFullAccess,
                   });
+                  const done = completedSlugs.has(lesson.slug);
 
                   return (
-                    <Card key={lesson.slug} withBorder padding="sm">
-                      <Group justify="space-between" wrap="nowrap">
-                        <div>
-                          <NavAnchor href={lesson.href} fw={500}>
-                            {lesson.title}
-                          </NavAnchor>
-                          {completedSlugs.has(lesson.slug) && (
-                            <Badge ml="sm" color="green" size="sm">
-                              Đã học xong
-                            </Badge>
-                          )}
-                        </div>
-                        {/*
-                          Bài chưa mở khoá thì không hiện ô tick — tick một bài
-                          chưa đọc được vừa vô nghĩa vừa làm sai con số tiến độ.
-                          Việc chặn thật nằm ở toggleLessonCompletion.
-                        */}
-                        {locked ? (
-                          <Badge
-                            color="gray"
-                            variant="light"
-                            size="sm"
-                            leftSection={<IconLock size={12} />}
-                            style={{ flexShrink: 0 }}
-                          >
-                            Trả phí
-                          </Badge>
-                        ) : (
-                          <LessonTickButton
-                            lessonSlug={lesson.slug}
-                            initialCompleted={completedSlugs.has(lesson.slug)}
-                            signedIn={Boolean(session?.user)}
-                            label=""
-                          />
-                        )}
-                      </Group>
-                    </Card>
+                    <div key={lesson.slug} className="journal-row" data-done={done || undefined}>
+                      <span className="num-bubble" aria-hidden>
+                        {lesson.lessonNumber}
+                      </span>
+                      <NavAnchor href={lesson.href} fw={600} c="var(--mantine-color-text)" className="journal-row__title">
+                        {lesson.title}
+                      </NavAnchor>
+                      {/*
+                        Bài chưa mở khoá thì không hiện ô tick — tick một bài
+                        chưa đọc được vừa vô nghĩa vừa làm sai con số tiến độ.
+                        Việc chặn thật nằm ở toggleLessonCompletion.
+                      */}
+                      {locked ? (
+                        <Badge
+                          color="gray"
+                          variant="light"
+                          size="sm"
+                          leftSection={<IconLock size={12} />}
+                          style={{ flexShrink: 0 }}
+                        >
+                          Trả phí
+                        </Badge>
+                      ) : (
+                        <LessonTickButton
+                          lessonSlug={lesson.slug}
+                          initialCompleted={done}
+                          signedIn={Boolean(session?.user)}
+                          label=""
+                        />
+                      )}
+                    </div>
                   );
                 })}
-              </Stack>
+              </Card>
             </div>
           ))}
         </Stack>

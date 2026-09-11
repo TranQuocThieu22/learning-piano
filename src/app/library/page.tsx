@@ -1,7 +1,8 @@
-import { Badge, Card, Container, Group, Stack, Text, Title } from '@mantine/core';
-import { IconLock } from '@tabler/icons-react';
+import { Badge, Container, Stack, Text, Title } from '@mantine/core';
+import { IconBook, IconBook2, IconBulb, IconLock, IconRoute } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
-import { NavAnchor } from '@/components/NavAnchor';
+import { LinkRow } from '@/components/LinkRow';
+import { PageHeader } from '@/components/PageHeader';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles, type MarkdownFile } from '@/lib/markdown';
 import { canReadLesson } from '@/lib/access';
@@ -24,10 +25,34 @@ import { viewerHasFullAccess } from '@/lib/access-server';
  */
 
 const SECTIONS = [
-  { category: '02-chapters', label: 'Lý thuyết', hint: 'Đọc để hiểu vì sao, trước khi tập' },
-  { category: '01-roadmap', label: 'Lộ trình', hint: 'Đường đi từ số 0 và cách luyện tập' },
-  { category: '07-doc-them', label: 'Đọc thêm', hint: 'Chuyện bên lề, không nằm trong lộ trình tập' },
+  {
+    category: '02-chapters',
+    label: 'Lý thuyết',
+    hint: 'Đọc để hiểu vì sao, trước khi tập',
+    section: 'library',
+    Icon: IconBook,
+  },
+  {
+    category: '01-roadmap',
+    label: 'Lộ trình',
+    hint: 'Đường đi từ số 0 và cách luyện tập',
+    section: 'roadmap',
+    Icon: IconRoute,
+  },
+  {
+    category: '07-doc-them',
+    label: 'Đọc thêm',
+    hint: 'Chuyện bên lề, không nằm trong lộ trình tập',
+    section: 'extra',
+    Icon: IconBulb,
+  },
 ];
+
+/** Số chương lấy từ slug `chuong-03` → `3`, để in lên ô màu đầu dòng. */
+function chapterNumberOf(slug: string): number | null {
+  const match = /^chuong-(\d+)$/.exec(slug);
+  return match ? Number(match[1]) : null;
+}
 
 export default async function LibraryPage() {
   const session = await auth();
@@ -42,18 +67,23 @@ export default async function LibraryPage() {
   return (
     <AppLayout>
       <Container size="sm" px={0}>
-        <Title order={2} mb="lg">
-          Mục lục
-        </Title>
+        <PageHeader
+          section="library"
+          icon={<IconBook2 size={26} />}
+          title="Mục lục"
+          description="Toàn bộ phần chữ của giáo trình, theo thứ tự nên đọc."
+        />
 
         <Stack gap="xl">
-          {SECTIONS.map(({ category, label, hint }) => {
+          {SECTIONS.map(({ category, label, hint, section, Icon }) => {
             const files = byCategory(category);
             if (files.length === 0) return null;
 
             return (
               <div key={category}>
-                <Title order={4}>{label}</Title>
+                <Title order={2} size="h4">
+                  {label}
+                </Title>
                 <Text size="sm" c="dimmed" mb="sm">
                   {hint}
                 </Text>
@@ -65,16 +95,22 @@ export default async function LibraryPage() {
                       slug: file.slug,
                       hasFullAccess,
                     });
+                    const so = chapterNumberOf(file.slug);
 
                     return (
-                      <Card key={file.slug} withBorder padding="md" radius="md">
-                        <Group justify="space-between" wrap="nowrap" gap="sm">
-                          <NavAnchor href={`/${file.category}/${file.slug}`} fw={500}>
-                            {file.title}
-                          </NavAnchor>
-                          {/* Ổ khoá chỉ để báo hiệu, không chặn bấm — việc chặn
-                              thật nằm ở server, xem `[category]/[slug]/page.tsx`. */}
-                          {locked && (
+                      <LinkRow
+                        key={file.slug}
+                        href={`/${file.category}/${file.slug}`}
+                        title={file.title}
+                        leading={
+                          <span className="section-icon section-icon--xs" data-section={section} aria-hidden>
+                            {so !== null ? so : <Icon size={20} />}
+                          </span>
+                        }
+                        /* Ổ khoá chỉ để báo hiệu, không chặn bấm — việc chặn thật
+                           nằm ở server, xem `[category]/[slug]/page.tsx`. */
+                        trailing={
+                          locked ? (
                             <Badge
                               color="gray"
                               variant="light"
@@ -84,9 +120,9 @@ export default async function LibraryPage() {
                             >
                               Trả phí
                             </Badge>
-                          )}
-                        </Group>
-                      </Card>
+                          ) : undefined
+                        }
+                      />
                     );
                   })}
                 </Stack>

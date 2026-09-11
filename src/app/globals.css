@@ -4,11 +4,504 @@ html, body {
   height: 100%;
 }
 
-body {
-  /* Mantine will handle background and color automatically */
+/* --- NỀN CỦA APP --- */
+/*
+ * Nền trang ngả tím nhạt, còn thẻ và ô nhập giữ màu `--mantine-color-body` (trắng
+ * ở giao diện sáng) — thẻ nổi lên khỏi nền mà không cần viền đậm.
+ *
+ * Khai hai chế độ bằng bộ chọn tường minh, KHÔNG dùng `light-dark()` ở đây:
+ * postcss-preset-mantine đổi `light-dark()` thành luật
+ * `[data-mantine-color-scheme='dark'] :root`, mà thuộc tính đó nằm ngay trên thẻ
+ * `<html>` — tức chính `:root` — nên luật sinh ra không bao giờ khớp.
+ *
+ * `--app-bg` phải khớp màu trong `ThemeColorMeta.tsx`, `layout.tsx` và `manifest.ts`
+ * để thanh trạng thái điện thoại liền màu với trang.
+ */
+:root {
+  --app-bg: #f5f3fc;
+  --app-glow-1: rgba(124, 77, 255, 0.18);
+  --app-glow-2: rgba(240, 101, 149, 0.14);
+  /* Dải màu chữ ký của app: khối Học tiếp, tiêu đề bài học, nút đặc biệt. Ba điểm
+     dừng đều đủ tối để chữ trắng đọc được (≥ 3,9:1). */
+  --app-gradient: linear-gradient(
+    135deg,
+    var(--mantine-color-brand-6) 0%,
+    var(--mantine-color-grape-7) 55%,
+    var(--mantine-color-pink-6) 100%
+  );
 }
 
-/* --- PREMIUM MARKDOWN STYLING --- */
+:root[data-mantine-color-scheme='dark'] {
+  --app-bg: #171524;
+  --app-glow-1: rgba(127, 82, 255, 0.24);
+  --app-glow-2: rgba(240, 101, 149, 0.1);
+}
+
+/*
+ * Nền đặt trên `<html>` chứ không trên `<body>`, và body để trong suốt. Hai quầng
+ * sáng ở góc trên cuộn đi theo trang — cố ý không dùng `background-attachment:
+ * fixed`, vì Safari trên iPhone bỏ qua nó và máy Android yếu thì cuộn giật.
+ */
+html {
+  background-color: var(--app-bg);
+  background-image:
+    radial-gradient(520px 360px at 100% 0%, var(--app-glow-1), transparent 70%),
+    radial-gradient(420px 300px at 0% 0%, var(--app-glow-2), transparent 70%);
+  background-repeat: no-repeat;
+}
+
+body {
+  background: transparent;
+}
+
+/* --- MÀU THEO KHU VỰC --- */
+/*
+ * Mỗi khu vực của app một cặp màu. Thanh tab (`TabBar.tsx`) và biểu tượng đầu
+ * trang (`PageHeader.tsx`) cùng đọc từ đây qua `data-section`, nên đổi màu một
+ * khu vực chỉ sửa đúng một chỗ và hai nơi luôn khớp nhau.
+ *
+ * Luật chung `[data-section]` phải đứng TRƯỚC các luật riêng: phần giao diện tối
+ * mà `light-dark()` sinh ra có cùng độ ưu tiên cho cả hai, nên luật nào đứng sau
+ * thì thắng.
+ */
+[data-section] {
+  --section-from: var(--mantine-color-brand-6);
+  --section-to: var(--mantine-color-pink-5);
+  --section-ink: light-dark(var(--mantine-color-brand-7), var(--mantine-color-brand-3));
+}
+
+[data-section='library'] {
+  --section-from: var(--mantine-color-indigo-6);
+  --section-to: var(--mantine-color-cyan-5);
+  --section-ink: light-dark(var(--mantine-color-indigo-7), var(--mantine-color-indigo-3));
+}
+
+[data-section='exercises'] {
+  --section-from: var(--mantine-color-pink-6);
+  --section-to: var(--mantine-color-orange-5);
+  --section-ink: light-dark(var(--mantine-color-pink-7), var(--mantine-color-pink-3));
+}
+
+[data-section='metronome'] {
+  --section-from: var(--mantine-color-orange-6);
+  --section-to: var(--mantine-color-yellow-5);
+  --section-ink: light-dark(var(--mantine-color-orange-8), var(--mantine-color-orange-3));
+}
+
+[data-section='journal'] {
+  --section-from: var(--mantine-color-teal-8);
+  --section-to: var(--mantine-color-lime-5);
+  --section-ink: light-dark(var(--mantine-color-teal-8), var(--mantine-color-teal-3));
+}
+
+[data-section='trainer'] {
+  --section-from: var(--mantine-color-violet-6);
+  --section-to: var(--mantine-color-cyan-5);
+  --section-ink: light-dark(var(--mantine-color-violet-7), var(--mantine-color-violet-3));
+}
+
+[data-section='roadmap'] {
+  --section-from: var(--mantine-color-blue-6);
+  --section-to: var(--mantine-color-brand-4);
+  --section-ink: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-3));
+}
+
+[data-section='extra'] {
+  --section-from: var(--mantine-color-orange-6);
+  --section-to: var(--mantine-color-pink-5);
+  --section-ink: light-dark(var(--mantine-color-orange-8), var(--mantine-color-orange-3));
+}
+
+/* Ô vuông màu chứa biểu tượng: đầu trang, ô công cụ ở màn hình chủ, đầu dòng mục lục. */
+.section-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  background: linear-gradient(135deg, var(--section-from), var(--section-to));
+  box-shadow: 0 8px 18px -8px var(--section-from);
+}
+
+.section-icon--sm {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.section-icon--xs {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+/* --- DÒNG DANH SÁCH BẤM ĐƯỢC TRỌN DÒNG (LinkRow.tsx) --- */
+.link-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 10px 12px 10px 10px;
+  border-radius: var(--mantine-radius-lg);
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  box-shadow: var(--mantine-shadow-xs);
+  color: var(--mantine-color-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+/* Lún nhẹ khi chạm — trên màn hình cảm ứng không có hover, đây là phản hồi duy nhất. */
+.link-row:active {
+  transform: scale(0.985);
+}
+
+@media (hover: hover) {
+  .link-row:hover {
+    box-shadow: var(--mantine-shadow-sm);
+  }
+}
+
+.link-row__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.link-row__title {
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.link-row__meta {
+  font-size: var(--mantine-font-size-xs);
+  color: var(--mantine-color-dimmed);
+}
+
+.link-row__chevron {
+  flex-shrink: 0;
+  color: var(--mantine-color-dimmed);
+}
+
+/* --- MÀN HÌNH CHỦ (HomeScreen.tsx) --- */
+.home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 1.25rem;
+  border-radius: 28px;
+  color: #fff;
+  background: var(--app-gradient);
+  box-shadow: 0 18px 40px -18px rgba(111, 64, 245, 0.65);
+  text-shadow: 0 1px 2px rgba(20, 10, 60, 0.18);
+}
+
+/* Nút trắng nằm trong khối: chữ màu tím trên nền trắng, bóng chữ chỉ làm nhoè. */
+.home-hero .mantine-Button-root {
+  text-shadow: none;
+}
+
+.home-hero__content {
+  position: relative;
+  z-index: 1;
+}
+
+.home-hero__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.home-hero__soft {
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.home-hero__keys {
+  position: absolute;
+  right: -22px;
+  top: -18px;
+  width: 150px;
+  opacity: 0.14;
+  transform: rotate(14deg);
+  pointer-events: none;
+}
+
+.home-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  height: 100%;
+  padding: 12px;
+  border-radius: var(--mantine-radius-lg);
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  box-shadow: var(--mantine-shadow-xs);
+  color: var(--mantine-color-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease;
+}
+
+.home-tile:active {
+  transform: scale(0.97);
+}
+
+.home-tile .section-icon {
+  margin-bottom: 6px;
+}
+
+/* Khối tiến độ nền màu ở /journal. Màu lấy từ `data-section` của chính nó. */
+.gradient-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 1rem 1.25rem;
+  border-radius: 24px;
+  color: #fff;
+  /* Kéo dải màu dài quá khối để phần có chữ luôn nằm ở tông đậm. */
+  background: linear-gradient(135deg, var(--section-from) 0%, var(--section-to) 150%);
+  box-shadow: 0 14px 32px -16px var(--section-from);
+  text-shadow: 0 1px 2px rgba(10, 30, 30, 0.18);
+}
+
+.gradient-card__soft {
+  opacity: 0.92;
+}
+
+/* --- BẢN ĐỒ BÀI TẬP (ExerciseMap.tsx) --- */
+/*
+ * Màu của từng chương đến từ các biến `--dot-*` đặt trên thẻ chương, xem
+ * `src/lib/chapter-colors.ts`.
+ */
+.lesson-dots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+  gap: 14px 6px;
+}
+
+.lesson-dot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--mantine-color-dimmed);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lesson-dot__circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  font-size: 20px;
+  font-weight: 800;
+  background: var(--dot-soft);
+  color: var(--dot-ink);
+  transition: transform 120ms ease;
+}
+
+.lesson-dot:active .lesson-dot__circle {
+  transform: scale(0.92);
+}
+
+.lesson-dot__label {
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.lesson-dot[data-state='done'] .lesson-dot__circle {
+  background: linear-gradient(135deg, var(--dot-from), var(--dot-to));
+  color: #fff;
+  box-shadow: 0 6px 14px -6px var(--dot-from);
+}
+
+/*
+ * Bài đang tới: vòng sáng lan ra chầm chậm để mắt tìm thấy ngay trên bản đồ.
+ * Đây là mốc "bạn ở đây", không đếm giờ và không thúc gì cả — ô đứng yên đó bao
+ * lâu cũng được.
+ */
+.lesson-dot[data-state='current'] .lesson-dot__circle {
+  background: var(--mantine-color-body);
+  color: var(--dot-from);
+  border: 3px solid var(--dot-from);
+  animation: lesson-dot-glow 2.4s ease-out infinite;
+}
+
+.lesson-dot[data-state='current'] .lesson-dot__label {
+  color: var(--dot-ink);
+  font-weight: 700;
+}
+
+.lesson-dot[data-state='locked'] .lesson-dot__circle {
+  background: transparent;
+  color: var(--mantine-color-dimmed);
+  border: 2px dashed var(--mantine-color-default-border);
+}
+
+@keyframes lesson-dot-glow {
+  0% { box-shadow: 0 0 0 0 var(--dot-to); }
+  80%, 100% { box-shadow: 0 0 0 12px transparent; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lesson-dot[data-state='current'] .lesson-dot__circle {
+    animation: none;
+    box-shadow: 0 0 0 5px var(--dot-soft);
+  }
+}
+
+/* Ô thu nhỏ trong phần chú thích dưới bản đồ. */
+.lesson-dot--mini .lesson-dot__circle {
+  width: 20px;
+  height: 20px;
+  font-size: 10px;
+  border-width: 2px !important;
+  animation: none !important;
+  box-shadow: none !important;
+}
+
+.chapter-badge {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  font-weight: 800;
+  font-size: 18px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--dot-from), var(--dot-to));
+  box-shadow: 0 6px 14px -6px var(--dot-from);
+}
+
+/* --- NHẬT KÝ (journal/page.tsx) VÀ DANH SÁCH ĐÁNH SỐ --- */
+.journal-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 8px 12px;
+}
+
+.journal-row + .journal-row {
+  border-top: 1px solid var(--mantine-color-default-border);
+}
+
+.journal-row__title {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.35;
+}
+
+.num-bubble {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 14px;
+  background: var(--dot-soft);
+  color: var(--dot-ink);
+}
+
+.journal-row[data-done] .num-bubble {
+  background: linear-gradient(135deg, var(--dot-from), var(--dot-to));
+  color: #fff;
+}
+
+.tip-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* --- NÚT CHUYỂN BÀI (LessonNav.tsx) --- */
+/* Trên điện thoại hai nút xếp chồng: "Bài tiếp theo" đứng trên vì hay bấm nhất. */
+@media (max-width: 36em) {
+  .lesson-nav__prev {
+    order: 2;
+  }
+
+  .lesson-nav__spacer {
+    display: none;
+  }
+}
+
+/* --- MÁY ĐÁNH NHỊP (Metronome.tsx) --- */
+.beat-dot {
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--mantine-color-brand-light);
+  transition: transform 80ms ease-out, background-color 60ms linear, box-shadow 80ms ease-out;
+}
+
+.beat-dot[data-accent] {
+  width: 36px;
+  height: 36px;
+  background: var(--mantine-color-orange-light);
+}
+
+.beat-dot[data-active] {
+  background: var(--mantine-color-brand-5);
+  transform: scale(1.15);
+  box-shadow: 0 0 0 6px var(--mantine-color-brand-light);
+}
+
+.beat-dot[data-accent][data-active] {
+  background: var(--mantine-color-orange-5);
+  box-shadow: 0 0 0 7px var(--mantine-color-orange-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beat-dot {
+    transition: none;
+  }
+
+  .beat-dot[data-active] {
+    transform: none;
+  }
+}
+
+/* Con số to nhất app: phải đọc được từ giá nhạc. Chữ số đều bề ngang để số đổi
+   mà không nhảy qua lại. Không lấy màu khu vực vì vàng nhạt khó đọc trên nền trắng. */
+.metronome-bpm {
+  font-size: 84px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -2px;
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(135deg, var(--mantine-color-orange-7), var(--mantine-color-pink-6));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* --- BÀI ĐỌC (MarkdownViewer.tsx) --- */
 /* Các luật bên dưới bọc bộ chọn `.markdown-body` trong :where() để nó không
    cộng điểm ưu tiên. Lý do: trong bài học có cả widget React dựng bằng Mantine
    (khuông nhạc, thanh nghe mẫu, nút chấm bài) — chúng cũng nằm trong
@@ -16,111 +509,160 @@ body {
    của đoạn văn, làm hàng nút bị đội cao và chữ lệch lên trên. Hạ ưu tiên xuống
    0-0-1 thì class riêng của Mantine (0-1-0) thắng, còn thẻ p/ul/li do
    react-markdown sinh ra vẫn ăn đúng luật này vì không có class nào khác. */
+/*
+ * Trên điện thoại bài đọc KHÔNG nằm trong hộp: nền trong suốt, gần như không
+ * padding. Bản cũ bọc bài trong một hộp kính mờ có padding, ăn mất khoảng 24px
+ * bề ngang — mà bề ngang là thứ bản nhạc cần nhất (abcjs co bản nhạc vừa khung,
+ * khung hẹp đi là nốt bé đi). Từ 48em trở lên mới dựng thành thẻ trắng.
+ *
+ * Cố ý không còn `backdrop-filter`: nó tạo khối chứa cho con `position: fixed` và
+ * từng kéo lệch lớp phủ tập trung (bẫy 16). Đừng thêm lại.
+ */
 .markdown-body {
-  max-width: 850px;
+  max-width: 760px;
   margin: 0 auto;
-  line-height: 1.8;
+  padding: 0.25rem 0.25rem 0.5rem;
+  font-size: 1.0625rem;
+  line-height: 1.75;
   color: var(--mantine-color-text);
-  padding: 1.5rem;
-  background: light-dark(rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02));
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(12px);
-  border: 1px solid light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05));
 }
 
-@media (max-width: 768px) {
+@media (min-width: 48em) {
   .markdown-body {
-    padding: 1rem 0.75rem;
-    border-radius: 12px;
+    padding: 2rem 2.5rem;
+    background: var(--mantine-color-body);
+    border: 1px solid var(--mantine-color-default-border);
+    border-radius: 24px;
+    box-shadow: var(--mantine-shadow-sm);
+    font-size: 1.1rem;
   }
 }
 
 :where(.markdown-body) img {
   max-width: 100%;
   height: auto;
-  border-radius: 12px;
+  border-radius: 16px;
   display: block;
-  margin: 1.5rem auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  margin: 1.25rem auto;
+  box-shadow: 0 8px 24px -8px rgba(34, 18, 84, 0.3);
 }
 
 :where(.markdown-body) h1 {
-  font-size: 2.8rem;
+  font-size: 1.75rem;
   font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  margin: 0.5rem 0 1.25rem;
   background-image: light-dark(
-    linear-gradient(135deg, var(--mantine-color-blue-8) 0%, var(--mantine-color-violet-8) 100%),
-    linear-gradient(135deg, var(--mantine-color-blue-4) 0%, var(--mantine-color-violet-4) 100%)
+    var(--app-gradient),
+    linear-gradient(135deg, var(--mantine-color-brand-3) 0%, var(--mantine-color-pink-3) 100%)
   );
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin-bottom: 2rem;
-  letter-spacing: -0.5px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
+/* Vạch màu bên trái thay cho gạch chân: đọc lướt trên điện thoại, mắt bám vào
+   vạch màu để biết đã sang mục mới. */
 :where(.markdown-body) h2 {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-4));
-  margin-top: 3rem;
-  margin-bottom: 1.25rem;
-  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
-  padding-bottom: 0.5rem;
+  position: relative;
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1.3;
+  color: light-dark(var(--mantine-color-brand-8), var(--mantine-color-brand-2));
+  margin: 2.25rem 0 1rem;
+  padding-left: 0.85rem;
+}
+
+:where(.markdown-body) h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  bottom: 0.15em;
+  width: 5px;
+  border-radius: 99px;
+  background: var(--app-gradient);
 }
 
 :where(.markdown-body) h3 {
-  font-size: 1.4rem;
-  color: light-dark(var(--mantine-color-teal-8), var(--mantine-color-teal-4));
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: light-dark(var(--mantine-color-pink-7), var(--mantine-color-pink-3));
+  margin: 1.75rem 0 0.75rem;
+}
+
+@media (min-width: 48em) {
+  :where(.markdown-body) h1 {
+    font-size: 2.4rem;
+  }
+
+  :where(.markdown-body) h2 {
+    font-size: 1.6rem;
+    margin-top: 2.75rem;
+  }
+
+  :where(.markdown-body) h3 {
+    font-size: 1.3rem;
+  }
 }
 
 :where(.markdown-body) p {
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
-  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
+  margin: 0 0 1.1rem;
+  color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-0));
 }
 
 :where(.markdown-body) ul, :where(.markdown-body) ol {
-  margin-bottom: 1.5rem;
-  padding-left: 1.8rem;
-  font-size: 1.1rem;
-  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
+  margin: 0 0 1.1rem;
+  padding-left: 1.4rem;
+  color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-0));
 }
 
 :where(.markdown-body) li {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
+:where(.markdown-body) li::marker {
+  color: var(--mantine-color-brand-5);
+  font-weight: 700;
+}
+
+/* Khối trích dẫn — cũng là chỗ hiện Ghi chú / Mẹo / Lưu ý. Không in nghiêng:
+   chữ nghiêng tiếng Việt có dấu khó đọc hơn hẳn trên màn hình nhỏ. */
 :where(.markdown-body) blockquote {
-  border-left: 4px solid var(--mantine-color-violet-5);
-  margin: 2rem 0;
-  padding: 1rem 1.5rem;
-  background: light-dark(rgba(132, 94, 247, 0.05), rgba(132, 94, 247, 0.1));
-  border-radius: 0 12px 12px 0;
-  font-style: italic;
-  font-size: 1.1rem;
+  margin: 1.5rem 0;
+  padding: 0.9rem 1.1rem;
+  background: light-dark(var(--mantine-color-brand-0), rgba(127, 82, 255, 0.12));
+  border-left: 4px solid var(--mantine-color-brand-5);
+  border-radius: 6px 16px 16px 6px;
+  font-size: 1rem;
 }
 
 :where(.markdown-body) hr {
   border: 0;
-  height: 1px;
-  background: light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.1));
-  margin: 3rem 0;
+  height: 3px;
+  border-radius: 99px;
+  background: var(--app-gradient);
+  opacity: 0.35;
+  margin: 2.5rem auto;
+  max-width: 120px;
 }
 
 :where(.markdown-body) strong {
-  color: light-dark(var(--mantine-color-orange-8), var(--mantine-color-yellow-4));
-  font-weight: 600;
+  color: light-dark(var(--mantine-color-orange-9), var(--mantine-color-yellow-4));
+  font-weight: 700;
 }
 
 :where(.markdown-body) code {
-  background: light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.1));
-  padding: 0.2em 0.4em;
+  background: light-dark(var(--mantine-color-brand-0), rgba(127, 82, 255, 0.18));
+  padding: 0.15em 0.4em;
   border-radius: 6px;
-  font-family: monospace;
-  font-size: 0.9em;
-  color: light-dark(var(--mantine-color-red-8), var(--mantine-color-red-4));
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  color: light-dark(var(--mantine-color-brand-8), var(--mantine-color-brand-2));
 }
 
 /* --- NÚT CHUYỂN GIAO DIỆN SÁNG/TỐI --- */
@@ -145,48 +687,50 @@ body {
 
 /* --- LINKS --- */
 :where(.markdown-body) a {
-  color: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-4));
+  color: light-dark(var(--mantine-color-brand-7), var(--mantine-color-brand-3));
+  font-weight: 600;
   text-decoration: none;
-  border-bottom: 1px solid light-dark(rgba(34, 139, 230, 0.4), rgba(77, 171, 247, 0.4));
+  border-bottom: 2px solid light-dark(var(--mantine-color-brand-2), rgba(144, 104, 255, 0.45));
   transition: border-color 0.15s ease, color 0.15s ease;
 }
 
 :where(.markdown-body) a:hover {
-  color: light-dark(var(--mantine-color-blue-9), var(--mantine-color-blue-2));
+  color: light-dark(var(--mantine-color-brand-9), var(--mantine-color-brand-1));
   border-bottom-color: currentColor;
 }
 
 /* --- TABLES (GFM) --- */
 .markdown-table-wrapper {
-  margin: 2rem 0;
+  margin: 1.5rem 0;
   overflow-x: auto; /* wide tables scroll themselves, page never scrolls sideways */
-  border-radius: 12px;
-  border: 1px solid light-dark(rgba(0, 0, 0, 0.1), rgba(255, 255, 255, 0.12));
+  border-radius: 16px;
+  border: 1px solid var(--mantine-color-default-border);
+  background: var(--mantine-color-body);
 }
 
 .markdown-table-wrapper table {
   border-collapse: collapse;
   width: 100%;
-  font-size: 1.05rem;
+  font-size: 0.975rem;
 }
 
 .markdown-table-wrapper th,
 .markdown-table-wrapper td {
-  padding: 0.75rem 1rem;
+  padding: 0.7rem 0.9rem;
   text-align: left;
   vertical-align: top;
-  border-bottom: 1px solid light-dark(rgba(0, 0, 0, 0.08), rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--mantine-color-default-border);
 }
 
 .markdown-table-wrapper th {
-  background: light-dark(rgba(132, 94, 247, 0.08), rgba(132, 94, 247, 0.18));
+  background: light-dark(var(--mantine-color-brand-0), rgba(127, 82, 255, 0.18));
   font-weight: 700;
-  color: light-dark(var(--mantine-color-violet-9), var(--mantine-color-violet-2));
+  color: light-dark(var(--mantine-color-brand-9), var(--mantine-color-brand-1));
   white-space: nowrap;
 }
 
 .markdown-table-wrapper td {
-  color: light-dark(var(--mantine-color-gray-8), var(--mantine-color-dark-1));
+  color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-dark-0));
 }
 
 .markdown-table-wrapper tbody tr:last-child td {
@@ -200,21 +744,20 @@ body {
 /* Blockquote paragraphs inherit the quote styling, not the body paragraph size */
 :where(.markdown-body) blockquote p {
   margin-bottom: 0.5rem;
-  font-size: 1.05rem;
+  font-size: 1rem;
 }
 
 :where(.markdown-body) blockquote p:last-child {
   margin-bottom: 0;
 }
 
-/* Glassmorphism for wrappers */
+/*
+ * Khối bọc bản nhạc (và mọi khối mã). Cố ý KHÔNG có hiệu ứng nhấc lên khi rê
+ * chuột như bản cũ: `transform` trên tổ tiên của bản nhạc kéo lệch lớp phủ tập
+ * trung (bẫy 16), còn trên điện thoại thì không có rê chuột để mà nhấc.
+ */
 .markdown-pre-wrapper {
-  margin: 2rem 0;
-  transition: transform 0.2s ease;
-}
-
-.markdown-pre-wrapper:hover {
-  transform: translateY(-2px);
+  margin: 1.5rem 0;
 }
 
 /* ABCJS Highlight Style */
@@ -316,9 +859,11 @@ body {
 
 /* Chiều cao thanh tab dưới đáy. Khai ở một chỗ vì có ba nơi phải khớp nhau:
    chính thanh tab, phần padding trả chỗ lại cho .app-content, và thanh mời cài
-   đặt phải nổi lên trên nó. */
+   đặt phải nổi lên trên nó. 60px thay cho 56px cũ để có chỗ cho viên màu quanh
+   biểu tượng tab đang mở — thanh tab khuất hẳn trong chế độ tập trung nên 4px
+   này không lấy gì của bản nhạc. */
 :root {
-  --tab-bar-h: 56px;
+  --tab-bar-h: 60px;
 }
 
 /* --- KHUNG APP: nội dung + thanh tab dưới đáy --- */
@@ -338,7 +883,7 @@ body {
   /* Cộng --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và cuộn
      hết cỡ vẫn không đọc được đoạn kết. */
   padding-bottom: calc(
-    var(--mantine-spacing-md) + var(--safe-bottom) + var(--tab-bar-h)
+    var(--mantine-spacing-xl) + var(--safe-bottom) + var(--tab-bar-h)
   );
   padding-inline: calc(var(--mantine-spacing-md) + var(--safe-left))
     calc(var(--mantine-spacing-md) + var(--safe-right));
@@ -352,12 +897,28 @@ body {
 }
 
 /*
- * Padding nằm ở đây chứ không ở `style` nội tuyến của `AbcjsViewer.tsx`: style nội
- * tuyến thắng mọi luật CSS không `!important`, nên để ở đó thì chế độ tập trung
- * bên dưới không đổi được padding — kể cả phần chừa cho tai thỏ.
+ * Khung bản nhạc: lề, nền, viền, bo góc, padding — tất cả nằm ở đây chứ không ở
+ * `style` nội tuyến của `AbcjsViewer.tsx`: style nội tuyến thắng mọi luật CSS
+ * không `!important`, nên để ở đó thì chế độ tập trung bên dưới không đổi được
+ * chúng — kể cả phần chừa cho tai thỏ.
+ *
+ * Trên điện thoại padding chỉ còn nửa: mỗi 8px bớt ở hai bên là 16px bề ngang
+ * trả lại cho bản nhạc.
  */
 .sheet-music-wrapper {
+  margin: 1.5rem 0;
   padding: 1rem;
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 20px;
+  box-shadow: var(--mantine-shadow-sm);
+}
+
+@media (max-width: 48em) {
+  .sheet-music-wrapper {
+    padding: 0.5rem;
+    border-radius: 16px;
+  }
 }
 
 /*
@@ -381,6 +942,7 @@ body {
   margin: 0 !important;
   border: none;
   border-radius: 0;
+  box-shadow: none;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -530,25 +1092,29 @@ body.sheet-focus-lock {
 /*
  * Vô hiệu hoá backdrop-filter của khung bài đọc trong lúc tập trung.
  *
- * BẮT BUỘC, không phải để cho đẹp. `backdrop-filter` khác `none` tạo ra một
- * "khối chứa" cho mọi con dùng position: fixed — y hệt `transform`. Thiếu dòng
- * này thì lớp phủ tập trung neo vào .markdown-body chứ không vào khung nhìn:
- * nó hiện ra lệch 1px so với khung bài và cao bằng cả bài học, thay vì phủ kín
- * màn hình. Triệu chứng đánh lừa vì `position` vẫn tính ra `fixed` và
- * `top/left/right/bottom` vẫn tính ra `0px` — chỉ có toạ độ thật là sai.
+ * Từ đợt dựng lại giao diện cho điện thoại (09/2026), `.markdown-body` không còn
+ * `backdrop-filter` nữa — luật này giữ lại làm lưới an toàn, phòng khi có người
+ * thêm lại hiệu ứng kính mờ mà không đọc bẫy 16.
  *
- * Bỏ blur trong lúc này không mất gì: lớp phủ đang che kín khung bài đọc rồi.
+ * `backdrop-filter` khác `none` tạo ra một "khối chứa" cho mọi con dùng
+ * position: fixed — y hệt `transform`. Thiếu dòng này thì lớp phủ tập trung neo
+ * vào .markdown-body chứ không vào khung nhìn: nó hiện ra lệch 1px so với khung
+ * bài và cao bằng cả bài học, thay vì phủ kín màn hình. Triệu chứng đánh lừa vì
+ * `position` vẫn tính ra `fixed` và `top/left/right/bottom` vẫn tính ra `0px` —
+ * chỉ có toạ độ thật là sai.
  */
 body.sheet-focus-lock .markdown-body {
   backdrop-filter: none;
 }
 
 /*
- * Vô hiệu hoá luôn hiệu ứng nhấc khối mã lên khi rê chuột, trong lúc tập trung.
+ * Vô hiệu hoá mọi `transform` trên khối mã bọc bản nhạc, trong lúc tập trung.
  *
- * Cùng một cái bẫy với backdrop-filter ở trên, nhưng lần này khó thấy hơn nhiều
- * vì nó chỉ bật lên lúc con trỏ đang ở trên khối: `.markdown-pre-wrapper:hover`
- * đặt `transform: translateY(-2px)`, mà `transform` khác `none` cũng tạo ra khối
+ * Hiệu ứng nhấc khối lên khi rê chuột đã bỏ ở đợt dựng lại giao diện cho điện
+ * thoại; luật này giữ lại làm lưới an toàn giống luật ở trên.
+ *
+ * Cùng một cái bẫy với backdrop-filter, nhưng từng khó thấy hơn nhiều vì nó chỉ
+ * bật lên lúc con trỏ đang ở trên khối: `transform` khác `none` cũng tạo ra khối
  * chứa cho con dùng `position: fixed`. Bản nhạc nằm TRONG khối mã đó, nên lớp phủ
  * tập trung neo vào khối mã chứ không vào khung nhìn.
  *
@@ -557,13 +1123,9 @@ body.sheet-focus-lock .markdown-body {
  * cuộn, nên nút Thoát trôi ra ngoài màn hình, bấm không tới. Trên điện thoại còn
  * chắc chắn dính hơn: chạm vào nút để bật là trạng thái :hover bám lại luôn.
  *
- * Tệ hơn nữa, nó tự dao động: lớp phủ neo vào khối mã thì con trỏ không còn nằm
- * trên khối nữa → hết :hover → lớp phủ lại phủ kín màn hình → con trỏ nằm trên
- * con của khối → :hover bật lại. Đo được là nó nhảy qua nhảy lại giữa hai trạng
- * thái, nên bấm nút Thoát lúc được lúc không, càng khó lần ra nguyên nhân.
- *
  * `transition: none` để lúc bật chế độ tập trung thì transform tắt ngay, không
- * chạy nốt 0.2s về 0 — trong 0.2s đó giá trị vẫn là một ma trận, vẫn tạo khối chứa.
+ * chạy nốt thời gian chuyển tiếp về 0 — trong lúc đó giá trị vẫn là một ma trận,
+ * vẫn tạo khối chứa.
  */
 body.sheet-focus-lock .markdown-pre-wrapper,
 body.sheet-focus-lock .markdown-pre-wrapper:hover {
@@ -594,8 +1156,58 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   padding-inline: var(--safe-left) var(--safe-right);
   background: var(--mantine-color-body);
   border-top: 1px solid var(--mantine-color-default-border);
+  box-shadow: 0 -6px 24px rgba(34, 18, 84, 0.06);
 }
 
-.tab-bar > * {
+.tab-bar__item {
+  flex: 1;
+  min-width: 0;
   max-width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--mantine-color-dimmed);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Viên màu quanh biểu tượng: 54px vừa trong ô 78px của máy 390px chia năm. */
+.tab-bar__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 30px;
+  border-radius: 999px;
+  transition: background-color 160ms ease, color 160ms ease, transform 120ms ease;
+}
+
+.tab-bar__item:active .tab-bar__icon {
+  transform: scale(0.9);
+}
+
+.tab-bar__label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 500;
+}
+
+.tab-bar__item[data-active] {
+  color: var(--section-ink);
+}
+
+.tab-bar__item[data-active] .tab-bar__icon {
+  color: #fff;
+  background: linear-gradient(135deg, var(--section-from), var(--section-to));
+  box-shadow: 0 6px 14px -6px var(--section-from);
+}
+
+.tab-bar__item[data-active] .tab-bar__label {
+  font-weight: 700;
 }

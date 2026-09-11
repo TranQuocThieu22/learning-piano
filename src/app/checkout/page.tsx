@@ -1,7 +1,9 @@
-import { Alert, Button, Card, Container, Group, Stack, Text, Title } from '@mantine/core';
+import { Alert, Button, Card, Container, Group, Stack, Text } from '@mantine/core';
+import { IconLockOpen } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { NavAnchor } from '@/components/NavAnchor';
+import { PageHeader } from '@/components/PageHeader';
 import { auth } from '@/auth';
 import { viewerHasFullAccess } from '@/lib/access-server';
 import { REQUIRED_PACKAGE_ID } from '@/lib/access';
@@ -49,12 +51,12 @@ export default async function MuaPage({
   return (
     <AppLayout>
       <Container size="sm" px={0}>
-        <Title order={2} mb="xs">
-          Mở khoá toàn bộ giáo trình
-        </Title>
-        <Text c="dimmed" mb="lg">
-          Chương 0 và Chương 1 luôn miễn phí. Gói dưới đây mở phần còn lại.
-        </Text>
+        <PageHeader
+          section="home"
+          icon={<IconLockOpen size={26} />}
+          title="Mở khoá toàn bộ giáo trình"
+          description="Chương 0 và Chương 1 luôn miễn phí. Gói dưới đây mở phần còn lại."
+        />
 
         {error && ERROR_MESSAGES[error] && (
           <Alert color="red" variant="light" mb="lg">

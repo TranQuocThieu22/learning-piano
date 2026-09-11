@@ -37,8 +37,10 @@ export default function manifest(): MetadataRoute.Manifest {
     // KHÔNG khai `orientation` ở đây. Đặt 'portrait-primary' là khoá cứng màn
     // hình dọc: xoay ngang máy thì app không xoay theo. Khuông nhạc và bảng
     // trong bài học cần bề ngang, nên phải để người học tự quyết.
-    background_color: '#ffffff',
-    theme_color: '#ffffff',
+    // Khớp `--app-bg` của giao diện sáng trong globals.css, để màn chờ lúc mở app
+    // và thanh trạng thái cùng màu với nền trang.
+    background_color: '#f5f3fc',
+    theme_color: '#f5f3fc',
     lang: 'vi',
     icons: [
       { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },

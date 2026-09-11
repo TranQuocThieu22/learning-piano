@@ -50,17 +50,19 @@ export default async function Page({ params }: { params: Promise<{ category: str
     <AppLayout>
       {allowed ? (
         <>
+          <MarkdownViewer content={content} />
+          {/* Tick và chuyển bài đều nằm CUỐI bài: đó là lúc người học vừa học
+              xong, không phải lúc vừa mở ra. Hai nút liền nhau để "tick rồi sang
+              bài kế" là hai lần chạm. Bài lẻ (Lộ trình, Đọc thêm) không có chuỗi
+              thứ tự nên `getLessonNeighbors` trả về hai null và không hiện gì. */}
           {isExerciseLesson && (
             <LessonTickButton
               lessonSlug={slug}
               initialCompleted={completedSlugs.has(slug)}
               signedIn={Boolean(session?.user)}
+              variant="card"
             />
           )}
-          <MarkdownViewer content={content} />
-          {/* Cuối bài mới là lúc người học cần chuyển bài, nên nút nằm ở đây chứ
-              không ở đầu trang. Bài lẻ (Lộ trình, Đọc thêm) không có chuỗi thứ
-              tự nên `getLessonNeighbors` trả về hai null và không hiện gì. */}
           <LessonNav {...getLessonNeighbors(category, slug)} />
         </>
       ) : (

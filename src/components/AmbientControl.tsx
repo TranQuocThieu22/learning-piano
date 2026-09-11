@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, Group, Slider, Stack, Switch, Text } from '@mantine/core';
+import { Card, Group, Slider, Stack, Switch, Text, ThemeIcon } from '@mantine/core';
 import { IconMusic } from '@tabler/icons-react';
 import { saveAmbientSettings, useAmbientSettings } from '@/hooks/useAmbientSettings';
 
@@ -26,7 +26,9 @@ export function AmbientControl() {
       <Stack gap="xs">
         <Group justify="space-between" wrap="nowrap" gap="sm">
           <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
-            <IconMusic size={24} color="var(--mantine-color-violet-6)" />
+            <ThemeIcon variant="light" color="grape" size={40} radius="md">
+              <IconMusic size={22} />
+            </ThemeIcon>
             <div style={{ minWidth: 0 }}>
               <Text fw={600}>Nhạc nền</Text>
               <Text size="xs" c="dimmed">

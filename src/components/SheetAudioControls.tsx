@@ -59,15 +59,16 @@ export function SheetAudioControls({
     <Group gap="sm" mt="sm" wrap="wrap">
       <Group gap={4} wrap="nowrap">
         <Tooltip label={isPlaying ? 'Tạm dừng' : 'Nghe thử'} withArrow>
+          {/* 44px — cỡ tối thiểu để chạm trúng bằng đầu ngón tay mà không cần nhìn kỹ. */}
           <ActionIcon
-            variant="filled"
-            size="lg"
+            variant="gradient"
+            size={44}
             radius="xl"
             onClick={onPlayPause}
             aria-label={isPlaying ? 'Tạm dừng' : 'Nghe thử'}
             data-testid="audio-play"
           >
-            {isPlaying ? <IconPlayerPauseFilled size={18} /> : <IconPlayerPlayFilled size={18} />}
+            {isPlaying ? <IconPlayerPauseFilled size={20} /> : <IconPlayerPlayFilled size={20} />}
           </ActionIcon>
         </Tooltip>
 
@@ -75,7 +76,7 @@ export function SheetAudioControls({
           <ActionIcon
             variant="subtle"
             color="gray"
-            size="lg"
+            size={40}
             radius="xl"
             onClick={onRestart}
             aria-label="Về đầu bài"
@@ -87,8 +88,8 @@ export function SheetAudioControls({
         <Tooltip label={isLooping ? 'Tắt lặp lại' : 'Lặp lại liên tục'} withArrow>
           <ActionIcon
             variant={isLooping ? 'light' : 'subtle'}
-            color={isLooping ? 'blue' : 'gray'}
-            size="lg"
+            color={isLooping ? 'brand' : 'gray'}
+            size={40}
             radius="xl"
             onClick={onToggleLoop}
             aria-label={isLooping ? 'Tắt lặp lại' : 'Lặp lại liên tục'}

@@ -3,8 +3,11 @@
 import { useEffect } from 'react';
 import { useComputedColorScheme } from '@mantine/core';
 
-/** Màu nền trang ở hai chế độ, khớp `--mantine-color-body` của Mantine. */
-const BODY_COLOR = { light: '#ffffff', dark: '#242424' } as const;
+/**
+ * Màu nền trang ở hai chế độ — phải khớp `--app-bg` trong globals.css. Không phải
+ * `--mantine-color-body`: biến đó giờ là màu của thẻ, nền trang ngả màu hơn nó.
+ */
+const BODY_COLOR = { light: '#f5f3fc', dark: '#171524' } as const;
 
 /**
  * Nhuộm thanh trạng thái điện thoại theo đúng chế độ sáng/tối đang bật.

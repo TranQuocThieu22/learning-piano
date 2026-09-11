@@ -1,10 +1,13 @@
 import { Container } from '@mantine/core';
 import { AppLayout } from '@/components/AppLayout';
 import { HomeScreen } from '@/components/HomeScreen';
+import type { MapChapter } from '@/components/ExerciseMap';
 import { auth } from '@/auth';
 import { getAllMarkdownFiles } from '@/lib/markdown';
-import { getAllLessons } from '@/lib/lessons';
+import { EXERCISES_CATEGORY, getAllLessons, getLessonsByChapter } from '@/lib/lessons';
 import { getCompletedLessonSlugs } from '@/lib/progress';
+import { canReadLesson } from '@/lib/access';
+import { viewerHasFullAccess } from '@/lib/access-server';
 
 const EXTRA_CATEGORY = '07-doc-them';
 
@@ -24,10 +27,33 @@ export default async function Home() {
   const completedSlugs = session?.user
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
+  const hasFullAccess = await viewerHasFullAccess(session);
 
   const completedCount = allLessons.filter((l) => completedSlugs.has(l.slug)).length;
   const continueLesson = allLessons.find((l) => !completedSlugs.has(l.slug)) ?? null;
   const firstLesson = allLessons[0] ?? null;
+
+  /*
+   * Chương đang học: chương của bài đang tới, hoặc chương cuối nếu đã tick hết —
+   * lúc đó bản đồ toàn ô xanh là lời khen đúng chỗ. Dựng giống hệt `/exercises`
+   * để hai nơi không bao giờ vẽ khác nhau.
+   */
+  const chapterNumber = (continueLesson ?? allLessons.at(-1))?.chapterNumber;
+  const chapter = getLessonsByChapter().find((c) => c.chapterNumber === chapterNumber);
+  const currentChapter: MapChapter | null = chapter
+    ? {
+        chapterNumber: chapter.chapterNumber,
+        lessons: chapter.lessons.map((lesson) => ({
+          slug: lesson.slug,
+          title: lesson.title,
+          href: lesson.href,
+          lessonNumber: lesson.lessonNumber,
+          done: completedSlugs.has(lesson.slug),
+          locked: !canReadLesson({ category: EXERCISES_CATEGORY, slug: lesson.slug, hasFullAccess }),
+          current: lesson.slug === continueLesson?.slug,
+        })),
+      }
+    : null;
 
   return (
     <AppLayout>
@@ -43,6 +69,7 @@ export default async function Home() {
             continueLesson ? { title: continueLesson.title, href: continueLesson.href } : null
           }
           firstLesson={firstLesson ? { title: firstLesson.title, href: firstLesson.href } : null}
+          currentChapter={currentChapter}
           roadmapHref={
             // Trỏ đích danh `roadmap` chứ không lấy file đầu thư mục: xếp theo
             // slug thì `phuong-phap-luyen-tap` đứng trước, mà đó là bài phụ.

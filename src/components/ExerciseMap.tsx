@@ -1,8 +1,10 @@
 'use client';
 
-import { Badge, Card, Group, Stack, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
+import type { ReactNode } from 'react';
+import { Card, Group, Progress, Stack, Text } from '@mantine/core';
 import { IconCheck, IconLock } from '@tabler/icons-react';
 import Link from 'next/link';
+import { chapterColor, chapterColorVars } from '@/lib/chapter-colors';
 
 /**
  * Bản đồ chặng của phần bài tập.
@@ -13,7 +15,8 @@ import Link from 'next/link';
  * Cố ý KHÔNG có điểm số, chuỗi ngày liên tiếp hay huy hiệu. Đây là bản đồ, không
  * phải bảng xếp hạng: nó trả lời "tiếp theo là bài nào", không thúc người học
  * phải học nhanh hơn. Cùng tinh thần với ràng buộc ở `AGENTS.md` về chuyện không
- * tạo áp lực lúc tập.
+ * tạo áp lực lúc tập. Màu sắc và vòng sáng quanh bài đang tới là để dễ tìm chỗ,
+ * không đếm gì cả.
  */
 
 export interface MapLesson {
@@ -32,98 +35,102 @@ export interface MapChapter {
   lessons: MapLesson[];
 }
 
-function TileColors(lesson: MapLesson) {
-  if (lesson.done) return { bg: 'var(--mantine-color-green-6)', fg: 'white', border: 'transparent' };
-  if (lesson.locked)
-    return {
-      bg: 'var(--mantine-color-default)',
-      fg: 'var(--mantine-color-dimmed)',
-      border: 'var(--mantine-color-default-border)',
-    };
-  return {
-    bg: 'var(--mantine-color-body)',
-    fg: 'var(--mantine-color-text)',
-    border: 'var(--mantine-color-blue-6)',
-  };
+function LessonDot({ lesson }: { lesson: MapLesson }) {
+  const state = lesson.done ? 'done' : lesson.locked ? 'locked' : lesson.current ? 'current' : 'open';
+  return (
+    <Link
+      href={lesson.href}
+      className="lesson-dot"
+      data-state={state}
+      title={lesson.title}
+      aria-current={lesson.current ? 'step' : undefined}
+      aria-label={`${lesson.title}${lesson.done ? ' — đã học xong' : ''}${
+        lesson.locked ? ' — bài trả phí' : ''
+      }${lesson.current ? ' — bài bạn đang tới' : ''}`}
+    >
+      <span className="lesson-dot__circle">
+        {lesson.done ? (
+          <IconCheck size={26} stroke={3} />
+        ) : lesson.locked ? (
+          <IconLock size={20} />
+        ) : (
+          lesson.lessonNumber
+        )}
+      </span>
+      <span className="lesson-dot__label">Bài {lesson.lessonNumber}</span>
+    </Link>
+  );
+}
+
+/**
+ * Thẻ một chương: số chương, thanh tiến độ và hàng ô bài. Dùng cả ở `/exercises`
+ * lẫn màn hình chủ (chương đang học), nên `action` là chỗ để màn hình chủ gắn
+ * thêm nút *Cả bản đồ*.
+ */
+export function ChapterCard({ chapter, action }: { chapter: MapChapter; action?: ReactNode }) {
+  const xong = chapter.lessons.filter((l) => l.done).length;
+  const tong = chapter.lessons.length;
+
+  return (
+    <Card withBorder padding="md" style={chapterColorVars(chapter.chapterNumber)}>
+      <Group justify="space-between" wrap="nowrap" gap="sm" mb="sm">
+        <Group gap="sm" wrap="nowrap" style={{ minWidth: 0 }}>
+          <span className="chapter-badge" aria-hidden>
+            {chapter.chapterNumber}
+          </span>
+          <div style={{ minWidth: 0 }}>
+            <Text fw={800} lh={1.2}>
+              Chương {chapter.chapterNumber}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {tong > 0 && xong === tong ? 'Đã xong cả chương 🎉' : `${xong}/${tong} bài đã xong`}
+            </Text>
+          </div>
+        </Group>
+        {action}
+      </Group>
+
+      <Progress
+        value={tong > 0 ? (xong / tong) * 100 : 0}
+        color={chapterColor(chapter.chapterNumber)}
+        size="sm"
+        radius="xl"
+        mb="md"
+        aria-label={`Chương ${chapter.chapterNumber}: đã xong ${xong} trên ${tong} bài`}
+      />
+
+      <div className="lesson-dots">
+        {chapter.lessons.map((lesson) => (
+          <LessonDot key={lesson.slug} lesson={lesson} />
+        ))}
+      </div>
+    </Card>
+  );
 }
 
 export function ExerciseMap({ chapters }: { chapters: MapChapter[] }) {
   return (
-    <Stack gap="lg">
-      {chapters.map((chapter) => {
-        const xong = chapter.lessons.filter((l) => l.done).length;
-        return (
-          <Card key={chapter.chapterNumber} withBorder padding="md" radius="md">
-            <Group justify="space-between" mb="sm">
-              <Text fw={600}>Chương {chapter.chapterNumber}</Text>
-              <Badge variant="light" color={xong === chapter.lessons.length ? 'green' : 'gray'}>
-                {xong}/{chapter.lessons.length}
-              </Badge>
-            </Group>
+    <Stack gap="md">
+      {chapters.map((chapter) => (
+        <ChapterCard key={chapter.chapterNumber} chapter={chapter} />
+      ))}
 
-            <Group gap="sm">
-              {chapter.lessons.map((lesson) => {
-                const mau = TileColors(lesson);
-                return (
-                  <UnstyledButton
-                    key={lesson.slug}
-                    component={Link}
-                    href={lesson.href}
-                    title={lesson.title}
-                    aria-label={`${lesson.title}${lesson.done ? ' — đã học xong' : ''}${
-                      lesson.locked ? ' — bài trả phí' : ''
-                    }`}
-                  >
-                    <Stack gap={4} align="center" w={64}>
-                      <div
-                        style={{
-                          width: 52,
-                          height: 52,
-                          borderRadius: '50%',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          background: mau.bg,
-                          color: mau.fg,
-                          // Bài đang tới được viền đậm hơn để nổi lên giữa bản đồ.
-                          border: `${lesson.current ? 3 : 1}px solid ${mau.border}`,
-                          fontWeight: 700,
-                          fontSize: 18,
-                        }}
-                      >
-                        {lesson.done ? (
-                          <IconCheck size={24} />
-                        ) : lesson.locked ? (
-                          <IconLock size={20} />
-                        ) : (
-                          lesson.lessonNumber
-                        )}
-                      </div>
-                      <Text size="xs" c={lesson.current ? undefined : 'dimmed'} fw={lesson.current ? 600 : 400}>
-                        Bài {lesson.lessonNumber}
-                      </Text>
-                    </Stack>
-                  </UnstyledButton>
-                );
-              })}
-            </Group>
-          </Card>
-        );
-      })}
-
-      <Group gap="lg" justify="center">
-        <Group gap={6}>
-          <ThemeIcon size="sm" radius="xl" color="green">
-            <IconCheck size={12} />
-          </ThemeIcon>
-          <Text size="xs" c="dimmed">Đã học xong</Text>
-        </Group>
-        <Group gap={6}>
-          <ThemeIcon size="sm" radius="xl" variant="default">
-            <IconLock size={12} />
-          </ThemeIcon>
-          <Text size="xs" c="dimmed">Bài trả phí</Text>
-        </Group>
+      {/* Chú thích dựng bằng chính ô bài thu nhỏ, để nó luôn khớp với hình trên bản đồ. */}
+      <Group gap="lg" justify="center" style={chapterColorVars(1)} mt="xs">
+        {[
+          { state: 'done', icon: <IconCheck size={12} stroke={3} />, label: 'Đã học xong' },
+          { state: 'current', icon: null, label: 'Bài đang tới' },
+          { state: 'locked', icon: <IconLock size={11} />, label: 'Bài trả phí' },
+        ].map(({ state, icon, label }) => (
+          <Group key={state} gap={6} wrap="nowrap">
+            <span className="lesson-dot lesson-dot--mini" data-state={state} aria-hidden>
+              <span className="lesson-dot__circle">{icon}</span>
+            </span>
+            <Text size="xs" c="dimmed">
+              {label}
+            </Text>
+          </Group>
+        ))}
       </Group>
     </Stack>
   );
