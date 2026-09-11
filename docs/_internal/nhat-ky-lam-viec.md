@@ -113,6 +113,12 @@
     tám ô rải nốt liên tục; Chúc mừng sinh nhật thêm đệm valse; Für Elise đi hết đoạn A với
     nền rải hợp âm; Minuet trả lại **đúng tiết tấu gốc** — bài gốc không có nhịp lấy đà,
     nốt Rê đầu tiên rơi thẳng vào phách mạnh chứ không dẫn vào như bản rút gọn đang ghi.
+  - **Ode to Joy dài gấp đôi: chủ đề đủ mười sáu ô.** Chủ sản phẩm chỉ ra bài còn thiếu
+    khúc sau, và đúng — cả góc bài hát lẫn bài tập 2E của Chương 1 đều đang gọi tám ô là
+    "trọn vẹn", trong khi chủ đề thật có bốn câu: A, A', **B**, A'. Câu B (ô 9-12) là khúc
+    hầu hết người tự học không biết là có. Cả hai bản đều lên mười sáu ô; bản nâng cao trả
+    lại đúng nốt Sol thấp cuối câu B và tiết tấu chấm dôi ở các nốt ngân, bản cơ bản giữ
+    thế tay 5 ngón bằng cách nâng nốt Sol đó lên một quãng tám và nói rõ là cố ý.
   - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
     nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
     được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca
@@ -197,6 +203,14 @@
   định và trường độ từng ô nhịp khớp, nhưng không nghe được để biết giai điệu có đúng bài
   gốc không. Hai chỗ đáng ngờ nhất: Minuet ô nhịp thứ 3 (tiết tấu do Claude tự chọn) và
   vòng hoà thanh của Canon.
+- **Nghe kỹ câu 3 của Ode to Joy (ô 9-12).** Đây là khúc Claude chép từ trí nhớ chứ không
+  có nguồn nào trong repo để đối chiếu — trước nay mọi chỗ trong giáo trình đều chỉ có tám
+  ô đầu. Hai chỗ đáng ngờ: **nốt Sol cuối ô 12 có thật sự thấp hơn một quãng tám không**,
+  và **hai nốt nhanh Mi-Pha ở ô 10, 11** có đúng chỗ không. Sai ở đây thì cả bốn ô nghe
+  lạc, không phải lệch một nốt.
+- **Sửa lời bài tập 2E của Chương 1** nếu thấy đáng: nó đang gọi tám ô là "Ode to Joy trọn
+  vẹn cả bài". Tám ô vẫn là lượng đúng cho ngày thứ hai học đàn, chỉ có chữ "trọn vẹn" là
+  sai — nhưng đây là bài trong giáo trình bán tiền nên để chủ sản phẩm quyết.
 - **Đánh thử nốt sáu bản nâng cao vừa thêm** — giờ là mười hai bản nhạc chứ không phải
   sáu. Ba chỗ Claude soạn chứ không chép nên đáng ngờ nhất: phần đệm valse của Chúc mừng
   sinh nhật, hình rải nốt của Canon, và **tay trái Für Elise đã bị làm phẳng tiết tấu** —
