@@ -12,8 +12,9 @@ import { saveAmbientSettings, useAmbientSettings } from '@/hooks/useAmbientSetti
  * xem `useAmbientSettings.ts`. Rẻ hơn nhiều so với dựng một context xuyên cả app
  * cho đúng một cái công tắc.
  *
- * Mặc định TẮT, và không có nút nào tự bật hộ: `AGENTS.md` chốt rằng người học
- * tự quyết khi nào bắt đầu và dừng. Nhạc tự kêu lên lúc mở app là ngược lại.
+ * Mặc định BẬT từ 11/09/2026 (xem `AMBIENT_DEFAULT` trong `ambient.ts` để biết vì
+ * sao và vì sao việc đó không phá ràng buộc của `AGENTS.md`). Gạt tắt thì app nhớ,
+ * lần mở sau không tự kêu lại — đó mới là chỗ quyền quyết định nằm ở người học.
  */
 export function AmbientControl() {
   const settings = useAmbientSettings();
@@ -29,7 +30,7 @@ export function AmbientControl() {
             <div style={{ minWidth: 0 }}>
               <Text fw={600}>Nhạc nền</Text>
               <Text size="xs" c="dimmed">
-                Tự tắt khi bạn vào bài học hay bật máy đánh nhịp.
+                Tự im khi bạn nghe bản nhạc mẫu hoặc tập với đàn.
               </Text>
             </div>
           </Group>

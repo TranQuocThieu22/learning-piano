@@ -147,10 +147,14 @@ lần chạm đầu tiên để phủ nốt hai trường hợp còn lại — m
 từ trước vẫn đang chạy ở `standalone`. Chỉ áp cho màn hình hẹp; máy tính không tự bung.
 
 **Nhạc nền.** Tự sinh bằng Web Audio ngay trên máy người học, không tải tệp nhạc nào và
-không dính bản quyền của ai — xem `src/lib/ambient.ts`. **Mặc định TẮT**, bật ở thẻ *Nhạc
-nền* trên màn hình chủ, và **tự tắt** khi vào bài học, máy đánh nhịp hay bài luyện nhận
-nốt, rồi tự bật lại khi quay ra. Nhạc nền chồng lên tiếng đàn mẫu thì không còn là dễ
-chịu, nó thành thứ cản đường học.
+không dính bản quyền của ai — xem `src/lib/ambient.ts`. Vòng I–V–vi–IV ở Đô trưởng, 100
+nhịp/phút, tiếng gảy ngắn kiểu hộp nhạc; cố ý vui để người học thấy hứng ngồi vào đàn.
+
+**Mặc định BẬT** (đổi 11/09/2026), tắt bằng một cú gạt ở thẻ *Nhạc nền* trên màn hình chủ
+và app nhớ lựa chọn đó. Nhạc **không tắt theo trang bài học** — đọc phần chữ vẫn có nhạc —
+mà tắt đúng lúc có tiếng khác cất lên: bấm nghe bản nhạc mẫu, hoặc mở phần tập với đàn
+(`src/lib/ambient-hold.ts` đếm số nguồn tiếng đang giữ). Riêng `/metronome` và
+`/note-trainer` thì tắt theo trang, vì cả hai sinh ra để phát tiếng.
 
 **Tính năng đáng chú ý:**
 
@@ -285,6 +289,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Nhạc nền đổi từ nền ngân kiểu thiền sang vòng I–V–vi–IV có rải nốt, vì bản cũ ru ngủ chứ không tạo hứng; mặc định bật theo yêu cầu chủ sản phẩm, và chuyển luật tắt từ theo-đường-dẫn sang theo-sự-kiện để đọc lý thuyết vẫn còn nhạc |
 | 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Nhạc nền dựng bằng Web Audio thay vì tải tệp về, vì sản phẩm có bán nên nhạc "miễn phí" trên mạng là rủi ro bản quyền thật; ghi rõ luật tự tắt ở trang có tiếng khác |
 | 10/09/2026 | `refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình` | Bỏ thanh cố định cuối cùng ở trên đỉnh và ghi lại hai lớp làm nên chế độ toàn màn hình, vì lớp manifest chỉ ăn khi cài lại app nên dễ tưởng là không chạy |
 | 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Bỏ thanh bên và nút hamburger: trên điện thoại nó nằm ở góc xa ngón cái nhất mà lại là đường duy nhất đi bất cứ đâu, và kéo theo cả chùm việc phải bù cho `offset: false`; mục lục dời sang `/library` và `/exercises` |

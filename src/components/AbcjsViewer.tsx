@@ -12,6 +12,7 @@ import {
   IconPlus,
 } from '@tabler/icons-react';
 import { ScorePractice } from './ScorePractice';
+import { holdAmbient } from '@/lib/ambient-hold';
 import { SheetAudioControls } from './SheetAudioControls';
 import type { EventResult, ScoreEvent } from '@/lib/score-compare';
 import {
@@ -367,6 +368,24 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
    * nên HTML của máy chủ và của trình duyệt khớp nhau — không lỗi hydration.
    */
   const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
+
+  /**
+   * Bảo nhạc nền im trong lúc bản nhạc này đang kêu, và trong lúc người học mở
+   * phần tập với đàn.
+   *
+   * Đây là chỗ duy nhất biết được hai việc đó đang xảy ra. Nhạc nền không tắt
+   * theo trang nữa — đọc phần chữ của bài thì vẫn có nhạc — nên phải báo bằng
+   * sự kiện, xem `src/lib/ambient-hold.ts`.
+   */
+  useEffect(() => {
+    if (!isPlaying) return;
+    return holdAmbient();
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!practiceOpen) return;
+    return holdAmbient();
+  }, [practiceOpen]);
 
   /**
    * Khoá cuộn nền và cho phím Esc thoát, chỉ trong lúc đang tập trung.

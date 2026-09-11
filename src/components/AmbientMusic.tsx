@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import { ambientAllowedOn } from '@/lib/ambient';
+import { AMBIENT_HOLD_EVENT, ambientHeld } from '@/lib/ambient-hold';
 import { AmbientEngine } from '@/lib/ambient-engine';
 import { useAmbientSettings } from '@/hooks/useAmbientSettings';
 
@@ -14,14 +15,25 @@ import { useAmbientSettings } from '@/hooks/useAmbientSettings';
  * `AppLayout` của nó, nên chuyển trang là React gỡ cây cũ đi — nhạc sẽ đứt quãng
  * và bắt đầu lại từ đầu ở mỗi lần bấm. Layout gốc thì sống suốt phiên.
  *
- * Nhạc tự tắt ở trang máy đánh nhịp, bài luyện nhận nốt và mọi trang bài học
- * (`ambientAllowedOn`), rồi tự bật lại khi quay ra — người học không phải nhớ
- * tắt trước khi vào tập.
+ * Nhạc tắt trong hai trường hợp, rồi tự bật lại:
+ *
+ * - **Theo trang**: máy đánh nhịp và bài luyện nhận nốt (`ambientAllowedOn`) —
+ *   hai trang tồn tại để phát tiếng.
+ * - **Theo sự kiện**: có nguồn tiếng khác đang kêu (`ambient-hold.ts`) — người
+ *   học bấm nghe bản nhạc mẫu, hoặc mở phần tập với đàn. Đọc phần chữ của bài
+ *   thì nhạc vẫn chạy, vì lúc đó chẳng có tiếng gì khác.
  */
+
+/** Đăng ký giữ chỗ là kho ngoài React, nên đọc bằng `useSyncExternalStore`. */
+function subscribeHold(onChange: () => void): () => void {
+  window.addEventListener(AMBIENT_HOLD_EVENT, onChange);
+  return () => window.removeEventListener(AMBIENT_HOLD_EVENT, onChange);
+}
 export function AmbientMusic() {
   const pathname = usePathname();
   const engineRef = useRef<AmbientEngine | null>(null);
   const settings = useAmbientSettings();
+  const coTiengKhac = useSyncExternalStore(subscribeHold, ambientHeld, () => false);
 
   useEffect(() => {
     return () => {
@@ -33,7 +45,7 @@ export function AmbientMusic() {
   }, []);
 
   useEffect(() => {
-    const nenKeu = settings.on && ambientAllowedOn(pathname);
+    const nenKeu = settings.on && ambientAllowedOn(pathname) && !coTiengKhac;
 
     if (!nenKeu) {
       engineRef.current?.stop();
@@ -60,7 +72,7 @@ export function AmbientMusic() {
       huy = true;
       engineRef.current?.stop();
     };
-  }, [settings, pathname]);
+  }, [settings, pathname, coTiengKhac]);
 
   return null;
 }

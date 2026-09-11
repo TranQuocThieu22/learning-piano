@@ -1,8 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import {
   AMBIENT_DEFAULT,
+  ARPEGGIO_PATTERNS,
   PROGRESSION,
   ambientAllowedOn,
+  arpeggioForBar,
   chordAt,
   midiToFreq,
   parseAmbient,
@@ -22,6 +24,39 @@ describe('chordAt', () => {
   });
 });
 
+describe('arpeggioForBar', () => {
+  it('đổi mẫu theo từng ô nhịp rồi mới quay lại', () => {
+    expect(arpeggioForBar(0)).toBe(ARPEGGIO_PATTERNS[0]);
+    expect(arpeggioForBar(1)).toBe(ARPEGGIO_PATTERNS[1]);
+    expect(arpeggioForBar(ARPEGGIO_PATTERNS.length)).toBe(ARPEGGIO_PATTERNS[0]);
+    expect(arpeggioForBar(-1)).toBe(ARPEGGIO_PATTERNS[ARPEGGIO_PATTERNS.length - 1]);
+  });
+
+  it('mỗi mẫu đúng tám móc đơn cho một ô nhịp 4/4', () => {
+    for (const pattern of ARPEGGIO_PATTERNS) {
+      expect(pattern).toHaveLength(8);
+    }
+  });
+
+  // Rải kín tám móc suốt mấy phút là thành tiếng máy khâu; mỗi mẫu phải có chỗ thở.
+  it('mẫu nào cũng có ít nhất hai chỗ lặng', () => {
+    for (const pattern of ARPEGGIO_PATTERNS) {
+      expect(pattern.filter((x) => x === null).length).toBeGreaterThanOrEqual(2);
+    }
+  });
+
+  it('chỉ số nốt luôn nằm trong số nốt của mọi hợp âm', () => {
+    const itNhatSoNot = Math.min(...PROGRESSION.map((c) => c.tones.length));
+    for (const pattern of ARPEGGIO_PATTERNS) {
+      for (const step of pattern) {
+        if (step === null) continue;
+        expect(step).toBeGreaterThanOrEqual(0);
+        expect(step).toBeLessThan(itNhatSoNot);
+      }
+    }
+  });
+});
+
 describe('midiToFreq', () => {
   it('La quãng tám 4 là 440Hz', () => {
     expect(midiToFreq(69)).toBeCloseTo(440, 6);
@@ -33,19 +68,25 @@ describe('midiToFreq', () => {
 
   it('mọi nốt trong vòng hợp âm đều nằm trong khoảng nghe được', () => {
     for (const chord of PROGRESSION) {
-      for (const note of chord.notes) {
-        const f = midiToFreq(note);
-        expect(f).toBeGreaterThan(80);
-        expect(f).toBeLessThan(1000);
+      for (const midi of [chord.bass, ...chord.tones]) {
+        const f = midiToFreq(midi);
+        expect(f).toBeGreaterThan(60);
+        expect(f).toBeLessThan(1200);
       }
+    }
+  });
+
+  it('nốt trầm luôn thấp hơn mọi nốt rải', () => {
+    for (const chord of PROGRESSION) {
+      expect(chord.bass).toBeLessThan(Math.min(...chord.tones));
     }
   });
 });
 
 describe('parseAmbient', () => {
-  it('chưa lưu gì thì lùi về mặc định, và mặc định là TẮT', () => {
+  it('chưa lưu gì thì lùi về mặc định, và mặc định là BẬT', () => {
     expect(parseAmbient(null)).toEqual(AMBIENT_DEFAULT);
-    expect(AMBIENT_DEFAULT.on).toBe(false);
+    expect(AMBIENT_DEFAULT.on).toBe(true);
   });
 
   it('chuỗi hỏng không được ném lỗi', () => {
@@ -54,19 +95,20 @@ describe('parseAmbient', () => {
     expect(parseAmbient('"chuỗi"')).toEqual(AMBIENT_DEFAULT);
   });
 
-  it('đọc đúng giá trị đã lưu', () => {
-    expect(parseAmbient('{"on":true,"volume":0.3}')).toEqual({ on: true, volume: 0.3 });
+  // Đây là ca quan trọng nhất từ khi mặc định đổi thành bật: người học đã gạt
+  // tắt thì mở app lần sau KHÔNG được tự kêu lại.
+  it('người học gạt tắt thì nhớ đúng là tắt', () => {
+    expect(parseAmbient('{"on":false,"volume":0.5}').on).toBe(false);
+  });
+
+  it('thiếu trường on (bản lưu từ phiên bản cũ) thì theo mặc định mới', () => {
+    expect(parseAmbient('{"volume":0.3}')).toEqual({ on: true, volume: 0.3 });
   });
 
   it('âm lượng ngoài khoảng thì kẹp về 0..1', () => {
     expect(parseAmbient('{"on":true,"volume":9}').volume).toBe(1);
     expect(parseAmbient('{"on":true,"volume":-3}').volume).toBe(0);
     expect(parseAmbient('{"on":true,"volume":"to"}').volume).toBe(AMBIENT_DEFAULT.volume);
-  });
-
-  it('chỉ đúng true mới là bật', () => {
-    expect(parseAmbient('{"on":"true"}').on).toBe(false);
-    expect(parseAmbient('{"on":1}').on).toBe(false);
   });
 });
 
@@ -77,20 +119,15 @@ describe('ambientAllowedOn', () => {
     }
   });
 
-  it('tắt ở trang có tiếng khác đang phát', () => {
+  it('tắt ở hai trang sinh ra để phát tiếng', () => {
     expect(ambientAllowedOn('/metronome')).toBe(false);
     expect(ambientAllowedOn('/note-trainer')).toBe(false);
   });
 
-  // Mọi bài học đều có thể chứa khối nhạc bấm nghe được và phần tập với đàn.
-  it('tắt ở mọi trang bài học', () => {
-    expect(ambientAllowedOn('/03-exercises/chuong-01-bai-02')).toBe(false);
-    expect(ambientAllowedOn('/02-chapters/chuong-00')).toBe(false);
-    expect(ambientAllowedOn('/07-doc-them/lich-su-piano')).toBe(false);
-  });
-
-  it('không nhầm trang hai đoạn khác với trang bài học', () => {
-    expect(ambientAllowedOn('/checkout/abc123')).toBe(true);
-    expect(ambientAllowedOn('/admin/payments')).toBe(true);
+  // Đổi 11/09/2026: đọc phần chữ của bài thì nhạc vẫn chạy. Việc tắt lúc bấm
+  // nghe bản nhạc mẫu hay mở phần tập với đàn do `ambient-hold.ts` lo.
+  it('KHÔNG tắt theo trang ở bài học nữa', () => {
+    expect(ambientAllowedOn('/03-exercises/chuong-01-bai-02')).toBe(true);
+    expect(ambientAllowedOn('/02-chapters/chuong-00')).toBe(true);
   });
 });
