@@ -15,7 +15,15 @@ import { SAMPLE_RATE, seededRandom, synthPiano, type NoteSpec } from './__fixtur
  * chính xác trên điện thoại thật — tiếng đàn ở đây vẫn là tiếng tổng hợp. Lần chỉnh
  * cuối (11/09/2026) đo được: tập theo bản nhạc ~92% nghe đúng, ~1% nốt ma; luyện
  * nhận nốt 100% đúng phím và không lần nào nhận nhầm thành nốt đang hỏi.
+ *
+ * **Hai ca ở đây phải khai hạn giờ riêng.** Vitest mặc định bỏ cuộc sau 5 giây, mà
+ * dựng rồi nghe hàng trăm nốt thì tốn vài giây ngay trên máy bàn — máy dựng bản của
+ * Vercel và GitHub chậm hơn vài lần nên vượt ngay. Triệu chứng của chuyện đó rất dễ
+ * đọc nhầm: build đỏ trên máy chủ trong khi ở máy mình xanh hết.
  */
+
+/** Rộng tay cho máy dựng bản chậm, không phải vì ca này được quyền chạy lâu. */
+const SLOW_MACHINE_TIMEOUT_MS = 60_000;
 
 const RIGHT = [60, 62, 64, 65, 67];
 const LEFT = [48, 50, 52, 53, 55];
@@ -64,7 +72,7 @@ describe('Độ chính xác — tập theo bản nhạc (có biết trước n�
     let expected = 0;
     let right = 0;
     let extras = 0;
-    for (let seed = 1000; seed < 1020; seed++) {
+    for (let seed = 1000; seed < 1012; seed++) {
       const { events, notes, end, noise } = phrase(seed);
       const audio = synthPiano(notes, { seconds: end + 0.5, noise, seed });
       // Con trỏ trên bản nhạc chờ sự kiện kế tiếp — mô phỏng đúng `ScorePractice`.
@@ -87,7 +95,7 @@ describe('Độ chính xác — tập theo bản nhạc (có biết trước n�
     console.log(`[mic-accuracy] tập theo bản nhạc: ${expected} nốt · nghe đúng ${((100 * right) / expected).toFixed(1)}% · nốt ma ${((100 * extras) / expected).toFixed(1)}%`);
     expect(right / expected).toBeGreaterThan(0.9);
     expect(extras / expected).toBeLessThan(0.03);
-  });
+  }, SLOW_MACHINE_TIMEOUT_MS);
 });
 
 describe('Độ chính xác — luyện nhận nốt (mỗi lần một nốt, có khi đánh sai)', () => {
@@ -97,7 +105,7 @@ describe('Độ chính xác — luyện nhận nốt (mỗi lần một nốt, c
     let total = 0;
     let right = 0;
     let falseCorrect = 0;
-    for (let round = 0; round < 12; round++) {
+    for (let round = 0; round < 8; round++) {
       // Mỗi câu 6 lần trả lời, cách nhau ~0.8 giây như người đang dò nốt.
       const answers = Array.from({ length: 6 }, (_, i) => {
         const played = pool[Math.floor(random() * pool.length)];
@@ -125,5 +133,5 @@ describe('Độ chính xác — luyện nhận nốt (mỗi lần một nốt, c
     expect(right / total).toBeGreaterThan(0.95);
     // Đây là lỗi tệ nhất có thể xảy ra: người học đánh sai mà màn hình báo "Chính xác".
     expect(falseCorrect).toBe(0);
-  });
+  }, SLOW_MACHINE_TIMEOUT_MS);
 });

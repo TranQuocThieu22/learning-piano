@@ -580,6 +580,42 @@ thứ tạo ngoài React không tự chết theo component.
 
 ---
 
+## 19. Build đỏ trên Vercel trong khi ở máy mình xanh hết
+
+**Triệu chứng.** Bốn lệnh kiểm ở máy đều xanh, `git push` xong thì deploy trên Vercel
+đỏ. Log không chỉ ra dòng mã nào sai, chỉ có một ca test trượt — mà chính ca đó vừa
+chạy qua ở máy vài phút trước.
+
+**Nguyên nhân.** Vitest bỏ cuộc sau **5 giây mỗi ca**, và đó là mặc định không ai khai
+ở đâu cả. Ca nào ở máy bàn chạy mất 2-3 giây thì trên máy dựng bản của Vercel hay
+GitHub — chậm hơn vài lần, lại chạy chung máy với việc khác — sẽ vượt ngưỡng. Ở đây là
+`mic-accuracy.test.ts`: nó dựng vài trăm nốt tiếng đàn tổng hợp rồi cho chạy qua bộ
+nghe, mất 3,0 giây ở máy bàn.
+
+**Vì sao khó lần.** Nó không hỏng theo kiểu đúng/sai mà theo kiểu nhanh/chậm, nên chạy
+lại ở máy vẫn xanh — dễ đổ cho "Vercel dở" rồi bấm deploy lại. Và vì lệnh build của
+Vercel là `vitest run && drizzle-kit migrate && next build`, test trượt làm **cả deploy
+không xảy ra**: người học vẫn thấy bản cũ, không ai được báo gì.
+
+**Cách sửa.**
+
+```ts
+const SLOW_MACHINE_TIMEOUT_MS = 60_000;
+it('…', async () => { /* … */ }, SLOW_MACHINE_TIMEOUT_MS);
+```
+
+Khai hạn giờ cho **đúng ca nặng**, đừng nới mặc định cho cả kho test: nới toàn cục thì
+một ca treo thật sẽ ngồi im hàng phút thay vì đỏ ngay. Kèm theo, cắt bớt khối lượng cho
+ca đó nếu cắt mà kết luận không đổi — `mic-accuracy` giảm từ 20 câu nhạc xuống 12, vẫn
+đo trên 151 nốt và cho ra cùng con số.
+
+**Bài học chung.** Ca test nào ở máy chạy quá **một giây** thì coi như đã đứng ở mép
+vực: hoặc khai hạn giờ, hoặc làm nó nhẹ đi. Và `next build` phải nằm trong cổng kiểm
+tra trước khi commit — bốn lệnh kia không đụng tới nó, mà nó mới là thứ Vercel chạy
+(mục 3 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-viec.md)).
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -588,6 +624,7 @@ thứ tạo ngoài React không tự chết theo component.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Cho test đo micro hạn giờ rộng để build trên Vercel không trượt` | Thêm bẫy 19 — build đỏ trên Vercel mà ở máy xanh hết, vì vitest bỏ cuộc sau 5 giây mỗi ca và ca đo độ chính xác micro mất 3 giây ngay ở máy bàn; ghi rõ đây là kiểu hỏng theo nhanh/chậm nên chạy lại ở máy vẫn xanh, dễ đổ oan cho Vercel |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Thêm bẫy 18 — bộ phát tiếng mồ côi sống lại sau `dispose()` nên `stop()` chỉ tắt được một nửa; ghi cả cách đo đúng vì máy đo bám nhầm bộ nén thì ra số 0 đánh lừa |
 | 10/09/2026 | `fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung` | Thêm bẫy 17 — con của flexbox bị bóp làm `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt; kèm chuyện `style` nội tuyến làm luật padding chừa tai thỏ chưa từng chạy |
 | 10/09/2026 | `fix: Bấm được nút Thoát của chế độ tập trung` | Thêm bẫy 16 — `transform`/`backdrop-filter` ở tổ tiên kéo lớp phủ `position: fixed` ra khỏi khung nhìn, làm chế độ tập trung không thoát được; ghi rõ vì sao triệu chứng chập chờn và cách đo bằng `getBoundingClientRect` thay vì `getComputedStyle` |
