@@ -3,12 +3,13 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import ABCJS from 'abcjs';
 import {
-  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
+  Alert, Badge, Box, Button, Card, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
 import {
   checkAnswer, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillQuestion, Hands,
-  pickNextQuestion, questionsForOptions, rangesFor, singleNoteAbc,
+  octavesFor, pickNextQuestion, questionsForOptions, singleNoteAbc,
 } from '@/lib/midi-notes';
+import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answerFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
@@ -43,11 +44,14 @@ function loadOptions(): DrillOptions {
     if (!raw) return DEFAULT_OPTIONS;
     const saved = JSON.parse(raw) as Partial<DrillOptions>;
     const hands: Hands = saved.hands === 'left' || saved.hands === 'both' ? saved.hands : 'right';
-    const valid = rangesFor(hands).map((r) => r.id);
-    const rangeIds = Array.isArray(saved.rangeIds) ? saved.rangeIds.filter((id) => valid.includes(id)) : [];
+    const valid = octavesFor(hands);
+    const octaves = Array.isArray(saved.octaves)
+      ? saved.octaves.filter((o) => typeof o === 'number' && valid.includes(o))
+      : [];
     return {
       hands,
-      rangeIds: rangeIds.length > 0 ? rangeIds : DEFAULT_OPTIONS.rangeIds,
+      octaves: octaves.length > 0 ? octaves : DEFAULT_OPTIONS.octaves,
+      fiveFinger: saved.fiveFinger !== false,
       accidentals: saved.accidentals === true,
     };
   } catch {
@@ -92,7 +96,10 @@ type Feedback =
 export function NoteRecognitionDrill() {
   const options = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
   const pool = useMemo(() => questionsForOptions(options), [options]);
-  const ranges = useMemo(() => rangesFor(options.hands), [options.hands]);
+  const selectableOctaves = useMemo(() => octavesFor(options.hands), [options.hands]);
+  const activeMidis = useMemo(() => new Set(pool.map((q) => q.note.midi)), [pool]);
+  /** Cả hai tay thì vẽ khuông đôi như bản nhạc piano thật. */
+  const grandStaff = options.hands === 'both';
 
   const [current, setCurrent] = useState<DrillQuestion | null>(() => {
     const first = questionsForOptions(DEFAULT_OPTIONS);
@@ -194,15 +201,22 @@ export function NoteRecognitionDrill() {
       paperRef.current.innerHTML = '';
       return;
     }
-    ABCJS.renderAbc(paperRef.current, singleNoteAbc(current.note, current.clef), {
-      staffwidth: 220,
-      scale: 2,
+    ABCJS.renderAbc(paperRef.current, singleNoteAbc(current.note, current.clef, grandStaff), {
+      /*
+       * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
+       * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
+       * Hẹp hơn một chút nữa để cả dấu ngoặc ôm hai khuông lẫn vạch nhịp cuối
+       * nằm trọn trong khung, khác khuông đơn chỉ có mỗi nốt ở giữa nên hai mép
+       * trống bị cắt cũng không mất gì.
+       */
+      staffwidth: grandStaff ? 190 : 220,
+      scale: grandStaff ? 1.25 : 2,
       paddingtop: 8,
       paddingbottom: 8,
       paddingleft: 0,
       paddingright: 0,
     });
-  }, [current]);
+  }, [current, grandStaff]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
@@ -218,15 +232,24 @@ export function NoteRecognitionDrill() {
   };
 
   /**
-   * Đổi tay thì phải lọc lại vùng đang chọn: quãng trên không vẽ ở khóa Pha, quãng
-   * trầm không vẽ ở khóa Sol. Lọc xong mà rỗng thì lấy vùng đầu tiên còn hợp lệ —
-   * đổi tay không bao giờ được dẫn tới màn hình trống.
+   * Đổi tay thì phải lọc lại quãng đang chọn: quãng 6 không đọc được ở khóa Pha,
+   * quãng 1 không đọc được ở khóa Sol. Lọc xong mà rỗng thì lấy quãng gần Đô giữa
+   * nhất còn dùng được — đổi tay không bao giờ được dẫn tới màn hình trống.
    */
   const changeHands = (value: string) => {
     const hands = value as Hands;
-    const valid = rangesFor(hands).map((r) => r.id);
-    const kept = options.rangeIds.filter((id) => valid.includes(id));
-    applyOptions({ ...options, hands, rangeIds: kept.length > 0 ? kept : [valid[0]] });
+    const valid = octavesFor(hands);
+    const kept = options.octaves.filter((o) => valid.includes(o));
+    const fallback = valid.includes(4) ? 4 : valid[valid.length - 1];
+    applyOptions({ ...options, hands, octaves: kept.length > 0 ? kept : [fallback] });
+  };
+
+  /** Chạm vào một quãng trên bàn phím: đang chọn thì bỏ, chưa chọn thì thêm. */
+  const toggleOctave = (octave: number) => {
+    const next = options.octaves.includes(octave)
+      ? options.octaves.filter((o) => o !== octave)
+      : [...options.octaves, octave].sort((a, b) => a - b);
+    applyOptions({ ...options, octaves: next });
   };
 
   const skip = () => {
@@ -268,30 +291,31 @@ export function NoteRecognitionDrill() {
         />
 
         <Text size="sm" fw={500} mt="md" mb={6}>
-          Quãng nào <Text span size="xs" c="dimmed">— chọn được nhiều quãng cùng lúc</Text>
+          Quãng nào <Text span size="xs" c="dimmed">— chạm vào bàn phím, chọn được nhiều quãng</Text>
         </Text>
-        <Chip.Group
-          multiple
-          value={options.rangeIds}
-          onChange={(value) => applyOptions({ ...options, rangeIds: value })}
-        >
-          <Group gap="xs">
-            {ranges.map((r) => (
-              <Chip key={r.id} value={r.id} size="sm" data-testid={`range-${r.id}`}>
-                {r.label}
-              </Chip>
-            ))}
-          </Group>
-        </Chip.Group>
+        <OctaveKeyboard
+          activeMidis={activeMidis}
+          selectedOctaves={options.octaves}
+          selectableOctaves={selectableOctaves}
+          onToggle={toggleOctave}
+        />
         <Text size="xs" c="dimmed" mt={6}>
-          {ranges
-            .filter((r) => options.rangeIds.includes(r.id))
-            .map((r) => `${r.label}: ${r.detail}`)
-            .join(' · ') || 'Chưa chọn quãng nào.'}
+          {options.octaves.length > 0
+            ? 'Chạm lần nữa để bỏ chọn. Quãng để xám là quãng khóa nhạc đang chọn không đọc được.'
+            : 'Chưa chọn quãng nào — chạm vào một cụm phím ở trên.'}
         </Text>
 
         <Switch
           mt="md"
+          checked={options.fiveFinger}
+          onChange={(e) => applyOptions({ ...options, fiveFinger: e.currentTarget.checked })}
+          label="Chỉ năm nốt Đô–Sol"
+          description="Thế tay 5 ngón của Chương 1: cả bàn tay đứng yên một chỗ. Tắt đi thì tập trọn bảy nốt Đô–Si của mỗi quãng."
+          data-testid="five-finger-switch"
+        />
+
+        <Switch
+          mt="sm"
           checked={options.accidentals}
           onChange={(e) => applyOptions({ ...options, accidentals: e.currentTarget.checked })}
           label="Có dấu hoá (phím đen)"
@@ -301,7 +325,7 @@ export function NoteRecognitionDrill() {
 
         <Text size="xs" c="dimmed" mt="md" data-testid="pool-size">
           Đang tập <b>{pool.length}</b> nốt
-          {options.hands === 'both' ? ', mỗi câu đổi khóa nhạc' : ''}.
+          {grandStaff ? ', hiện cả hai khuông như bản nhạc piano' : ''}.
         </Text>
       </Card>
 
@@ -321,9 +345,9 @@ export function NoteRecognitionDrill() {
             <>
               <Text size="sm" c="dimmed">
                 Nốt này là nốt gì? Hãy bấm phím tương ứng trên đàn.
-                {options.hands === 'both' && (
-                  <> Để ý khóa nhạc — đây là <b>{current.clef === 'treble' ? 'khóa Sol' : 'khóa Pha'}</b>.</>
-                )}
+                {/* Khuông đôi đã tự nói nốt nằm ở tay nào, nên không nhắc thêm —
+                    nhắc ra là trả lời hộ nửa câu hỏi. */}
+                {grandStaff && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
               </Text>
 
               {/* Khuông nhạc luôn để nền trắng chữ đen như bản nhạc giấy, kể cả khi trang đang ở chế độ tối. */}

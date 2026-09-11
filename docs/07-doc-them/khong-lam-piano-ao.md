@@ -42,7 +42,7 @@ Nếu bạn chỉ muốn nghe bài tập vang lên như thế nào, mọi khối
 
 Bỏ piano ảo **không có nghĩa là bỏ mọi thứ tương tác**. Thứ app làm thay vào đó là **nghe chính cây đàn thật của bạn** — bạn vẫn tập bằng tay thật, trên phím thật, nhưng có phản hồi ngay:
 
-**Bài luyện nhận nốt.** Màn hình hiện một nốt trên khuông nhạc, bạn bấm phím tương ứng trên đàn, app báo đúng hay sai — và nếu đúng tên nốt mà sai quãng tám thì nói rõ điều đó. Đây là bài luyện **mắt nhận ra nốt rồi nhớ ra vị trí phím**, mỗi lần năm phút là đủ. Bạn tự chọn tập **tay nào** (khóa Sol, khóa Pha, hay cả hai), **những quãng nào** — chọn nhiều quãng cách xa nhau thì nốt nhảy qua lại, tập mắt chuyển vùng — và **có dấu hoá hay không**.
+**Bài luyện nhận nốt.** Màn hình hiện một nốt trên khuông nhạc, bạn bấm phím tương ứng trên đàn, app báo đúng hay sai — và nếu đúng tên nốt mà sai quãng tám thì nói rõ điều đó. Đây là bài luyện **mắt nhận ra nốt rồi nhớ ra vị trí phím**, mỗi lần năm phút là đủ. Bạn tự chọn tập **tay nào**, **những quãng nào** và **có dấu hoá hay không**. Phần chọn quãng là **hình một cây đàn 88 phím**: chạm vào cụm phím nào thì cụm đó sáng xanh, chọn nhiều cụm cách xa nhau thì nốt nhảy qua lại giữa chúng. Chọn *cả hai tay* thì bản nhạc hiện **đủ hai khuông như bản nhạc piano thật**, và việc nhận ra nốt nằm ở khuông trên hay khuông dưới cũng là một phần của bài.
 
 **Tập bài này với đàn.** Dưới mỗi bản nhạc trong bài tập có nút này. Bạn đánh tới đâu, nốt trên khuông sáng xanh tới đó; bấm trượt thì chỗ đang chờ nháy đỏ một cái rồi thôi. Không có gì tự chạy — con trỏ chỉ nhích khi bạn bấm phím, dừng bao lâu cũng được. Đánh xong bấm dừng thì app chỉ ra chỗ nào sai, chỗ nào bỏ sót, và nhịp của bạn có đều không.
 

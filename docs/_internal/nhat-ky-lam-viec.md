@@ -147,6 +147,13 @@
     chọn cả hai thì mỗi câu đổi khóa), **quãng** (chọn được nhiều vùng cùng lúc, từ thế tay
     Đô tới quãng trầm và quãng cao), **dấu hoá** (bật là có phím đen). Vùng nào khóa đang
     chọn không vẽ nổi thì ẩn hẳn khỏi danh sách, và lựa chọn được nhớ lại cho buổi sau.
+  - **Chọn quãng bằng hình cây đàn 88 phím, và cả hai tay thì hiện khuông đôi.** Chủ sản
+    phẩm chốt lại hai chỗ ngay sau khi dùng thử: dãy nút chữ đổi thành **hình bàn phím
+    thật**, chạm vào cụm nào thì cụm đó sáng xanh; và chọn cả hai tay thì vẽ **cả khóa Sol
+    lẫn khóa Pha song song** như bản nhạc piano, nốt nằm ở khuông nào là một phần của câu
+    hỏi. Hình bàn phím vẽ đúng tỉ lệ đàn thật (phím trắng 23,5×150mm, phím đen 13,7×95mm)
+    nên ướm từ màn hình ra đàn là khớp; màu xanh tô đúng những nốt đang được hỏi nên bật
+    tắt dấu hoá hay thế tay 5 ngón là thấy ngay.
   - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
     nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
     được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, DRILL_RANGES, isBlackKey, noteAt,
-  pickNextQuestion, questionsForOptions, rangesFor, singleNoteAbc,
+  checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, isBlackKey, noteAt, octavesFor,
+  OCTAVES_BY_CLEF, pickNextQuestion, questionsForOptions, singleNoteAbc,
 } from './midi-notes';
 
 describe('noteAt — dựng nốt từ số MIDI', () => {
@@ -43,82 +43,81 @@ describe('questionsForOptions — kho câu hỏi', () => {
     expect(pool.every((q) => q.clef === 'treble')).toBe(true);
   });
 
-  it('tay trái lấy đúng thế tay Đô quãng thấp, khóa Pha', () => {
-    const pool = questionsForOptions({ ...DEFAULT_OPTIONS, hands: 'left' });
+  it('tắt thế tay 5 ngón thì được trọn bảy nốt Đô–Si', () => {
+    const pool = questionsForOptions({ ...DEFAULT_OPTIONS, fiveFinger: false });
+    expect(pool.map((q) => q.note.midi)).toEqual([60, 62, 64, 65, 67, 69, 71]);
+  });
+
+  it('tay trái lấy đúng quãng của khóa Pha', () => {
+    const pool = questionsForOptions({ ...DEFAULT_OPTIONS, hands: 'left', octaves: [3] });
     expect(pool.map((q) => q.note.midi)).toEqual([48, 50, 52, 53, 55]);
     expect(pool.every((q) => q.clef === 'bass')).toBe(true);
   });
 
-  it('cả hai tay thì một nốt xuất hiện hai lần, mỗi khóa một lần', () => {
-    const pool = questionsForOptions({ hands: 'both', rangeIds: ['quang-do-giua'], accidentals: false });
+  it('cả hai tay thì quãng Đô giữa ra hai câu cho cùng một nốt, mỗi khóa một câu', () => {
+    const pool = questionsForOptions({ hands: 'both', octaves: [4], fiveFinger: true, accidentals: false });
     const doGiua = pool.filter((q) => q.note.midi === 60);
     expect(doGiua.map((q) => q.clef).sort()).toEqual(['bass', 'treble']);
   });
 
   it('chọn nhiều quãng thì nốt nhảy qua lại giữa chúng', () => {
     const pool = questionsForOptions({
-      hands: 'right',
-      rangeIds: ['quang-do-giua', 'quang-cao'],
-      accidentals: false,
+      hands: 'right', octaves: [4, 6], fiveFinger: false, accidentals: false,
     });
     expect(pool.some((q) => q.note.midi === 60)).toBe(true);
     expect(pool.some((q) => q.note.midi === 95)).toBe(true);
   });
 
-  /*
-   * Thế tay Đô nằm gọn trong quãng Đô giữa. Chọn cả hai mà không bỏ trùng thì
-   * năm nốt Đô–Sol bị hỏi dày gấp đôi bảy nốt còn lại — người học không thấy
-   * lỗi, chỉ thấy "sao cứ hỏi mãi mấy nốt này".
-   */
-  it('hai quãng chồng nhau thì nốt chung chỉ đếm một lần', () => {
-    const pool = questionsForOptions({
-      hands: 'right',
-      rangeIds: ['the-tay-do', 'quang-do-giua'],
-      accidentals: false,
-    });
-    expect(pool.filter((q) => q.note.midi === 60)).toHaveLength(1);
-    expect(pool.map((q) => q.note.midi)).toEqual([60, 62, 64, 65, 67, 69, 71]);
-  });
-
   it('tắt dấu hoá thì không phím đen nào lọt vào', () => {
-    const pool = questionsForOptions({ hands: 'both', rangeIds: DRILL_RANGES.map((r) => r.id), accidentals: false });
+    const pool = questionsForOptions({
+      hands: 'both', octaves: [1, 2, 3, 4, 5, 6, 7], fiveFinger: false, accidentals: false,
+    });
     expect(pool.some((q) => isBlackKey(q.note.midi))).toBe(false);
   });
 
-  it('bật dấu hoá thì quãng Đô giữa đủ mười hai nốt', () => {
-    const pool = questionsForOptions({ hands: 'right', rangeIds: ['quang-do-giua'], accidentals: true });
+  it('bật dấu hoá thì một quãng đủ mười hai nốt', () => {
+    const pool = questionsForOptions({
+      hands: 'right', octaves: [4], fiveFinger: false, accidentals: true,
+    });
     expect(pool).toHaveLength(12);
     expect(pool.filter((q) => isBlackKey(q.note.midi))).toHaveLength(5);
   });
 
-  it('không chọn quãng nào thì kho rỗng, không ném lỗi', () => {
-    expect(questionsForOptions({ hands: 'right', rangeIds: [], accidentals: false })).toEqual([]);
+  it('thế tay 5 ngón có dấu hoá thì lấy đủ tám phím liền nhau Đô–Sol', () => {
+    const pool = questionsForOptions({
+      hands: 'right', octaves: [4], fiveFinger: true, accidentals: true,
+    });
+    expect(pool.map((q) => q.note.midi)).toEqual([60, 61, 62, 63, 64, 65, 66, 67]);
   });
 
-  it('bỏ qua vùng mà khóa đang chọn không vẽ nổi', () => {
-    // Quãng cao là vùng của khóa Sol; chọn nó với tay trái thì không ra nốt nào.
-    expect(questionsForOptions({ hands: 'left', rangeIds: ['quang-cao'], accidentals: false })).toEqual([]);
+  it('không chọn quãng nào thì kho rỗng, không ném lỗi', () => {
+    expect(questionsForOptions({ ...DEFAULT_OPTIONS, octaves: [] })).toEqual([]);
+  });
+
+  /*
+   * Quãng 6 chỉ đọc được ở khóa Sol. Chọn nó rồi đổi sang tay trái mà mã này
+   * không lọc thì bài luyện hỏi một nốt nằm dưới bảy dòng kẻ phụ.
+   */
+  it('bỏ qua quãng mà khóa đang chọn không đọc nổi', () => {
+    expect(questionsForOptions({ ...DEFAULT_OPTIONS, hands: 'left', octaves: [6] })).toEqual([]);
+    const both = questionsForOptions({ hands: 'both', octaves: [6], fiveFinger: true, accidentals: false });
+    expect(both.every((q) => q.clef === 'treble')).toBe(true);
   });
 });
 
-describe('rangesFor — chỉ hiện vùng đọc được', () => {
+describe('octavesFor — quãng nào chọn được với tay nào', () => {
   it('tay phải không có quãng trầm, tay trái không có quãng cao', () => {
-    const right = rangesFor('right').map((r) => r.id);
-    const left = rangesFor('left').map((r) => r.id);
-    expect(right).not.toContain('quang-tram');
-    expect(right).toContain('quang-cao');
-    expect(left).toContain('quang-tram');
-    expect(left).not.toContain('quang-cao');
+    expect(octavesFor('right')).toEqual([4, 5, 6, 7]);
+    expect(octavesFor('left')).toEqual([1, 2, 3, 4]);
   });
 
-  it('cả hai tay thì thấy hết', () => {
-    expect(rangesFor('both')).toHaveLength(DRILL_RANGES.length);
+  it('cả hai tay thì gộp lại, không trùng lặp và xếp thấp tới cao', () => {
+    expect(octavesFor('both')).toEqual([1, 2, 3, 4, 5, 6, 7]);
   });
 
-  it('mọi vùng đều khai được ít nhất một khóa', () => {
-    for (const r of DRILL_RANGES) {
-      expect(Object.keys(r.perClef).length, `${r.id} chưa khai khóa nào`).toBeGreaterThan(0);
-    }
+  it('quãng Đô giữa thuộc về cả hai khóa', () => {
+    expect(OCTAVES_BY_CLEF.treble).toContain(4);
+    expect(OCTAVES_BY_CLEF.bass).toContain(4);
   });
 
   it('clefsFor trả đúng khóa cho từng tay', () => {
@@ -140,12 +139,12 @@ describe('pickNextQuestion', () => {
   });
 
   it('kho chỉ có một nốt thì đành hỏi lại chính nó', () => {
-    const one = questionsForOptions({ hands: 'right', rangeIds: ['the-tay-do'], accidentals: false }).slice(0, 1);
+    const one = questionsForOptions(DEFAULT_OPTIONS).slice(0, 1);
     expect(pickNextQuestion(one, one[0]).note.midi).toBe(one[0].note.midi);
   });
 
   it('cùng cao độ nhưng khác khóa vẫn là câu khác', () => {
-    const both = questionsForOptions({ hands: 'both', rangeIds: ['quang-do-giua'], accidentals: false });
+    const both = questionsForOptions({ hands: 'both', octaves: [4], fiveFinger: true, accidentals: false });
     const treble = both.find((q) => q.clef === 'treble' && q.note.midi === 60)!;
     const bass = both.find((q) => q.clef === 'bass' && q.note.midi === 60)!;
     expect(treble).toBeDefined();
@@ -163,6 +162,22 @@ describe('singleNoteAbc', () => {
     expect(singleNoteAbc(noteAt(48), 'bass')).toContain('clef=bass');
     expect(singleNoteAbc(noteAt(48), 'bass')).toContain('M:none');
     expect(singleNoteAbc(noteAt(48), 'bass').trim().endsWith('C,')).toBe(true);
+  });
+
+  /*
+   * Khuông đôi là chế độ của người chọn tập cả hai tay: đọc được nốt nằm ở
+   * khuông NÀO cũng là một phần của bài. Khuông còn lại phải là lặng ẩn `x`,
+   * không phải `z` — dấu lặng vẽ ra trông như một ký hiệu phải đọc.
+   */
+  it('khuông đôi đặt nốt đúng khuông, khuông kia để lặng ẩn', () => {
+    const treble = singleNoteAbc(noteAt(60), 'treble', true);
+    expect(treble).toContain('%%staves {1 2}');
+    expect(treble).toContain('V:1 clef=treble\nC');
+    expect(treble).toContain('V:2 clef=bass\nx');
+
+    const bass = singleNoteAbc(noteAt(48), 'bass', true);
+    expect(bass).toContain('V:1 clef=treble\nx');
+    expect(bass).toContain('V:2 clef=bass\nC,');
   });
 });
 

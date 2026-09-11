@@ -41,10 +41,14 @@ export default async function NoteRecognitionPage() {
             tập. Tập lâu quá sẽ mệt mắt mà không thêm được gì.
           </Text>
           <Text size="sm">
-            <b>Chọn đúng phần mình đang yếu.</b> Ba ô chọn ở trên ghép được nhiều kiểu bài: một quãng
-            cho quen mặt chữ, hai ba quãng cách xa nhau để tập mắt nhảy, khóa Pha riêng cho tay trái,
-            hoặc bật dấu hoá khi bắt đầu gặp phím đen trong bài. Chọn &quot;Cả hai tay&quot; thì mỗi câu
-            đổi khóa nhạc — khó hơn hẳn, vì phải nhìn khóa trước rồi mới đọc nốt.
+            <b>Chọn đúng phần mình đang yếu.</b> Chạm vào hình bàn phím để chọn quãng — một quãng cho
+            quen mặt chữ, hai ba quãng cách xa nhau để tập mắt nhảy. Tắt &quot;chỉ năm nốt Đô–Sol&quot; khi
+            tay đã quen với tới, bật dấu hoá khi bắt đầu gặp phím đen trong bài.
+          </Text>
+          <Text size="sm">
+            <b>&quot;Cả hai tay&quot; là mức khó nhất.</b> Bản nhạc hiện đủ hai khuông như bản nhạc piano
+            thật, và nốt có thể nằm ở khuông trên hay khuông dưới — bạn phải nhìn ra nó nằm ở khuông
+            nào trước, rồi mới đọc nốt. Đây đúng là việc phải làm khi đọc bản nhạc thật.
           </Text>
           <Text size="sm">
             <b>Đừng nhìn xuống tay.</b> Tìm phím bằng cảm giác, dựa vào cụm hai phím đen và ba phím

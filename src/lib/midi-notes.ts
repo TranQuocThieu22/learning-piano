@@ -5,7 +5,7 @@
  * sản phẩm cần tập nốt nhảy rộng hơn, nên nay người học tự ghép ba thứ rời nhau:
  *
  * 1. **Tay nào** — khóa Sol, khóa Pha, hay cả hai (mỗi câu hỏi đổi khóa).
- * 2. **Quãng nào** — chọn được nhiều vùng cùng lúc, nốt sẽ nhảy qua lại giữa chúng.
+ * 2. **Quãng nào** — chọn ngay trên hình bàn phím 88 phím, nhiều quãng cùng lúc.
  * 3. **Có dấu hoá không** — phím đen bật/tắt.
  *
  * Ba thứ đó nhân với nhau ra kho câu hỏi; chọn kiểu gì cũng không cần thêm mã.
@@ -85,71 +85,41 @@ export function noteAt(midi: number): DrillNote {
 }
 
 /**
- * Một vùng nốt người học chọn được.
+ * Quãng tám nào đọc được ở khóa nào.
  *
- * `perClef` nói vùng này vẽ được trên khóa nào và từ nốt nào tới nốt nào. Vùng
- * nào khóa nào không đọc nổi thì bỏ hẳn khỏi khóa đó — Đô quãng 6 viết ở khóa
- * Pha phải kẻ thêm bảy dòng phụ, đọc được thì cũng chẳng ai đọc thế.
+ * Không phải cấm đoán vô cớ: Đô quãng 6 viết ở khóa Pha phải kẻ bảy dòng kẻ phụ,
+ * còn Đô quãng 1 ở khóa Sol cũng vậy. Người học tập đọc nốt chứ không tập đếm
+ * dòng kẻ phụ, nên quãng nào khóa đó không đọc nổi thì ẩn hẳn khỏi bàn phím chọn.
+ *
+ * Quãng 4 — quãng của Đô giữa — thuộc về cả hai khóa, đúng như trên bản nhạc thật.
  */
-export interface DrillRange {
-  id: string;
-  label: string;
-  detail: string;
-  perClef: Partial<Record<ClefName, [number, number]>>;
-}
-
-export const DRILL_RANGES: DrillRange[] = [
-  {
-    id: 'the-tay-do',
-    label: 'Thế tay Đô',
-    detail: 'Năm nốt Đô–Sol của Chương 1',
-    // Cùng một thế tay, nhưng tay phải đặt ở Đô giữa còn tay trái thấp hơn một
-    // quãng tám — đúng như hai bài tập của Chương 1.
-    perClef: { treble: [60, 67], bass: [48, 55] },
-  },
-  {
-    id: 'quang-do-giua',
-    label: 'Quãng Đô giữa',
-    detail: 'Đô4–Si4, vùng cả hai tay đều với tới',
-    perClef: { treble: [60, 71], bass: [60, 71] },
-  },
-  {
-    id: 'quang-duoi',
-    label: 'Quãng dưới',
-    detail: 'Đô3–Si3, vùng quen của tay trái',
-    perClef: { bass: [48, 59] },
-  },
-  {
-    id: 'quang-tram',
-    label: 'Quãng trầm',
-    detail: 'Đô2–Si2, phía trái bàn phím',
-    perClef: { bass: [36, 47] },
-  },
-  {
-    id: 'quang-tren',
-    label: 'Quãng trên',
-    detail: 'Đô5–Si5, vùng quen của tay phải',
-    perClef: { treble: [72, 83] },
-  },
-  {
-    id: 'quang-cao',
-    label: 'Quãng cao',
-    detail: 'Đô6–Si6, phía phải bàn phím',
-    perClef: { treble: [84, 95] },
-  },
-];
+export const OCTAVES_BY_CLEF: Record<ClefName, number[]> = {
+  treble: [4, 5, 6, 7],
+  bass: [1, 2, 3, 4],
+};
 
 export interface DrillOptions {
   hands: Hands;
-  /** Mã các vùng đang chọn. Chọn được nhiều vùng để nốt nhảy qua lại giữa chúng. */
-  rangeIds: string[];
+  /** Các quãng tám đang chọn. Chọn nhiều quãng cách xa nhau thì nốt nhảy qua lại. */
+  octaves: number[];
+  /**
+   * Chỉ lấy năm nốt Đô–Sol của mỗi quãng đã chọn.
+   *
+   * Đây là thế tay 5 ngón của Chương 1, và là mặc định cho người mới: cả bàn tay
+   * đứng yên một chỗ, không phải với. Tắt đi thì lấy trọn bảy nốt Đô–Si.
+   */
+  fiveFinger: boolean;
   /** Có đưa phím đen vào không. */
   accidentals: boolean;
 }
 
+/** Nốt cao nhất của thế tay 5 ngón, tính từ nốt Đô của quãng: Đô-Rê-Mi-Pha-Sol. */
+const FIVE_FINGER_SEMITONES = 7;
+
 export const DEFAULT_OPTIONS: DrillOptions = {
   hands: 'right',
-  rangeIds: ['the-tay-do'],
+  octaves: [4],
+  fiveFinger: true,
   accidentals: false,
 };
 
@@ -159,10 +129,10 @@ export function clefsFor(hands: Hands): ClefName[] {
   return ['treble', 'bass'];
 }
 
-/** Những vùng chọn được với tay đang chọn — vùng nào khóa đó không vẽ nổi thì ẩn. */
-export function rangesFor(hands: Hands): DrillRange[] {
-  const clefs = clefsFor(hands);
-  return DRILL_RANGES.filter((r) => clefs.some((c) => r.perClef[c]));
+/** Những quãng chọn được với tay đang chọn, thấp tới cao. */
+export function octavesFor(hands: Hands): number[] {
+  const all = clefsFor(hands).flatMap((clef) => OCTAVES_BY_CLEF[clef]);
+  return [...new Set(all)].sort((a, b) => a - b);
 }
 
 /**
@@ -180,11 +150,11 @@ export function questionsForOptions(options: DrillOptions): DrillQuestion[] {
   const out: DrillQuestion[] = [];
 
   for (const clef of clefsFor(options.hands)) {
-    for (const range of DRILL_RANGES) {
-      if (!options.rangeIds.includes(range.id)) continue;
-      const bounds = range.perClef[clef];
-      if (!bounds) continue;
-      for (let midi = bounds[0]; midi <= bounds[1]; midi++) {
+    for (const octave of [...options.octaves].sort((a, b) => a - b)) {
+      if (!OCTAVES_BY_CLEF[clef].includes(octave)) continue;
+      const first = (octave + 1) * 12;
+      const last = first + (options.fiveFinger ? FIVE_FINGER_SEMITONES : 11);
+      for (let midi = first; midi <= last; midi++) {
         if (!options.accidentals && isBlackKey(midi)) continue;
         const key = `${clef}:${midi}`;
         if (seen.has(key)) continue;
@@ -197,9 +167,32 @@ export function questionsForOptions(options: DrillOptions): DrillQuestion[] {
   return out.sort((a, b) => (a.clef === b.clef ? a.note.midi - b.note.midi : a.clef < b.clef ? 1 : -1));
 }
 
-/** Dựng đoạn ABC vẽ đúng một nốt tròn, không có số chỉ nhịp cho đỡ rối. */
-export function singleNoteAbc(note: DrillNote, clef: ClefName): string {
-  return ['X:1', 'L:1/1', 'M:none', `K:C clef=${clef}`, note.abc].join('\n');
+/**
+ * Dựng đoạn ABC vẽ đúng một nốt tròn, không có số chỉ nhịp cho đỡ rối.
+ *
+ * `grandStaff` bật thì vẽ **cả hai khuông như bản nhạc piano thật**: khóa Sol ở
+ * trên, khóa Pha ở dưới, nốt nằm ở khuông của nó còn khuông kia để trống. Đây là
+ * chế độ cho người chọn tập cả hai tay — việc đọc được nốt nằm ở khuông NÀO cũng
+ * là một phần của bài, mà vẽ mỗi một khuông thì mất hẳn phần đó.
+ *
+ * Khuông trống dùng `x` (lặng ẩn) chứ không dùng `z`: dấu lặng vẽ ra giữa khuông
+ * trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa gì.
+ */
+export function singleNoteAbc(note: DrillNote, clef: ClefName, grandStaff = false): string {
+  if (!grandStaff) {
+    return ['X:1', 'L:1/1', 'M:none', `K:C clef=${clef}`, note.abc].join('\n');
+  }
+  return [
+    'X:1',
+    'L:1/1',
+    'M:none',
+    '%%staves {1 2}',
+    'K:C',
+    'V:1 clef=treble',
+    clef === 'treble' ? note.abc : 'x',
+    'V:2 clef=bass',
+    clef === 'bass' ? note.abc : 'x',
+  ].join('\n');
 }
 
 /**
