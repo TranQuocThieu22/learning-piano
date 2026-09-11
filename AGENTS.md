@@ -92,6 +92,7 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/lo-trinh-phat-trien.md`
 - `docs/_internal/du-phong-7-nam.md`
 - `docs/_internal/bien-moi-truong.md`
+- `docs/_internal/ban-quyen-bai-hat.md`
 - `docs/_internal/bay-ky-thuat.md`
 - `docs/_internal/ke-hoach-beta.md`
 - `docs/_internal/quy-trinh-lam-viec.md`

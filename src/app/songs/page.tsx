@@ -66,8 +66,9 @@ export default function SongsPage() {
         >
           <Text size="sm">
             Những bài ở đây đều đã hết hạn bảo hộ bản quyền nên ai cũng được phép soạn lại và
-            chia sẻ. Các bài mới hơn vẫn còn bản quyền — muốn đưa vào thì phải mua giấy phép
-            của tác giả trước, và đó là việc đang cân nhắc.
+            chia sẻ. Các bài mới hơn vẫn còn bản quyền — muốn đưa vào thì phải xin phép tác
+            giả trước, và đó là việc đang làm. Bạn có bài muốn được học thì cứ nhắn, nó giúp
+            chọn đúng bài để đi xin phép.
           </Text>
         </Alert>
       </Container>

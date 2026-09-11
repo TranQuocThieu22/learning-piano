@@ -22,6 +22,10 @@ import { getAllMarkdownFiles, type MarkdownFile } from './markdown';
  *
  * **Muốn thêm một bài đang thịnh hành thì phải mua giấy phép trước, rồi ghi số
  * giấy phép vào `nguon`.** Đừng thêm bài mới mà bỏ trống trường đó.
+ *
+ * Cách xin phép — hỏi ai, thư mẫu, chi phí — ghi ở
+ * `docs/_internal/ban-quyen-bai-hat.md`. Chỗ dễ sai nhất: quyền in ấn thường
+ * KHÔNG nằm ở tổ chức quản lý tập thể mà ở tác giả hoặc nhà xuất bản.
  */
 
 export const SONGS_CATEGORY = '08-bai-hat';

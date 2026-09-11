@@ -156,6 +156,7 @@ Tăng giá là công cụ marketing hợp lệ **miễn là tăng thật**.
 - **Đăng ký kinh doanh và thuế** — doanh thu bán hàng online là thu nhập chịu thuế, kể cả khi nhận qua chuyển khoản thủ công.
 - **Điều khoản sử dụng** nêu rõ tài khoản dùng cho cá nhân, không chia sẻ.
 - Giai đoạn đầu có thể thu tiền bằng **QR chuyển khoản + mở khóa thủ công**, nhưng phải có quy trình xử lý khi khách chuyển tiền mà chưa được mở khóa.
+- **Bản quyền bài hát.** Mọi bản nhạc trong sản phẩm phải là nhạc đã hết hạn bảo hộ, hoặc có giấy phép. Soạn lại một bài còn bản quyền thành bản nhạc piano rồi đăng trong sản phẩm có bán là đụng **quyền sao chép** và **quyền làm tác phẩm phái sinh** (Điều 20 Luật Sở hữu trí tuệ) — ai chép ra, người hay AI, không liên quan; và ghi tên tác giả là *nghĩa vụ*, không phải *giấy phép*. Cách xin phép, thư hỏi mẫu và chi phí: [`ban-quyen-bai-hat.md`](ban-quyen-bai-hat.md).
 
 ## 8. Chỉ số quyết định — đo trước khi tính doanh thu
 
@@ -204,6 +205,7 @@ Chỉ nên bắt đầu thu tiền sau bước 1 và 2.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs(internal): Hướng dẫn xin phép bản quyền bài hát` | Thêm nghĩa vụ bản quyền bài hát vào mục 7 và trỏ sang tài liệu hướng dẫn xin phép — trước đó ràng buộc này chỉ nằm rải rác trong mã và nhật ký quyết định, không ai đọc tài liệu kinh doanh mà thấy |
 | 10/09/2026 | `docs(internal): Thêm nhánh quốc tế vào dự phóng 7 năm` | Trỏ sang mục 6 mới của `du-phong-7-nam.md`, đặt ngay ở đầu file thay vì để người đọc bảng giá mục 4 tự đoán — vì mục 4 hiện chỉ có giá VND và đó chính là chỗ chặn khách ở nước ngoài |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang `du-phong-7-nam.md`; đánh dấu bất đồng **chưa chốt** về thứ tự ưu tiên video quay tay ở mục 9 |
 | 26/08/2026 | `docs(internal): Thêm lộ trình phát triển và mô hình doanh thu` | Thêm dòng "Tài liệu đi kèm" trỏ sang `lo-trinh-phat-trien.md` |
