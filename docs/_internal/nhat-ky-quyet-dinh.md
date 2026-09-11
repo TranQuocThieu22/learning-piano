@@ -151,6 +151,51 @@ Sửa lỗi đăng nhập trên điện thoại. Tắt `learning-piano.vercel.ap
 Cân nhắc `piano` với `pianojourney` cho tên miền con, chọn `pianojourney` vì `piano` đứng
 một mình quá ngắn và không nói lên tên dự án.
 
+### 10–11/09 — sửa chế độ tập trung, dựng lại điều hướng, thêm nhạc nền
+
+Hai ngày làm gọn về một hướng: **app dùng được bằng một tay trên điện thoại**. Bắt đầu
+từ một lỗi người dùng báo, kết thúc ở chỗ bỏ hẳn hai lớp khung giao diện.
+
+**Chế độ tập trung không thoát ra được** (`fix: Bấm được nút Thoát của chế độ tập trung`).
+Hiệu ứng nhấc khối mã lên khi rê chuột đặt `transform`, mà `transform` khác `none` tạo
+khối chứa cho con dùng `position: fixed` — lớp phủ neo vào khối mã thay vì khung nhìn, nút
+*Thoát* trôi ra ngoài màn hình. Cùng họ với bẫy `backdrop-filter` đã sửa hôm trước, nên
+ghi thành bẫy 16. Ngay sau đó là lỗi thứ hai của cùng chế độ đó
+(`fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung`): con của flexbox bị
+bóp nên `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt — bẫy 17.
+
+**Ẩn thanh trạng thái** (`feat: Ẩn thanh trạng thái khi mở app từ màn hình chính`, rồi
+`refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình`). Hai lớp: manifest khai
+`display: 'fullscreen'`, và Fullscreen API gọi ở cú chạm đầu tiên để phủ nốt máy đã cài
+app từ trước. Lớp manifest chỉ ăn với máy **cài lại**, chỗ này dễ tưởng là không chạy.
+
+**Dựng lại điều hướng** — ba bước, mỗi bước do người dùng chốt sau khi xem bản trước:
+
+1. `feat: Thêm màn hình chủ, thanh tab và bản đồ chặng cho điện thoại` — `/` không còn
+   chuyển hướng, thêm `/exercises` và nút *Bài trước / Bài tiếp theo* cuối mỗi bài.
+2. `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` — bỏ thanh bên và nút
+   hamburger, mục lục dời sang `/library` và `/exercises`. Trừ 270 dòng.
+3. `refactor: Bỏ nốt thanh tiêu đề` — còn đúng một thanh cố định là thanh tab dưới đáy.
+
+Điều kiện để bỏ được thanh bên: **mục lục phải có nhà mới trước**. Bỏ trước thì tám chương
+lý thuyết mất đường tới.
+
+**Nhạc nền** (`feat: Thêm nhạc nền tự sinh, mặc định tắt` → `feat: Nhạc nền vui hơn, mặc
+định bật, chỉ tắt khi có tiếng khác` → `fix: Nhạc nền chạy liền mạch khi chuyển trang`).
+Tự sinh bằng Web Audio thay vì tải nhạc về — lý do bản quyền đứng trước lý do kỹ thuật,
+xem bảng mục 1. Bản đầu êm kiểu thiền, người dùng thấy ru ngủ nên đổi sang vòng I–V–vi–IV
+có rải nốt. Mặc định chuyển từ tắt sang bật theo yêu cầu, và luật tắt chuyển từ
+theo-đường-dẫn sang **theo sự kiện** để đọc lý thuyết vẫn có nhạc.
+
+Lần sửa cuối lòi ra một lỗi đang chạy trên production: **hai bộ phát cùng kêu**, lệnh tắt
+chỉ tắt được một — bẫy 18. Đáng nhớ ở chỗ mã nhìn đâu cũng đúng, và phép đo đầu tiên còn
+báo "đã im" vì máy đo bám nhầm bộ nén của bộ phát đã tắt.
+
+**Cách làm việc hai ngày này:** mọi thay đổi giao diện đều mở trình duyệt thật đo lại
+(Playwright ở 390x780 và 1280x800), mọi thay đổi âm thanh đều gắn máy phân tích vào chuỗi
+Web Audio rồi đọc số. Ba lần suýt kết luận sai chỉ vì phép đo — đo sai còn tệ hơn không đo,
+vì nó cho một con số trông như bằng chứng.
+
 ---
 
 ## 3. Còn treo
@@ -164,6 +209,12 @@ Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. 
 - **Video kỹ thuật ngắn** (form tay, luồn ngón, legato) — đã chốt là cần, chưa quay.
 - **Web MIDI mở rộng ra ngoài bài luyện nhận nốt** — hướng đã chốt, chưa làm.
 - **Giai đoạn 3 và 4** là sản phẩm riêng, chỉ quảng bá khi đã soạn xong.
+- **Năm tab ở màn hình hẹp** — 390px chia năm là 78px mỗi ô. Chưa thử trên máy cỡ chữ hệ
+  thống to; chữ tràn thì rút còn bốn tab hoặc bỏ chữ chỉ giữ biểu tượng.
+- **Nhạc nền chưa có ai nghe thử ngoài máy đo.** Các số để chỉnh nằm ở đầu
+  `ambient-engine.ts`: tốc độ 100 nhịp/phút, lọc 3000Hz, trần âm lượng 0,22.
+- **Manifest `fullscreen` chỉ ăn với máy cài lại app.** Máy đang cài từ trước vẫn chạy
+  `standalone`, và chỉ vào toàn màn hình nhờ lớp Fullscreen API ở cú chạm đầu.
 
 ---
 
@@ -189,6 +240,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs(internal): Ghi nhật ký làm việc 10-11/09` | Ghi lại hai ngày sửa chế độ tập trung, dựng lại điều hướng và thêm nhạc nền, kèm ba việc còn treo sau đợt này — để phiên sau mở ra là biết đang đứng ở đâu |
 | 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Sửa lại dòng quyết định nhạc nền cho khớp thực tế: mặc định bật và tắt theo sự kiện, kèm lý do vì sao việc này không phá ràng buộc "người học tự quyết" của phần tập |
 | 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Chốt cách làm nhạc nền và lý do bản quyền đứng trước lý do kỹ thuật |
 | 10/09/2026 | `refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình` | Chốt bỏ thanh tiêu đề và ghi chỗ ở mới của đăng nhập/đổi nền; bổ sung vào dòng `fullscreen` lý do phải có lớp Fullscreen API thứ hai |
