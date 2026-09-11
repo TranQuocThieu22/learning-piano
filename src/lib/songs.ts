@@ -1,4 +1,4 @@
-import { getAllMarkdownFiles, type MarkdownFile } from './markdown';
+import { getAllMarkdownFiles, getMarkdownContent, type MarkdownFile } from './markdown';
 
 /**
  * **Góc bài hát**: chỗ người học thử đánh những bài quen tai, ngoài giáo trình.
@@ -30,6 +30,16 @@ import { getAllMarkdownFiles, type MarkdownFile } from './markdown';
 
 export const SONGS_CATEGORY = '08-bai-hat';
 
+/**
+ * Mỗi bài có hai bản, và tiêu đề mục là thứ duy nhất nhận ra chúng.
+ *
+ * Vì sao không khai ở đầu file như `capDo`: khai tay thì khai được cả khi bản
+ * nhạc không tồn tại. Đọc thẳng tiêu đề mục thì thứ hiện ra cho người học và
+ * thứ mã tin là một.
+ */
+export const HEADING_CO_BAN = '## Bản cơ bản';
+export const HEADING_NANG_CAO = '## Bản nâng cao';
+
 export interface Song {
   slug: string;
   title: string;
@@ -40,6 +50,10 @@ export interface Song {
   sauChuong: number | null;
   /** Xuất xứ và tình trạng bản quyền. Luôn hiện ra cho người học đọc. */
   nguon: string | null;
+  /** File có mục "Bản nâng cao" — bản hai tay, đầy đủ hơn. */
+  coNangCao: boolean;
+  /** Đường dẫn file, để đọc lại nội dung khi cần kiểm bản nhạc. */
+  filePath: string;
 }
 
 /** Nhãn ngắn cho từng cấp độ, để người học liếc là biết bài nào thử được. */
@@ -63,7 +77,25 @@ function toSong(file: MarkdownFile): Song {
     capDo: typeof file.meta.capDo === 'number' ? file.meta.capDo : 99,
     sauChuong: typeof file.meta.sauChuong === 'number' ? file.meta.sauChuong : null,
     nguon: typeof file.meta.nguon === 'string' ? file.meta.nguon : null,
+    coNangCao: (getMarkdownContent(file.filePath) ?? '').includes(HEADING_NANG_CAO),
+    filePath: file.filePath,
   };
+}
+
+/**
+ * Các khối ```abc trong một file bài hát, theo đúng thứ tự xuất hiện.
+ *
+ * Để test gác được nội dung bản nhạc: đây là **nhạc viết tay**, không có trình
+ * soạn nhạc nào kiểm hộ. Một ô nhịp thiếu phách hay một dấu hoá quên ghi lại thì
+ * bản nhạc vẫn hiện ra bình thường và chỉ sai lúc phát tiếng — xem bẫy 25.
+ */
+export function getSongSheets(song: Song): string[] {
+  return [...getSongContent(song).matchAll(/```abc\n([\s\S]*?)```/g)].map((m) => m[1]);
+}
+
+/** Nội dung bài hát đúng như người học đọc được — đã cắt phần khai báo đầu file. */
+export function getSongContent(song: Song): string {
+  return getMarkdownContent(song.filePath) ?? '';
 }
 
 /** Mọi bài hát, dễ trước khó sau; cùng cấp độ thì theo tên file cho ổn định. */

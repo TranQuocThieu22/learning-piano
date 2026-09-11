@@ -102,6 +102,21 @@
     khai là cho nhạc nền quán xá và karaoke, suy từ đó ra là suy sai. Trang `/songs` sửa
     lời cho khớp ("đang cân nhắc" → "đang làm") và mời người học nhắn bài họ muốn, để biết
     nên đi xin bài nào trước.
+  - **Sửa một nốt sai đã chạy trên production của Für Elise.** Người dùng báo bài này
+    "sai nốt". Nguyên nhân là luật ký âm chứ không phải gõ nhầm: dấu thăng có hiệu lực tới
+    hết ô nhịp, nên `^d` ở đầu ô làm nốt `d` ở cuối ô cũng thành Rê thăng. Bản nhạc vẽ ra
+    nhìn hoàn toàn bình thường — sai chỉ nghe thấy chứ không nhìn thấy. Ghi thành **bẫy
+    25**.
+  - **Mỗi bài trong Góc bài hát nay có hai bản: cơ bản và nâng cao.** Bản nâng cao hai
+    tay, đầy đủ hơn, và mỗi bài thêm một thứ khác nhau: Jingle Bells trọn điệp khúc mười
+    sáu ô với tay trái kiểu hành khúc; Khúc hoan ca thêm hợp âm tay trái; Canon giãn thành
+    tám ô rải nốt liên tục; Chúc mừng sinh nhật thêm đệm valse; Für Elise đi hết đoạn A với
+    nền rải hợp âm; Minuet trả lại **đúng tiết tấu gốc** — bài gốc không có nhịp lấy đà,
+    nốt Rê đầu tiên rơi thẳng vào phách mạnh chứ không dẫn vào như bản rút gọn đang ghi.
+  - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
+    nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
+    được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca
+    mới đều đỏ đúng chỗ.
   - **Bịt thêm hai lỗ nữa của nhạc nền** sau khi người dùng báo lỗi cũ vẫn còn. Cả hai đọc
     ra được từ mã và độc lập với cuộc đua ở bẫy 23: `{ once: true }` chỉ gỡ đúng listener
     vừa bắn nên listener anh em sống tới hết phiên, và lúc cử chỉ tới thì không ai hỏi lại
@@ -182,6 +197,12 @@
   định và trường độ từng ô nhịp khớp, nhưng không nghe được để biết giai điệu có đúng bài
   gốc không. Hai chỗ đáng ngờ nhất: Minuet ô nhịp thứ 3 (tiết tấu do Claude tự chọn) và
   vòng hoà thanh của Canon.
+- **Đánh thử nốt sáu bản nâng cao vừa thêm** — giờ là mười hai bản nhạc chứ không phải
+  sáu. Ba chỗ Claude soạn chứ không chép nên đáng ngờ nhất: phần đệm valse của Chúc mừng
+  sinh nhật, hình rải nốt của Canon, và **tay trái Für Elise đã bị làm phẳng tiết tấu** —
+  bản gốc không chia đều ba nốt mỗi ô như đang ghi. Tiết tấu gốc của Minuet thì ngược lại:
+  đó là chỗ Claude *sửa cho đúng*, nên nếu nghe lạ tai so với bản cũ thì là đúng ý, không
+  phải lỗi.
 - **Tick thử vài bước trên Đường đi** xem con số nhảy đúng ở cả ba chỗ (trang chương,
   `/path`, màn hình chủ). Máy dựng bản không có database nên luồng này chưa chạy được lần
   nào.

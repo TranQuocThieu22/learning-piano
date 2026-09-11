@@ -844,6 +844,45 @@ sau).
 
 ---
 
+## 25. Dấu hoá trong ABC sống tới hết ô nhịp, nên bản nhạc nhìn đúng mà phát sai một nốt
+
+**Triệu chứng.** Người học báo bản nhạc Für Elise "sai nốt". Nhìn vào bản nhạc thì không
+thấy gì lạ: đúng chín nốt, đúng hình nốt, đúng chỗ. Đối chiếu từng chữ trong khối ABC với
+giai điệu thật cũng khớp — `e ^d e B d c` đúng là Mi, Rê thăng, Mi, Si, Rê, Đô.
+
+**Nguyên nhân.** Luật ký âm — và abcjs làm đúng luật: **một dấu hoá có hiệu lực tới hết ô
+nhịp**, cho mọi nốt cùng tên trong cùng quãng tám. Viết `^d` ở đầu ô rồi viết `d` ở cuối ô
+là được **hai nốt Rê thăng**, không phải một thăng một thường. Người gõ đọc dòng đó theo
+kiểu "mỗi chữ một nốt" nên không thấy, mà bản nhạc vẽ ra cũng không có dấu gì ở nốt sau —
+đúng như luật, vì dấu đã ghi ở đầu ô rồi.
+
+Muốn nốt Rê thường thì phải ghi **dấu bình**: `=d`.
+
+**Cách nhận ra.** Đừng nghe bằng tai, hãy bắt abcjs nói ra nó định phát nốt nào:
+
+```js
+const html = abcjs.synth.getMidiFile(abc, { midiOutputType: 'json' })[0];
+// note-on nằm trong chuỗi đã mã hoá phần trăm: %9<kênh>%<cao độ>%<lực>
+const notes = [...html.matchAll(/%9[0-9a-f]%([0-9a-f]{2})/g)].map((m) => parseInt(m[1], 16));
+```
+
+Số MIDI 75 là Rê thăng, 74 là Rê. Đây là cách duy nhất kiểm được **cao độ thật sự phát
+ra**, khác hẳn việc đọc lại chuỗi ABC bằng mắt.
+
+**Cách sửa.** Ghi `=d`. Và để không giẫm lại, `songs.test.ts` có ca gác quét mọi ô nhịp
+của mọi bản nhạc: nốt nào ăn theo dấu hoá của nốt trước trong cùng ô mà không tự ghi dấu
+thì đỏ. Cùng file còn một ca cộng trường độ từng ô nhịp, vì ô thiếu phách cũng là lỗi nhìn
+không ra.
+
+**Bài học chung.** Bản nhạc trong `docs/08-bai-hat/` là **nhạc viết tay**: không có trình
+soạn nhạc nào kiểm hộ, và sai ở đây không làm trang đỏ, không làm build đỏ, không làm test
+nào khác trượt — nó chỉ phát sai, rồi người học đánh theo và tưởng tai mình có vấn đề. Mọi
+thứ máy kiểm được (số phách, dấu hoá, khoá nhạc, khai nguồn bản quyền) phải có test gác;
+thứ máy không kiểm được — giai điệu có đúng bài gốc không — thì phải có người đánh lên
+nghe, và nói thẳng ra là chưa ai nghe.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -852,6 +891,7 @@ sau).
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Sửa nốt sai của Für Elise và thêm bản nâng cao hai tay cho mọi bài hát` | Thêm bẫy 25 — dấu hoá trong ABC có hiệu lực tới hết ô nhịp nên nốt Rê của Für Elise phát ra Rê thăng trong khi bản nhạc nhìn vẫn đúng; ghi kèm cách đọc cao độ thật bằng `getMidiFile` thay vì đọc lại chuỗi ABC bằng mắt, và vì sao nhạc viết tay cần test gác riêng |
 | 11/09/2026 | `docs(internal): Ghi nhật ký phiên tối 11/09 và bẫy 24` | Thêm bẫy 24 — `{ once: true }` chỉ gỡ listener vừa bắn nên cái anh em sống tới hết phiên và bật nhạc nền lúc phải im; ghi kèm chuyện phải hỏi lại điều kiện lúc bắn chứ không phải lúc gắn, và vì sao lỗi này không tái hiện được bằng trình duyệt chạy tự động |
 | 11/09/2026 | `fix: Nhạc nền không kêu chồng lên bản nhạc mẫu nữa` | Thêm bẫy 23 — `pointerdown` bắn trước `click` nên lệnh bật nhạc nền chạy trước lệnh dừng, rồi về đích sau khi `resume()` xong; kèm cách dựng AudioContext giả để tái hiện cuộc đua và lời nhắc phải gỡ bản sửa ra thử lại |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm bẫy 22 — `component={Link}` của Mantine trong Server Component làm trang 500 mà cả năm lệnh kiểm vẫn xanh, vì trang dựng theo từng lượt xem nên `next build` không chạm tới; kèm cách kiểm bằng `next start` + `curl` từng đường dẫn |

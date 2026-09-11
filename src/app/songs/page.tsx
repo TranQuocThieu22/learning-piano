@@ -43,6 +43,16 @@ export default function SongsPage() {
                     {capDoLabel(song.capDo)}
                     {song.sauChuong !== null && ` · hợp sau Chương ${song.sauChuong}`}
                   </Text>
+                  {/*
+                    Nói ngay ở danh sách rằng bài nào có bản hai tay: người đã
+                    đánh được bản cơ bản cần biết còn chỗ để đi tiếp, chứ không
+                    phải mở từng bài ra xem.
+                  */}
+                  {song.coNangCao && (
+                    <Text size="xs" c="grape" mt={2}>
+                      Có bản nâng cao hai tay
+                    </Text>
+                  )}
                 </div>
                 <Badge variant="light" color="grape" style={{ flexShrink: 0 }}>
                   Cấp {song.capDo}
