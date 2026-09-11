@@ -61,6 +61,16 @@ export class AmbientEngine {
   private nextBarTime = 0;
   private barIndex = 0;
   private volume: number;
+  /**
+   * Đã dẹp hẳn chưa. Dẹp rồi thì `start()` phải câm lặng từ chối.
+   *
+   * Thiếu cờ này là sinh ra bộ phát mồ côi: `start()` thấy `this.ctx` null liền
+   * dựng một bối cảnh âm thanh MỚI và kêu tiếp, trong khi component đã trỏ sang
+   * bộ phát khác — `stop()` từ đó về sau chỉ tắt được bộ mới, còn bộ mồ côi kêu
+   * mãi không ai tắt nổi. Xem chú thích ở `AmbientMusic.tsx` để biết đường nào
+   * dẫn tới đó.
+   */
+  private disposed = false;
   /** Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt. */
   private voices: { osc: OscillatorNode[]; gain: GainNode }[] = [];
 
@@ -78,6 +88,7 @@ export class AmbientEngine {
    * dùng, vì trình duyệt chỉ cho phát tiếng trong cử chỉ thật.
    */
   async start(): Promise<boolean> {
+    if (this.disposed) return false;
     if (this.running) return true;
 
     const Ctor: typeof AudioContext | undefined =
@@ -167,6 +178,7 @@ export class AmbientEngine {
    * trang, nên thứ tạo ngoài React vẫn sống nguyên sau khi component biến mất.
    */
   dispose(): void {
+    this.disposed = true;
     this.stop();
     const ctx = this.ctx;
     this.ctx = null;

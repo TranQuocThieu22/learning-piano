@@ -428,8 +428,6 @@ Bản nhạc nằm sâu trong hai lớp đều dính:
 
 | Tổ tiên | Thuộc tính | Bật lúc nào |
 |---|---|---|
-| 10/09/2026 | `fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung` | Thêm bẫy 17 — con của flexbox bị bóp làm `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt; kèm chuyện `style` nội tuyến làm luật padding chừa tai thỏ chưa từng chạy |
-| 10/09/2026 | `fix: Bấm được nút Thoát của chế độ tập trung` | Thêm bẫy 16 — `transform`/`backdrop-filter` ở tổ tiên kéo lớp phủ `position: fixed` ra khỏi khung nhìn, làm chế độ tập trung không thoát được; ghi rõ vì sao triệu chứng chập chờn và cách đo bằng `getBoundingClientRect` thay vì `getComputedStyle` |
 | `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
 | `.markdown-pre-wrapper` | `transform: translateY(-2px)` | khi rê chuột vào khối |
 
@@ -532,6 +530,56 @@ thì việc đầu tiên là tìm xem có `style` nội tuyến nào không.
 
 ---
 
+## 18. Bộ phát tiếng mồ côi: bấm tắt mà vẫn kêu
+
+**Triệu chứng.** Nhạc nền phải im khi người học bấm nghe bản nhạc mẫu, nhưng nó cứ
+kêu chồng lên. Đọc mã thì thấy đường nào cũng đúng: sự kiện có bắn, component có
+vẽ lại, `stop()` có chạy. Đo bằng máy phân tích âm thanh lại thấy tiếng vẫn còn
+nguyên mức, không hề giảm.
+
+**Nguyên nhân.** Có **hai bộ phát** cùng kêu, và `stop()` chỉ tắt được một.
+
+Đường dẫn tới đó, gặp ở `AmbientMusic.tsx`:
+
+1. React ở **chế độ Strict** gắn component, chạy effect, **gỡ ngay**, rồi gắn lại.
+   Bộ phát A dựng ở lần gắn thứ nhất bị `dispose()`.
+2. Nhưng `start()` của A là bất đồng bộ và đã trả về "chưa kêu được" (trình duyệt
+   chưa cho phát tiếng vì chưa có thao tác người dùng), nên nó **gắn một trình
+   nghe `pointerdown`** để thử lại sau.
+3. Người học chạm màn hình. Trình nghe ấy gọi `A.start()`. Lúc này `A.ctx` đã là
+   null, mà `start()` lại có nhánh "chưa có bối cảnh thì dựng mới" — thế là A
+   **sống lại** với một `AudioContext` mới toanh.
+4. Component thì đang trỏ vào bộ phát B. Từ đó về sau, mọi lệnh `stop()` chỉ tắt
+   B. A kêu mãi, không nút nào trên giao diện với tới được.
+
+Chế độ Strict chỉ làm lỗi này **lộ ra sớm**, không phải nguyên nhân gốc: bất cứ
+lần gỡ-gắn nào (điều hướng, đổi khoá của component) cũng dựng được cùng kịch bản
+trên production.
+
+**Vì sao khó lần.** Máy đo gắn vào bộ nén của bộ phát sẽ bám vào **bộ cuối cùng
+được dựng**, tức bộ B đã tắt — đo ra 0 và tưởng mọi thứ đúng, trong khi tai vẫn
+nghe tiếng của A. Muốn đo đúng thì phải chọn bộ nén theo dấu riêng, ví dụ
+`comp.threshold.value === -20`, và lấy mẫu **trải theo thời gian**.
+
+**Cách sửa.** Hai chốt, thiếu cái nào cũng hở:
+
+```ts
+// 1. Dẹp rồi thì từ chối sống lại.
+private disposed = false;
+async start() { if (this.disposed) return false; /* … */ }
+dispose() { this.disposed = true; /* … */ }
+
+// 2. Lúc cú chạm tới, kiểm xem bộ phát trong closure còn là bộ đang dùng không.
+const thu = () => { if (engineRef.current === engine) void engine.start(); };
+```
+
+**Bài học chung.** Bất cứ chỗ nào có `await` rồi mới đụng lại `this`, hoặc có
+trình nghe sự kiện gắn trong một lời hứa, đều phải hỏi lại: *tới lúc đoạn mã này
+chạy, thứ tôi đang cầm còn là thứ đang được dùng không?* Cùng họ với bẫy 15 —
+thứ tạo ngoài React không tự chết theo component.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -540,6 +588,9 @@ thì việc đầu tiên là tìm xem có `style` nội tuyến nào không.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Thêm bẫy 18 — bộ phát tiếng mồ côi sống lại sau `dispose()` nên `stop()` chỉ tắt được một nửa; ghi cả cách đo đúng vì máy đo bám nhầm bộ nén thì ra số 0 đánh lừa |
+| 10/09/2026 | `fix: Cuộn tới cuối và luôn thấy nút Thoát trong chế độ tập trung` | Thêm bẫy 17 — con của flexbox bị bóp làm `scrollHeight` nói dối, cuộn hết cỡ vẫn không thấy phần bị cắt; kèm chuyện `style` nội tuyến làm luật padding chừa tai thỏ chưa từng chạy |
+| 10/09/2026 | `fix: Bấm được nút Thoát của chế độ tập trung` | Thêm bẫy 16 — `transform`/`backdrop-filter` ở tổ tiên kéo lớp phủ `position: fixed` ra khỏi khung nhìn, làm chế độ tập trung không thoát được; ghi rõ vì sao triệu chứng chập chờn và cách đo bằng `getBoundingClientRect` thay vì `getComputedStyle` |
 | 10/09/2026 | `refactor: Bỏ AppShell, thay bằng thanh tab và trang mục lục` | Đánh dấu bẫy 9 đã hết hiệu lực (AppShell bị bỏ) nhưng giữ nguyên nội dung, phòng khi dựng lại thanh bên cho màn hình rộng |
 | 10/09/2026 | `fix: Dừng hẳn tiếng đàn khi rời trang đang phát` | Thêm bẫy 15 — thứ tạo ngoài React (bộ phát tiếng, đồng hồ, thiết bị) vẫn sống sau khi component bị gỡ, vì điều hướng Next.js không tải lại trang; ghi rõ `pause()` không đủ mà phải `destroy()`, và kèm cách kiểm bằng máy đếm gắn vào Web Audio thay vì nghe bằng tai |
 | 01/09/2026 | `docs(internal): Ghi lại bẫy nhánh dev biến mất trên Neon` | Nhánh dev bị xoá nhưng lỗi lại hiện ra là sai mật khẩu, dẫn người ta đi dò nhầm hướng; ghi cả cách nhận ra nhanh bằng cột Branches |

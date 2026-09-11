@@ -156,6 +156,10 @@ mà tắt đúng lúc có tiếng khác cất lên: bấm nghe bản nhạc mẫ
 (`src/lib/ambient-hold.ts` đếm số nguồn tiếng đang giữ). Riêng `/metronome` và
 `/note-trainer` thì tắt theo trang, vì cả hai sinh ra để phát tiếng.
 
+Chuyển trang **không** làm nhạc đứt hay quay về đầu bài: bộ phát sống ở layout gốc, và
+effect điều khiển nó chỉ động vào khi trạng thái mong muốn đổi, chứ không phải mỗi lần
+đổi đường dẫn.
+
 **Tính năng đáng chú ý:**
 
 - **Phát nhạc mẫu:** mọi khối ABC trong bài đều bấm nghe được, đúng nhịp và tốc độ ghi
@@ -289,6 +293,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Chuyển trang không còn dừng rồi bật lại nhạc từ đầu vòng hợp âm; kèm chỗ sửa bộ phát mồ côi khiến lệnh tắt chỉ tắt được một nửa |
 | 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Nhạc nền đổi từ nền ngân kiểu thiền sang vòng I–V–vi–IV có rải nốt, vì bản cũ ru ngủ chứ không tạo hứng; mặc định bật theo yêu cầu chủ sản phẩm, và chuyển luật tắt từ theo-đường-dẫn sang theo-sự-kiện để đọc lý thuyết vẫn còn nhạc |
 | 10/09/2026 | `feat: Thêm nhạc nền tự sinh, mặc định tắt` | Nhạc nền dựng bằng Web Audio thay vì tải tệp về, vì sản phẩm có bán nên nhạc "miễn phí" trên mạng là rủi ro bản quyền thật; ghi rõ luật tự tắt ở trang có tiếng khác |
 | 10/09/2026 | `refactor: Bỏ nốt thanh tiêu đề, app chạy toàn màn hình` | Bỏ thanh cố định cuối cùng ở trên đỉnh và ghi lại hai lớp làm nên chế độ toàn màn hình, vì lớp manifest chỉ ăn khi cài lại app nên dễ tưởng là không chạy |

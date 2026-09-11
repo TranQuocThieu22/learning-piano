@@ -23,10 +23,33 @@
 
 export const AMBIENT_HOLD_EVENT = 'pj-ambient-hold';
 
-let dangGiu = 0;
+/**
+ * Bộ đếm nằm trên `window`, KHÔNG ở phạm vi module — và đây là chỗ đã sập một lần.
+ *
+ * Bộ phát nhạc nền sống ở `src/app/layout.tsx`, còn nơi giữ chỗ (`AbcjsViewer`)
+ * nằm trong trang. Với App Router, layout gốc và trang là hai nhánh client khác
+ * nhau, nên cùng một file `.ts` có thể được nạp thành HAI bản sao, mỗi bên một
+ * biến đếm riêng. Triệu chứng đánh lừa: sự kiện vẫn bắn đều (đo được), bên nghe
+ * vẫn chạy, nhưng `ambientHeld()` của nó đọc bản sao chưa ai tăng nên luôn trả
+ * về `false` — nhạc nền cứ thế kêu chồng lên bản nhạc mẫu.
+ *
+ * `window` thì chỉ có một, dù module bị nhân ra bao nhiêu bản. Ở môi trường không
+ * có DOM (vitest chạy ở `environment: 'node'`) thì lùi về một đối tượng cục bộ,
+ * chỉ để phần đếm kiểm thử được.
+ */
+interface HoldStore {
+  n: number;
+}
+
+const duPhong: HoldStore = { n: 0 };
+
+function kho(): HoldStore {
+  if (typeof window === 'undefined') return duPhong;
+  const w = window as unknown as { __pjAmbientHolds?: HoldStore };
+  return (w.__pjAmbientHolds ??= { n: 0 });
+}
 
 function baoTin(): void {
-  // Chạy được cả ở môi trường không có DOM (vitest), để phần đếm kiểm thử được.
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new Event(AMBIENT_HOLD_EVENT));
   }
@@ -38,24 +61,25 @@ function baoTin(): void {
  * nền không bao giờ kêu lại nữa.
  */
 export function holdAmbient(): () => void {
-  dangGiu += 1;
+  kho().n += 1;
   baoTin();
 
   let daNha = false;
   return () => {
     if (daNha) return;
     daNha = true;
-    dangGiu = Math.max(0, dangGiu - 1);
+    const k = kho();
+    k.n = Math.max(0, k.n - 1);
     baoTin();
   };
 }
 
 /** Có nguồn tiếng nào đang giữ không? */
 export function ambientHeld(): boolean {
-  return dangGiu > 0;
+  return kho().n > 0;
 }
 
 /** Chỉ dùng trong test, để mỗi ca bắt đầu từ trạng thái sạch. */
 export function resetAmbientHoldsForTest(): void {
-  dangGiu = 0;
+  kho().n = 0;
 }
