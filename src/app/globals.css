@@ -1230,3 +1230,31 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 .tab-bar__item[data-active] .tab-bar__label {
   font-weight: 700;
 }
+
+/*
+ * Nút chọn bài nhạc nền trong thẻ ở màn hình chủ (`AmbientControl.tsx`).
+ *
+ * Cao tối thiểu 44px và xếp dọc: lúc chỉnh nhạc thì máy đang nằm trên giá nhạc,
+ * tay vừa rời phím đàn, nên phải bấm trúng ngay từ lần đầu. Xếp ngang ba ô trên
+ * máy 360px thì mỗi ô chưa tới 110px, không đủ cho cả tên bài lẫn dòng tả.
+ */
+.ambient-piece {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--mantine-color-default-border);
+  background: transparent;
+  transition: background-color 140ms ease, border-color 140ms ease;
+}
+
+.ambient-piece:active {
+  transform: scale(0.99);
+}
+
+/* Bài đang chọn: viền và nền theo màu thương hiệu, đủ rõ để liếc là thấy. */
+.ambient-piece[data-selected] {
+  border-color: var(--mantine-color-violet-5);
+  background: var(--mantine-color-violet-light);
+}

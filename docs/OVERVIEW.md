@@ -147,7 +147,11 @@ lần chạm đầu tiên để phủ nốt hai trường hợp còn lại — m
 từ trước vẫn đang chạy ở `standalone`. Chỉ áp cho màn hình hẹp; máy tính không tự bung.
 
 **Nhạc nền.** Tự sinh bằng Web Audio ngay trên máy người học, không tải tệp nhạc nào và
-không dính bản quyền của ai — xem `src/lib/ambient.ts`. Vòng I–V–vi–IV ở Đô trưởng, 100
+không dính bản quyền của ai — xem `src/lib/ambient.ts`. **Ba bài để chọn** (Nắng sớm,
+Chiều êm, Bước nhẹ), khác nhau ở vòng hợp âm, tốc độ, mật độ nốt và tầm cao thấp — nhưng
+cả ba đều ở **Đô trưởng**, vì Chương 1 dạy đúng năm nốt Đô-Rê-Mi-Pha-Sol và nhạc nền lạc
+giọng sẽ nghịch tai với chính thứ người học đang bấm. Bài mặc định là Nắng sớm: vòng
+I–V–vi–IV ở Đô trưởng, 100
 nhịp/phút, tiếng gảy ngắn kiểu hộp nhạc; cố ý vui để người học thấy hứng ngồi vào đàn.
 
 **Mặc định BẬT** (đổi 11/09/2026), tắt bằng một cú gạt ở thẻ *Nhạc nền* trên màn hình chủ
@@ -309,6 +313,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Thêm hai bài nhạc nền nữa, người học tự chọn` | Mục Nhạc nền: từ một bài thành ba bài chọn được, ghi rõ ràng buộc cả ba phải ở Đô trưởng để không nghịch tai với nốt người học đang bấm |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Mục 4 tách phần nghe đàn thật thành hai đường vào, micro đứng trước vì là đường duy nhất chạy được trên iPhone/iPad và đàn cơ; ghi rõ con số độ chính xác mới đo trên tiếng tổng hợp để không ai lấy nó làm con số thật. Mục 5 đổi "hai hướng thay thế piano ảo" thành "app nghe chính cây đàn thật", vì bài luyện nhận nốt nay cũng đánh trên đàn thật chứ không bấm chuột |
 | 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm ràng buộc thứ năm ở mục 5 và sửa dòng Web MIDI ở mục 4 — dòng cũ ghi "chỉ Chrome/Edge", đọc lên như chỉ máy tính dùng được, trong khi Android chạy được còn iPhone/iPad thì không; file này là thứ thả vào chat để bàn chuyện, ghi sai ở đây là mọi cuộc bàn sau đều lệch theo |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Chuyển trang không còn dừng rồi bật lại nhạc từ đầu vòng hợp âm; kèm chỗ sửa bộ phát mồ côi khiến lệnh tắt chỉ tắt được một nửa |

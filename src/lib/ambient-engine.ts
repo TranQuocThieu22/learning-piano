@@ -1,4 +1,4 @@
-import { arpeggioForBar, chordAt, midiToFreq, type AmbientChord } from './ambient';
+import { arpeggioForBar, chordAt, midiToFreq, type AmbientChord, type AmbientPiece } from './ambient';
 
 /**
  * Bộ phát nhạc nền, dựng trực tiếp bằng Web Audio — không có tệp nhạc nào được
@@ -30,11 +30,15 @@ import { arpeggioForBar, chordAt, midiToFreq, type AmbientChord } from './ambien
  * Đồng hồ của trình duyệt không chính xác, đồng hồ của Web Audio thì có.
  */
 
-const BPM = 100;
-const BEAT_SECONDS = 60 / BPM;
-const BAR_SECONDS = BEAT_SECONDS * 4;
-/** Mỗi hợp âm kéo dài hai ô nhịp. */
-const BARS_PER_CHORD = 2;
+/*
+ * Tốc độ, số ô nhịp mỗi hợp âm và vòng hợp âm nay thuộc về TỪNG BÀI, khai ở
+ * `ambient.ts`. Trước ngày 11/09/2026 chúng là hằng số của cả file, hồi đó chỉ
+ * có một bài.
+ *
+ * Con số 100 nhịp/phút của bài mặc định vẫn giữ nguyên vì lý do cũ: nhanh hơn là
+ * thành nhạc tập thể dục, chậm hơn là về lại chỗ buồn ngủ của bản đầu tiên.
+ */
+
 /** Hẹn trước bao nhiêu, và bao lâu ngó lại một lần. */
 const SCHEDULE_AHEAD_SECONDS = 4;
 const LOOKAHEAD_MS = 500;
@@ -80,6 +84,7 @@ export class AmbientEngine {
   private nextBarTime = 0;
   private barIndex = 0;
   private volume: number;
+  private piece: AmbientPiece;
   /**
    * Đã dẹp hẳn chưa. Dẹp rồi thì `start()` phải câm lặng từ chối.
    *
@@ -93,8 +98,28 @@ export class AmbientEngine {
   /** Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt. */
   private voices: { osc: OscillatorNode[]; gain: GainNode }[] = [];
 
-  constructor(volume: number) {
+  constructor(volume: number, piece: AmbientPiece) {
     this.volume = volume;
+    this.piece = piece;
+  }
+
+  /** Giây của một phách và của một ô nhịp, theo tốc độ của bài đang kêu. */
+  private get beatSeconds(): number {
+    return 60 / this.piece.bpm;
+  }
+
+  private get barSeconds(): number {
+    return this.beatSeconds * 4;
+  }
+
+  /**
+   * Gain thật của nút âm lượng: thanh trượt × trần.
+   *
+   * Không nhân thêm hệ số nào của riêng bài — ba bài đo ra chênh nhau chưa tới
+   * 1dB, lý do ghi ở `PIECES` trong `ambient.ts`.
+   */
+  private get masterGain(): number {
+    return this.volume * MAX_GAIN;
   }
 
   get running(): boolean {
@@ -144,7 +169,7 @@ export class AmbientEngine {
       comp.release.value = 0.25;
 
       const master = this.ctx.createGain();
-      master.gain.value = this.volume * MAX_GAIN;
+      master.gain.value = this.masterGain;
 
       filter.connect(comp).connect(master).connect(this.ctx.destination);
       this.bus = filter;
@@ -199,10 +224,40 @@ export class AmbientEngine {
 
   setVolume(volume: number): void {
     this.volume = volume;
-    if (this.master && this.ctx) {
-      // Đổi dần trong nửa giây: nhảy thẳng một giá trị mới sinh ra tiếng "tách".
-      this.master.gain.linearRampToValueAtTime(volume * MAX_GAIN, this.ctx.currentTime + 0.5);
-    }
+    this.apDungAmLuong();
+  }
+
+  /**
+   * Đổi bài. **Đang kêu thì DỪNG luôn** — việc bật lại để phía gọi lo.
+   *
+   * Vì sao không đổi êm tại chỗ: lịch phát hẹn trước 4 giây, nên lúc người học
+   * bấm sang bài khác thì cả một nắm nốt của bài CŨ đã nằm sẵn trong hàng đợi.
+   * Chỉ thay `this.piece` rồi đi tiếp là hai vòng hợp âm chồng lên nhau suốt mấy
+   * giây — mà hai bài khác tốc độ nên nghe ra là lỗi chứ không ra hoà âm.
+   * `stop()` vốn hạ tiếng dần trong một giây, nên nghe như một lần chuyển cảnh.
+   *
+   * Vì sao KHÔNG tự gọi `start()` ở đây, dù như thế tiện hơn: `start()` là bất
+   * đồng bộ và chỉ đặt `this.timer` SAU khi `ctx.resume()` xong, nên trong lúc
+   * chờ thì `running` vẫn là `false`. `AmbientMusic.tsx` ngay sau đó thấy
+   * `running === false` sẽ gọi `start()` lần nữa — hai lệnh cùng vượt qua chốt
+   * `if (this.running)`, cùng đặt `this.timer`, và cái đặt sau đè mất cái đặt
+   * trước. Kết quả là một `setInterval` không ai tắt được nữa, đúng kiểu bộ phát
+   * mồ côi ở bẫy 18. Giữ đúng một nơi được gọi `start()` là xong chuyện đó.
+   *
+   * Cùng một bài thì không làm gì cả, nên chuyển trang vẫn liền mạch.
+   */
+  setPiece(piece: AmbientPiece): void {
+    if (piece.id === this.piece.id) return;
+    this.stop();
+    this.piece = piece;
+    this.apDungAmLuong();
+  }
+
+  /** Đưa gain hiện tại xuống nút âm lượng, đổi dần chứ không nhảy một phát. */
+  private apDungAmLuong(): void {
+    if (!this.master || !this.ctx) return;
+    // Đổi dần trong nửa giây: nhảy thẳng một giá trị mới sinh ra tiếng "tách".
+    this.master.gain.linearRampToValueAtTime(this.masterGain, this.ctx.currentTime + 0.5);
   }
 
   /**
@@ -228,10 +283,10 @@ export class AmbientEngine {
     if (!ctx || !this.bus) return;
 
     while (this.nextBarTime < ctx.currentTime + SCHEDULE_AHEAD_SECONDS) {
-      const chord = chordAt(Math.floor(this.barIndex / BARS_PER_CHORD));
+      const chord = chordAt(this.piece, Math.floor(this.barIndex / this.piece.barsPerChord));
       this.playBar(chord, this.barIndex, this.nextBarTime);
       this.barIndex += 1;
-      this.nextBarTime += BAR_SECONDS;
+      this.nextBarTime += this.barSeconds;
     }
 
     // Nốt đã tắt thì bỏ khỏi danh sách, kẻo chạy lâu là phình mãi.
@@ -240,19 +295,19 @@ export class AmbientEngine {
 
   /** Một ô nhịp: nền mỏng (chỉ ở ô đầu của hợp âm), nốt trầm, và tám móc rải. */
   private playBar(chord: AmbientChord, barIndex: number, at: number): void {
-    if (barIndex % BARS_PER_CHORD === 0) {
+    if (barIndex % this.piece.barsPerChord === 0) {
       this.playPad(chord, at);
     }
 
     // Nốt trầm ở phách 1 và phách 3: phách 1 là gốc, phách 3 là quãng năm.
     this.playBass(chord.bass, at);
-    this.playBass(chord.bass + 7, at + BEAT_SECONDS * 2);
+    this.playBass(chord.bass + 7, at + this.beatSeconds * 2);
 
-    const pattern = arpeggioForBar(barIndex);
+    const pattern = arpeggioForBar(this.piece, barIndex);
     pattern.forEach((toneIndex, step) => {
       if (toneIndex === null) return;
       const midi = chord.tones[toneIndex % chord.tones.length];
-      this.playPluck(midi, at + step * (BEAT_SECONDS / 2), step);
+      this.playPluck(midi, at + step * (this.beatSeconds / 2), step);
     });
   }
 
@@ -323,7 +378,7 @@ export class AmbientEngine {
     const bus = this.bus;
     if (!ctx || !bus) return;
 
-    const keoDai = BAR_SECONDS * BARS_PER_CHORD;
+    const keoDai = this.barSeconds * this.piece.barsPerChord;
 
     for (const midi of chord.tones.slice(0, 3)) {
       const gain = ctx.createGain();

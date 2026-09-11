@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
-import { ambientAllowedOn } from '@/lib/ambient';
+import { ambientAllowedOn, pieceById } from '@/lib/ambient';
 import { AMBIENT_HOLD_EVENT, ambientHeld } from '@/lib/ambient-hold';
 import { AmbientEngine } from '@/lib/ambient-engine';
 import { useAmbientSettings } from '@/hooks/useAmbientSettings';
@@ -50,8 +50,19 @@ export function AmbientMusic() {
 
   useEffect(() => {
     const nenKeu = settings.on && ambientAllowedOn(pathname) && !coTiengKhac;
-    const engine = (engineRef.current ??= new AmbientEngine(settings.volume));
+    const piece = pieceById(settings.piece);
+    const engine = (engineRef.current ??= new AmbientEngine(settings.volume, piece));
     engine.setVolume(settings.volume);
+    /*
+     * Đặt bài TRƯỚC chỗ ngó `engine.running` bên dưới, vì hai dòng đó ăn khớp với
+     * nhau: bài đổi thật thì `setPiece` DỪNG bộ phát, `running` thành `false`, và
+     * nhánh bật nhạc phía dưới tự bật lại bằng bài mới. Cùng một bài thì `setPiece`
+     * không làm gì, `running` vẫn `true`, chuyển trang vẫn liền mạch.
+     *
+     * Đây cũng là lý do `setPiece` cố ý không tự gọi `start()` — xem chú thích của
+     * nó trong `ambient-engine.ts`, gọi cả hai nơi là sinh ra bộ phát mồ côi.
+     */
+    engine.setPiece(piece);
 
     if (!nenKeu) {
       engine.stop();

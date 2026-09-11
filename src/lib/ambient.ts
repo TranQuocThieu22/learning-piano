@@ -28,6 +28,53 @@ export interface AmbientChord {
 }
 
 /**
+ * Một bài nhạc nền.
+ *
+ * **Cả ba bài đều ở Đô trưởng, và đó là ràng buộc chứ không phải thiếu ý tưởng.**
+ * Chương 1 dạy đúng năm nốt Đô-Rê-Mi-Pha-Sol; nhạc nền ở giọng khác sẽ nghịch
+ * tai với chính thứ người học đang bấm. Muốn ba bài nghe khác nhau thì đổi bốn
+ * thứ còn lại: vòng hợp âm, tốc độ, mật độ nốt, và tầm cao thấp của các nốt rải.
+ */
+export interface AmbientPiece {
+  /** Khoá lưu xuống localStorage. Đổi là người học mất bài đang chọn, đừng đổi. */
+  id: string;
+  /** Tên hiện trên thẻ điều khiển. */
+  name: string;
+  /** Một dòng tả cảm giác, để chọn mà không cần bấm thử từng bài. */
+  hint: string;
+  bpm: number;
+  /** Mỗi hợp âm kéo dài mấy ô nhịp. Càng nhỏ thì bài càng thấy trôi nhanh. */
+  barsPerChord: number;
+  progression: AmbientChord[];
+  /** Các mẫu rải nốt, mỗi mẫu tám móc đơn cho một ô nhịp 4/4. */
+  patterns: (number | null)[][];
+}
+
+/*
+ * **Không có hệ số chỉnh âm lượng riêng cho từng bài, và đó là kết quả đo chứ
+ * không phải bỏ sót.**
+ *
+ * Lo ban đầu là chính đáng: bài dày nốt lẽ ra phải to hơn bài thưa nốt ở cùng
+ * một nấc thanh trượt, mà thanh trượt cần có nghĩa như nhau ở mọi bài — đổi bài
+ * xong lại phải với tay chỉnh âm lượng là hỏng. Nhưng đo thật (kết xuất
+ * `OfflineAudioContext` 62 giây mỗi bài rồi lấy RMS, cách đo ghi ở
+ * `ambient-engine.ts`) thì ra thế này ở nấc kéo hết cỡ:
+ *
+ * | Bài | RMS | Đỉnh |
+ * |---|---|---|
+ * | Nắng sớm | -15,9dB | 0,87 |
+ * | Chiều êm | -16,4dB | 0,88 |
+ * | Bước nhẹ | -15,8dB | 0,87 |
+ *
+ * Chênh nhau 0,6dB, dưới ngưỡng tai nghe ra được (khoảng 1dB) — vì bộ nén ở cuối
+ * chuỗi đã san bằng sẵn. Thêm một hệ số chỉnh vào lúc này là thêm một con số
+ * không làm gì, mà lần sau sửa lại phải đoán xem nó dùng để làm gì.
+ *
+ * **Thêm bài mới thì đo lại.** Lệch quá 1dB thì mới dựng hệ số chỉnh, đừng chỉnh
+ * bằng tai.
+ */
+
+/**
  * Vòng I–V–vi–IV ở Đô trưởng.
  *
  * Đây là vòng hợp âm của hàng nghìn bài hát vui trong nhạc đại chúng, và chọn nó
@@ -37,40 +84,127 @@ export interface AmbientChord {
  * Bản đầu tiên dùng hợp âm bậc 7 ngân dài kiểu thiền — nghe hay nhưng buồn ngủ,
  * không hợp với thứ cần ở đây là làm người học thấy hứng ngồi vào đàn.
  */
-export const PROGRESSION: AmbientChord[] = [
+const VONG_NANG_SOM: AmbientChord[] = [
   { name: 'C', bass: 48, tones: [60, 64, 67, 72] },
   { name: 'G', bass: 43, tones: [59, 62, 67, 71] },
   { name: 'Am', bass: 45, tones: [57, 60, 64, 69] },
   { name: 'F', bass: 41, tones: [57, 60, 65, 69] },
 ];
 
-/** Hợp âm thứ `index` trong vòng, quay vòng mãi. Nhận cả số âm cho an toàn. */
-export function chordAt(index: number): AmbientChord {
-  const n = PROGRESSION.length;
-  return PROGRESSION[((index % n) + n) % n];
-}
-
 /**
- * Bốn mẫu rải nốt, mỗi mẫu tám móc đơn cho một ô nhịp 4/4.
+ * Vòng vi–IV–I–V, cùng bốn hợp âm của bài trên nhưng **bắt đầu từ La thứ**.
  *
- * Số là chỉ số trong `tones` của hợp âm; `null` là lặng. Lặng quan trọng ngang
- * nốt: rải kín tám móc suốt mấy phút là thành tiếng máy khâu, tai bám theo rồi
- * đâm mệt. Mỗi mẫu đều chừa ít nhất hai chỗ thở.
- *
- * Bốn mẫu đổi vòng theo từng ô nhịp nên phải qua tám ô (khoảng 20 giây) mới lặp
- * lại đúng một cặp hợp âm + mẫu.
+ * Cùng nguyên liệu mà đổi chỗ vào là đổi hẳn cảm giác: mở ra bằng hợp âm thứ thì
+ * nghe trầm lắng, dù cả vòng vẫn nằm gọn trong Đô trưởng và không hề nghịch tai
+ * với nốt người học đang bấm. Các nốt rải hạ xuống một quãng so với bài trên cho
+ * tiếng ấm hơn.
  */
-export const ARPEGGIO_PATTERNS: (number | null)[][] = [
-  [0, 2, 1, 3, null, 2, 1, null],
-  [0, 1, 2, 3, 2, null, 1, null],
-  [2, null, 1, 2, 3, null, 2, 1],
-  [0, 2, 3, null, 2, 1, null, 2],
+const VONG_CHIEU_EM: AmbientChord[] = [
+  { name: 'Am', bass: 45, tones: [57, 60, 64, 69] },
+  { name: 'F', bass: 41, tones: [53, 57, 60, 65] },
+  { name: 'C', bass: 48, tones: [55, 60, 64, 67] },
+  { name: 'G', bass: 43, tones: [55, 59, 62, 67] },
 ];
 
+/**
+ * Vòng I–vi–ii–V, và đây là bài duy nhất có hợp âm Rê thứ.
+ *
+ * Thêm một hợp âm mới vào là vòng nghe lạ hẳn so với hai bài kia dù vẫn đúng
+ * giọng. Các nốt rải đẩy lên cao một quãng tám cho tiếng sáng, hợp với chỗ nhanh
+ * nhất trong ba bài.
+ */
+const VONG_BUOC_NHE: AmbientChord[] = [
+  { name: 'C', bass: 48, tones: [64, 67, 72, 76] },
+  { name: 'Am', bass: 45, tones: [64, 69, 72, 76] },
+  { name: 'Dm', bass: 50, tones: [62, 65, 69, 74] },
+  { name: 'G', bass: 43, tones: [62, 67, 71, 74] },
+];
+
+/**
+ * Ba bài nhạc nền. Bài đầu là mặc định.
+ *
+ * Số là chỉ số trong `tones` của hợp âm; `null` là lặng. **Lặng quan trọng ngang
+ * nốt**: rải kín tám móc suốt mấy phút là thành tiếng máy khâu, tai bám theo rồi
+ * đâm mệt. Mỗi mẫu đều chừa ít nhất hai chỗ thở, và có test gác điều đó.
+ *
+ * Bốn mẫu đổi vòng theo từng ô nhịp nên phải qua tám ô mới lặp lại đúng một cặp
+ * hợp âm + mẫu.
+ */
+export const PIECES: AmbientPiece[] = [
+  {
+    id: 'nang-som',
+    name: 'Nắng sớm',
+    hint: 'Vui, sáng — bài mặc định',
+    bpm: 100,
+    barsPerChord: 2,
+    progression: VONG_NANG_SOM,
+    patterns: [
+      [0, 2, 1, 3, null, 2, 1, null],
+      [0, 1, 2, 3, 2, null, 1, null],
+      [2, null, 1, 2, 3, null, 2, 1],
+      [0, 2, 3, null, 2, 1, null, 2],
+    ],
+  },
+  {
+    id: 'chieu-em',
+    name: 'Chiều êm',
+    hint: 'Chậm, thưa nốt — lúc cần yên',
+    /*
+     * 88 thay vì 100, và mẫu rải thưa hẳn.
+     *
+     * Đây KHÔNG phải quay lại bản thiền hồi đầu (hợp âm bậc 7 ngân dài, bị bỏ vì
+     * ru ngủ). Chỗ khác nhau là bài này vẫn có tiếng gảy và vẫn nghe ra ô nhịp —
+     * chậm chứ không lơ lửng. Và nó chỉ kêu khi người học tự chọn, mặc định vẫn
+     * là bài sáng, nên không ai bị đẩy vào chỗ buồn ngủ mà không muốn.
+     */
+    bpm: 88,
+    barsPerChord: 2,
+    progression: VONG_CHIEU_EM,
+    patterns: [
+      [0, null, 2, null, 1, null, 2, null],
+      [0, 2, null, 3, null, 2, null, null],
+      [2, null, 1, null, 0, null, 2, null],
+      [0, null, 2, 3, null, 1, null, null],
+    ],
+  },
+  {
+    id: 'buoc-nhe',
+    name: 'Bước nhẹ',
+    hint: 'Nhanh, nhiều nốt — lúc cần đà',
+    bpm: 112,
+    // Một ô nhịp một hợp âm: đổi hợp âm gấp đôi hai bài kia, nghe là thấy đi tới.
+    barsPerChord: 1,
+    progression: VONG_BUOC_NHE,
+    patterns: [
+      [0, 2, 1, 3, null, 2, 3, null],
+      [3, 2, null, 1, 2, null, 0, 2],
+      [0, 1, 2, null, 3, 2, null, 1],
+      [2, null, 3, 1, 2, null, 0, 2],
+    ],
+  },
+];
+
+/** Bài mặc định, cũng là bài duy nhất tồn tại trước ngày 11/09/2026. */
+export const DEFAULT_PIECE_ID = PIECES[0].id;
+
+/**
+ * Bài theo khoá đã lưu. Khoá lạ (bản lưu cũ, người dùng sửa tay) thì lùi về mặc
+ * định chứ không được trả về `undefined` — bộ phát sẽ ném lỗi giữa chừng.
+ */
+export function pieceById(id: string | undefined): AmbientPiece {
+  return PIECES.find((p) => p.id === id) ?? PIECES[0];
+}
+
+/** Hợp âm thứ `index` trong vòng của bài, quay vòng mãi. Nhận cả số âm cho an toàn. */
+export function chordAt(piece: AmbientPiece, index: number): AmbientChord {
+  const n = piece.progression.length;
+  return piece.progression[((index % n) + n) % n];
+}
+
 /** Mẫu rải cho ô nhịp thứ `barIndex` tính từ lúc bật nhạc. */
-export function arpeggioForBar(barIndex: number): (number | null)[] {
-  const n = ARPEGGIO_PATTERNS.length;
-  return ARPEGGIO_PATTERNS[((barIndex % n) + n) % n];
+export function arpeggioForBar(piece: AmbientPiece, barIndex: number): (number | null)[] {
+  const n = piece.patterns.length;
+  return piece.patterns[((barIndex % n) + n) % n];
 }
 
 /** Số hiệu MIDI sang tần số (La quãng tám 4, tức MIDI 69, là 440Hz). */
@@ -83,6 +217,8 @@ export interface AmbientSettings {
   on: boolean;
   /** 0..1, người học tự chỉnh. Đây KHÔNG phải gain thật, xem `ambient-engine.ts`. */
   volume: number;
+  /** Khoá bài đang chọn trong `PIECES`. Thêm 11/09/2026, trước đó chỉ có một bài. */
+  piece: string;
 }
 
 /**
@@ -98,7 +234,7 @@ export interface AmbientSettings {
  * chặn phát tiếng khi chưa có thao tác nào của người dùng, nên nó bắt đầu ở cú
  * chạm đầu tiên — xem `AmbientMusic.tsx`.
  */
-export const AMBIENT_DEFAULT: AmbientSettings = { on: true, volume: 0.5 };
+export const AMBIENT_DEFAULT: AmbientSettings = { on: true, volume: 0.5, piece: DEFAULT_PIECE_ID };
 
 export const AMBIENT_STORAGE_KEY = 'pj-ambient';
 /** Tên sự kiện để thẻ điều khiển và bộ phát nói chuyện với nhau. */
@@ -124,7 +260,14 @@ export function parseAmbient(raw: string | null): AmbientSettings {
       typeof doc.volume === 'number' && Number.isFinite(doc.volume)
         ? Math.min(1, Math.max(0, doc.volume))
         : AMBIENT_DEFAULT.volume;
-    return { on: doc.on !== false, volume };
+    /*
+     * Đi qua `pieceById` chứ không nhận thẳng chuỗi đã lưu: bản lưu từ trước ngày
+     * 11/09/2026 không có trường này, và người dùng sửa tay localStorage thì đưa
+     * vào tên gì cũng được. Khoá lạ mà lọt xuống bộ phát là nó đọc `undefined` rồi
+     * ném lỗi giữa chừng, mà lúc đó chẳng có gì chỉ ra nguyên nhân nằm ở đây.
+     */
+    const piece = pieceById(typeof doc.piece === 'string' ? doc.piece : undefined).id;
+    return { on: doc.on !== false, volume, piece };
   } catch {
     return AMBIENT_DEFAULT;
   }
