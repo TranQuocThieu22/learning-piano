@@ -17,10 +17,11 @@ repo ra.
 ## 1. Vòng thường ngày — việc nhỏ
 
 1. Claude viết mã, chạy cổng kiểm tra tại máy:
-   `npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons`
+   `npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons && npx next build`
 2. Chốt **tiêu đề commit**, rồi mới ghi dòng lịch sử vào những tài liệu vừa sửa.
 3. Claude in commit message → **bạn đọc diff trong Fork** → commit → push `main`.
-4. Vercel deploy production. GitHub Actions chạy lại cả bốn lệnh, đỏ thì báo về.
+4. Vercel deploy production. GitHub Actions chạy lại bốn lệnh đầu, đỏ thì báo về —
+   riêng `next build` thì chỉ Vercel chạy, nên nó phải được kiểm ở bước 1 (bẫy 19).
 5. Xem kết quả ở <https://pianojourney.rehover.io>.
 
 Nói **"commit luôn"** thì Claude tự chạy `git add/commit/push`. Tiện khi bạn đang ở
@@ -56,7 +57,7 @@ gõ lệnh nào cả. Vòng chạy:
    `generate` hay hiểu một lần *đổi tên cột* thành "xoá cột cũ, thêm cột mới", và
    chạy lên production là mất sạch dữ liệu cột đó. File thường chỉ vài dòng nên đọc
    trên điện thoại vẫn được.
-4. Claude chạy `pnpm db:migrate` lên nhánh dev, bấm thử, báo lại kết quả bốn lệnh
+4. Claude chạy `pnpm db:migrate` lên nhánh dev, bấm thử, báo lại kết quả năm lệnh
    kiểm — kèm ảnh chụp màn hình hoặc link tunnel nếu có giao diện.
 5. Bạn duyệt, hoặc nói "commit luôn".
 
@@ -129,6 +130,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Cổng kiểm tra ở bước 1 lên năm lệnh sau một lần deploy đỏ dù bốn lệnh ở máy xanh hết; nói rõ ở bước 4 rằng CI không chạy build nên build chỉ được kiểm ở bước 1 |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào mục 7 việc thử micro trên máy thật — tính năng mới chỉ được đo trên tiếng đàn tổng hợp, mà đó là việc duy nhất Claude không làm hộ được vì cần một chiếc điện thoại đặt cạnh cây đàn thật; ghi luôn cách thử cụ thể để làm được ngay khi mở file ra |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi địa chỉ xem kết quả ở bước 5 sang tên miền mới — bước này được đọc mỗi ngày nên để tên miền cũ ở đây là chỗ dễ tin nhầm nhất |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 6 — câu mở và câu đóng một phiên chat, vì kiến thức chỉ thoát ra khỏi phiên nếu có người hỏi trước khi đóng; câu mở đọc thêm khối mới nhất của `nhat-ky-lam-viec.md` vì mục "Còn treo" chỉ ghi việc chưa làm nên không trả lời được "hôm qua dừng ở đâu"; nói rõ đặt tên phiên theo việc chứ không theo loại việc; mục "Còn treo" dời xuống thành mục 7 |

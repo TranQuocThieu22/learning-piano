@@ -24,7 +24,7 @@ Lúc đó tự làm trọn: đọc thay đổi, soạn message, `git add`, `git 
 1. **Đọc `git status` và `git diff`** — kể cả những thay đổi không phải mình tạo ra.
    Repo này thường có việc dở dang từ phiên khác; commit thứ mình chưa đọc là
    commit mù.
-2. **Chạy đủ bốn lệnh kiểm**, vì repo đẩy thẳng `main` và Vercel deploy production
+2. **Chạy đủ NĂM lệnh kiểm**, vì repo đẩy thẳng `main` và Vercel deploy production
    ngay sau đó:
 
    ```bash
@@ -32,10 +32,23 @@ Lúc đó tự làm trọn: đọc thay đổi, soạn message, `git add`, `git 
    pnpm lint
    pnpm test
    pnpm check:lessons
+   npx next build
    ```
 
    `next typegen` là bắt buộc: `next-env.d.ts` nằm trong `.gitignore` nên máy vừa
    checkout xong chạy `tsc` một mình sẽ trượt.
+
+   **`next build` là lệnh mới nhất và hay bị quên nhất.** Bốn lệnh trên KHÔNG dựng
+   bản production, mà đó lại đúng là thứ Vercel chạy — build đỏ thì người học vẫn
+   thấy bản cũ và không ai được báo gì. Nó bắt những thứ bốn lệnh kia không thấy:
+   lỗi lúc dựng trang tĩnh, lỗi gói mã, và **test chạy quá lâu** (vitest bỏ cuộc sau
+   5 giây mỗi ca; máy dựng bản của Vercel chậm hơn máy bàn vài lần — xem bẫy 19 trong
+   `docs/_internal/bay-ky-thuat.md`).
+
+   Chạy `npx next build` chứ không phải `pnpm build`: `pnpm build` có kèm
+   `drizzle-kit migrate`, không nên đụng vào database chỉ để kiểm một lần commit.
+   Build xong thì `next dev` đang chạy nên được khởi động lại, vì cả hai dùng chung
+   thư mục `.next`.
 3. **Có lệnh nào đỏ thì DỪNG**, báo người dùng, không commit.
 4. **Tách commit theo chủ đề**, đừng gom hết vào một. Nếu các thay đổi thuộc nhiều
    nhóm khác nhau thì commit nhiều lần.
@@ -45,8 +58,9 @@ chạy — nó là lưới thứ hai, và nó báo *sau* khi commit đã nằm t
 
 > **Vì sao chế độ này từng bị cấm.** Repo commit thẳng vào `main`, nên trước đây
 > lần đọc diff của người dùng là lưới đỡ duy nhất. Nay đã có GitHub Actions gác đủ
-> bốn lệnh trên mọi lần đẩy, nên rủi ro giảm hẳn — nhưng CI báo sau khi commit đã
-> vào lịch sử, nên bốn bước trên vẫn phải làm tại máy trước.
+> bốn lệnh đầu trên mọi lần đẩy, nên rủi ro giảm hẳn — nhưng CI báo sau khi commit đã
+> vào lịch sử, nên các bước trên vẫn phải làm tại máy trước. Riêng `next build` thì
+> **CI cũng không chạy**: nơi duy nhất nó chạy là Vercel, và lúc đó đã quá muộn.
 
 # Instructions
 

@@ -45,7 +45,7 @@ sử và production đã bắt đầu deploy — nên bốn ràng buộc trên k
 ## 3. Cổng kiểm tra trước khi commit
 
 ```bash
-npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons
+npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons && npx next build
 ```
 
 | Lệnh | Bẫy đã biết |
@@ -54,7 +54,13 @@ npx tsc --noEmit && pnpm lint && pnpm test && pnpm check:lessons
 | `pnpm lint` | Phải **sạch tuyệt đối**, không lỗi không cảnh báo. Dòng nào hiện ra cũng là của bạn |
 | `pnpm test` | **Đọc dòng `Test Files`, không chỉ dòng `Tests`** — bẫy 3 |
 | `pnpm check:lessons` | Chỉ cần khi sửa `docs/03-exercises/` hoặc chỉ thị nhúng bản nhạc |
-| `pnpm build` | Chạy cả chuỗi như Vercel — xem ngay dưới |
+| `npx next build` | Thứ Vercel thật sự chạy. Bắt lỗi dựng trang tĩnh, lỗi gói mã, và **test chạy quá 5 giây** — bẫy 19 |
+
+**Vì sao `next build` được thêm vào (11/09/2026).** Một lần bốn lệnh đầu xanh hết, đẩy
+lên thì deploy đỏ: một ca test mất 3 giây ở máy bàn đã vượt hạn giờ 5 giây trên máy dựng
+bản chậm hơn của Vercel. Build là nơi duy nhất bắt được kiểu hỏng đó trước khi nó thành
+"production không cập nhật". Chạy `npx next build` chứ không phải `pnpm build`, vì
+`pnpm build` kèm `drizzle-kit migrate` — không nên đụng database chỉ để kiểm một lần commit.
 
 Rồi `git status`: **`.env.local` phải không xuất hiện**. Khối `AGENTS.md` do `next dev`
 sinh ra thì commit kèm, gỡ ra chỉ làm nó hiện lại lần sau.
@@ -71,9 +77,12 @@ database còn chưa bị đụng tới. Đã kiểm bằng một test cố ý tr
 
 Nhưng `pnpm lint` và `pnpm check:lessons` **không** chạy trên Vercel.
 
-**GitHub Actions gác đủ bốn lệnh.** `.github/workflows/ci.yml` chạy `next typegen` →
-`tsc --noEmit` → `lint` → `test` → `check:lessons` trên **mọi** lần đẩy nhánh, kể cả
-nhánh phụ. Bốn bước cuối để `if: !cancelled()` nên một lần chạy báo về *tất cả* chỗ
+**GitHub Actions gác bốn lệnh đầu, KHÔNG gác build.** `.github/workflows/ci.yml` chạy
+`next typegen` → `tsc --noEmit` → `lint` → `test` → `check:lessons` trên **mọi** lần đẩy
+nhánh, kể cả nhánh phụ. `next build` không nằm trong đó vì nó cần đủ biến môi trường
+(`env.ts` đóng cửa an toàn khi thiếu), mà khai bí mật cho CI là một việc riêng chưa làm.
+Nghĩa là **build chỉ được kiểm ở đúng hai chỗ: máy bạn trước khi commit, và Vercel sau
+khi commit** — chỗ thứ hai thì đã muộn. Bốn bước cuối để `if: !cancelled()` nên một lần chạy báo về *tất cả* chỗ
 hỏng thay vì dừng ở cái đầu tiên — sửa một lượt vẫn rẻ hơn ba vòng đẩy lên chờ kết quả.
 
 `next typegen` là bước bắt buộc chứ không phải trang trí: `next-env.d.ts` nằm trong
@@ -317,6 +326,7 @@ archive mạnh tay khi việc đã xong.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Mục 3 lên năm lệnh: một lần bốn lệnh xanh hết mà deploy vẫn đỏ vì test chạy quá hạn giờ trên máy dựng bản chậm hơn, nên `next build` phải nằm trong cổng — nó là thứ Vercel thật sự chạy. Ghi rõ CI cũng không chạy build (thiếu biến môi trường), nên build chỉ được kiểm ở máy mình trước khi commit, hoặc ở Vercel khi đã muộn |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì; bảng "thứ cần giữ" nhận thêm `nhat-ky-lam-viec.md` cho việc xảy ra ngoài repo |
 | 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |
 | 01/09/2026 | `ci: Thêm GitHub Actions gác đủ bốn lệnh kiểm trên mọi lần đẩy` | Mục 3: bốn lệnh của cổng kiểm tra giờ chạy tự động trên GitHub Actions nên bỏ câu "hoàn toàn là kỷ luật của bạn", nhưng ghi rõ CI báo sau khi commit nên không thay được lần gõ tay trước đó; mục 8: chốt tên nhánh `preview` để URL ổn định mà khai redirect URI cho Google đúng một lần, kèm cảnh báo `DATABASE_URL` của môi trường Preview vì build preview có chạy migrate |
