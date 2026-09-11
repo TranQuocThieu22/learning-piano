@@ -94,6 +94,20 @@
     mỗi file bắt buộc khai trường `nguon` và **có test gác** — thêm bài mà bỏ trống là đỏ.
   - **Sửa lỗi nhạc nền kêu chồng lên bản nhạc mẫu** (bẫy 23), lỗi đang chạy trên
     production.
+  - **Soạn `ban-quyen-bai-hat.md`** — cách đi xin phép để đưa nhạc còn bảo hộ vào Góc bài
+    hát, kèm thư hỏi mẫu dán là gửi được. Chỗ quan trọng nhất là cảnh báo hỏi nhầm cửa:
+    thứ cần xin là quyền **sao chép** và **làm tác phẩm phái sinh**, không phải quyền biểu
+    diễn — mà quyền in ấn thường không nằm trong uỷ quyền tác giả giao cho tổ chức quản lý
+    tập thể. Về chi phí tài liệu nói thẳng là **chưa biết** và không đoán, vì biểu phí công
+    khai là cho nhạc nền quán xá và karaoke, suy từ đó ra là suy sai. Trang `/songs` sửa
+    lời cho khớp ("đang cân nhắc" → "đang làm") và mời người học nhắn bài họ muốn, để biết
+    nên đi xin bài nào trước.
+  - **Bịt thêm hai lỗ nữa của nhạc nền** sau khi người dùng báo lỗi cũ vẫn còn. Cả hai đọc
+    ra được từ mã và độc lập với cuộc đua ở bẫy 23: `{ once: true }` chỉ gỡ đúng listener
+    vừa bắn nên listener anh em sống tới hết phiên, và lúc cử chỉ tới thì không ai hỏi lại
+    xem có nguồn tiếng nào đang giữ chỗ không. Ghi thành **bẫy 24**. **Chưa xác nhận được
+    đây có đúng là nguyên nhân người dùng gặp hay không** — dựng phép đo trên trình duyệt
+    thật nhưng không tái hiện nổi, vì cú chạm giả không được tính là cử chỉ thật.
 
 **Quan sát**
 
@@ -139,6 +153,15 @@
   tên tác giả là *nghĩa vụ*, không phải *giấy phép*. Ai chép ra — người hay AI — không
   liên quan tới bản quyền, vì thứ được bảo hộ là bản thân tác phẩm chứ không phải cái file.
 - **Việc tuyển beta sang phiên thứ hai vẫn chưa động tới.** Cả ngày hôm nay là sản phẩm.
+- **Có loại lỗi chỉ đọc ra được chứ không tái hiện được.** Lỗi nhạc nền báo lại lần hai
+  cần một cử chỉ thật của người dùng mới nổ, mà trình duyệt chạy tự động không có cử chỉ
+  thật — bỏ luật cần cử chỉ đi thì tình huống lỗi biến mất luôn. Cách còn lại là đọc kỹ mã
+  và sửa mọi lỗ nhìn thấy, rồi nói thẳng trong commit là chưa chứng minh được. Ghi "đã
+  sửa" cho một thứ chưa đo được là lần sau mất thêm một vòng hỏi lại người dùng.
+- **Người dùng báo lại cùng một triệu chứng thường là lỗ khác, không phải bản sửa hỏng.**
+  Ba lỗ của nhạc nền đều ra đúng một triệu chứng "kêu lúc phải im" nhưng nguyên nhân rời
+  nhau hẳn. Sửa xong một cái mà triệu chứng còn thì đọc lại từ đầu, đừng vặn tiếp chỗ vừa
+  sửa.
 
 **Tiếp theo**
 
@@ -163,7 +186,12 @@
   `/path`, màn hình chủ). Máy dựng bản không có database nên luồng này chưa chạy được lần
   nào.
 - **Hỏi VCPMC** nếu vẫn muốn có nhạc đang thịnh hành trong Góc bài hát. Khung đã dựng sẵn
-  chỗ ghi số giấy phép; có phép là soạn được ngay.
+  chỗ ghi số giấy phép; có phép là soạn được ngay. Thư hỏi mẫu và ba chỗ dễ hỏi nhầm cửa
+  đã nằm sẵn ở [`ban-quyen-bai-hat.md`](ban-quyen-bai-hat.md).
+- **Thử lại xem nhạc nền còn kêu chồng lên bản nhạc mẫu không** — đây là việc Claude không
+  làm hộ được, vì lỗi cần một cử chỉ thật. Mở một bản nhạc bấm *Nghe thử*, rồi thử cả hai
+  lối: chạm ra ngoài màn hình lúc đang phát, và (trên máy tính) gõ một phím bất kỳ. Còn
+  kêu thì kể lại đúng thứ tự thao tác — thứ tự mới là thứ chỉ ra lỗ còn lại.
 - **Gửi giai điệu dân ca** (gõ tên nốt hoặc chụp bản nhạc có sẵn) để Claude soạn tiếp. Đây
   là thứ hợp pháp mà người học Việt Nam nhiều khả năng thích nhất, nhưng Claude không dám
   chép từ trí nhớ vì nhiều dị bản vùng miền.

@@ -798,6 +798,52 @@ React.
 
 ---
 
+## 24. `{ once: true }` chỉ gỡ đúng listener vừa bắn, cái anh em sống tới hết phiên
+
+**Triệu chứng.** Đã sửa bẫy 23 rồi mà nhạc nền **vẫn** kêu chồng lên bản nhạc mẫu. Lần này
+không phải ngay lúc mở trang: người học dùng app một lúc, bấm *Nghe thử*, lỡ gõ một phím
+(hoặc chạm ra chỗ trống trên màn hình) là nhạc nền bật lên đè lên bản nhạc.
+
+**Nguyên nhân.** Chờ cử chỉ đầu tiên thì phải gắn hai listener, vì không biết trước người
+ta chạm hay gõ:
+
+```ts
+window.addEventListener('pointerdown', thu, { once: true });
+window.addEventListener('keydown', thu, { once: true });
+```
+
+`{ once: true }` tự gỡ **đúng cái vừa bắn**, cái kia còn nguyên. Bình thường hàm dọn dẹp
+của effect gỡ nốt — nhưng ở đây chính vì lần đó `start()` thành công nên effect không chạy
+lại, hàm dọn dẹp không bao giờ được gọi, và listener `keydown` sống tới hết phiên. Nửa giờ
+sau nó vẫn đang chờ, và bắn vào đúng lúc không được phép bật.
+
+Lỗ thứ hai đi kèm: hàm xử lý kiểm điều kiện **lúc gắn** chứ không kiểm **lúc bắn**. Lúc
+gắn thì chưa ai giữ chỗ phát tiếng, nhưng cú chạm có thể rơi vào lúc người học đang mở
+phần *Tập bài này với đàn* rồi chạm ra ngoài.
+
+**Cách sửa.** Ba điều, thiếu cái nào cũng còn lỗ:
+
+1. Hàm xử lý **tự gỡ cả nhóm ngay ở dòng đầu**, đừng trông vào `{ once: true }`.
+2. **Hỏi lại mọi điều kiện ngay tại lúc bắn** — ai đang giữ chỗ, effect còn sống không,
+   đối tượng trong closure có còn là đối tượng hiện hành không.
+3. Mọi lối ra của `start()` đều phải **hạ cờ "đang muốn kêu"** xuống. Không hạ thì một lần
+   bị trình duyệt chặn là cờ kẹt ở `true` suốt phiên, và nó mất nghĩa: cờ phải nói "đang
+   thật sự muốn kêu", không phải "đã từng có lúc muốn".
+
+**Cách kiểm — và vì sao lần này không kiểm được.** Đã dựng phép đo trên trình duyệt thật
+(đếm `OscillatorNode` để phân biệt nhạc nền với soundfont của abcjs) nhưng không tái hiện
+nổi: trong trình duyệt chạy tự động, cú chạm giả không được tính là cử chỉ thật nên bản
+nhạc không phát; mà bỏ luật cần cử chỉ đi thì tình huống lỗi biến mất luôn. Gặp thế thì
+đọc mã sửa hết lỗ nhìn thấy được, và **ghi rõ trong commit là chưa chứng minh được** thay
+vì nói đã sửa xong.
+
+**Bài học chung.** Một listener chờ cử chỉ là **một mẩu trạng thái sống lâu hơn effect
+sinh ra nó**. Đã lỡ để nó sống thì mọi thứ nó đọc phải được đọc lại lúc nó chạy, không
+phải lúc nó được gắn. Cùng họ với bẫy 18 (bộ phát mồ côi) và bẫy 23 (lệnh đang chờ về đích
+sau).
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -806,6 +852,7 @@ React.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `docs(internal): Ghi nhật ký phiên tối 11/09 và bẫy 24` | Thêm bẫy 24 — `{ once: true }` chỉ gỡ listener vừa bắn nên cái anh em sống tới hết phiên và bật nhạc nền lúc phải im; ghi kèm chuyện phải hỏi lại điều kiện lúc bắn chứ không phải lúc gắn, và vì sao lỗi này không tái hiện được bằng trình duyệt chạy tự động |
 | 11/09/2026 | `fix: Nhạc nền không kêu chồng lên bản nhạc mẫu nữa` | Thêm bẫy 23 — `pointerdown` bắn trước `click` nên lệnh bật nhạc nền chạy trước lệnh dừng, rồi về đích sau khi `resume()` xong; kèm cách dựng AudioContext giả để tái hiện cuộc đua và lời nhắc phải gỡ bản sửa ra thử lại |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm bẫy 22 — `component={Link}` của Mantine trong Server Component làm trang 500 mà cả năm lệnh kiểm vẫn xanh, vì trang dựng theo từng lượt xem nên `next build` không chạm tới; kèm cách kiểm bằng `next start` + `curl` từng đường dẫn |
 | 11/09/2026 | `fix: Nới đáy thanh tab để không bị sát mép màn hình` | Thêm bẫy 21 — chạy toàn màn hình thì `env(safe-area-inset-bottom)` bằng 0 nên thanh tab tụt sát mép và chồng lên dải vuốt về màn hình chính của Android; ghi rõ phải đặt mức sàn bằng `max()` và phải sửa kèm mọi chỗ tính vị trí theo thanh tab |
