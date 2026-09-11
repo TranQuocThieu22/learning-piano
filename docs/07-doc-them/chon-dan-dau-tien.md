@@ -28,9 +28,9 @@ Chính cái tên của nhạc cụ này nói lên điều đó: **pianoforte** �
 
 - **Phím nặng (weighted / hammer action).** Phím có sức nặng như đàn cơ, rèn ngón tay đúng cách hơn hẳn. Đây là thứ đáng thêm tiền nhất **nếu** ngân sách cho phép. Phím nhẹ vẫn tập được cả giáo trình, chỉ là khi chuyển sang piano thật bạn phải làm quen lại đôi chút.
 - **88 phím.** Thoải mái, đúng như đàn thật, nhưng Giai đoạn 1 và 2 không cần tới.
-- **Cổng USB MIDI.** Cắm cây đàn vào máy tính là dùng được ngay chức năng **Tập bài này với đàn** trên web: bạn đánh tới đâu, nốt trên bản nhạc sáng xanh tới đó, bấm trượt thì chỗ đang chờ nháy đỏ một cái rồi thôi. Con trỏ chỉ nhích khi bạn bấm phím — không đếm giờ, không chạy trước, dừng bao lâu cũng được.
+- **Cổng USB MIDI.** Chức năng **Tập bài này với đàn** trên web — bạn đánh tới đâu, nốt trên bản nhạc sáng xanh tới đó, bấm trượt thì chỗ đang chờ nháy đỏ một cái rồi thôi — **chạy được với mọi cây đàn qua micro của điện thoại**, không cần cổng này. Có cổng USB thì thêm một cách nữa: cắm dây vào điện thoại Android (cần cáp OTG) hoặc máy tính, app nhận nốt chính xác tuyệt đối, kể cả khi phòng ồn.
 
-  Gần như mọi đàn phím điện làm trong mười năm trở lại đây đều có cổng này. Chức năng chạy trên Chrome, Edge, Opera và Firefox **ở máy tính**; trên điện thoại và Safari thì chưa.
+  Gần như mọi đàn phím điện làm trong mười năm trở lại đây đều có cổng này. Nối dây chạy trên Chrome và Edge ở Android và máy tính; iPhone và iPad chưa nối dây được — dùng micro là đủ.
 
 ## Đừng trả tiền cho những thứ này
 

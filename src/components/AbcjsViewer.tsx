@@ -561,6 +561,7 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
           onResults={paintResults}
           onLiveMatch={paintLiveMatches}
           onWrongNote={flashWrongNote}
+          listenPaused={isPlaying}
         />
       )}
     </div>

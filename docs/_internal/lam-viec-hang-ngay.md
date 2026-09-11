@@ -100,6 +100,14 @@ Lý do đầy đủ ở mục 9 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-vi
 
 Không gấp, xoá dòng nào đã xong:
 
+- [ ] **Thử nghe qua micro trên máy thật, trước khi mời người beta dùng.** Mọi con số tới giờ
+      đo trên tiếng đàn tổng hợp. Đặt điện thoại lên giá nhạc cây FP-30X, mở
+      `/note-trainer` → *Nghe qua micro*, đánh 20 nốt và đếm máy nghe sai mấy lần; rồi mở
+      Bài tập 1B (Ode to Joy) → *Tập bài này với đàn* và đánh trọn bài. Thử **cả iPhone
+      lẫn Android** nếu có, trong phòng bình thường. Kể lại kết quả cho Claude: số sai,
+      sai kiểu gì (nhầm quãng tám, nốt ma, sót nốt nhẹ) — thứ tự đo đầy đủ ở Giai đoạn D
+      của [`lo-trinh-phat-trien.md`](lo-trinh-phat-trien.md).
+
 - [ ] **Khi đóng đợt beta:** gỡ khối mời đăng ký ở đầu `docs/01-roadmap/roadmap.md`
       và hằng số `FORM_DANG_KY` cùng nút của nó trong `src/components/LessonLocked.tsx`.
       Hai chỗ này chỉ đúng trong lúc còn nhận người thử.
@@ -121,6 +129,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào mục 7 việc thử micro trên máy thật — tính năng mới chỉ được đo trên tiếng đàn tổng hợp, mà đó là việc duy nhất Claude không làm hộ được vì cần một chiếc điện thoại đặt cạnh cây đàn thật; ghi luôn cách thử cụ thể để làm được ngay khi mở file ra |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi địa chỉ xem kết quả ở bước 5 sang tên miền mới — bước này được đọc mỗi ngày nên để tên miền cũ ở đây là chỗ dễ tin nhầm nhất |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 6 — câu mở và câu đóng một phiên chat, vì kiến thức chỉ thoát ra khỏi phiên nếu có người hỏi trước khi đóng; câu mở đọc thêm khối mới nhất của `nhat-ky-lam-viec.md` vì mục "Còn treo" chỉ ghi việc chưa làm nên không trả lời được "hôm qua dừng ở đâu"; nói rõ đặt tên phiên theo việc chứ không theo loại việc; mục "Còn treo" dời xuống thành mục 7 |
 | 02/09/2026 | `feat: Dẫn thẳng tới form đăng ký beta thay vì bắt nhắn tin` | Thêm vào mục 6 việc phải gỡ khối mời đăng ký và nút form khi đóng đợt beta — hai chỗ đó chỉ đúng trong lúc còn nhận người thử, để sót lại thì người mua sau này bấm vào một form đã đóng |

@@ -126,7 +126,7 @@ CMS, không có bảng bài học trong database.
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm), cuối bài có nút *Bài trước* / *Bài tiếp theo* |
 | `/journal` | Nhật ký học tập — tick bài đã xong, lưu theo tài khoản Google |
 | `/metronome` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
-| `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc (chuột hoặc đàn MIDI) |
+| `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc, đánh trên đàn thật (micro hoặc dây MIDI) |
 | `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
 
 **Điều hướng.** Không còn `AppShell`, không còn thanh bên, và từ 10/09/2026 cũng không
@@ -164,11 +164,16 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
 
 - **Phát nhạc mẫu:** mọi khối ABC trong bài đều bấm nghe được, đúng nhịp và tốc độ ghi
   trên bài.
-- **Web MIDI:** cắm đàn qua USB MIDI thì app nghe được nốt bạn bấm. Đã dùng cho bài
-  luyện nhận nốt và cho `ScorePractice` (đánh xong → so với bản nhạc → tô màu chỗ sai).
-  Chạy trên **điện thoại và tablet Android** (Chrome/Edge, nối bằng cáp OTG) và trên
-  máy tính. **Không chạy trên iPhone/iPad** — mọi trình duyệt iOS đều dùng WebKit, mà
-  WebKit không có Web MIDI.
+- **Nghe đàn thật — hai đường vào**, dùng cho bài luyện nhận nốt và cho `ScorePractice`
+  (tô xanh từng nốt trong lúc đánh, đánh xong → so với bản nhạc → tô màu chỗ sai):
+  - **Micro** (mặc định, từ 11/09/2026): nghe tiếng đàn qua micro điện thoại, nhận cả hợp
+    âm. Chạy trên **mọi máy kể cả iPhone/iPad**, với cả đàn cơ. Xử lý ngay trên máy, không
+    ghi âm. Mới đo trên tiếng tổng hợp (~92% nốt nghe đúng khi tập theo bản nhạc), **chưa
+    đo trên máy thật** — xem Giai đoạn D của `lo-trinh-phat-trien.md`. Mã ở
+    `src/lib/mic-*.ts`.
+  - **Dây MIDI:** chính xác tuyệt đối. Chạy trên **điện thoại và tablet Android**
+    (Chrome/Edge, cáp OTG) và máy tính. **Không chạy trên iPhone/iPad** — mọi trình duyệt
+    iOS đều dùng WebKit, mà WebKit không có Web MIDI.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).
 
 **Thanh toán:** đã có phần backend — bảng `payment_order` / `payment_received` /
@@ -186,15 +191,16 @@ ngược lại nếu chưa đọc lý do.
 **Không làm piano ảo bấm chuột / chạm màn hình.**
 Giáo trình dạy thứ nằm ở *cơ thể* — form tay, độc lập ngón, sức nặng cánh tay — mà
 màn hình phẳng không rèn được. Tệ hơn, nó tạo cảm giác sai về tiến bộ và ăn mất thời
-gian lẽ ra ngồi trước đàn. Hai hướng thay thế được chấp nhận: **bài luyện nhận nốt**
-và **Web MIDI với đàn thật**. (`docs/07-doc-them/khong-lam-piano-ao.md`)
+gian lẽ ra ngồi trước đàn. Thứ thay thế được chấp nhận là **app nghe chính cây đàn thật**
+— qua micro hoặc dây MIDI — trong bài luyện nhận nốt và phần tập với đàn.
+(`docs/07-doc-them/khong-lam-piano-ao.md`)
 
 **Không ép chơi theo bản nhạc chạy trực tiếp.**
 Đây là lý do chính khiến người mới bỏ cuộc với app chấm điểm tự động: nhịp độ do máy
 áp đặt. Người học tự quyết khi nào bắt đầu, dừng, tập lại đoạn nào, ở tốc độ nào.
 *Được phép:* phát nhạc mẫu để nghe, máy đánh nhịp tự bật tự chỉnh, chấm điểm kiểu đánh
 xong rồi xem lại. *Không được phép:* bản nhạc tự trôi, nốt rơi kiểu game, chấm đúng/sai
-thời gian thực. Áp cho cả Web MIDI sau này.
+thời gian thực. Áp cho cả micro lẫn Web MIDI.
 
 **Không nêu đích danh tên app hay khóa học của đối thủ** — ở tài liệu, web, trang bán
 hàng, quảng cáo. Luôn mô tả theo *cách làm* ("app chấm điểm tự động"), không theo tên
@@ -303,6 +309,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Mục 4 tách phần nghe đàn thật thành hai đường vào, micro đứng trước vì là đường duy nhất chạy được trên iPhone/iPad và đàn cơ; ghi rõ con số độ chính xác mới đo trên tiếng tổng hợp để không ai lấy nó làm con số thật. Mục 5 đổi "hai hướng thay thế piano ảo" thành "app nghe chính cây đàn thật", vì bài luyện nhận nốt nay cũng đánh trên đàn thật chứ không bấm chuột |
 | 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm ràng buộc thứ năm ở mục 5 và sửa dòng Web MIDI ở mục 4 — dòng cũ ghi "chỉ Chrome/Edge", đọc lên như chỉ máy tính dùng được, trong khi Android chạy được còn iPhone/iPad thì không; file này là thứ thả vào chat để bàn chuyện, ghi sai ở đây là mọi cuộc bàn sau đều lệch theo |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Chuyển trang không còn dừng rồi bật lại nhạc từ đầu vòng hợp âm; kèm chỗ sửa bộ phát mồ côi khiến lệnh tắt chỉ tắt được một nửa |
 | 11/09/2026 | `feat: Nhạc nền vui hơn, mặc định bật, chỉ tắt khi có tiếng khác` | Nhạc nền đổi từ nền ngân kiểu thiền sang vòng I–V–vi–IV có rải nốt, vì bản cũ ru ngủ chứ không tạo hứng; mặc định bật theo yêu cầu chủ sản phẩm, và chuyển luật tắt từ theo-đường-dẫn sang theo-sự-kiện để đọc lý thuyết vẫn còn nhạc |

@@ -249,6 +249,86 @@ phần người học dùng được nó. Nên đọc mục hệ điều hành t
 phần lớn là iOS thì điều kiện ra ở trên không đạt được bằng web thuần, và phải bàn lại
 trước khi viết dòng mã nào — kể cả câu đã chốt "không làm app mobile".
 
+#### Nghe tiếng đàn qua micro — đã làm, chờ đo trên máy thật
+
+> [!NOTE]
+> **11/09/2026: đã làm.** Buổi sáng mục này mới là giả thuyết để thử; buổi chiều chủ sản
+> phẩm chốt làm luôn và làm đầy đủ, không đợi qua cổng beta. Micro là cách nối **mặc định**
+> ở cả `/note-trainer` lẫn *Tập bài này với đàn*, MIDI đứng thứ hai.
+>
+> **Chưa có kết quả đo nào trên điện thoại thật đặt cạnh đàn thật.** Mọi con số dưới đây đo
+> trên tiếng đàn tổng hợp. Việc đo thật nằm ở "Còn treo" của `lam-viec-hang-ngay.md`.
+
+*Ý tưởng:* thay vì nối dây, app nghe tiếng đàn qua micro của điện thoại rồi nhận ra nốt
+vừa đánh. Safari trên iPhone cho web dùng micro, nên hướng này đi được ở đúng chỗ Web MIDI
+không đi được — đoạn "phải bàn lại chuyện app mobile" ở trên chỉ còn đúng nếu đo thật cho
+thấy micro không đủ chuẩn.
+
+*Đã làm gì* (chi tiết trong chú thích đầu mỗi file):
+
+- `src/lib/mic-pitch.ts` — nhận nhiều nốt cùng lúc bằng cách cộng hoạ âm rồi trừ dần,
+  không phải dò một cao độ như máy lên dây đàn guitar.
+- `src/lib/mic-listener.ts` — tìm lúc phím xuống, chỉ báo nốt vừa đánh chứ không báo lại
+  nốt còn đang ngân. Trễ khoảng 110ms từ lúc phím xuống.
+- `src/lib/mic-follow.ts` — nối vào đúng lối bám theo đang có (`score-follow.ts`); ba ràng
+  buộc chống áp lực giữ nguyên.
+- `src/hooks/useMicInput.ts`, `public/audio/mic-capture-worklet.js` — bật micro, tắt ba bộ
+  lọc dành cho cuộc gọi (lọc ồn, tự chỉnh âm lượng, khử vọng — cả ba đều phá tiếng đàn),
+  bỏ qua micro trong lúc app tự phát nhạc mẫu.
+
+*Đo trên tiếng tổng hợp* (`src/lib/mic-accuracy.test.ts`, chạy cùng `pnpm test`):
+
+| Chế độ | Kết quả |
+|---|---|
+| Tập theo bản nhạc (có biết nốt đang chờ) | ~92% nốt nghe đúng, ~1% nốt ma |
+| Luyện nhận nốt | 100% đúng phím; **0 lần** đánh sai mà bị báo "Chính xác" |
+
+Phần sót còn lại gần như toàn là nốt đánh rất nhẹ trong phòng ồn. Thử trong trình duyệt thật
+bằng micro giả lập (tiếng tổng hợp phát qua `getUserMedia` giả): Ode to Joy tay phải và tay
+trái đều 15/15, nốt đánh nhầm được nghe đúng tên và nháy đỏ đúng một lần.
+
+*Giới hạn đã biết, đã ghi cho người học ở `docs/07-doc-them/khong-lam-piano-ao.md`:*
+
+- **Hai tay cách nhau đúng một quãng tám** — mọi hoạ âm của nốt cao nằm trọn trong nốt thấp,
+  về lý thuyết không tách được. Ở những chỗ đó, nghe được một tay là tính đủ cả hai.
+- **Tiếng bíp của máy đánh nhịp** lẫn vào micro. Phần lớn bị loại (tiếng bíp chỉ có một tần
+  số, không giống nốt đàn) nhưng không phải tất cả.
+- Không có bản nhạc đang chờ thì hai nốt cách nhau một quãng tám chỉ báo nốt thấp — chủ ý,
+  vì phổ của nó y hệt phổ khi đánh lại nốt thấp.
+
+*Vì sao đáng làm* — so với nối dây, micro hơn ở ba chỗ:
+
+- **Chạy trên mọi máy, kể cả iPhone/iPad** — gỡ khoảng trống ở đoạn trên mà vẫn ở trong
+  khuôn web.
+- **Chạy với cả đàn cơ**, thứ không có cổng USB.
+- **Không cáp OTG, không cắm rút** — máy đặt lên giá nhạc là xong, khớp với hướng di động.
+
+*Ràng buộc không đổi:* ba điều giữ cho phản hồi tức thời không thành áp lực ở `AGENTS.md`
+áp nguyên cho micro — con trỏ chỉ nhích khi người học đánh, sai thì nháy rồi tắt, không
+có bảng điểm chạy trong lúc đánh. Micro là một đường vào khác của cùng lối phản hồi đang
+có, không có luật riêng. Riêng cho micro: âm thanh xử lý ngay trên máy, không ghi âm, không
+gửi đi đâu — và điều đó được **nói rõ ngay cạnh nút bật micro**, vì người học thấy trình
+duyệt hỏi quyền micro là sẽ lo.
+
+*Còn phải đo trên máy thật, theo thứ tự từ dễ tới khó* — micro không đủ chuẩn ở bước nào thì
+ghi lại và cân nhắc giấu micro khỏi bước đó, dừng ở bước 2 vẫn có lời:
+
+1. Bài luyện nhận nốt (`/note-trainer`) — mỗi lần đúng một nốt.
+2. Bài tập một tay trong *Tập bài này với đàn* (Chương 1-5).
+3. Hai tay và hợp âm (Chương 6-7).
+
+Đo trên **cả iPhone lẫn Android**, **cả đàn điện lẫn đàn cơ** nếu có, trong phòng bình
+thường chứ không phải phòng thật yên. Mọi con số chỉnh nằm ở `PITCH_TUNING` và
+`LISTENER_TUNING` đầu hai file; chỉnh xong phải chạy lại `mic-accuracy.test.ts` để chắc
+không thụt lùi.
+
+*Kết quả đo thật dẫn tới đâu:*
+
+- **Đủ chuẩn** → Giai đoạn D đổi từ "Web MIDI" thành "tập với đàn", với micro và MIDI là
+  hai đường vào; đoạn "phải bàn lại chuyện app mobile" ở trên hết lý do tồn tại.
+- **Không đủ chuẩn ở bước nào** → ghi kết quả đo vào đây (máy gì, đàn gì, sai kiểu gì).
+  Kết quả không tốt cũng phải ghi, để lần sau khỏi đo lại từ đầu.
+
 ### Giai đoạn E — Xem lại toàn bộ mô hình
 
 *Chỉ mở khi:* MIDI chạy ổn định, có từ 50 khách thật trở lên, biết tỷ lệ hoàn thành.
@@ -266,6 +346,8 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 | **Chuyển toàn bộ nội dung sang video** | Chi phí sản xuất và chi phí sửa quá lớn, lại không giải quyết được chuyện bị sao chép — xem mục 6 |
 | **Mở bán Giai đoạn 3-4, hoặc quảng bá "sắp ra mắt"** | Chưa soạn một chữ nào. Mục 4 tài liệu định hướng cấm quảng bá trước khi làm xong |
 | **Chạy quảng cáo trả tiền** | Chưa biết T3→T4. Đổ tiền vào một cái phễu thủng là cách đốt tiền nhanh nhất |
+| **App bọc web lên App Store chỉ để có MIDI cho iPhone** | Chỉ gỡ được chuyện nối dây trên iPhone, đổi lại vướng thanh toán qua store (nội dung số bán trong app phải qua hệ thống thanh toán của Apple/Google, phí 15-30%, gần như chắc chắn không được thu bằng VietQR — chưa kiểm quy định cụ thể) và rủi ro Apple từ chối app "chỉ là trang web bọc lại". Nghe qua micro (đã làm, xem Giai đoạn D) gỡ rộng hơn mà vẫn ở trên web — chỉ bàn lại nếu đo thật cho thấy micro không đủ chuẩn |
+| **Bảo người học iPhone cài một trình duyệt riêng có Web MIDI** | Có vài app như vậy trên App Store nhưng chưa kiểm app nào còn chạy tốt; và bắt người mới cài thêm một app lạ là thêm một chỗ để họ bỏ cuộc |
 | **Đổi tên gói theo kiểu "Journey 1-4" cho marketing** | Không sai, nhưng là việc trang trí. Để sau khi có trang bán hàng thật |
 
 ## 9. Điều kiện xem lại tài liệu này
@@ -287,6 +369,7 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào Giai đoạn D mục nghe tiếng đàn qua micro — ban đầu ghi là hướng cần thử, cùng ngày chủ sản phẩm chốt làm luôn nên ghi thành đã làm, kèm số đo trên tiếng tổng hợp, giới hạn đã biết, và thứ tự đo trên máy thật vì chưa có con số nào từ điện thoại đặt cạnh đàn thật. Micro là đường duy nhất tìm được để iPhone/iPad và đàn cơ cũng tập với đàn được mà vẫn ở trên web. Thêm vào mục 8 hai lối đã cân nhắc cho iPhone (app bọc web, trình duyệt riêng) và vì sao xếp sau micro |
 | 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm vào Giai đoạn D việc phải đo tỷ lệ người học dùng iOS trước khi đầu tư vào lớp MIDI — người học chủ yếu tập bằng điện thoại, mà iPhone/iPad không có Web MIDI, nên điểm khác biệt này có thể chỉ tới được một phần người học |
 | 28/08/2026 | `fix: Tắt nhiễu NOTICE của script baseline và cập nhật bảng trạng thái` | Bảng mục 1 vẫn ghi "Chưa có" cho trang mua và khoá nội dung dù cả hai đã chạy từ lâu — kiểm lại trong mã rồi sửa, và tách ra dòng riêng cho thứ thật sự còn thiếu là trang bán hàng cho người lạ |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang bản mở rộng 7 năm `du-phong-7-nam.md` |

@@ -1,15 +1,17 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import {
-  Alert, Badge, Box, Button, Card, Group, Progress, Select, Stack, Text,
+  Alert, Badge, Box, Button, Group, Progress, Stack, Text,
 } from '@mantine/core';
 import { IconPlayerRecordFilled, IconPlayerStopFilled } from '@tabler/icons-react';
 import {
   compareToScore, ComparisonResult, describePitchList, groupPlayedNotes, PlayedNote, ScoreEvent,
 } from '@/lib/score-compare';
-import { useMidiInput } from '@/hooks/useMidiInput';
+import { usePianoInput, type PianoInputMode } from '@/hooks/usePianoInput';
 import { createFollowState, followNote } from '@/lib/score-follow';
+import { pitchesForFollow } from '@/lib/mic-follow';
+import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 import type { EventResult } from '@/lib/score-compare';
 
 export function ScorePractice({
@@ -17,6 +19,7 @@ export function ScorePractice({
   onResults,
   onLiveMatch,
   onWrongNote,
+  listenPaused = false,
 }: {
   expected: ScoreEvent[];
   /** Cho khuông nhạc bên ngoài tô màu những chỗ sai sau khi bấm dừng. */
@@ -31,20 +34,27 @@ export function ScorePractice({
    * nhạc nháy đỏ chỗ đó. Nháy rồi tắt, không ghi lại thành vết.
    */
   onWrongNote: (expectedIndex: number) => void;
+  /**
+   * Bật khi app đang tự phát bản nhạc mẫu. Micro sẽ nghe thấy chính cái loa của
+   * máy và tưởng người học đang đánh — nên trong lúc đó bỏ qua mọi thứ micro nghe.
+   */
+  listenPaused?: boolean;
 }) {
   const [recording, setRecording] = useState(false);
   const [noteCount, setNoteCount] = useState(0);
   const [matchedCount, setMatchedCount] = useState(0);
   const [result, setResult] = useState<ComparisonResult | null>(null);
+  /** Con trỏ bám theo, giữ trong state để micro biết phím nào đang được chờ. */
+  const [cursor, setCursor] = useState(0);
 
   const notesRef = useRef<PlayedNote[]>([]);
   const startRef = useRef(0);
   const recordingRef = useRef(false);
   const followRef = useRef(createFollowState());
 
-  const handleNoteOn = useCallback((midi: number) => {
+  const handleNoteOn = useCallback((midi: number, atMs: number = performance.now()) => {
     if (!recordingRef.current) return;
-    notesRef.current.push({ midi, time: performance.now() - startRef.current });
+    notesRef.current.push({ midi, time: atMs - startRef.current });
     setNoteCount(notesRef.current.length);
 
     // Bám theo người học: tô xanh chỗ vừa đánh đúng, nháy đỏ chỗ đang chờ khi
@@ -53,6 +63,7 @@ export function ScorePractice({
     const next = followNote(expected, previous, midi);
     if (next === previous) return;
     followRef.current = next;
+    setCursor(next.cursor);
 
     if (next.matched.length > previous.matched.length) {
       setMatchedCount(next.matched.length);
@@ -62,11 +73,40 @@ export function ScorePractice({
     if (next.misses > previous.misses) onWrongNote(previous.cursor);
   }, [expected, onLiveMatch, onWrongNote]);
 
-  const midi = useMidiInput(handleNoteOn);
+  /**
+   * Cài đặt cho micro, suy từ bản nhạc: chỉ nghe trong tầm phím bài này dùng (nới
+   * mỗi bên một quãng tám cho nốt đánh sai), và báo trước phím đang chờ để nốt nhẹ
+   * trong hợp âm không bị lọt (xem `DetectOptions.hint`).
+   */
+  const micRange = useMemo<readonly [number, number] | undefined>(() => {
+    const all = expected.flatMap((e) => e.pitches);
+    if (all.length === 0) return undefined;
+    return [Math.max(36, Math.min(...all) - 12), Math.min(96, Math.max(...all) + 12)];
+  }, [expected]);
+  const micMaxNotes = useMemo(() => Math.min(5, Math.max(1, ...expected.map((e) => e.pitches.length)) + 1), [expected]);
+  const micHint = useMemo(
+    () => [...(expected[cursor]?.pitches ?? []), ...(expected[cursor + 1]?.pitches ?? [])],
+    [expected, cursor],
+  );
+
+  const input = usePianoInput(
+    {
+      onMidiNote: (midi) => handleNoteOn(midi),
+      onMicHeard: (event, atMs) => {
+        // Chọn và xếp thứ tự trước khi đưa vào bám theo: nốt khớp chỗ đang chờ đi
+        // trước, nốt lạ yếu bỏ đi — xem mic-follow.ts.
+        for (const pitch of pitchesForFollow(event.notes, expected, followRef.current.cursor)) {
+          handleNoteOn(pitch, atMs);
+        }
+      },
+    },
+    { hint: micHint, range: micRange, maxNotes: micMaxNotes, paused: listenPaused },
+  );
 
   const start = () => {
     notesRef.current = [];
     followRef.current = createFollowState();
+    setCursor(0);
     setNoteCount(0);
     setMatchedCount(0);
     setResult(null);
@@ -95,82 +135,43 @@ export function ScorePractice({
     setMatchedCount(0);
     notesRef.current = [];
     followRef.current = createFollowState();
+    setCursor(0);
     onResults(null);
     onLiveMatch(null);
   };
 
-  if (midi.status === 'unsupported') {
+  if (!input.mode) {
     return (
-      <Alert color="orange" title="Trình duyệt này chưa hỗ trợ kết nối đàn" mt="md">
-        Web MIDI chạy được trên Chrome, Edge, Opera và Firefox trên máy tính. Bạn vẫn nghe nhạc mẫu
-        và tập bình thường được — phần ghi và chấm chỉ là hỗ trợ thêm.
-      </Alert>
-    );
-  }
-
-  if (midi.status === 'denied') {
-    return (
-      <Alert color="red" title="Chưa kết nối được đàn" mt="md">
-        <Text size="sm" mb="xs">
-          Trình duyệt từ chối quyền truy cập thiết bị MIDI.
-          {midi.errorMessage ? ` Thông báo: ${midi.errorMessage}` : ''}
-        </Text>
-        <Button size="xs" onClick={midi.connect}>Thử lại</Button>
-      </Alert>
-    );
-  }
-
-  if (midi.status !== 'ready') {
-    return (
-      <Card withBorder padding="md" mt="md">
-        <Group justify="space-between" wrap="wrap">
-          <Box style={{ flex: 1, minWidth: 220 }}>
-            <Text fw={500}>Tập bài này với đàn</Text>
-            <Text size="sm" c="dimmed">
-              Cắm đàn vào máy rồi đánh. Nốt nào đúng sẽ xanh lên ngay trên khuông nhạc; đánh trượt
+      <Box mt="md">
+        <PianoInputChooser
+          input={input}
+          title="Tập bài này với đàn"
+          description={(
+            <>
+              Đánh trên đàn thật, app nghe và tô xanh ngay trên khuông nhạc nốt nào đúng; đánh trượt
               thì nốt đang chờ nháy đỏ một cái để bạn biết mình đang ở đâu. Không đếm giờ, không trừ
               điểm — cứ đánh lại tới khi được. Đánh xong bấm dừng để xem lại toàn bài.
-            </Text>
-          </Box>
-          <Button onClick={midi.connect} loading={midi.status === 'connecting'} data-testid="practice-connect">
-            Kết nối đàn
-          </Button>
-        </Group>
-      </Card>
+            </>
+          )}
+        />
+      </Box>
     );
   }
 
   return (
-    <Card withBorder padding="md" mt="md" data-testid="practice-panel">
-      <Group justify="space-between" align="flex-end" wrap="wrap" mb="md">
-        {midi.devices.length > 1 ? (
-          <Select
-            label="Đàn đang dùng"
-            size="xs"
-            data={midi.devices.map((d) => ({ value: d.id, label: d.name }))}
-            value={midi.selectedDeviceId}
-            onChange={(v) => v && midi.selectDevice(v)}
-            allowDeselect={false}
-            w={220}
-          />
-        ) : (
-          <Text size="sm" c="dimmed">
-            Đàn: <b>{midi.devices[0]?.name ?? 'chưa thấy đàn nào'}</b>
-          </Text>
-        )}
+    <Stack gap="sm" mt="md" data-testid="practice-panel">
+      <PianoInputStatus input={input} />
 
+      {/* Nút dừng luôn phải còn khi đang ghi, kể cả lúc micro vừa rớt hay dây vừa tuột —
+          thiếu nó thì người học kẹt lại trong trạng thái đang ghi, không có đường ra. */}
+      {(input.ready || recording) && (
         <Group gap="xs">
           {recording ? (
             <Button color="red" onClick={stop} leftSection={<IconPlayerStopFilled size={16} />} data-testid="stop-button">
               Dừng và xem lại
             </Button>
           ) : (
-            <Button
-              onClick={start}
-              disabled={midi.devices.length === 0}
-              leftSection={<IconPlayerRecordFilled size={16} />}
-              data-testid="record-button"
-            >
+            <Button onClick={start} leftSection={<IconPlayerRecordFilled size={16} />} data-testid="record-button">
               {result ? 'Ghi lại lần nữa' : 'Bắt đầu ghi'}
             </Button>
           )}
@@ -178,10 +179,6 @@ export function ScorePractice({
             <Button variant="subtle" color="gray" onClick={clear}>Xóa kết quả</Button>
           )}
         </Group>
-      </Group>
-
-      {midi.devices.length === 0 && (
-        <Alert color="yellow">Chưa thấy đàn nào. Kiểm tra dây USB và nguồn đàn — cắm vào là tự nhận.</Alert>
       )}
 
       {recording && (
@@ -193,12 +190,12 @@ export function ScorePractice({
         </Alert>
       )}
 
-      {result && !recording && <ResultView result={result} />}
-    </Card>
+      {result && !recording && <ResultView result={result} mode={input.mode} />}
+    </Stack>
   );
 }
 
-function ResultView({ result }: { result: ComparisonResult }) {
+function ResultView({ result, mode }: { result: ComparisonResult; mode: PianoInputMode }) {
   const { accuracy, correctCount, totalExpected, results, extras, timing } = result;
   const wrong = results.filter((r) => r.status === 'wrong');
   const missing = results.filter((r) => r.status === 'missing');
@@ -206,8 +203,9 @@ function ResultView({ result }: { result: ComparisonResult }) {
   if (totalExpected > 0 && correctCount === 0 && extras.length === 0 && missing.length === totalExpected) {
     return (
       <Alert color="gray" title="Không nhận được nốt nào" data-testid="result-empty">
-        Bản ghi trống. Kiểm tra xem đã chọn đúng đàn chưa, và thử bấm vài phím xem mục &quot;phím đang
-        bấm&quot; ở trang Luyện nhận nốt có phản hồi không.
+        {mode === 'mic'
+          ? 'Bản ghi trống. Nhìn thanh mức âm ở trên khi bạn đánh: thanh không nhúc nhích thì micro không thu được gì — đặt máy gần đàn hơn, hoặc vặn to đàn điện lên.'
+          : 'Bản ghi trống. Kiểm tra xem đã chọn đúng đàn chưa, và thử bấm vài phím xem mục "Phím đang bấm" ở trên có phản hồi không.'}
       </Alert>
     );
   }

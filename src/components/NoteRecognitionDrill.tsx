@@ -3,12 +3,14 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import {
-  Alert, Badge, Box, Button, Card, Group, Progress, SegmentedControl, Select, Stack, Text,
+  Alert, Badge, Box, Button, Card, Group, Progress, SegmentedControl, Stack, Text,
 } from '@mantine/core';
 import {
   checkAnswer, describeMidiNote, DRILL_LEVELS, DrillNote, findLevel, pickNextNote, singleNoteAbc,
 } from '@/lib/midi-notes';
-import { useMidiInput } from '@/hooks/useMidiInput';
+import { usePianoInput } from '@/hooks/usePianoInput';
+import { answerFromHeard } from '@/lib/mic-follow';
+import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
@@ -19,7 +21,6 @@ type Feedback =
   | { kind: 'wrong-octave'; played: number }
   | { kind: 'wrong'; played: number };
 
-/**
 /**
  * Nhãn của thanh chọn phạm vi dài hơn một phần ba bề ngang máy điện thoại, nên
  * buộc phải cho nó xuống dòng. Thả cho trình duyệt tự chọn chỗ ngắt thì ra
@@ -83,7 +84,23 @@ export function NoteRecognitionDrill() {
     setFeedback(verdict === 'wrong-octave' ? { kind: 'wrong-octave', played } : { kind: 'wrong', played });
   };
 
-  const midi = useMidiInput(handleNoteOn);
+  // Micro chỉ nghe trong tầm của mức đang chọn, nới mỗi bên một quãng tám để vẫn
+  // bắt được khi người học đặt nhầm tay sang quãng khác (thành câu "sai quãng tám").
+  const levelMidis = level.notes.map((n) => n.midi);
+  const micRange: [number, number] = [Math.min(...levelMidis) - 12, Math.max(...levelMidis) + 12];
+
+  const input = usePianoInput(
+    {
+      onMidiNote: handleNoteOn,
+      onMicHeard: (event) => {
+        const answer = answerFromHeard(event.notes, current.midi);
+        if (answer !== null) handleNoteOn(answer);
+      },
+    },
+    // Báo trước nốt đang hỏi: đã kiểm trên hàng chục lần trả lời sai rằng gợi ý này
+    // không bao giờ biến một lần đánh sai thành "Chính xác" (mic-accuracy.test.ts).
+    { hint: [current.midi], range: micRange, maxNotes: 2 },
+  );
 
   // Vẽ lại khuông nhạc mỗi khi đổi nốt hoặc đổi khóa nhạc.
   useEffect(() => {
@@ -146,7 +163,15 @@ export function NoteRecognitionDrill() {
         <Text size="xs" c="dimmed" mt={6}>{level.hint}</Text>
       </Box>
 
-      <MidiPanel midi={midi} />
+      {input.mode ? (
+        <PianoInputStatus input={input} />
+      ) : (
+        <PianoInputChooser
+          input={input}
+          title="Để app nghe bạn đánh"
+          description="Chọn một cách để app biết bạn vừa bấm phím nào trên đàn thật."
+        />
+      )}
 
       <Card withBorder padding="lg" data-testid="drill-card">
         <Stack align="center" gap="md">
@@ -186,8 +211,11 @@ export function NoteRecognitionDrill() {
             )}
             {feedback.kind === 'wrong' && (
               <Alert color="orange" title="Chưa đúng" data-testid="feedback-wrong">
-                Bạn vừa bấm <b>{describeMidiNote(feedback.played)}</b>. Cứ từ từ đếm dòng và khe trên khuông
-                nhạc rồi thử lại — không có giới hạn thời gian nào cả.
+                {/* Với micro thì nói "máy nghe thấy", không nói "bạn vừa bấm": micro có thể
+                    nghe nhầm, và người học đánh đúng mà bị bảo là bấm sai thì mất lòng tin. */}
+                {input.mode === 'mic' ? 'Máy nghe thấy' : 'Bạn vừa bấm'} <b>{describeMidiNote(feedback.played)}</b>.
+                Cứ từ từ đếm dòng và khe trên khuông nhạc rồi thử lại — không có giới hạn thời gian nào cả.
+                {input.mode === 'mic' && ' Nếu chắc mình đánh đúng thì có thể máy nghe nhầm: đánh lại rõ hơn một chút.'}
               </Alert>
             )}
           </Box>
@@ -223,79 +251,5 @@ export function NoteRecognitionDrill() {
         )}
       </Card>
     </Stack>
-  );
-}
-
-function MidiPanel({ midi }: { midi: ReturnType<typeof useMidiInput> }) {
-  const { status, errorMessage, devices, selectedDeviceId, selectDevice, connect, heldNotes } = midi;
-
-  if (status === 'unsupported') {
-    return (
-      <Alert color="orange" title="Trình duyệt này chưa hỗ trợ kết nối đàn">
-        Web MIDI hiện chạy được trên Chrome, Edge, Opera và Firefox trên máy tính. Safari và các trình
-        duyệt trên iPhone/iPad thì chưa. Bạn vẫn học bình thường được — bài luyện nhận nốt chỉ là
-        công cụ hỗ trợ thêm, không bắt buộc.
-      </Alert>
-    );
-  }
-
-  if (status === 'denied') {
-    return (
-      <Alert color="red" title="Chưa kết nối được">
-        <Text size="sm" mb="xs">
-          Trình duyệt từ chối quyền truy cập thiết bị MIDI. Thường là do bạn bấm &quot;Chặn&quot; ở hộp thoại
-          xin quyền, hoặc trang đang mở bằng http thay vì https.
-          {errorMessage ? ` Thông báo từ trình duyệt: ${errorMessage}` : ''}
-        </Text>
-        <Button size="xs" onClick={connect}>Thử lại</Button>
-      </Alert>
-    );
-  }
-
-  if (status !== 'ready') {
-    return (
-      <Card withBorder padding="md">
-        <Group justify="space-between" wrap="wrap">
-          <Box>
-            <Text fw={500}>Kết nối đàn</Text>
-            <Text size="sm" c="dimmed">
-              Cắm dây USB từ đàn vào máy tính, rồi bấm nút bên cạnh. Trình duyệt sẽ hỏi quyền một lần.
-            </Text>
-          </Box>
-          <Button onClick={connect} loading={status === 'connecting'} data-testid="connect-button">
-            Kết nối đàn
-          </Button>
-        </Group>
-      </Card>
-    );
-  }
-
-  if (devices.length === 0) {
-    return (
-      <Alert color="yellow" title="Đã bật Web MIDI nhưng chưa thấy đàn nào">
-        Kiểm tra lại dây USB và bật nguồn đàn. Cắm vào là danh sách tự cập nhật, không cần tải lại trang.
-      </Alert>
-    );
-  }
-
-  return (
-    <Card withBorder padding="md" data-testid="midi-ready">
-      <Group justify="space-between" align="flex-end" wrap="wrap">
-        <Select
-          label="Đàn đang dùng"
-          data={devices.map((d) => ({ value: d.id, label: d.name }))}
-          value={selectedDeviceId}
-          onChange={(v) => v && selectDevice(v)}
-          allowDeselect={false}
-          w={260}
-        />
-        <Box>
-          <Text size="sm" c="dimmed">Phím đang bấm</Text>
-          <Text fw={500} data-testid="held-notes">
-            {heldNotes.length === 0 ? '—' : heldNotes.map(describeMidiNote).join(', ')}
-          </Text>
-        </Box>
-      </Group>
-    </Card>
   );
 }

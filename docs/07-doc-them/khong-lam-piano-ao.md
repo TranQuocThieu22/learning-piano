@@ -40,15 +40,24 @@ Nếu bạn chỉ muốn nghe bài tập vang lên như thế nào, mọi khối
 
 ## Vậy còn hình bàn phím tương tác thì sao?
 
-Bỏ piano ảo **không có nghĩa là bỏ mọi thứ tương tác**. Có hai hướng vẫn giữ được phần hữu ích mà không mắc các nhược điểm trên:
+Bỏ piano ảo **không có nghĩa là bỏ mọi thứ tương tác**. Thứ app làm thay vào đó là **nghe chính cây đàn thật của bạn** — bạn vẫn tập bằng tay thật, trên phím thật, nhưng có phản hồi ngay:
 
-**Bài luyện nhận nốt.** Màn hình hiện một nốt trên khuông nhạc, bạn bấm phím tương ứng, app chấm đúng sai và đo tốc độ phản xạ. Việc này thuần túy là luyện **mắt nhận ra nốt rồi nhớ ra vị trí phím** — không dính gì tới kỹ thuật ngón, nên bấm chuột hoàn toàn hợp lý. Bạn có thể tập lúc chờ xe, giờ nghỉ trưa, bất cứ đâu.
+**Bài luyện nhận nốt.** Màn hình hiện một nốt trên khuông nhạc, bạn bấm phím tương ứng trên đàn, app báo đúng hay sai — và nếu đúng tên nốt mà sai quãng tám thì nói rõ điều đó. Đây là bài luyện **mắt nhận ra nốt rồi nhớ ra vị trí phím**, mỗi lần năm phút là đủ.
 
-**Kết nối đàn thật vào máy tính.** Hầu hết đàn phím điện đời nay đều có cổng **USB MIDI** để cắm vào máy tính. Khi đó app có thể **nghe trực tiếp những nốt bạn bấm trên đàn thật** và tự chấm xem đúng nốt chưa, đúng nhịp chưa, sai ở ô nhịp nào. Đây mới là hướng đáng giá nhất: bạn vẫn tập trên đàn thật với kỹ thuật thật, nhưng có phản hồi ngay lập tức.
+**Tập bài này với đàn.** Dưới mỗi bản nhạc trong bài tập có nút này. Bạn đánh tới đâu, nốt trên khuông sáng xanh tới đó; bấm trượt thì chỗ đang chờ nháy đỏ một cái rồi thôi. Không có gì tự chạy — con trỏ chỉ nhích khi bạn bấm phím, dừng bao lâu cũng được. Đánh xong bấm dừng thì app chỉ ra chỗ nào sai, chỗ nào bỏ sót, và nhịp của bạn có đều không.
 
-*(Tính năng này sẽ chỉ chạy được với đàn có cổng MIDI, và trên trình duyệt hỗ trợ Web MIDI như Chrome hoặc Edge — Safari hiện chưa hỗ trợ.)*
+Có hai cách để app nghe được bạn:
 
-Hai hướng này đang nằm trong danh sách cân nhắc, sẽ làm sau khi giáo trình đủ dày.
+- **Qua micro** — cách mặc định. Chỉ cần chiếc điện thoại hay máy tính bảng đặt trên giá nhạc, chạy trên cả iPhone, iPad, Android, với cả đàn cơ lẫn đàn điện. Âm thanh chỉ được xử lý ngay trên máy để nhận ra nốt — không ghi âm, không lưu, không gửi đi đâu.
+- **Qua dây MIDI** — chính xác tuyệt đối, cho đàn có cổng USB: cắm vào điện thoại Android bằng cáp OTG, hoặc vào máy tính. iPhone và iPad chưa nối dây được.
+
+Micro thì tiện nhưng không hoàn hảo, nói trước để bạn khỏi bất ngờ:
+
+- **Phòng ồn thì máy dễ nghe nhầm.** Quạt to, tivi, người nói chuyện, và cả **máy đánh nhịp phát tiếng bíp** đều lẫn vào. Tập với micro thì nên đếm nhịp bằng miệng, hoặc để máy đánh nhịp nhỏ tiếng.
+- **Hai tay cách nhau đúng một quãng tám** (như thang âm hai tay ở Chương 6): về âm thanh, nốt cao nằm trọn trong nốt thấp, nên máy không phân biệt được bạn đánh một tay hay hai tay ở những chỗ đó.
+- Máy báo sai mà bạn chắc mình đánh đúng thì cứ đánh lại rõ hơn một chút — không có gì bị trừ cả.
+
+Cả hai cách đều là **hỗ trợ thêm**. Không dùng tới chúng thì bạn vẫn học đủ mọi bài như bình thường.
 
 ---
 

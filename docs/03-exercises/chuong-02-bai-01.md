@@ -25,7 +25,7 @@ Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) v�
 
 **2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
 - **Mục tiêu:** Cảm nhận nhịp điệu bằng chính cơ thể.
-- **Cách làm:** Hãy nghe mẫu Bài tập 2A trên máy tính. Sau đó tắt máy đi, bạn tự vỗ tay và miệng tự hát giai điệu: *"Đô Rê Mi Pha... Sol (ngân dài 2 nhịp)... Mi (ngân 2 nhịp)..."* để quen với việc giữ hơi cho nốt Trắng và Tròn.
+- **Cách làm:** Hãy bấm nghe mẫu Bài tập 2A. Sau đó tắt đi, bạn tự vỗ tay và miệng tự hát giai điệu: *"Đô Rê Mi Pha... Sol (ngân dài 2 nhịp)... Mi (ngân 2 nhịp)..."* để quen với việc giữ hơi cho nốt Trắng và Tròn.
 
 ## Chuẩn bị vị trí tay (Giống bài 1)
 - **Tay phải (Treble Clef):** Ngón 1 lên Đô (C) giữa. Các ngón 2,3,4,5 lên D,E,F,G.

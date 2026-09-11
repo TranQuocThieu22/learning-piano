@@ -12,8 +12,8 @@ export default async function NoteRecognitionPage() {
       <Container size="sm" px={0}>
         <Title order={2} mb="xs">Luyện nhận nốt</Title>
         <Text c="dimmed" mb="lg">
-          Nối đàn vào máy tính, màn hình hiện một nốt, bạn bấm phím tương ứng trên đàn thật.
-          Không đếm giờ, không chấm điểm khi đang chơi — cứ chậm bao nhiêu tùy bạn.
+          Màn hình hiện một nốt, bạn bấm phím tương ứng trên đàn thật — app nghe qua micro của
+          điện thoại. Không đếm giờ, không chấm điểm khi đang chơi — cứ chậm bao nhiêu tùy bạn.
         </Text>
 
         <NoteRecognitionDrill />
@@ -52,13 +52,19 @@ export default async function NoteRecognitionPage() {
 
           <Title order={4} mt="md">Cần gì để chạy được</Title>
           <Text size="sm">
-            Một cây đàn có cổng USB hoặc MIDI, dây nối tới máy tính, và trình duyệt Chrome, Edge,
-            Opera hoặc Firefox trên máy tính. Safari và các trình duyệt trên iPhone/iPad chưa hỗ trợ
-            Web MIDI. Đàn không cần cài phần mềm gì thêm.
+            <b>Nghe qua micro</b> — chỉ cần chiếc điện thoại hay máy tính bảng bạn đang cầm, đặt trên
+            giá nhạc cạnh đàn. Chạy trên cả iPhone, iPad và Android, với cả đàn cơ lẫn đàn điện.
+            Âm thanh chỉ được xử lý ngay trên máy để nhận ra nốt, không ghi âm, không gửi đi đâu.
+            Phòng càng yên thì máy nghe càng chuẩn.
+          </Text>
+          <Text size="sm">
+            <b>Nối dây MIDI</b> — chính xác tuyệt đối, dành cho đàn có cổng USB: cắm vào điện thoại
+            Android bằng cáp OTG (Chrome hoặc Edge), hoặc vào máy tính. iPhone và iPad chưa nối dây
+            được — dùng micro là đủ.
           </Text>
           <Text size="sm" c="dimmed">
-            Đây là công cụ hỗ trợ, không phải phần bắt buộc của giáo trình. Không có đàn cắm được
-            vào máy tính thì bạn vẫn học đủ mọi bài như bình thường.
+            Đây là công cụ hỗ trợ, không phải phần bắt buộc của giáo trình. Không dùng tới nó thì bạn
+            vẫn học đủ mọi bài như bình thường.
           </Text>
         </Stack>
       </Container>
