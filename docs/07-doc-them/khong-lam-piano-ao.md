@@ -46,6 +46,8 @@ Bỏ piano ảo **không có nghĩa là bỏ mọi thứ tương tác**. Thứ a
 
 **Tập bài này với đàn.** Dưới mỗi bản nhạc trong bài tập có nút này. Bạn đánh tới đâu, nốt trên khuông sáng xanh tới đó; bấm trượt thì chỗ đang chờ nháy đỏ một cái rồi thôi. Không có gì tự chạy — con trỏ chỉ nhích khi bạn bấm phím, dừng bao lâu cũng được. Đánh xong bấm dừng thì app chỉ ra chỗ nào sai, chỗ nào bỏ sót, và nhịp của bạn có đều không.
 
+App **đi tuần tự từng nốt**: nó đợi đúng nốt đang chờ, không tự nhảy sang chỗ khác vì bạn lỡ bấm trúng một nốt nằm phía sau. Nếu bạn muốn bỏ qua một nốt — hoặc micro mãi không nghe được nốt đó — thì bấm **"Bỏ qua nốt này"**, chỗ bỏ qua không bị tính là đánh sai.
+
 Có hai cách để app nghe được bạn:
 
 - **Qua micro** — cách mặc định. Chỉ cần chiếc điện thoại hay máy tính bảng đặt trên giá nhạc, chạy trên cả iPhone, iPad, Android, với cả đàn cơ lẫn đàn điện. Âm thanh chỉ được xử lý ngay trên máy để nhận ra nốt — không ghi âm, không lưu, không gửi đi đâu.

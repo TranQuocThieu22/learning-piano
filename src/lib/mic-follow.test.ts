@@ -60,9 +60,16 @@ describe('pitchesForFollow', () => {
     expect(pitchesForFollow(heard([72, 1]), expected, 0)).toEqual([72]);
   });
 
-  it('bỏ sót một nốt rồi đánh nốt sau: đưa nốt sau vào để bắt lại nhịp', () => {
+  /*
+   * Bám theo đi tuần tự tuyệt đối (xem `score-follow.ts`), nên chỗ này không còn
+   * việc "bắt lại nhịp" nữa: nghe thấy nốt phía sau cũng chỉ là một nốt không
+   * khớp chỗ đang chờ, và chỉ được báo sai MỘT lần.
+   */
+  it('nghe nhiều nốt mà không nốt nào khớp: chỉ đưa nốt mạnh nhất', () => {
     const expected = score(60, 62, 64);
     expect(pitchesForFollow(heard([70, 0.5], [62, 1]), expected, 0)).toEqual([62]);
+    expect(pitchesForFollow(heard([62, 1], [70, 0.5]), expected, 0)).toEqual([62]);
+    expect(pitchesForFollow(heard([70, 0.9], [64, 0.3]), expected, 0)).toEqual([70]);
   });
 
   it('không nghe được gì thì không đưa gì', () => {

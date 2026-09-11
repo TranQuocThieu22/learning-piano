@@ -1,6 +1,5 @@
 import type { DetectedNote } from './mic-pitch';
 import type { ScoreEvent } from './score-compare';
-import { LOOKAHEAD } from './score-follow';
 
 /**
  * Nối những gì micro nghe được vào hai chỗ dùng nó: bám theo bản nhạc
@@ -52,12 +51,20 @@ export function pitchesForFollow(heard: DetectedNote[], expected: ScoreEvent[], 
     return [...matched, ...extras];
   }
 
-  // Không khớp chỗ đang chờ. Nếu khớp một chỗ ngay phía trước (người học bỏ sót
-  // một nốt rồi đi tiếp) thì đưa nốt đó — `followNote` tự lo chuyện nhìn trước.
-  const ahead = new Set(expected.slice(cursor + 1, cursor + 1 + LOOKAHEAD).flatMap((e) => e.pitches));
-  const aheadHit = heard.find((n) => ahead.has(n.midi));
-  if (aheadHit) return [aheadHit.midi];
-  return heard.length > 0 ? [heard[0].midi] : [];
+  /*
+   * Không khớp chỗ đang chờ: đưa đúng MỘT nốt — nốt mạnh nhất — để người học
+   * đánh một phím sai thì được báo sai một lần, không phải ba.
+   *
+   * Trước đây chỗ này còn dò xem nốt nghe được có trùng nốt nào ở ngay phía
+   * trước không, rồi đưa nốt đó vào để `followNote` bắt nhịp lại. Đã bỏ: bám
+   * theo nay đi tuần tự tuyệt đối, người học tự bấm *Bỏ qua nốt này* khi muốn
+   * (xem `score-follow.ts`).
+   *
+   * Và phải chọn nốt mạnh nhất thật, chứ không phải nốt đầu danh sách: micro trả
+   * về theo thứ tự dò được, không theo độ mạnh.
+   */
+  if (heard.length === 0) return [];
+  return [heard.reduce((manh, n) => (n.strength > manh.strength ? n : manh)).midi];
 }
 
 /**

@@ -4,12 +4,12 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 import {
   Alert, Badge, Box, Button, Group, Progress, Stack, Text,
 } from '@mantine/core';
-import { IconPlayerRecordFilled, IconPlayerStopFilled } from '@tabler/icons-react';
+import { IconPlayerRecordFilled, IconPlayerSkipForwardFilled, IconPlayerStopFilled } from '@tabler/icons-react';
 import {
   compareToScore, ComparisonResult, describePitchList, groupPlayedNotes, PlayedNote, ScoreEvent,
 } from '@/lib/score-compare';
 import { usePianoInput, type PianoInputMode } from '@/hooks/usePianoInput';
-import { createFollowState, followNote } from '@/lib/score-follow';
+import { createFollowState, followNote, skipCurrent } from '@/lib/score-follow';
 import { pitchesForFollow } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 import type { EventResult } from '@/lib/score-compare';
@@ -46,6 +46,13 @@ export function ScorePractice({
   const [result, setResult] = useState<ComparisonResult | null>(null);
   /** Con trỏ bám theo, giữ trong state để micro biết phím nào đang được chờ. */
   const [cursor, setCursor] = useState(0);
+  /**
+   * Số lần bấm trượt liên tiếp ở đúng chỗ đang chờ.
+   *
+   * Chỉ dùng để đến lúc nào thì mời người học bấm *Bỏ qua*. Cố ý KHÔNG hiện con
+   * số này ra: một cái nháy đỏ là báo hiệu, một con số cứ tăng là áp lực.
+   */
+  const [stuckAt, setStuckAt] = useState(0);
 
   const notesRef = useRef<PlayedNote[]>([]);
   const startRef = useRef(0);
@@ -64,6 +71,7 @@ export function ScorePractice({
     if (next === previous) return;
     followRef.current = next;
     setCursor(next.cursor);
+    setStuckAt(next.missesAtCursor);
 
     if (next.matched.length > previous.matched.length) {
       setMatchedCount(next.matched.length);
@@ -72,6 +80,21 @@ export function ScorePractice({
     // Lấy con trỏ TRƯỚC khi bấm: đó mới là nốt người học đáng lẽ phải đánh.
     if (next.misses > previous.misses) onWrongNote(previous.cursor);
   }, [expected, onLiveMatch, onWrongNote]);
+
+  /**
+   * Cho qua nốt đang chờ, do người học tự bấm.
+   *
+   * Bám theo đi tuần tự tuyệt đối, nên khi micro không nghe được một nốt thì con
+   * trỏ đứng đó mãi. Đây là đường ra — và nó nằm ở tay người học chứ không phải
+   * ở máy đoán, xem `score-follow.ts`.
+   */
+  const skip = useCallback(() => {
+    const next = skipCurrent(expected, followRef.current);
+    if (next === followRef.current) return;
+    followRef.current = next;
+    setCursor(next.cursor);
+    setStuckAt(0);
+  }, [expected]);
 
   /**
    * Cài đặt cho micro, suy từ bản nhạc: chỉ nghe trong tầm phím bài này dùng (nới
@@ -109,6 +132,7 @@ export function ScorePractice({
     setCursor(0);
     setNoteCount(0);
     setMatchedCount(0);
+    setStuckAt(0);
     setResult(null);
     onResults(null);
     onLiveMatch([]);
@@ -136,6 +160,7 @@ export function ScorePractice({
     notesRef.current = [];
     followRef.current = createFollowState();
     setCursor(0);
+    setStuckAt(0);
     onResults(null);
     onLiveMatch(null);
   };
@@ -149,8 +174,10 @@ export function ScorePractice({
           description={(
             <>
               Đánh trên đàn thật, app nghe và tô xanh ngay trên khuông nhạc nốt nào đúng; đánh trượt
-              thì nốt đang chờ nháy đỏ một cái để bạn biết mình đang ở đâu. Không đếm giờ, không trừ
-              điểm — cứ đánh lại tới khi được. Đánh xong bấm dừng để xem lại toàn bài.
+              thì nốt đang chờ nháy đỏ một cái để bạn biết mình đang ở đâu. App đi <b>tuần tự từng
+              nốt</b> và đợi đúng nốt đang chờ, không tự nhảy đi đâu cả — muốn bỏ qua một nốt thì có
+              nút riêng. Không đếm giờ, không trừ điểm — cứ đánh lại tới khi được. Đánh xong bấm dừng
+              để xem lại toàn bài.
             </>
           )}
         />
@@ -167,9 +194,23 @@ export function ScorePractice({
       {(input.ready || recording) && (
         <Group gap="xs">
           {recording ? (
-            <Button color="red" onClick={stop} leftSection={<IconPlayerStopFilled size={16} />} data-testid="stop-button">
-              Dừng và xem lại
-            </Button>
+            <>
+              <Button color="red" onClick={stop} leftSection={<IconPlayerStopFilled size={16} />} data-testid="stop-button">
+                Dừng và xem lại
+              </Button>
+              {/* Luôn có mặt trong lúc ghi, không chờ đủ số lần sai mới hiện: nút
+                  xuất hiện đột ngột lúc đang đánh làm giật mình hơn là giúp. */}
+              <Button
+                variant="light"
+                color="gray"
+                onClick={skip}
+                leftSection={<IconPlayerSkipForwardFilled size={16} />}
+                data-testid="skip-button"
+                disabled={cursor >= expected.length}
+              >
+                Bỏ qua nốt này
+              </Button>
+            </>
           ) : (
             <Button onClick={start} leftSection={<IconPlayerRecordFilled size={16} />} data-testid="record-button">
               {result ? 'Ghi lại lần nữa' : 'Bắt đầu ghi'}
@@ -187,6 +228,13 @@ export function ScorePractice({
           <b data-testid="note-count">{noteCount}</b> nốt, xanh được{' '}
           <b data-testid="matched-count">{matchedCount}</b>/{expected.length} chỗ trên khuông. Đánh
           xong thì bấm &quot;Dừng và xem lại&quot;.
+          {stuckAt >= 3 && (
+            <Text size="sm" mt="xs" data-testid="stuck-hint">
+              Đang kẹt ở một chỗ? App đi <b>tuần tự từng nốt</b>, nên nó vẫn đợi đúng nốt đang
+              nháy đỏ. Nếu nốt đó micro không nghe được, hoặc bạn muốn bỏ qua, bấm{' '}
+              <b>&quot;Bỏ qua nốt này&quot;</b> — chỗ bỏ qua không bị tính là đánh sai.
+            </Text>
+          )}
         </Alert>
       )}
 

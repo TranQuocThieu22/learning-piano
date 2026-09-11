@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFollowState, followNote, LOOKAHEAD } from './score-follow';
+import { createFollowState, followNote, skipCurrent } from './score-follow';
 import type { ScoreEvent } from './score-compare';
 
 /** Dựng chuỗi sự kiện từ danh sách cao độ, mỗi phần tử là một thời điểm. */
@@ -103,14 +103,45 @@ describe('followNote — hợp âm', () => {
   });
 });
 
-describe('followNote — lần trượt đầu tiên luôn đi tuần tự', () => {
-  it('bấm nhầm đúng cao độ của nốt kế tiếp thì KHÔNG được xanh', () => {
+describe('followNote — đi tuần tự tuyệt đối, không nhảy cóc', () => {
+  /*
+   * **Bộ ca test sinh ra từ một lỗi người dùng báo:** *"chưa kịp gõ nốt thứ nhất
+   * mà gõ nhầm nốt thứ 3 thì nhảy sang nốt 3 luôn"*.
+   *
+   * Bản cũ có cơ chế nhìn trước hai sự kiện, mở khoá sau lần trượt đầu tiên. Bấm
+   * nhầm một phím rồi bấm lại chính nó — phản xạ tự nhiên khi màn hình không phản
+   * ứng — là đủ để con trỏ nhảy qua những nốt chưa ai đánh.
+   *
+   * Luật bây giờ chỉ có một câu: **con trỏ chỉ nhích khi bấm đúng chỗ đang chờ.**
+   */
+  it('bấm đúng cao độ của nốt kế tiếp thì KHÔNG được xanh, dù bấm bao nhiêu lần', () => {
     const expected = score(DO, RE, MI, PHA);
-    // Đang chờ Rê, bấm nhầm Mi — Mi là nốt ngay sau, nằm trong tầm nhìn trước.
-    const state = play(expected, [DO, MI]);
+    const state = play(expected, [DO, MI, MI, MI]);
     expect(state.matched).toEqual([0]);
     expect(state.cursor).toBe(1);
-    expect(state.misses).toBe(1);
+    expect(state.misses).toBe(3);
+  });
+
+  it('bấm nốt thứ ba khi đang chờ nốt đầu thì con trỏ vẫn đứng ở nốt đầu', () => {
+    const expected = score(DO, RE, MI, PHA);
+    const state = play(expected, [MI, MI]);
+    expect(state.matched).toEqual([]);
+    expect(state.cursor).toBe(0);
+    expect(state.misses).toBe(2);
+  });
+
+  it('bỏ sót một nốt rồi đánh tiếp thì phần sau vẫn không xanh — con trỏ chờ ở chỗ bị sót', () => {
+    const expected = score(DO, RE, MI, PHA);
+    const state = play(expected, [DO, MI, PHA]);
+    expect(state.matched).toEqual([0]);
+    expect(state.cursor).toBe(1);
+  });
+
+  it('quay lại đánh đúng nốt đang chờ thì đi tiếp bình thường', () => {
+    const expected = score(DO, RE, MI);
+    const state = play(expected, [DO, MI, MI, RE, MI]);
+    expect(state.matched).toEqual([0, 1, 2]);
+    expect(state.missesAtCursor).toBe(0);
   });
 
   it('trượt một cái rồi bấm đúng lại thì vẫn xanh, coi như chưa có gì', () => {
@@ -129,44 +160,43 @@ describe('followNote — lần trượt đầu tiên luôn đi tuần tự', () 
   });
 });
 
-describe('followNote — nhìn trước, chỉ mở sau khi đã báo sai', () => {
-  it('bỏ sót một nốt thì con trỏ theo kịp ở lần bấm thứ hai', () => {
-    const expected = score(DO, RE, MI, PHA);
-    // Người học nhảy qua Rê. Mi lần đầu chỉ báo sai; bấm Mi lần nữa mới bắt nhịp.
-    const state = play(expected, [DO, MI, MI, PHA]);
-    expect(state.matched).toEqual([0, 2, 3]);
-    expect(state.misses).toBe(1);
-  });
-
-  it('nhảy xa quá tầm nhìn trước thì vẫn tính là sai, không nhảy lung tung', () => {
-    const expected = score(DO, RE, MI, PHA, SOL);
-    // SOL nằm cách con trỏ 4 bậc, xa hơn LOOKAHEAD. Bấm hai lần cũng không ăn.
-    const state = play(expected, [DO, SOL, SOL]);
-    expect(state.matched).toEqual([0]);
+describe('skipCurrent — người học tự cho qua', () => {
+  it('nhích con trỏ mà không tô xanh, cũng không tính là sai', () => {
+    const expected = score(DO, RE, MI);
+    const state = skipCurrent(expected, createFollowState());
     expect(state.cursor).toBe(1);
-    expect(state.misses).toBe(2);
+    expect(state.matched).toEqual([]);
+    expect(state.skipped).toEqual([0]);
+    expect(state.misses).toBe(0);
   });
 
-  it('LOOKAHEAD nhận giá trị truyền vào', () => {
-    const expected = score(DO, RE, MI, PHA, SOL);
-    const daTruot = followNote(expected, play(expected, [DO]), MI, 0);
-    expect(followNote(expected, daTruot, MI, 0).matched).toEqual([0]);
-
-    const loose = followNote(expected, followNote(expected, play(expected, [DO]), SOL, 4), SOL, 4);
-    expect(loose.matched).toEqual([0, 4]);
+  it('bỏ qua xong thì đánh tiếp bình thường', () => {
+    const expected = score(DO, RE, MI);
+    let state = skipCurrent(expected, createFollowState());
+    state = followNote(expected, state, RE);
+    state = followNote(expected, state, MI);
+    expect(state.matched).toEqual([1, 2]);
+    expect(state.skipped).toEqual([0]);
   });
 
-  it('nhìn trước tới một hợp âm thì vẫn phải bấm đủ mới xanh', () => {
-    const expected = score(DO, RE, [MI, SOL]);
-    const state = play(expected, [DO, MI, MI]);
-    expect(state.matched).toEqual([0]);
-    expect(state.cursor).toBe(2);
-    expect(state.collected).toEqual([MI]);
-
-    expect(followNote(expected, state, SOL).matched).toEqual([0, 2]);
+  it('xoá luôn mấy nốt đã bấm dở của hợp âm đang chờ', () => {
+    const expected = score([DO, MI], RE);
+    const daBamMotNot = followNote(expected, createFollowState(), DO);
+    expect(daBamMotNot.collected).toEqual([DO]);
+    expect(skipCurrent(expected, daBamMotNot).collected).toEqual([]);
   });
 
-  it('tầm nhìn trước mặc định là 2', () => {
-    expect(LOOKAHEAD).toBe(2);
+  it('đặt lại bộ đếm kẹt, để giao diện thôi mời bấm bỏ qua', () => {
+    const expected = score(DO, RE);
+    const daTruot = play(expected, [SOL, SOL, SOL]);
+    expect(daTruot.missesAtCursor).toBe(3);
+    expect(skipCurrent(expected, daTruot).missesAtCursor).toBe(0);
+  });
+
+  it('hết bài rồi thì bấm bỏ qua không sinh gì', () => {
+    const expected = score(DO, RE);
+    const xong = play(expected, [DO, RE]);
+    expect(skipCurrent(expected, xong)).toBe(xong);
+    expect(skipCurrent([], createFollowState()).cursor).toBe(0);
   });
 });

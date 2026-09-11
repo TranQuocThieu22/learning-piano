@@ -136,6 +136,12 @@
     - **Ode to Joy: câu 3 Claude chép từ trí nhớ hoá ra đúng.** Hai bản số hoá độc lập đều
       khớp từng nốt, kể cả nốt Sol thấp ô 12. Không sửa gì, chỉ ghi nguồn đối chiếu vào
       trường `nguon`.
+  - **Bỏ hẳn cơ chế nhìn trước của phần bám theo bản nhạc.** Người dùng báo: *"chưa kịp gõ
+    nốt thứ nhất mà gõ nhầm nốt thứ 3 thì nhảy sang nốt 3 luôn"*. Đúng — bản cũ nhìn trước
+    hai sự kiện, mở khoá sau lần trượt đầu tiên, nên bấm nhầm một phím rồi bấm lại chính nó
+    (phản xạ khi màn hình không phản ứng) là con trỏ nhảy qua mấy nốt chưa ai đánh. Nay đi
+    tuần tự tuyệt đối, và đường ra khi kẹt là **nút *Bỏ qua nốt này*** do người học tự bấm.
+    Chốt thành điều thứ tư trong danh sách "đừng phá" ở `AGENTS.md`.
   - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
     nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
     được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca
@@ -191,6 +197,12 @@
   tên tác giả là *nghĩa vụ*, không phải *giấy phép*. Ai chép ra — người hay AI — không
   liên quan tới bản quyền, vì thứ được bảo hộ là bản thân tác phẩm chứ không phải cái file.
 - **Việc tuyển beta sang phiên thứ hai vẫn chưa động tới.** Cả ngày hôm nay là sản phẩm.
+- **Tính năng tự đoán ý người học là tính năng dễ mất niềm tin nhất.** Cơ chế nhìn trước
+  sinh ra để giải một vấn đề có thật (micro bỏ sót một nốt thì con trỏ kẹt vĩnh viễn), và
+  nó giải được — nhưng cái giá là máy đoán hộ. Đoán đúng chín lần không ai để ý; đoán sai
+  một lần là người học hết tin vào toàn bộ phần tô màu, mà tô màu là thứ duy nhất tính năng
+  đó làm. Thay bằng một nút để người học tự quyết thì vừa hết đoán sai, vừa đúng tinh thần
+  "người học tự quyết" đã chốt từ đầu.
 - **Có loại lỗi chỉ đọc ra được chứ không tái hiện được.** Lỗi nhạc nền báo lại lần hai
   cần một cử chỉ thật của người dùng mới nổ, mà trình duyệt chạy tự động không có cử chỉ
   thật — bỏ luật cần cử chỉ đi thì tình huống lỗi biến mất luôn. Cách còn lại là đọc kỹ mã
