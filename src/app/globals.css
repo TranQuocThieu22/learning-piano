@@ -866,6 +866,25 @@ body {
   --tab-bar-h: 60px;
 }
 
+/*
+ * Khoảng trống dưới đáy thanh tab. KHÔNG dùng thẳng `--safe-bottom` ở đây.
+ *
+ * Vì sao: app chạy `display: 'fullscreen'` (xem `src/app/manifest.ts`) nên hệ
+ * điều hành ẩn luôn thanh điều hướng, và khi không còn thanh nào thì
+ * `env(safe-area-inset-bottom)` trả về đúng **0**. Thanh tab tụt sát mép vật lý
+ * của màn hình: chữ gần như chạm cạnh máy, và tệ hơn là nó nằm chồng lên dải
+ * vuốt-để-về-màn-hình-chính của Android — bấm tab thì máy hiểu thành cử chỉ hệ
+ * thống. Nghĩa là chính cái làm màn hình rộng ra lại làm thanh tab khó bấm.
+ *
+ * 16px là mức tối thiểu, đủ vượt khỏi dải cử chỉ (thường 16-24px) mà không ăn
+ * thêm chỗ của bài đọc. Máy nào CÓ khuyết dưới đáy (iPhone, Android để thanh
+ * điều hướng) thì `--safe-bottom` lớn hơn 16px và `max()` tự nhường cho nó, nên
+ * không cộng dồn thành thừa chỗ.
+ */
+:root {
+  --tab-bar-bottom: max(var(--safe-bottom), 16px);
+}
+
 /* --- KHUNG APP: nội dung + thanh tab dưới đáy --- */
 /*
  * Không còn `AppShell`, cũng không còn thanh tiêu đề riêng — xem `AppLayout.tsx`
@@ -883,7 +902,7 @@ body {
   /* Cộng --tab-bar-h, nếu không thì thanh tab đè lên mấy dòng cuối bài và cuộn
      hết cỡ vẫn không đọc được đoạn kết. */
   padding-bottom: calc(
-    var(--mantine-spacing-xl) + var(--safe-bottom) + var(--tab-bar-h)
+    var(--mantine-spacing-xl) + var(--tab-bar-bottom) + var(--tab-bar-h)
   );
   padding-inline: calc(var(--mantine-spacing-md) + var(--safe-left))
     calc(var(--mantine-spacing-md) + var(--safe-right));
@@ -1151,8 +1170,8 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   align-items: stretch;
   justify-content: center;
   gap: 0;
-  height: calc(var(--tab-bar-h) + var(--safe-bottom));
-  padding-bottom: var(--safe-bottom);
+  height: calc(var(--tab-bar-h) + var(--tab-bar-bottom));
+  padding-bottom: var(--tab-bar-bottom);
   padding-inline: var(--safe-left) var(--safe-right);
   background: var(--mantine-color-body);
   border-top: 1px solid var(--mantine-color-default-border);

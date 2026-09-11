@@ -669,6 +669,44 @@ trượt thành một đường cong không ai đoán được. Và mỗi lần 
 
 ---
 
+## 21. Chạy toàn màn hình thì `env(safe-area-inset-bottom)` bằng 0, thanh tab tụt sát mép
+
+**Triệu chứng.** Thanh tab dưới đáy nằm sát cạnh dưới của màn hình, chữ gần như chạm mép
+máy. Bấm vào tab hay trượt, có lúc máy hiểu thành cử chỉ vuốt về màn hình chính. Mở cùng
+trang đó bằng tab Chrome thường thì trông bình thường, nên rất dễ tưởng là do thiết bị.
+
+**Nguyên nhân.** `env(safe-area-inset-bottom)` không phải là "chừa một chút cho đẹp" — nó
+là **bề dày của thứ đang che màn hình**. App khai `display: 'fullscreen'` nên hệ điều hành
+ẩn luôn thanh điều hướng Android; không còn thanh nào che thì inset đúng bằng **0**, và
+CSS nào dựa vào nó để chừa chỗ sẽ chừa đúng 0px.
+
+Nghịch lý ở chỗ: chính cái làm màn hình rộng thêm lại làm thanh tab khó bấm hơn. Mà dải
+vuốt-để-về-màn-hình-chính của Android (thường 16-24px) vẫn nằm đó dù thanh điều hướng đã
+ẩn — nó không xuất hiện trong bất kỳ `env()` nào.
+
+**Cách sửa.** Đặt một mức sàn, đừng tin `env()` một mình:
+
+```css
+:root {
+  --tab-bar-bottom: max(var(--safe-bottom), 16px);
+}
+```
+
+`max()` chứ không phải cộng thêm: máy CÓ khuyết dưới đáy (iPhone, Android để thanh điều
+hướng) thì `--safe-bottom` đã lớn hơn 16px và tự thắng, nên không cộng dồn thành thừa chỗ.
+
+**Nhớ sửa cả những chỗ ăn theo.** Thanh tab dày lên thì mọi thứ tính vị trí theo nó phải
+đổi cùng: `.app-content` chừa chỗ cuối trang, và thanh mời cài đặt phải nổi TRÊN thanh tab
+(`InstallPrompt.tsx`). Chỗ nào còn viết `env(safe-area-inset-bottom)` thẳng trong khi thanh
+tab đã tính theo biến mới thì sẽ lệch đúng bằng phần chênh, và triệu chứng là một thanh
+thụt xuống nằm khuất sau mép trên của thanh kia.
+
+**Bài học chung.** `env(safe-area-inset-*)` trả lời câu "có gì đang che không", KHÔNG trả
+lời câu "chạm tới đây có thoải mái không". Vùng chạm sát mép màn hình luôn cần mức sàn tự
+đặt.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -677,6 +715,7 @@ trượt thành một đường cong không ai đoán được. Và mỗi lần 
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Nới đáy thanh tab để không bị sát mép màn hình` | Thêm bẫy 21 — chạy toàn màn hình thì `env(safe-area-inset-bottom)` bằng 0 nên thanh tab tụt sát mép và chồng lên dải vuốt về màn hình chính của Android; ghi rõ phải đặt mức sàn bằng `max()` và phải sửa kèm mọi chỗ tính vị trí theo thanh tab |
 | 11/09/2026 | `fix: Nhạc nền to lên đúng mức khi kéo thanh trượt hết cỡ` | Thêm bẫy 20 — bộ nén đặt sau nút âm lượng làm đoạn trên của thanh trượt gần như vô tác dụng, cộng với `knee` mặc định 30dB không ai viết ra trong mã; ghi kèm cách đo bằng `OfflineAudioContext` vì đo trên bối cảnh đang chạy thì ra số đánh lừa |
 | 11/09/2026 | `fix: Cho test đo micro hạn giờ rộng để build trên Vercel không trượt` | Thêm bẫy 19 — build đỏ trên Vercel mà ở máy xanh hết, vì vitest bỏ cuộc sau 5 giây mỗi ca và ca đo độ chính xác micro mất 3 giây ngay ở máy bàn; ghi rõ đây là kiểu hỏng theo nhanh/chậm nên chạy lại ở máy vẫn xanh, dễ đổ oan cho Vercel |
 | 11/09/2026 | `fix: Nhạc nền chạy liền mạch khi chuyển trang` | Thêm bẫy 18 — bộ phát tiếng mồ côi sống lại sau `dispose()` nên `stop()` chỉ tắt được một nửa; ghi cả cách đo đúng vì máy đo bám nhầm bộ nén thì ra số 0 đánh lừa |
