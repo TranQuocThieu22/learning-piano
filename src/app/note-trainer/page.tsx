@@ -41,6 +41,12 @@ export default async function NoteRecognitionPage() {
             tập. Tập lâu quá sẽ mệt mắt mà không thêm được gì.
           </Text>
           <Text size="sm">
+            <b>Chọn đúng phần mình đang yếu.</b> Ba ô chọn ở trên ghép được nhiều kiểu bài: một quãng
+            cho quen mặt chữ, hai ba quãng cách xa nhau để tập mắt nhảy, khóa Pha riêng cho tay trái,
+            hoặc bật dấu hoá khi bắt đầu gặp phím đen trong bài. Chọn &quot;Cả hai tay&quot; thì mỗi câu
+            đổi khóa nhạc — khó hơn hẳn, vì phải nhìn khóa trước rồi mới đọc nốt.
+          </Text>
+          <Text size="sm">
             <b>Đừng nhìn xuống tay.</b> Tìm phím bằng cảm giác, dựa vào cụm hai phím đen và ba phím
             đen làm mốc. Nếu buộc phải nhìn thì nhìn, nhưng hãy cố giảm dần.
           </Text>

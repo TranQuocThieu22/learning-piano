@@ -142,6 +142,11 @@
     (phản xạ khi màn hình không phản ứng) là con trỏ nhảy qua mấy nốt chưa ai đánh. Nay đi
     tuần tự tuyệt đối, và đường ra khi kẹt là **nút *Bỏ qua nốt này*** do người học tự bấm.
     Chốt thành điều thứ tư trong danh sách "đừng phá" ở `AGENTS.md`.
+  - **Luyện nhận nốt: bỏ ba mức cố định, cho người học tự ghép.** Chủ sản phẩm muốn tập
+    nốt nhảy rộng hơn. Nay có ba ô chọn rời nhau — **tay** (khóa Sol / khóa Pha / cả hai,
+    chọn cả hai thì mỗi câu đổi khóa), **quãng** (chọn được nhiều vùng cùng lúc, từ thế tay
+    Đô tới quãng trầm và quãng cao), **dấu hoá** (bật là có phím đen). Vùng nào khóa đang
+    chọn không vẽ nổi thì ẩn hẳn khỏi danh sách, và lựa chọn được nhớ lại cho buổi sau.
   - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
     nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
     được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca
@@ -197,6 +202,11 @@
   tên tác giả là *nghĩa vụ*, không phải *giấy phép*. Ai chép ra — người hay AI — không
   liên quan tới bản quyền, vì thứ được bảo hộ là bản thân tác phẩm chứ không phải cái file.
 - **Việc tuyển beta sang phiên thứ hai vẫn chưa động tới.** Cả ngày hôm nay là sản phẩm.
+- **Hai chỗ hôm nay phải đổi cách viết React vì lint chặn, và lint chặn đúng.** Đọc
+  `localStorage` lúc dựng state thì HTML máy chủ khác HTML máy người học; đặt lại state
+  trong `useEffect` thì vẽ một lần bằng dữ liệu cũ rồi mới sửa. Cách đúng là
+  `useSyncExternalStore` cho phần nhớ giữa hai buổi, và "chỉnh state ngay trong lúc vẽ" cho
+  phần đặt lại khi lựa chọn đổi. Mất thêm nửa giờ nhưng đổi lại không có cái nháy nào.
 - **Tính năng tự đoán ý người học là tính năng dễ mất niềm tin nhất.** Cơ chế nhìn trước
   sinh ra để giải một vấn đề có thật (micro bỏ sót một nốt thì con trỏ kẹt vĩnh viễn), và
   nó giải được — nhưng cái giá là máy đoán hộ. Đoán đúng chín lần không ai để ý; đoán sai
