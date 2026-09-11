@@ -4,6 +4,7 @@ import { Button, RingProgress, SimpleGrid, Stack, Text, Title } from '@mantine/c
 import {
   IconBook2,
   IconChevronRight,
+  IconMusic,
   IconMusicSearch,
   IconPlayerPlayFilled,
   IconRoute,
@@ -95,11 +96,20 @@ export function HomeScreen({
   const phanTram = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
 
   /*
-   * Chỉ những đích KHÔNG có trên thanh tab. Trang chủ, Mục lục, Bài tập, Nhịp và
-   * Nhật ký đã nằm sẵn dưới đáy màn hình — bày lại thành ô ở đây chỉ làm dài
-   * trang mà không rút ngắn được đường đi nào.
+   * Chỉ những đích KHÔNG có trên thanh tab. Trang chủ, Mục lục, Đường đi và Nhịp
+   * đã nằm sẵn dưới đáy màn hình — bày lại thành ô ở đây chỉ làm dài trang mà
+   * không rút ngắn được đường đi nào.
    */
   const tiles: Tile[] = [
+    {
+      // Đứng đầu trong nhóm ô: đây là thứ kéo người học ngồi xuống đàn lúc họ
+      // chưa muốn học bài nào, mà ngồi xuống được là đã hơn không ngồi.
+      href: '/songs',
+      label: 'Góc bài hát',
+      hint: 'Thử bài quen tai',
+      Icon: IconMusic,
+      section: 'extra',
+    },
     ...(roadmapHref
       ? [{ href: roadmapHref, label: 'Lộ trình', hint: 'Đường đi từ số 0', Icon: IconRoute, section: 'roadmap' }]
       : []),

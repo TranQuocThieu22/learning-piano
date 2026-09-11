@@ -1354,3 +1354,19 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 .step-tick:disabled {
   opacity: 0.45;
 }
+
+/* Thẻ một bài hát ở `/songs`. Cả thẻ là link, dựng bằng <Link> thật — xem bẫy 22. */
+.song-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-body);
+  transition: border-color 140ms ease, transform 120ms ease;
+}
+
+.song-card:active {
+  transform: scale(0.995);
+}

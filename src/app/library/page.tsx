@@ -1,5 +1,5 @@
 import { Badge, Container, Stack, Text, Title } from '@mantine/core';
-import { IconBook, IconBook2, IconBulb, IconLock, IconRoute } from '@tabler/icons-react';
+import { IconBook, IconBook2, IconBulb, IconLock, IconMusic, IconRoute } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { LinkRow } from '@/components/LinkRow';
 import { PageHeader } from '@/components/PageHeader';
@@ -45,6 +45,13 @@ const SECTIONS = [
     hint: 'Chuyện bên lề, không nằm trong lộ trình tập',
     section: 'extra',
     Icon: IconBulb,
+  },
+  {
+    category: '08-bai-hat',
+    label: 'Góc bài hát',
+    hint: 'Bài quen tai để thử cho vui — không tick, không chấm',
+    section: 'extra',
+    Icon: IconMusic,
   },
 ];
 

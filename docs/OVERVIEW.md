@@ -122,6 +122,7 @@ CMS, không có bảng bài học trong database.
 |---|---|
 | `/` | Màn hình chủ — nút *Học tiếp*, tiến độ, và các ô đường tắt |
 | `/library` | Mục lục phần chữ: lý thuyết, lộ trình, đọc thêm |
+| `/songs` | Góc bài hát: bài quen tai để thử cho vui, miễn phí, không tick |
 | `/path` | Đường đi: danh sách 8 chương kèm tiến độ từng chương |
 | `/path/[chapter]` | Một chương thành từng bước: lý thuyết rồi các bài tập, tick ngay tại chỗ |
 | `/exercises` | Chuyển hướng về `/path` (gộp 11/09/2026) |
@@ -315,6 +316,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm `/songs` vào bảng đường dẫn — chỗ chơi tách khỏi giáo trình, chỉ chứa nhạc đã hết hạn bảo hộ |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Bảng đường dẫn: thêm `/path` và `/path/[chapter]`, đánh dấu `/exercises` và `/journal` nay chỉ chuyển hướng; sửa dòng theo dõi tiến độ cho khớp chỗ tick mới |
 | 11/09/2026 | `feat: Thêm hai bài nhạc nền nữa, người học tự chọn` | Mục Nhạc nền: từ một bài thành ba bài chọn được, ghi rõ ràng buộc cả ba phải ở Đô trưởng để không nghịch tai với nốt người học đang bấm |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Mục 4 tách phần nghe đàn thật thành hai đường vào, micro đứng trước vì là đường duy nhất chạy được trên iPhone/iPad và đàn cơ; ghi rõ con số độ chính xác mới đo trên tiếng tổng hợp để không ai lấy nó làm con số thật. Mục 5 đổi "hai hướng thay thế piano ảo" thành "app nghe chính cây đàn thật", vì bài luyện nhận nốt nay cũng đánh trên đàn thật chứ không bấm chuột |

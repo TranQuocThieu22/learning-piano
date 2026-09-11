@@ -55,7 +55,8 @@ function activeTabHref(pathname: string): string {
   if (pathname.startsWith('/03-exercises/')) return '/path';
   if (pathname.startsWith('/02-chapters/')) return '/path';
   if (pathname.startsWith('/path')) return '/path';
-  if (/^\/(01-roadmap|07-doc-them)\//.test(pathname)) return '/library';
+  if (/^\/(01-roadmap|07-doc-them|08-bai-hat)\//.test(pathname)) return '/library';
+  if (pathname.startsWith('/songs')) return '/library';
   // So khớp chính xác cho phần còn lại: `/` là tiền tố của mọi đường dẫn nên so
   // kiểu startsWith sẽ làm tab Trang chủ luôn sáng.
   return pathname;
