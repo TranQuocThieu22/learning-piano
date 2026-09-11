@@ -122,7 +122,45 @@ gốc ai đó đang bán. Cứ nói thẳng những điều đó.
 3. **Nếu giấy phép có thời hạn thì đặt lịch nhắc** trước ngày hết hạn. Hết hạn mà bài vẫn
    nằm đó là quay lại đúng tình trạng vi phạm.
 
-## 6. Hai chuyện đã bàn và đã chốt, đừng bàn lại
+## 6. Lấy nốt nhạc ở đâu cho đúng — và kiểm thế nào
+
+Bài hết hạn bảo hộ thì **được phép soạn lại**, nhưng "được phép" không có nghĩa là "chép
+từ trí nhớ cũng được". Chép sai một nốt thì người học tập sai cả câu, mà lỗi kiểu đó không
+có ai báo — họ chỉ tưởng tai mình có vấn đề (đúng cái đã xảy ra với Für Elise, bẫy 25).
+
+**Ba nguồn đã dùng được thật, đều là mã nguồn đọc được bằng mắt chứ không phải ảnh scan:**
+
+| Nguồn | Lấy bằng cách | Được gì |
+|---|---|---|
+| **Mutopia Project** (`github.com/MutopiaProject/MutopiaProject`) | `raw.githubusercontent.com/.../ftp/<TenNhacSi>/<Opus>/<ten>/<ten>.ly` | Nhạc cổ điển, có khai `source` là bản khắc nào (ví dụ Breitkopf & Härtel 1888) và `license = "Public Domain"` |
+| **bbloomf/lilypond-songs** và **bbloomf/christmas-carols** | Clone nông rồi đọc `ly/*.ly` | Thánh ca, dân ca, nhạc Giáng sinh — có cả bốn bè và lời |
+| **musetrainer/library** | `raw.githubusercontent.com/musetrainer/library/master/scores/<ten>.mxl` | MusicXML, đọc bằng `music21` — tiện làm **nguồn đối chiếu thứ hai** |
+
+**Mạng của máy dựng bản chặn gần hết các kho bản nhạc** — IMSLP, Mutopia qua tên miền
+riêng, abcnotation.com đều trả 403 ở cổng ra. GitHub thì đi được, nên đường vào Mutopia là
+qua bản sao trên GitHub chứ không qua trang chủ. Công cụ tìm kiếm vẫn dùng được để **tìm
+đường dẫn**, nhưng đừng lấy nốt từ phần tóm tắt của nó: mấy trang "letter notes" trộn giọng
+lẫn nhau, có lần trả về điệp khúc giọng Sol mà ghi là giọng Đô.
+
+**Đọc LilyPond cần nhớ đúng một luật:** `\relative c'` nghĩa là mỗi nốt lấy quãng tám gần
+nhất so với nốt trước. `c'` = Đô giữa (C4), dấu `'` lên một quãng tám, dấu `,` xuống một
+quãng tám. Nhầm luật này là lệch cả bài một quãng tám mà vẫn "đúng nốt".
+
+**Kiểm sau khi chép — ba lớp, đừng bỏ lớp nào:**
+
+1. **Cao độ thật sự phát ra**, không phải chuỗi ABC nhìn bằng mắt:
+   ```js
+   const html = abcjs.synth.getMidiFile(abc, { midiOutputType: 'json' })[0];
+   [...html.matchAll(/%9[0-9a-f]%([0-9a-f]{2})/g)].map((m) => parseInt(m[1], 16));
+   ```
+2. **`pnpm test`** — `songs.test.ts` gác số phách từng ô và chuyện dấu hoá ăn theo nốt trước.
+3. **Một nguồn thứ hai độc lập.** Hai bản số hoá khác nhau cùng ra một chuỗi nốt thì gần
+   như chắc chắn đúng; một mình một bản thì chưa.
+
+**Ghi nguồn vào trường `nguon` của file bài hát**, kèm tên bản khắc nếu nguồn có khai. Đó
+là chỗ vài tháng sau trả lời được câu "nốt này lấy ở đâu ra".
+
+## 7. Hai chuyện đã bàn và đã chốt, đừng bàn lại
 
 - **"Soạn bằng AI rồi ghi nguồn là được."** Không. Bản quyền bảo hộ **bản thân tác phẩm âm
   nhạc**, không bảo hộ cái file bản nhạc — ai chép ra, người hay máy, hoàn toàn không liên
@@ -141,4 +179,5 @@ gốc ai đó đang bán. Cứ nói thẳng những điều đó.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 11/09/2026 | `fix: Chép lại Für Elise, Minuet và Jingle Bells theo bản nhạc gốc thay vì trí nhớ` | Thêm mục 6 — ba kho bản nhạc công cộng thật sự lấy được từ máy dựng bản (Mutopia qua GitHub, hai kho của bbloomf, musetrainer), luật đọc `\relative` của LilyPond, và ba lớp kiểm sau khi chép; ghi luôn chuyện IMSLP với abcnotation bị chặn ở cổng ra nên đừng mất công thử lại |
 | 11/09/2026 | `docs(internal): Hướng dẫn xin phép bản quyền bài hát` | Tạo file — chủ sản phẩm hỏi cách hỏi VCPMC và chi phí. Ghi rõ chỗ dễ hỏi nhầm cửa nhất (quyền in ấn thường không nằm ở tổ chức quản lý tập thể), thư hỏi mẫu dán là gửi được, và nói thẳng là **chưa biết chi phí** kèm ba con số cần chốt — thà để trống còn hơn điền một con số đoán rồi ai đó lập ngân sách theo nó |

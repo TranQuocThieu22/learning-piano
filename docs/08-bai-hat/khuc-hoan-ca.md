@@ -1,7 +1,7 @@
 ---
 capDo: 1
 sauChuong: 1
-nguon: "Ludwig van Beethoven, chủ đề *Ode an die Freude* trong Giao hưởng số 9, 1824 — đã hết hạn bảo hộ, thuộc phạm vi công cộng"
+nguon: "Ludwig van Beethoven, chủ đề *Ode an die Freude* trong Giao hưởng số 9, 1824 — đã hết hạn bảo hộ, thuộc phạm vi công cộng. Giai điệu đã đối chiếu với hai bản số hoá độc lập: bản hợp xướng bốn bè trong tuyển tập *Songs from the Public Domain* (kho bbloomf/lilypond-songs) và một bản MusicXML trong kho musetrainer/library"
 ---
 
 # Khúc hoan ca (Ode to Joy)

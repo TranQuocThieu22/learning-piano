@@ -119,6 +119,23 @@
     hầu hết người tự học không biết là có. Cả hai bản đều lên mười sáu ô; bản nâng cao trả
     lại đúng nốt Sol thấp cuối câu B và tiết tấu chấm dôi ở các nốt ngân, bản cơ bản giữ
     thế tay 5 ngón bằng cách nâng nốt Sol đó lên một quãng tám và nói rõ là cố ý.
+  - **Chép lại nốt theo bản nhạc gốc thay vì theo trí nhớ.** Chủ sản phẩm bảo: không dám
+    chép từ trí nhớ thì đi tìm bản nhạc mà chép. Đúng, và làm được: IMSLP, Mutopia qua tên
+    miền riêng, abcnotation.com đều bị chặn ở cổng ra, **nhưng GitHub thì đi được** — mà
+    Mutopia Project có toàn bộ mã nguồn LilyPond trên GitHub, kèm khai rõ bản khắc nào và
+    giấy phép gì. Đường đi, ba kho dùng được và cách kiểm đã ghi thành mục 6 của
+    [`ban-quyen-bai-hat.md`](ban-quyen-bai-hat.md).
+    - **Für Elise sai nhiều hơn tưởng.** Chuỗi Đô-Mi-La đi lên là của **tay phải** chứ
+      không phải tay trái như Claude đoán, tay trái chỉ chấm ba nốt đầu ô rồi im, và ô kết
+      của đoạn A cũng khác. Nay chép đúng từng nốt theo bản khắc Breitkopf & Härtel 1888.
+    - **Minuet lên cả bài, ba mươi hai ô, hai đoạn.** Chỗ đoán đúng: bài không có nhịp lấy
+      đà. Chỗ trước đây không dám viết tiếp vì sợ sai thì nay có nguồn.
+    - **Jingle Bells có thêm phần lời hát** — *"Dashing through the snow"* — đoạn rất nhiều
+      người chưa từng tập. Phát hiện kèm theo: **điệp khúc Pierpont viết năm 1857 khác hẳn
+      điệp khúc ai cũng hát bây giờ**; giữ điệp khúc quen thuộc, ghi chú chuyện đó trong bài.
+    - **Ode to Joy: câu 3 Claude chép từ trí nhớ hoá ra đúng.** Hai bản số hoá độc lập đều
+      khớp từng nốt, kể cả nốt Sol thấp ô 12. Không sửa gì, chỉ ghi nguồn đối chiếu vào
+      trường `nguon`.
   - **Thêm test gác cho nhạc viết tay** (`songs.test.ts`): mọi ô nhịp phải đủ phách, bản
     nâng cao phải có hai khuông nhạc, bài nào cũng phải có đủ hai bản, và không nốt nào
     được ăn theo dấu hoá của nốt trước trong cùng ô. Gỡ bản sửa ra chạy lại thì cả hai ca
@@ -203,6 +220,9 @@
   định và trường độ từng ô nhịp khớp, nhưng không nghe được để biết giai điệu có đúng bài
   gốc không. Hai chỗ đáng ngờ nhất: Minuet ô nhịp thứ 3 (tiết tấu do Claude tự chọn) và
   vòng hoà thanh của Canon.
+- ~~**Nghe kỹ câu 3 của Ode to Joy (ô 9-12).**~~ **Xong ngay trong ngày** — hai bản số hoá
+  độc lập xác nhận đúng từng nốt. Vẫn nên nghe cho vui tai, nhưng không còn là chỗ đáng ngờ.
+  Dòng cũ giữ nguyên bên dưới vì nó ghi đúng thứ đã lo lúc đó.
 - **Nghe kỹ câu 3 của Ode to Joy (ô 9-12).** Đây là khúc Claude chép từ trí nhớ chứ không
   có nguồn nào trong repo để đối chiếu — trước nay mọi chỗ trong giáo trình đều chỉ có tám
   ô đầu. Hai chỗ đáng ngờ: **nốt Sol cuối ô 12 có thật sự thấp hơn một quãng tám không**,
@@ -211,6 +231,9 @@
 - **Sửa lời bài tập 2E của Chương 1** nếu thấy đáng: nó đang gọi tám ô là "Ode to Joy trọn
   vẹn cả bài". Tám ô vẫn là lượng đúng cho ngày thứ hai học đàn, chỉ có chữ "trọn vẹn" là
   sai — nhưng đây là bài trong giáo trình bán tiền nên để chủ sản phẩm quyết.
+- **Sau đợt chép lại theo nguồn, chỗ còn là Claude soạn chỉ còn phần đệm tay trái** của
+  Chúc mừng sinh nhật, Canon, và đoạn lời hát Jingle Bells. Giai điệu của cả sáu bài giờ
+  đều có nguồn hoặc đã đối chiếu. Nghe thử thì tập trung vào mấy chỗ đệm đó.
 - **Đánh thử nốt sáu bản nâng cao vừa thêm** — giờ là mười hai bản nhạc chứ không phải
   sáu. Ba chỗ Claude soạn chứ không chép nên đáng ngờ nhất: phần đệm valse của Chúc mừng
   sinh nhật, hình rải nốt của Canon, và **tay trái Für Elise đã bị làm phẳng tiết tấu** —

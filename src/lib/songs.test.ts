@@ -28,37 +28,56 @@ const NOT = /(\^{1,2}|_{1,2}|=)?([A-Ga-g])([,']*)/g;
 /**
  * Ô nhịp nào cộng trường độ không bằng số chỉ nhịp.
  *
- * Ô đầu tiên được phép ngắn — đó là nhịp lấy đà, ba trong sáu bài đang dùng.
- * Ô dài quá thì luôn là lỗi, kể cả ô đầu.
+ * **Hai ô được phép ngắn, và chỉ hai ô đó:** ô đầu và ô cuối. Bài có nhịp lấy đà
+ * mở bằng một mẩu ô nhịp, và mẩu thiếu ấy được trả lại ở ô cuối — cộng hai đầu
+ * mới đủ một ô. Ba trong sáu bài đang dùng cách này.
+ *
+ * Ô dài quá thì luôn là lỗi, kể cả ô đầu và ô cuối: thừa phách không bao giờ là
+ * cố ý, còn thiếu phách thì có.
+ *
+ * Phải gom hết các dòng của một bè lại rồi mới đếm. Đếm theo từng dòng thì mỗi
+ * lần xuống dòng lại tưởng là ô đầu, và cái ngoại lệ dành cho nhịp lấy đà sẽ
+ * che mất ô thiếu phách thật nằm ngay đầu dòng.
  */
 function oNhipThieuPhach(abc: string): string[] {
   const nhip = abc.match(/^M:\s*(\d+)\/(\d+)/m);
   if (!nhip) return ['thiếu dòng M: nên không kiểm được số phách'];
   const duPhach = Number(nhip[1]) / Number(nhip[2]);
   const ten = abc.match(/^T:\s*(.*)$/m)?.[1] ?? '(không tên)';
-  const loi: string[] = [];
 
+  // Gom phần tử của từng bè lại theo khoá "khuông/bè", giữ nguyên thứ tự dòng.
+  // `duration` của abcjs là number cho nốt nhưng number[] cho dòng tốc độ — nhận cả hai
+  // rồi lọc, chứ ép kiểu thì lỗi chỉ chuyển sang lúc chạy.
+  type PhanTu = { el_type: string; duration?: number | number[] };
+  const theoBe = new Map<string, PhanTu[]>();
   for (const dong of abcjs.parseOnly(abc)[0].lines) {
     if (!dong.staff) continue;
     dong.staff.forEach((khuong, ki) => {
       (khuong.voices ?? []).forEach((be, bi) => {
-        let tong = 0;
-        let o = 1;
-        const kiem = () => {
-          if (tong === 0) return;
-          const laLayDa = o === 1 && tong < duPhach;
-          if (!laLayDa && Math.abs(tong - duPhach) > 1e-9) {
-            loi.push(`"${ten}" khuông ${ki + 1} bè ${bi + 1} ô ${o}: ${tong} thay vì ${duPhach}`);
-          }
-          o += 1;
-          tong = 0;
-        };
-        for (const el of be) {
-          if (el.el_type === 'note') tong += el.duration ?? 0;
-          if (el.el_type === 'bar') kiem();
-        }
-        kiem();
+        const khoa = `${ki + 1}/${bi + 1}`;
+        theoBe.set(khoa, [...(theoBe.get(khoa) ?? []), ...be]);
       });
+    });
+  }
+
+  const loi: string[] = [];
+  for (const [khoa, els] of theoBe) {
+    const oNhip: number[] = [];
+    let tong = 0;
+    for (const el of els) {
+      if (el.el_type === 'note' && typeof el.duration === 'number') tong += el.duration;
+      if (el.el_type === 'bar' && tong > 0) {
+        oNhip.push(tong);
+        tong = 0;
+      }
+    }
+    if (tong > 0) oNhip.push(tong);
+
+    oNhip.forEach((phach, i) => {
+      const layDa = (i === 0 || i === oNhip.length - 1) && phach < duPhach;
+      if (!layDa && Math.abs(phach - duPhach) > 1e-9) {
+        loi.push(`"${ten}" khuông/bè ${khoa} ô ${i + 1}: ${phach} thay vì ${duPhach}`);
+      }
     });
   }
   return loi;

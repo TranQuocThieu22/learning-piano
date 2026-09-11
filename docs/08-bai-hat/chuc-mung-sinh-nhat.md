@@ -1,7 +1,7 @@
 ---
 capDo: 2
 sauChuong: 6
-nguon: "Giai điệu 'Good Morning to All' của Patty và Mildred Hill, 1893 — đã hết hạn bảo hộ, thuộc phạm vi công cộng"
+nguon: "Giai điệu 'Good Morning to All' của Patty và Mildred Hill, 1893 — đã hết hạn bảo hộ, thuộc phạm vi công cộng. Giai điệu đã đối chiếu với một bản MusicXML trong kho công cộng musetrainer/library; phần đệm tay trái là soạn thêm"
 ---
 
 # Chúc mừng sinh nhật
