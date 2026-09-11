@@ -70,6 +70,21 @@
   lần là trượt. Khai hạn giờ riêng cho hai ca nặng, cắt bớt khối lượng, ghi thành **bẫy 19**.
 - **Thêm `next build` vào cổng kiểm tra trước khi commit** (giờ là năm lệnh), ghi vào skill
   soạn commit, `AGENTS.md`, quy trình làm việc và bản một trang.
+- **Chiều tối (phiên này) — ba việc về nhạc nền và một về thanh tab:**
+  - **Nhạc nền to lên đúng mức.** Kéo thanh trượt hết cỡ, vặn cả âm lượng máy lên hết mà
+    vẫn nghe bé. Đo ra RMS -31,3dB lúc kéo hết cỡ, nhỏ hơn nhạc bình thường khoảng 15dB.
+    Ba chỗ cộng dồn, phải sửa cả ba: trần âm lượng để 0,22; bộ nén nối SAU nút âm lượng
+    nên kéo càng cao càng bị nén mạnh; và `knee` để mặc định 30dB, rộng tới mức nén từ
+    -35dB. Nay -15,9dB lúc kéo hết cỡ, không mẫu nào vỡ tiếng. Ghi thành **bẫy 20**.
+  - **Thử rồi bỏ: chỉ ẩn thanh hệ thống khi xoay ngang.** Dựng xong, năm lệnh xanh, rồi
+    chủ sản phẩm bảo để như cũ. Lý do ghi ở mục 2 của
+    [`nhat-ky-quyet-dinh.md`](nhat-ky-quyet-dinh.md) — nhánh đã xoá nên chỗ đó là dấu vết
+    duy nhất còn lại.
+  - **Nới đáy thanh tab 16px.** Thanh tab nằm sát cạnh dưới màn hình, khó bấm và còn chồng
+    lên dải vuốt về màn hình chính của Android. Ghi thành **bẫy 21**.
+  - **Thêm hai bài nhạc nền nữa** (Chiều êm, Bước nhẹ), chọn trên thẻ ở màn hình chủ, bài
+    cũ giữ nguyên làm mặc định. Cả ba ở Đô trưởng vì ràng buộc giáo trình, có test gác:
+    mọi nốt của mọi bài phải rơi vào phím trắng.
 
 **Quan sát**
 
@@ -87,6 +102,19 @@
   đúng là thứ đầy rẫy trong giáo trình: Ode to Joy có bốn chỗ lặp nốt liền nhau.
 - **Ba ngày liên tiếp dồn hết vào sản phẩm, việc tuyển beta đứng yên.** Hôm nay không kiểm
   bài đang chờ duyệt, không comment thêm, không đăng nhóm mới. Chốt chặn 1 còn 12 ngày.
+- **Hai lỗi người dùng báo chiều nay đều không nghe/nhìn ra được nguyên nhân.**
+  Nhạc nhỏ thì thủ phạm là bộ nén đứng sai chỗ chứ không phải con số âm lượng; thanh tab
+  sát mép thì thủ phạm là `env(safe-area-inset-bottom)` trả về 0 vì chế độ toàn màn hình.
+  Cả hai đều là kiểu "triệu chứng ở A, nguyên nhân ở B", và cả hai chỉ lộ ra khi **đo**.
+  Đây là lý do `bay-ky-thuat.md` ghi theo lối triệu chứng → nguyên nhân.
+- **Có lúc tối ưu lại chống lại chính mình.** Chạy toàn màn hình để lấy thêm chiều cao,
+  nhưng đúng vì thế mà `env()` bằng 0 và thanh tab tụt sát mép thành khó bấm. Thêm chiều
+  cao xong lại mất chỗ bấm.
+- **Đo xong mới biết không cần cái núm mình định thêm.** Định làm hệ số chỉnh âm lượng
+  riêng cho từng bài nhạc nền, vì bài dày nốt lẽ ra phải to hơn bài thưa nốt. Đo ra ba bài
+  chênh nhau 0,6dB — dưới ngưỡng tai nghe ra được, vì bộ nén đã san sẵn. Gỡ bỏ. Một con số
+  luôn bằng 1 nằm trong mã là thứ lần sau phải đoán xem nó dùng làm gì.
+- **Việc tuyển beta sang phiên thứ hai vẫn chưa động tới.** Cả ngày hôm nay là sản phẩm.
 
 **Tiếp theo**
 
@@ -97,6 +125,12 @@
   đăng đã được duyệt chưa, và đăng nhóm thứ hai bằng một trong bốn bản đã soạn.
 - Nếu muốn dùng lại bốn bản bài đăng thì bảo Claude lưu thành
   `docs/_internal/mau-bai-dang-tuyen-beta.md`, đặt cạnh file mẫu comment.
+- **Nghe thử ba bài nhạc nền trên máy thật.** Vòng hợp âm và mẫu rải nốt là Claude soạn,
+  hợp lý về lý thuyết và có test gác đúng giọng, nhưng hay dở thì phải nghe mới biết. Bài
+  nào chán thì đổi vòng hoặc đổi mẫu rải, khung đã dựng sẵn nên thêm bài rất nhanh.
+- **Kiểm 16px nới đáy thanh tab trên máy thật.** Con số suy ra từ bề rộng dải cử chỉ của
+  Android chứ chưa đo trên máy. Chưa đủ thoáng thì nâng lên 20-24px, sửa đúng một dòng
+  trong `globals.css`.
 
 ## 10/09/2026 — Gỡ rào cản trước cửa
 
