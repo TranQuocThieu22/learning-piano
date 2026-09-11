@@ -39,7 +39,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
 
   // Cổng chặn nội dung trả phí. Kiểm ở server và KHÔNG gửi nội dung xuống khi
   // chưa có quyền — làm mờ ở client là khoá giả, ai xem mã nguồn cũng đọc được.
-  // Tính một lần rồi dùng cho cả nội dung lẫn ổ khoá ở thanh bên.
+  // Tính một lần rồi dùng cho cả cổng chặn lẫn tiêu đề bài phía dưới.
   const hasFullAccess = await viewerHasFullAccess(session);
   const allowed = canReadLesson({ category, slug, hasFullAccess });
 

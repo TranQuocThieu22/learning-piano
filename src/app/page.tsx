@@ -31,8 +31,9 @@ export default async function Home() {
 
   return (
     <AppLayout>
-      {/* Không lặp lại tiêu đề "Piano Journey" ở đây: thanh tiêu đề ngay phía
-          trên đã ghi rồi, viết lần nữa chỉ đẩy nút "Học tiếp" xuống thấp. */}
+      {/* Cố ý không có tiêu đề trang: người học vừa mở app ra, họ biết mình
+          đang ở đâu rồi. Một dòng "Piano Journey" nữa chỉ đẩy nút "Học tiếp"
+          xuống thấp, mà đó mới là thứ họ mở app lên để bấm. */}
       <Container size="sm" px={0}>
         <HomeScreen
           user={session?.user ?? null}

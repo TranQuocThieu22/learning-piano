@@ -363,14 +363,16 @@ body {
 /*
  * Chế độ tập trung khi tập với đàn.
  *
- * Lúc đang đánh, mắt người học phải ở trên khuông nhạc — thanh tiêu đề, thanh
- * bên, phần chữ của bài và cả thanh mời cài đặt đều là thứ cướp chỗ. Ở đây phủ
- * kín màn hình thay vì chỉ ẩn từng thứ một, vì ẩn lẻ tẻ thì luôn sót một cái.
+ * Lúc đang đánh, mắt người học phải ở trên khuông nhạc — phần chữ của bài, thanh
+ * tab dưới đáy và thanh mời cài đặt đều là thứ cướp chỗ. Ở đây phủ kín màn hình
+ * thay vì chỉ ẩn từng thứ một, vì ẩn lẻ tẻ thì luôn sót một cái.
  *
- * Cố ý KHÔNG dùng Fullscreen API: trên iPhone, Safari chỉ cho video vào toàn màn
- * hình, nên phần lớn người học sẽ không được gì. Lớp phủ bằng CSS chạy ở mọi nơi.
+ * Lớp phủ này KHÔNG dựa vào Fullscreen API, và đó là chuyện khác với
+ * `FullscreenOnFirstTap.tsx`: trên iPhone, Safari chỉ cho video vào toàn màn
+ * hình, nên nếu chế độ tập trung trông chờ vào API đó thì phần lớn người học
+ * không được gì. Lớp phủ bằng CSS chạy ở mọi nơi.
  *
- * z-index 350 nằm trên thanh mời cài đặt (300) và thanh tiêu đề của AppShell.
+ * z-index 350 nằm trên thanh mời cài đặt (300) và thanh tab dưới đáy (200).
  */
 .sheet-music-wrapper.is-focused {
   position: fixed;

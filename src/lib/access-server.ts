@@ -8,9 +8,9 @@ import { REQUIRED_PACKAGE_ID } from './access';
 /**
  * Người đang xem có mở được toàn bộ giáo trình không.
  *
- * Tính MỘT LẦN cho mỗi request rồi truyền xuống, vì kết quả dùng ở hai nơi:
- * nội dung bài, và ổ khoá trên thanh bên. Mỗi chỗ tự tra là mỗi chỗ thêm một
- * truy vấn database.
+ * Tính MỘT LẦN cho mỗi request rồi truyền xuống, vì một trang thường cần nó ở
+ * hai chỗ: cổng chặn nội dung, và các ổ khoá vẽ kèm (bản đồ `/exercises`, mục lục
+ * `/library`). Mỗi chỗ tự tra là mỗi chỗ thêm một truy vấn database.
  *
  * Admin đi thẳng, để chủ sản phẩm xem lại được bài đã khoá mà không phải tự cấp
  * quyền cho mình trong database. Đây chỉ là ưu ái xem nội dung — cổng bảo mật

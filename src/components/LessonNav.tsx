@@ -9,9 +9,9 @@ import type { LessonLink } from '@/lib/lessons';
  * Hai nút chuyển bài ở cuối mỗi bài học.
  *
  * Vì sao cần: giáo trình đi theo một đường thẳng (Chương 1 → Bài 1 → Bài 2…),
- * nên gần như mọi lần chuyển trang đều là "sang bài kế". Trước đây phải mở thanh
- * bên, tìm đúng chương, bung ra rồi mới bấm được — ba thao tác cho việc hay làm
- * nhất, mà trên điện thoại thanh bên lại là một danh sách hơn bốn mươi mục.
+ * nên gần như mọi lần chuyển trang đều là "sang bài kế". Không có hai nút này thì
+ * phải quay ra mục lục, tìm đúng chương, rồi mới bấm được — ba thao tác cho việc
+ * hay làm nhất.
  *
  * Bài kế bị khoá thì VẪN hiện nút. Bấm vào sẽ ra màn hình giới thiệu gói ở
  * `LessonLocked.tsx` — đó là chỗ nên tới, còn giấu nút đi thì người học tưởng

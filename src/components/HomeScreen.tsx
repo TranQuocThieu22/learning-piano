@@ -34,8 +34,8 @@ import type { AppSessionUser } from './AppLayout';
  * bấm được bằng ngón cái, đúng thứ người học cần ngay khi mở máy.
  *
  * Thứ tự cố ý: *Học tiếp* đứng trên cùng và to nhất, vì chín trên mười lần mở app
- * là để học tiếp chỗ đang dở. Mấy ô còn lại chỉ là đường tắt, không phải mục lục
- * — mục lục đầy đủ vẫn nằm ở thanh bên, chỗ nó vốn ở.
+ * là để học tiếp chỗ đang dở. Mấy ô còn lại chỉ là đường tắt cho những đích KHÔNG
+ * có trên thanh tab; mục lục đầy đủ nằm ở `/library` và `/exercises`.
  */
 
 interface Tile {

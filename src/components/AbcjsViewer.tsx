@@ -111,8 +111,8 @@ export function AbcjsViewer({ abcNotation }: { abcNotation: string }) {
    * Chế độ tập trung: bản nhạc phủ kín màn hình, giấu hết phần còn lại của trang.
    *
    * Chỉ dùng lúc tập với đàn. Khi đó mắt người học phải ở trên khuông nhạc, mà
-   * thanh tiêu đề, thanh bên và phần chữ của bài đều đang tranh chỗ với nó —
-   * trên điện thoại thì gay gắt nhất, có khi chỉ còn thấy hai dòng nhạc.
+   * phần chữ của bài, thanh tab dưới đáy và thanh mời cài đặt đều đang tranh chỗ
+   * với nó — trên điện thoại thì gay gắt nhất, có khi chỉ còn thấy hai dòng nhạc.
    */
   const [focused, setFocused] = useState(false);
   /**

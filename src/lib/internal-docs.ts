@@ -5,11 +5,11 @@ import path from 'path';
  * Đọc tài liệu nội bộ (`docs/_internal` và `docs/OVERVIEW.md`) cho khu quản trị.
  *
  * Vì sao tách hẳn khỏi `markdown.ts`: `getAllMarkdownFiles()` ở đó quét
- * `contentDirs` để dựng thanh bên cho người học. Thêm `_internal` vào danh sách
- * ấy là định hướng kinh doanh, kế hoạch beta và mô tả biến môi trường nằm ngay
- * trong thanh điều hướng của người học. Hai đường đọc phải tách rời nhau; cửa
- * chặn là layout của `/admin`, và không có liên kết nào từ giao diện người học
- * trỏ tới đây.
+ * `contentDirs` để dựng mục lục cho người học. Thêm `_internal` vào danh sách ấy
+ * là định hướng kinh doanh, kế hoạch beta và mô tả biến môi trường hiện ngay
+ * trong mục lục người học đọc được. Hai đường đọc phải tách rời nhau; cửa chặn
+ * là layout của `/admin`, và không có liên kết nào từ giao diện người học trỏ
+ * tới đây.
  */
 
 const INTERNAL_DIR = '_internal';
