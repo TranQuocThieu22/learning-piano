@@ -78,6 +78,30 @@ export function staffBox(grandStaff: boolean): StaffBox {
   return grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX;
 }
 
+/**
+ * Phóng khung to lên `factor` lần, dùng cho chế độ tập trung.
+ *
+ * Phải phóng **cả khung lẫn tỉ lệ vẽ** cùng một hệ số thì chỗ dư quanh khuông
+ * nhạc mới giữ nguyên. Phóng mỗi tỉ lệ thì nốt cao vượt khung rồi bị phép neo
+ * thu nhỏ lại đúng bằng lúc chưa phóng — công cốc; phóng mỗi khung thì khuông
+ * nhạc bé tí nằm giữa màn hình trống.
+ */
+export function scaleBox(box: StaffBox, factor: number): StaffBox {
+  return {
+    height: Math.round(box.height * factor),
+    anchor: Math.round(box.anchor * factor),
+  };
+}
+
+/**
+ * Phóng tối đa bao nhiêu lần trong chế độ tập trung.
+ *
+ * Có trần vì màn hình cao mà chỉ hỏi một nốt thì phóng vô hạn sẽ ra một nốt
+ * nhạc to bằng nửa màn hình, đọc không dễ hơn mà còn mất chỗ của khoá nhạc và
+ * hoá biểu — hai thứ nằm ở rìa trái và cũng phải nhìn.
+ */
+export const FOCUS_MAX_FACTOR = 2.6;
+
 export interface StaffTransform {
   scale: number;
   translateY: number;

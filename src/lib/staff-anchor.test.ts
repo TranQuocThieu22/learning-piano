@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  anchorTransform, BAR_MIN_UNITS, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX,
-  SINGLE_STAFF_SCALE, staffBox, staffScale, type StaffBox,
+  anchorTransform, BAR_MIN_UNITS, FOCUS_MAX_FACTOR, GRAND_STAFF_BOX, GRAND_STAFF_SCALE,
+  scaleBox, SINGLE_STAFF_BOX, SINGLE_STAFF_SCALE, staffBox, staffScale, type StaffBox,
 } from './staff-anchor';
 
 /** Vị trí dòng kẻ trên cùng sau khi áp phép biến hình — phải luôn bằng chỗ neo. */
@@ -33,6 +33,46 @@ describe('khung và tỉ lệ chung cho cả hai chế độ', () => {
     // Sàn phải nhỏ hơn bề ngang một khuông đơn ở chế độ một nốt (220 đơn vị),
     // không thì máy nào cũng chạm sàn và lúc nào cũng phải thu nhỏ.
     expect(BAR_MIN_UNITS).toBeLessThan(220);
+  });
+});
+
+/*
+ * Chế độ tập trung phóng khung to lên. Ràng buộc sống còn: khung và tỉ lệ vẽ
+ * phải phóng CÙNG một hệ số, không thì phép neo lại thu nhỏ đúng bằng phần vừa
+ * phóng và cả việc phóng thành công cốc.
+ */
+describe('scaleBox — phóng khung cho chế độ tập trung', () => {
+  it('hệ số 1 thì khung không đổi', () => {
+    expect(scaleBox(SINGLE_STAFF_BOX, 1)).toEqual(SINGLE_STAFF_BOX);
+  });
+
+  it('phóng cả chiều cao lẫn chỗ neo theo đúng một hệ số', () => {
+    const t = scaleBox(GRAND_STAFF_BOX, 2);
+    expect(t.height).toBe(GRAND_STAFF_BOX.height * 2);
+    expect(t.anchor).toBe(GRAND_STAFF_BOX.anchor * 2);
+  });
+
+  /*
+   * Đây là ca chứng minh phóng đúng cách: nốt vừa khít khung ở cỡ thường thì
+   * phóng lên vẫn vừa khít, KHÔNG bị thu nhỏ lại. Số đo lấy từ ca chật nhất đã
+   * ghi trong file này (Si quãng 6 ở khuông đơn).
+   */
+  it('nốt vừa khung ở cỡ thường thì phóng lên vẫn vừa, không bị thu lại', () => {
+    const factor = 2.5;
+    const thuong = anchorTransform(SINGLE_STAFF_BOX, 51, 24, 138);
+    const phong = anchorTransform(
+      scaleBox(SINGLE_STAFF_BOX, factor),
+      51 * factor,
+      24 * factor,
+      138 * factor,
+    );
+    expect(thuong.scale).toBe(1);
+    expect(phong.scale).toBe(1);
+  });
+
+  it('có trần phóng, và trần đó lớn hơn 1 để chế độ tập trung có tác dụng', () => {
+    expect(FOCUS_MAX_FACTOR).toBeGreaterThan(1);
+    expect(FOCUS_MAX_FACTOR).toBeLessThanOrEqual(4);
   });
 });
 

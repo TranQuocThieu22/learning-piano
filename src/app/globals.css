@@ -1396,6 +1396,89 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 }
 
 /* Thẻ một bài hát ở `/songs`. Cả thẻ là link, dựng bằng <Link> thật — xem bẫy 22. */
+/*
+ * Chế độ tập trung của bài luyện nhận nốt.
+ *
+ * Cùng cách làm với chế độ tập trung của bản nhạc bài học (`.sheet-music-wrapper`
+ * trong file này): lớp phủ bằng CSS, KHÔNG dùng Fullscreen API — Safari trên
+ * iPhone chỉ cho video vào toàn màn hình. z-index 350 nằm trên thanh mời cài đặt
+ * (300) và thanh tab dưới đáy (200).
+ *
+ * Khác một chỗ có chủ ý: ở đây **không cuộn**. Cả lớp phủ chỉ có một ô nhịp cùng
+ * hai cái nút, và lúc đang tập thì hai tay đang ở trên phím đàn — bắt cuộn để
+ * thấy nút là bắt bỏ tay khỏi đàn. Chiều cao chia bằng flex, khuông nhạc lấy hết
+ * chỗ thừa rồi effect vẽ đọc lại chiều cao đó để phóng bản nhạc cho vừa.
+ */
+.drill-stage.is-focused {
+  position: fixed;
+  inset: 0;
+  z-index: 350;
+  background: var(--mantine-color-body);
+  padding:
+    calc(0.5rem + env(safe-area-inset-top))
+    calc(0.75rem + env(safe-area-inset-right))
+    calc(0.5rem + env(safe-area-inset-bottom))
+    calc(0.75rem + env(safe-area-inset-left));
+  gap: 0.5rem;
+  /* Màn hình thấp thì cuộn trong lớp phủ; cuộn hết thì dừng, không kéo trang
+     phía sau trôi theo. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/*
+ * Không con nào của lớp phủ được co lại.
+ *
+ * Đây là bẫy của flexbox: con mặc định `flex-shrink: 1`, nên khi lớp phủ hết chỗ
+ * thì trình duyệt BÓP NHỎ ô của con thay vì để nó tràn ra. Ô bị bóp thì nội dung
+ * thừa bị cắt, mà `scrollHeight` lại tính theo ô đã bóp — cuộn hết cỡ vẫn không
+ * thấy phần bị cắt. Cùng một bẫy đã gặp ở chế độ tập trung của bản nhạc bài học.
+ */
+.drill-stage.is-focused > * {
+  flex-shrink: 0;
+}
+
+/*
+ * Ô phản hồi GIỮ NGUYÊN chiều cao 78px trong lớp phủ, dù màn hình đang chật.
+ *
+ * Nghe ngược, nhưng bỏ chỗ giữ mới là cái sai: ô này phình ra mỗi khi hiện lời
+ * khen hay báo sai, mà lớp phủ chia chiều cao bằng flex — ô phình là khung giấy
+ * nhạc co lại, trong khi bản nhạc đã vẽ xong theo chiều cao cũ. Kết quả là cứ
+ * bấm đúng một nốt thì khuông nhạc bị cắt mất phần dưới một nhịp.
+ */
+
+/*
+ * Khung giấy nhạc: được phép GIÃN ra khi còn chỗ, nhưng không bao giờ CO xuống
+ * dưới chiều cao thường (đặt bằng `min-height` ở JSX).
+ *
+ * Đây là chỗ đã sai một lần. Cho co thì điện thoại xoay ngang — chỉ còn khoảng
+ * 360px chiều cao — bóp khung xuống hơn trăm px, tức là bật chế độ tập trung lên
+ * lại thấy khuông nhạc NHỎ HƠN lúc không bật. Không cho co thì màn hình thấp sẽ
+ * phải cuộn, và cuộn là thứ chấp nhận được vì hàng nút đã ghim xuống đáy.
+ */
+.drill-stage.is-focused > [data-testid='staff'] {
+  flex: 1 0 auto;
+}
+
+/*
+ * Hàng nút ghim xuống ĐÁY màn hình, không ghim thanh Thoát lên đỉnh.
+ *
+ * Lúc đang tập thì hai tay ở trên phím đàn: thứ phải với tới được mà không cuộn
+ * là *Bỏ qua nốt này* — nút bấm đi bấm lại — chứ không phải nút Thoát. Ghim hàng
+ * nút thì được cả hai, vì Thoát đứng ngay cạnh Bỏ qua.
+ *
+ * `background` là bắt buộc, nếu không thì nốt nhạc cuộn qua sau hàng nút và chồng
+ * lên chữ. `z-index` vì `position: sticky` tự tạo ngữ cảnh xếp lớp riêng.
+ */
+.drill-stage.is-focused > .drill-stage__actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  width: 100%;
+  background: var(--mantine-color-body);
+  padding-block: 0.25rem;
+}
+
 .song-card {
   display: block;
   text-decoration: none;

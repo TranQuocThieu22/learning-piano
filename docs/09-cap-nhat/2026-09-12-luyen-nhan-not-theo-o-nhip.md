@@ -37,3 +37,17 @@ như bản nhạc piano thật), chồng nốt như hợp âm, và hoá biểu �
 
 **Ô nhịp kéo giãn hết bề ngang màn hình**, và chữ nhạc to bằng đúng chế độ một nốt. Xoay
 máy ngang thì cả ô trải rộng ra, đọc được từ khoảng cách đặt máy trên giá nhạc.
+
+## Chế độ tập trung
+
+Bấm **Chế độ tập trung** ở cuối trang thì khuông nhạc phủ kín màn hình: bảng chọn, thanh
+tab dưới đáy và phần thống kê biến đi hết, chỉ còn bản nhạc cùng hai cái nút.
+
+- Khuông nhạc **rộng thêm và cao thêm**, vì không còn thứ gì chia chỗ với nó.
+- **Không cuộn trúng chỗ khác được** — nền bị khoá, nên tay chạm vào màn hình lúc đang
+  tập cũng không làm trang trôi đi.
+- **Nút *Bỏ qua* ghim ở đáy màn hình**, luôn với tới được mà không phải cuộn.
+- Thoát bằng nút **Thoát tập trung**, hoặc phím Esc nếu bạn đang dùng máy tính.
+
+Trên điện thoại dựng đứng, bề ngang mới là thứ chặn — nên nếu đang tập ô nhịp thì **xoay
+ngang máy**, khuông nhạc to gần gấp đôi. App cũng nhắc bạn điều đó ngay trong lớp phủ.

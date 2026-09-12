@@ -6,6 +6,8 @@ import type { NoteTimingEvent, TuneObject } from 'abcjs';
 import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
+import { IconArrowsMaximize, IconArrowsMinimize } from '@tabler/icons-react';
+import { useMediaQuery } from '@mantine/hooks';
 import {
   answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart,
   DrillQuestion, Hands, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel,
@@ -15,7 +17,9 @@ import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
-import { anchorTransform, BAR_MIN_UNITS, staffBox, staffScale } from '@/lib/staff-anchor';
+import {
+  anchorTransform, BAR_MIN_UNITS, FOCUS_MAX_FACTOR, scaleBox, staffBox, staffScale,
+} from '@/lib/staff-anchor';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
@@ -30,6 +34,9 @@ const STORAGE_KEY = 'note-trainer-options';
  * có được, vì càng rộng thì bốn nốt càng giãn ra và càng dễ đọc từ giá nhạc.
  */
 const SINGLE_NOTE_BOX_PX = 320;
+
+/** Padding dọc của khung giấy nhạc, cộng cả hai mép. Phải khớp `padding` ở JSX. */
+const STAFF_BOX_PADDING_Y = 16;
 
 const HAND_LABELS: { value: Hands; label: string }[] = [
   { value: 'right', label: 'Tay phải' },
@@ -229,6 +236,23 @@ export function NoteRecognitionDrill() {
   const paperRef = useRef<HTMLDivElement>(null);
   /** Phần tử SVG của từng phách, dựng lại sau mỗi lần vẽ khuông nhạc. */
   const beatElementsRef = useRef<HTMLElement[][]>([]);
+  /** Khung giấy nhạc. Cần đo được để biết chế độ tập trung còn bao nhiêu chỗ. */
+  const staffBoxRef = useRef<HTMLDivElement>(null);
+
+  /**
+   * Chế độ tập trung: khuông nhạc phủ kín màn hình, giấu hết phần còn lại.
+   *
+   * Lúc đang tập thì máy nằm trên giá nhạc cách mắt nửa sải tay, hai tay đang ở
+   * trên phím — bảng chọn, thanh tab và phần thống kê đều là thứ cướp chỗ của
+   * khuông nhạc. Phủ kín màn hình thay vì ẩn từng thứ một, vì ẩn lẻ tẻ luôn sót.
+   *
+   * Dùng lớp phủ CSS chứ KHÔNG dùng Fullscreen API, cùng lý do với chế độ tập
+   * trung của bản nhạc bài học: Safari trên iPhone chỉ cho video vào toàn màn
+   * hình, nên trông chờ vào API đó thì phần lớn người học không được gì.
+   */
+  const [focused, setFocused] = useState(false);
+  /** Điện thoại dựng đứng — nơi bề ngang chặn cứng, xoay ngang mới là lời giải. */
+  const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
 
   /*
    * **Đổi lựa chọn thì bốc nốt mới và xoá thống kê, ngay trong lúc vẽ.**
@@ -403,7 +427,32 @@ export function NoteRecognitionDrill() {
       return;
     }
     const bar = current.beats.length > 1;
-    const abcScale = staffScale(grandStaff);
+
+    /*
+     * **Chế độ tập trung phóng CẢ khung LẪN tỉ lệ lên cùng một hệ số.**
+     *
+     * Hệ số suy từ chỗ thật còn lại: lớp phủ cấp cho khung giấy nhạc bao nhiêu
+     * chiều cao thì chia cho chiều cao khung thường ra bấy nhiêu lần. Phóng mỗi
+     * tỉ lệ thì nốt cao vượt khung rồi bị chính phép neo thu nhỏ lại — công cốc.
+     *
+     * Đo `clientHeight` của khung chứ không của thẻ `paper` bên trong: `paper` là
+     * thẻ khối, nó cao theo NỘI DUNG chứ không theo chỗ được cấp.
+     */
+    const baseBox = staffBox(grandStaff);
+    const boxEl = staffBoxRef.current;
+    const choCao = focused && boxEl ? boxEl.clientHeight - STAFF_BOX_PADDING_Y : baseBox.height;
+    /*
+     * Hệ số không bao giờ nhỏ hơn 1: khung giấy nhạc đã có `min-height` bằng
+     * chiều cao thường và CSS cấm nó co lại, nên chỗ đo được luôn ít nhất bằng
+     * ngần ấy. Màn hình thấp thì lớp phủ cuộn, chứ khuông nhạc không bé đi —
+     * bật chế độ tập trung mà bản nhạc nhỏ lại thì bật làm gì.
+     */
+    const focusFactor = focused && choCao > 0
+      ? Math.min(FOCUS_MAX_FACTOR, Math.max(1, choCao / baseBox.height))
+      : 1;
+
+    const box = focusFactor === 1 ? baseBox : scaleBox(baseBox, focusFactor);
+    const abcScale = staffScale(grandStaff) * focusFactor;
 
     /*
      * **Đo bề ngang khung TRƯỚC khi vẽ**, vì `staffwidth` phải biết có bao nhiêu
@@ -417,7 +466,14 @@ export function NoteRecognitionDrill() {
      */
     paper.style.width = '';
     const availPx = paper.clientWidth;
-    const barUnits = Math.max(BAR_MIN_UNITS, Math.round(availPx / abcScale));
+    /*
+     * Lấp đầy bề ngang ở ô nhịp **và** ở chế độ tập trung. Sàn `BAR_MIN_UNITS`
+     * chỉ áp cho ô nhịp: một nốt lẻ không cần chừng ấy chỗ, ép sàn vào là bản
+     * nhạc rộng quá khung rồi bị thu nhỏ lại — tập trung mà nốt bé đi.
+     */
+    const fillWidth = bar || focused;
+    const fillUnits = Math.round(availPx / abcScale);
+    const staffUnits = bar ? Math.max(BAR_MIN_UNITS, fillUnits) : fillUnits;
     const [tune] = ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
@@ -426,7 +482,7 @@ export function NoteRecognitionDrill() {
        * nằm trọn trong khung, khác khuông đơn chỉ có mỗi nốt ở giữa nên hai mép
        * trống bị cắt cũng không mất gì.
        */
-      staffwidth: bar ? barUnits : grandStaff ? 190 : 220,
+      staffwidth: fillWidth ? staffUnits : grandStaff ? 190 : 220,
       /*
        * **`scale` ở đây KHÔNG phải cỡ chữ cuối cùng.** Phép vẽ cuối do transform
        * của mình quyết (xem bẫy 28), nên cái `scale` truyền cho abcjs còn đúng
@@ -439,7 +495,7 @@ export function NoteRecognitionDrill() {
        * Ô nhịp muốn chiếm HẾT bề ngang nên truyền 1. Một nốt lẻ thì giữ nguyên
        * như cũ: nốt nằm giữa một khung rộng gấp đôi, và đó là chủ ý.
        */
-      scale: bar ? 1 : abcScale,
+      scale: fillWidth ? 1 : abcScale,
       paddingtop: 8,
       paddingbottom: 8,
       paddingleft: 0,
@@ -476,7 +532,7 @@ export function NoteRecognitionDrill() {
     const ink = svg.getBBox();
     const topLineY = (topLine as SVGGraphicsElement).getBBox().y * abcScale;
     const { scale, translateX, translateY } = anchorTransform(
-      staffBox(grandStaff),
+      box,
       topLineY,
       ink.y * abcScale,
       (ink.y + ink.height) * abcScale,
@@ -486,7 +542,13 @@ export function NoteRecognitionDrill() {
        * chừa thêm lề quanh nhạc (khuông đôi còn có dấu ngoặc ôm hai khuông), mà
        * phần lề đó cũng chiếm chỗ thật trong khung.
        */
-      bar
+      /*
+       * Ép bề ngang cho ô nhịp (cắt mép là mất nốt), và cho cả chế độ tập trung —
+       * ở đó khung rộng hẳn ra nên một nốt lẻ cũng cần được đẩy vào giữa thay vì
+       * dính mép trái. Chế độ một nốt thường thì vẫn cố ý để tràn: hai mép bị
+       * cắt toàn khoảng trắng, đổi lại nốt to.
+       */
+      bar || focused
         ? { ink: Number(svg.getAttribute('width') ?? 0) * abcScale, box: availPx }
         : undefined,
     );
@@ -499,7 +561,7 @@ export function NoteRecognitionDrill() {
      */
     svg.style.transformOrigin = '0 0';
     svg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${abcScale * scale})`;
-  }, [current, grandStaff]);
+  }, [current, grandStaff, focused]);
 
   /*
    * Tô con trỏ lên khuông nhạc: phách đã xong màu xanh, phách đang chờ có dấu.
@@ -534,7 +596,33 @@ export function NoteRecognitionDrill() {
         el.classList?.add(DONE_CLASS);
       }
     }
-  }, [current, beatIndex, feedback]);
+    // `focused` có mặt ở đây vì vào/ra chế độ tập trung là VẼ LẠI khuông nhạc:
+    // `beatElementsRef` thành phần tử mới toanh, mà màu thì nằm trên phần tử cũ.
+    // Thiếu nó thì bật tập trung lên là con trỏ biến mất, không lỗi nào báo.
+  }, [current, beatIndex, feedback, focused]);
+
+  /**
+   * Khoá cuộn nền và cho phím Esc thoát, chỉ trong lúc đang tập trung.
+   *
+   * Khoá đặt trên `body` chứ không trên lớp phủ: lớp phủ vẫn phải cuộn được bên
+   * trong nó, còn trang phía sau thì phải đứng yên. Dùng chung lớp
+   * `sheet-focus-lock` với chế độ tập trung của bản nhạc bài học — cùng một việc,
+   * không đẻ thêm tên thứ hai.
+   */
+  useEffect(() => {
+    if (!focused) return;
+
+    document.body.classList.add('sheet-focus-lock');
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setFocused(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+
+    return () => {
+      document.body.classList.remove('sheet-focus-lock');
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [focused]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
@@ -784,10 +872,15 @@ export function NoteRecognitionDrill() {
       )}
 
       <Card withBorder padding="lg" data-testid="drill-card">
-        <Stack align="center" gap="md">
+        <Stack
+          align="center"
+          gap="md"
+          className={`drill-stage${focused ? ' is-focused' : ''}`}
+          data-testid="drill-stage"
+        >
           {current ? (
             <>
-              <Text size="sm" c="dimmed">
+              <Text size="sm" c="dimmed" className="drill-stage__prompt">
                 {/* Ô nhịp thì nói rõ đang đứng ở phách nào: người học ngẩng lên
                     sau khi nhìn xuống bàn phím phải tìm lại được chỗ mình đang
                     đọc, mà dấu trên khuông nhạc có khi bị ngón tay che. */}
@@ -804,6 +897,19 @@ export function NoteRecognitionDrill() {
                 {options.randomKeys && ' Hoá biểu đầu khuông mỗi câu một khác, nhìn nó trước đã.'}
               </Text>
 
+              {/*
+                Gợi ý xoay ngang, chỉ hiện trong lớp phủ ở màn hình dựng đứng.
+                Không phải câu nói cho có: với ô nhịp thì **bề ngang mới là thứ
+                chặn**, nên phủ kín màn hình dựng đứng chỉ to thêm được khoảng
+                một phần mười. Xoay ngang thì bề ngang gần gấp đôi, và đó mới là
+                câu trả lời đúng. Manifest cố ý không khoá hướng màn hình vì việc này.
+              */}
+              {focused && dungDungTrenDienThoai && (
+                <Text size="xs" c="dimmed" ta="center" data-testid="rotate-hint">
+                  Xoay ngang máy để khuông nhạc to gần gấp đôi.
+                </Text>
+              )}
+
               {/* Khuông nhạc luôn để nền trắng chữ đen như bản nhạc giấy, kể cả khi trang đang ở chế độ tối. */}
               {/*
                 Khung CAO CỐ ĐỊNH và không canh giữa theo chiều dọc: vị trí khuông
@@ -813,23 +919,37 @@ export function NoteRecognitionDrill() {
               */}
               <div
                 data-testid="staff"
+                ref={staffBoxRef}
                 style={{
                   background: '#fff',
                   color: '#000',
                   border: '1px solid #d0d0d0',
                   borderRadius: 16,
                   padding: '0.5rem 1rem',
-                  height: staffBox(grandStaff).height,
+                  /*
+                    Chiều cao: bình thường là khung cố định; lúc tập trung thì để
+                    CSS chia (`flex: 1`), và effect vẽ đọc lại chiều cao thật đó
+                    để phóng khuông nhạc cho vừa.
+                  */
+                  /*
+                    Bình thường là khung cao cố định. Lúc tập trung thì đổi thành
+                    SÀN: CSS cho khung giãn ra khi màn hình còn chỗ, và cấm nó co
+                    xuống dưới sàn này — effect vẽ đọc lại chiều cao thật rồi
+                    phóng bản nhạc cho vừa.
+                  */
+                  height: focused ? undefined : staffBox(grandStaff).height,
+                  minHeight: focused ? staffBox(grandStaff).height : undefined,
                   width: '100%',
-                  // Ô nhịp dùng hết bề ngang có được; một nốt thì giữ khung hẹp.
-                  maxWidth: current.beats.length > 1 ? undefined : SINGLE_NOTE_BOX_PX,
+                  // Ô nhịp và chế độ tập trung dùng hết bề ngang có được; một nốt
+                  // ở màn hình thường thì giữ khung hẹp.
+                  maxWidth: current.beats.length > 1 || focused ? undefined : SINGLE_NOTE_BOX_PX,
                   overflow: 'hidden',
                 }}
               >
                 <div ref={paperRef} />
               </div>
 
-              <Box mih={78} w="100%">
+              <Box mih={78} w="100%" className="drill-stage__feedback">
                 {feedback.kind === 'partial' && (
                   <Alert color="teal" variant="light" title="Đúng rồi, còn nữa" data-testid="feedback-partial">
                     <b>{feedback.done.note.name} ({feedback.done.note.scientific})</b>
@@ -876,12 +996,49 @@ export function NoteRecognitionDrill() {
                 )}
               </Box>
 
-              <Group justify="center">
+              <Group justify="center" className="drill-stage__actions">
                 <Button variant="default" size="md" onClick={skip}>
                   {currentBeat.length > 1 ? 'Bỏ qua chỗ này' : 'Bỏ qua nốt này'}
                 </Button>
-                <Button variant="subtle" color="gray" size="md" onClick={restart}>Làm lại từ đầu</Button>
+                {/*
+                  Lúc đang tập trung thì KHÔNG hiện *Làm lại từ đầu*: nó xoá sạch
+                  thống kê buổi luyện, mà trong lớp phủ hai nút đứng sát nhau và
+                  ngón tay đang vừa rời phím đàn — bấm nhầm là mất hết, không có
+                  đường lùi. Nút phóng to đổi chỗ cho nó, cùng vị trí quen tay.
+                */}
+                {focused ? (
+                  <Button
+                    variant="subtle"
+                    color="gray"
+                    size="md"
+                    leftSection={<IconArrowsMinimize size={18} />}
+                    onClick={() => setFocused(false)}
+                    data-testid="exit-focus"
+                  >
+                    Thoát tập trung
+                  </Button>
+                ) : (
+                  <Button variant="subtle" color="gray" size="md" onClick={restart}>Làm lại từ đầu</Button>
+                )}
               </Group>
+
+              {/*
+                Nút vào chế độ tập trung đứng CUỐI, không đứng cạnh khuông nhạc:
+                nó bấm một lần lúc bắt đầu buổi tập rồi thôi, còn *Bỏ qua* thì bấm
+                đi bấm lại — thứ hay dùng phải ở chỗ dễ với hơn.
+              */}
+              {!focused && (
+                <Button
+                  variant="light"
+                  size="md"
+                  fullWidth
+                  leftSection={<IconArrowsMaximize size={18} />}
+                  onClick={() => setFocused(true)}
+                  data-testid="enter-focus"
+                >
+                  Chế độ tập trung
+                </Button>
+              )}
             </>
           ) : (
             <Alert color="gray" title="Chưa có nốt nào để hỏi" data-testid="empty-pool" w="100%">

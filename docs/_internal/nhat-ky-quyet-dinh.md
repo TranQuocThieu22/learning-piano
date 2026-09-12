@@ -254,6 +254,30 @@ Ba thứ kéo theo mà lúc bắt đầu chưa thấy:
   vẽ xong bè trên mới tới bè dưới nên thứ tự DOM không phải thứ tự phách. Số sự kiện không
   khớp số phách thì không tô gì cả — thà không tô còn hơn tô nhầm sang nốt chưa ai đánh tới.
 
+### 12/09 — khuông nhạc to hết cỡ, và chế độ tập trung
+
+Chủ sản phẩm gửi ảnh chụp màn hình: ô nhịp chỉ chiếm quá nửa khung giấy nhạc, chữ nhạc
+bé. Yêu cầu là *"cho khuông nhạc to hết ngang đi hoặc làm chế độ tập trung"* — làm cả hai.
+
+Ba điều đáng nhớ hơn cả bản thân tính năng:
+
+- **Triệu chứng "nhạc không đầy khung" dẫn thẳng vào một hướng sai.** Phản xạ đầu tiên là
+  đi tìm tuỳ chọn kéo giãn của abcjs. Đo riêng abcjs ngoài app mới lộ ra là nó **đã** kéo
+  giãn sẵn, và thủ phạm là tuỳ chọn `scale` mình đang truyền vào (bẫy 31). Bài học: khi số
+  đo trong app khác số đo ngoài app, thủ phạm nằm ở thứ mình truyền vào, không nằm ở thư viện.
+- **Chế độ tập trung KHÔNG được phép làm bản nhạc nhỏ đi.** Bản đầu chia chiều cao bằng
+  flex và cho khung co lại; điện thoại xoay ngang chỉ còn 360px nên khung bị bóp xuống hơn
+  trăm px — bật tập trung lên lại thấy nhỏ hơn lúc không bật. Nay khung có sàn bằng đúng
+  chiều cao thường và **màn hình thấp thì cuộn**, chứ bản nhạc không bé đi.
+- **Ghim hàng nút xuống ĐÁY, không ghim nút Thoát lên đỉnh.** Khác chế độ tập trung của bản
+  nhạc bài học, ở đây thứ bấm đi bấm lại là *Bỏ qua nốt này* chứ không phải *Thoát* — mà lúc
+  đang tập thì hai tay ở trên phím đàn, thứ phải với tới mà không cuộn phải là thứ hay dùng.
+  Nút Thoát đứng ngay cạnh nên được luôn cả hai.
+
+Đã thử rồi bỏ: xếp hai cột lúc xoay ngang (bản nhạc bên trái, phản hồi và nút bên phải).
+Dựng xong, đo ra khuông nhạc **hẹp hơn** cả lúc không tập trung vì cột phải ăn mất một
+phần tư bề ngang — mà bề ngang mới là thứ đang thiếu. Đừng đề xuất lại.
+
 ## 3. Còn treo
 
 Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. Danh sách việc thì nằm ở
@@ -308,6 +332,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Chế độ tập trung cho bài luyện nhận nốt` | Mục 2 thêm khối 12/09 thứ hai: ghi lại vì sao triệu chứng "nhạc không đầy khung" dẫn vào hướng sai, vì sao chế độ tập trung phải có SÀN chiều cao thay vì chia bằng flex (xoay ngang thì bật lên lại nhỏ hơn lúc không bật), vì sao ghim hàng nút xuống đáy chứ không ghim nút Thoát lên đỉnh, và ghi lại bản xếp hai cột đã dựng xong rồi bỏ vì đo ra hẹp hơn cả lúc không tập trung |
 | 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Mục 1 thêm dòng về chế độ ô nhịp 4/4, chốt luôn câu dễ bị lật lại nhất là **tiết tấu**: bốn nốt đen đều nhau chứ không trộn trường độ, vì app cố ý không đo thời gian nên hình nốt khác nhau chỉ là lời hứa suông. Mục 2 thêm khối 12/09 ghi ba thứ kéo theo mà lúc bắt đầu chưa thấy — phải ép bề ngang khuông nhạc, abcjs ghi đè `width` lên thẻ chứa làm phép đo tự so với chính nó, và con trỏ phải đi bằng `noteTimings` chứ không đếm thẻ trong DOM |
 | 12/09/2026 | `docs(internal): Ghi nhật ký phiên 12/09 và chốt hoá biểu ngẫu nhiên` | Thêm dòng quyết định vào mục 1 (hoá biểu đổi ngẫu nhiên mỗi câu thay vì cho chọn một giọng cố định, kèm lý do: chọn cố định thì vài câu là người học thuộc lòng rồi thôi không nhìn đầu khuông nữa), thêm mốc 12/09 vào dòng thời gian với sáu vòng sửa và hai lỗi vẽ lọt qua năm lệnh kiểm, và hai việc còn treo mới ở mục 3 |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm dòng quyết định vào mục 1: có chỗ thử bài hát, nhưng chỉ nhạc hết hạn bảo hộ, kèm lý do pháp lý và đường đi nếu muốn nhạc còn bản quyền |
