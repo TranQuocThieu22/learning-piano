@@ -971,7 +971,7 @@ body {
 
 /*
  * Khung bản nhạc: lề, nền, viền, bo góc, padding — tất cả nằm ở đây chứ không ở
- * `style` nội tuyến của `AbcjsViewer.tsx`: style nội tuyến thắng mọi luật CSS
+ * `style` nội tuyến của `SheetViewer.tsx`: style nội tuyến thắng mọi luật CSS
  * không `!important`, nên để ở đó thì chế độ tập trung bên dưới không đổi được
  * chúng — kể cả phần chừa cho tai thỏ.
  *

@@ -294,7 +294,7 @@ public/images/             MỘT THƯ MỤC CHO MỖI TRANG, tên trùng slug c�
                            (ảnh dùng ở nhiều trang thì tạo thêm chung/)
 src/
   app/                     Trang Next.js
-  components/              AbcjsViewer, Metronome, NoteRecognitionDrill, ScorePractice...
+  components/              SheetViewer, Metronome, NoteRecognitionDrill, ScorePractice...
   lib/                     markdown, lessons, progress, payment/, admin/
   db/schema.ts             Auth.js + lesson_completion + 3 bảng thanh toán
 scripts/check-lessons.mjs  Kiểm tra toàn bộ giáo trình bằng parser abcjs
@@ -320,6 +320,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Đổi tên `AbcjsViewer` thành `SheetViewer` trong sơ đồ thư mục: component không còn mang tên thư viện vẽ nhạc, vì abcjs nay nằm sau hai hook `useSheetRender` / `useSheetAudio` chứ không nằm trong component |
 | 12/09/2026 | `feat: Luyện tai — app phát một câu, người học mò trên đàn thật` | Bảng các trang thêm `/ear-trainer` — chiều ngược lại của `/note-trainer`, dạy tai → tay thay vì mắt → tay |
 | 12/09/2026 | `refactor: Gỡ mục Lý thuyết khỏi Mục lục, chương đã có nhà ở Đường đi` | Chốt ranh giới giữa hai trang mục lục: `/path` giữ mọi thứ NẰM TRÊN đường đi, `/library` giữ mọi thứ KHÔNG nằm trên đường đi. Gỡ mục Lý thuyết khỏi `/library` vì liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ — và danh sách ở Mục lục còn không có ô tick, không biết người học đang ở chương nào |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm `/songs` vào bảng đường dẫn — chỗ chơi tách khỏi giáo trình, chỉ chứa nhạc đã hết hạn bảo hộ |

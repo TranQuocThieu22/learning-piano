@@ -2,7 +2,7 @@
 import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
-import { AbcjsViewer } from './AbcjsViewer';
+import { SheetViewer } from './SheetViewer';
 
 /**
  * GitHub-style alert markers (`> [!WARNING]`) are not part of CommonMark or GFM,
@@ -35,7 +35,7 @@ function renderAlertMarkers(markdown: string): string {
  */
 const components: Components = {
   pre({ children }) {
-    // react-markdown bọc khối mã trong <pre>. Nếu con là AbcjsViewer thì không
+    // react-markdown bọc khối mã trong <pre>. Nếu con là SheetViewer thì không
     // muốn thẻ <pre> nữa.
     return <div className="markdown-pre-wrapper">{children}</div>;
   },
@@ -68,7 +68,7 @@ const components: Components = {
     // mã nội dòng bằng chính lớp `language-*` mà GFM gắn cho khối có tên ngôn ngữ.
     const match = /language-(\w+)/.exec(className ?? '');
     if (match?.[1] === 'abc') {
-      return <AbcjsViewer abcNotation={String(children).replace(/\n$/, '')} />;
+      return <SheetViewer abcNotation={String(children).replace(/\n$/, '')} />;
     }
     return <code className={className}>{children}</code>;
   },

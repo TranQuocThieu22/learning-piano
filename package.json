@@ -21,7 +21,7 @@
     "@mantine/hooks": "^9.5.1",
     "@tabler/icons-react": "^3.46.0",
     "@vercel/analytics": "^2.0.1",
-    "abcjs": "^6.6.4",
+    "abcjs": "6.7.0",
     "drizzle-orm": "^0.45.2",
     "gray-matter": "^4.0.3",
     "next": "16.3.0",

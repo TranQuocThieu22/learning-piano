@@ -386,7 +386,7 @@ mới lộ ra.
 - `pause()` **không đủ** — nó chỉ dừng đồng hồ, chuỗi âm thanh vẫn còn.
 - `destroy()` mới là hàm gọi tới `midiBuffer.stop()`. Hàm này **có thật trong
   `synth-controller.js` nhưng thiếu trong `.d.ts`** của abcjs, nên phải khai thêm
-  vào `SynthControllerInternals` ở `AbcjsViewer.tsx` — cùng chỗ đã vá `seek` và
+  vào `SynthControllerInternals` ở `src/hooks/useSheetAudio.ts` — cùng chỗ đã vá `seek` và
   `midiBuffer` vì đúng lý do đó.
 
 Hàm dọn dẹp còn chạy mỗi khi dependency đổi, nên nó sửa luôn một rò rỉ dễ bỏ sót:
@@ -455,7 +455,7 @@ for (let e = ov.parentElement; e; e = e.parentElement) {
 ```
 
 **Cách sửa.** Trong lúc đang tập trung thì tắt các thuộc tính đó ở tổ tiên. Lớp
-`sheet-focus-lock` mà `AbcjsViewer.tsx` gắn lên `body` chính là công tắc sẵn có:
+`sheet-focus-lock` mà `SheetViewer.tsx` gắn lên `body` chính là công tắc sẵn có:
 
 ```css
 body.sheet-focus-lock .markdown-body { backdrop-filter: none; }
@@ -521,7 +521,7 @@ const ov = document.querySelector('.sheet-music-wrapper.is-focused');
 
 Con nào có `scrollHeight` lớn hơn hẳn chiều cao ô là con đang bị bóp.
 
-**Kèm theo: padding của khung phải nằm ở CSS.** `AbcjsViewer.tsx` trước đây đặt
+**Kèm theo: padding của khung phải nằm ở CSS.** `SheetViewer.tsx` (khi đó còn tên `AbcjsViewer.tsx`) trước đây đặt
 `padding: '1rem'` trong `style` nội tuyến, mà style nội tuyến thắng mọi luật CSS
 không `!important` — nên luật padding chừa tai thỏ của `.is-focused` trong
 `globals.css` **chưa từng có tác dụng** dù đọc mã thì tưởng là có. Đã chuyển padding
@@ -1009,6 +1009,15 @@ tính DOM mình đang định ghi đè. Trước khi ghi `style.*` lên phần t
 **đọc xem nó đang để sẵn cái gì ở đó** — một dòng `console.log(el.getAttribute('style'))` là
 đủ, và rẻ hơn nhiều so với việc bản production chạy sai suốt mấy ngày.
 
+**Hệ quả: `abcjs` bị ghim đúng một phiên bản trong `package.json`** (`"abcjs": "6.7.0"`,
+không có dấu `^`). Bẫy 28 tới 33 đều dựa vào chi tiết *bên trong* thư viện — nó ghi đè
+`style.transform`, bọc ảnh trong `div` `overflow: hidden`, tự ghi `width` lên thẻ chứa, và
+`scale` thì chia chỗ chứ không phải cỡ chữ. Không chi tiết nào trong số đó là lời hứa công
+khai của thư viện, nên một bản vá nhỏ cũng đủ đổi, mà đổi thì **không lệnh kiểm nào báo**:
+`tsc`, `lint`, `vitest` và cả `next build` đều xanh, chỉ có bản nhạc trên màn hình là sai.
+Nâng abcjs là việc **có chủ ý**: đổi con số đó bằng tay, rồi mở lại đúng bốn bẫy này mà nhìn
+bằng mắt trên khung điện thoại trước.
+
 ---
 
 ## 29. abcjs bọc ảnh trong `div` có `overflow: hidden`, dịch ảnh xuống là mất dòng kẻ
@@ -1205,6 +1214,7 @@ mới chỉ ra, vì lỗi kiểu này không ném lỗi mà chỉ trả lời kh
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Ghi vào bẫy 28 lý do `abcjs` bị ghim đúng `6.7.0` không có `^`: bẫy 28-33 đều bám vào chi tiết bên trong thư viện, mà chi tiết đó đổi thì cả năm lệnh kiểm vẫn xanh và chỉ bản nhạc trên màn hình là sai. Sửa tên file cho khớp: `AbcjsViewer.tsx` nay là `SheetViewer.tsx`, phần vá `SynthControllerInternals` dời sang `src/hooks/useSheetAudio.ts` |
 | 12/09/2026 | `refactor: Gộp bốn kho nhớ và ba hàm phím đen về một chỗ, kèm quy ước viết mã` | Thêm bẫy 34 — đổi tên biến trùng tên hàm vừa import làm `key.chromatic?.[pitchClass]` tra bảng bằng hàm, nốt Si giáng lặng lẽ hiện thành La thăng mà `tsc` và lint đều xanh; ghi kèm luật mỗi lần gom trùng lặp phải có test chạy qua chỗ gom |
 | 12/09/2026 | `fix: Vẽ lại khuông nhạc khi xoay máy, và tô lại con trỏ ngay sau mỗi lần vẽ` | Thêm bẫy 32 và 33, cả hai đều là lỗi im lặng gặp trên máy thật. Bẫy 32: vẽ theo số đo px thì phải tự theo dõi kích thước bằng `ResizeObserver`, không thì xoay máy là bản nhạc giữ nguyên cỡ hướng cũ rồi bị cắt. Bẫy 33: tô màu lên phần tử do thư viện vẽ mà để trong một hiệu ứng riêng thì hai danh sách phụ thuộc phải khớp nhau đời đời — đã hỏng ba lần vì đúng lý do đó, nên chuyển thành gọi thẳng ở cuối chỗ vẽ |
 | 12/09/2026 | `fix: Ô nhịp 4/4 kéo giãn hết bề ngang khung, chữ nhạc to như chế độ một nốt` | Thêm bẫy 31: tuỳ chọn `scale` của abcjs xếp nhạc vừa `staffwidth / scale` chứ không trọn `staffwidth`, nên ở chỗ đã ghi đè `transform` (bẫy 28) thì nó chỉ còn tác dụng bóp nhạc lại — ô nhịp 4/4 chiếm 76% khung, nới `staffwidth` cũng vô ích. Ghi kèm cách soi: dựng lại đoạn ABC trong trang trắng rồi đo, vì chính chỗ số đo ngoài app khác số đo trong app mới chỉ ra thủ phạm là một tuỳ chọn đang truyền vào |

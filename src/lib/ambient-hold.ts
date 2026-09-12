@@ -26,7 +26,7 @@ export const AMBIENT_HOLD_EVENT = 'pj-ambient-hold';
 /**
  * Bộ đếm nằm trên `window`, KHÔNG ở phạm vi module — và đây là chỗ đã sập một lần.
  *
- * Bộ phát nhạc nền sống ở `src/app/layout.tsx`, còn nơi giữ chỗ (`AbcjsViewer`)
+ * Bộ phát nhạc nền sống ở `src/app/layout.tsx`, còn nơi giữ chỗ (`SheetViewer`)
  * nằm trong trang. Với App Router, layout gốc và trang là hai nhánh client khác
  * nhau, nên cùng một file `.ts` có thể được nạp thành HAI bản sao, mỗi bên một
  * biến đếm riêng. Triệu chứng đánh lừa: sự kiện vẫn bắn đều (đo được), bên nghe
