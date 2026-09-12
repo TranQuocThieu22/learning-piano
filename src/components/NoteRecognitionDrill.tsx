@@ -14,6 +14,7 @@ import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
+import { anchorTransform, GRAND_STAFF_BOX, SINGLE_STAFF_BOX } from '@/lib/staff-anchor';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
@@ -280,14 +281,21 @@ export function NoteRecognitionDrill() {
     },
   );
 
-  // Vẽ lại khuông nhạc mỗi khi đổi nốt hoặc đổi khóa nhạc.
+  /*
+   * Vẽ lại khuông nhạc mỗi khi đổi câu hỏi hoặc đổi số khuông — rồi **neo nó lại**.
+   *
+   * abcjs vẽ ảnh cao vừa đúng nội dung, nên nốt càng nhiều dòng kẻ phụ thì ảnh
+   * càng cao và năm dòng kẻ trôi đi mỗi câu một chỗ. Sau khi vẽ xong, đo dòng kẻ
+   * trên cùng rồi dịch ảnh về đúng chỗ neo — luật tính nằm ở `staff-anchor.ts`.
+   */
   useEffect(() => {
-    if (!paperRef.current) return;
+    const paper = paperRef.current;
+    if (!paper) return;
     if (!current) {
-      paperRef.current.innerHTML = '';
+      paper.innerHTML = '';
       return;
     }
-    ABCJS.renderAbc(paperRef.current, questionAbc(current, grandStaff), {
+    ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
        * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
@@ -302,6 +310,31 @@ export function NoteRecognitionDrill() {
       paddingleft: 0,
       paddingright: 0,
     });
+
+    const svg = paper.querySelector('svg');
+    const topLine = paper.querySelector('.abcjs-top-line');
+    if (!svg || !topLine) return;
+
+    /*
+     * Đo **trong hệ toạ độ của chính ảnh SVG** bằng `getBBox`, không dùng
+     * `getBoundingClientRect`.
+     *
+     * Đã thử cách kia trước và lệch 7px: toạ độ màn hình phụ thuộc vào chỗ ảnh
+     * nằm trong trang, mà lúc effect chạy thì trang chưa xếp xong chỗ cho nó.
+     * `getBBox` chỉ nói về nét vẽ bên trong ảnh nên đo lúc nào cũng ra một số.
+     * abcjs không đặt `viewBox`, nên một đơn vị trong ảnh đúng bằng một px.
+     */
+    const ink = svg.getBBox();
+    const topLineY = (topLine as SVGGraphicsElement).getBBox().y;
+    const { scale, translateY } = anchorTransform(
+      grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX,
+      topLineY,
+      ink.y,
+      ink.y + ink.height,
+    );
+
+    svg.style.transformOrigin = 'top center';
+    svg.style.transform = `translateY(${translateY}px) scale(${scale})`;
   }, [current, grandStaff]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
@@ -517,23 +550,28 @@ export function NoteRecognitionDrill() {
               </Text>
 
               {/* Khuông nhạc luôn để nền trắng chữ đen như bản nhạc giấy, kể cả khi trang đang ở chế độ tối. */}
+              {/*
+                Khung CAO CỐ ĐỊNH và không canh giữa theo chiều dọc: vị trí khuông
+                nhạc do phép neo trong effect quyết, canh giữa nữa là hai thứ tranh
+                nhau. `overflow: hidden` chỉ là lưới an toàn — phép neo đã thu nhỏ
+                cho vừa rồi.
+              */}
               <div
-                ref={paperRef}
                 data-testid="staff"
                 style={{
                   background: '#fff',
                   color: '#000',
                   border: '1px solid #d0d0d0',
                   borderRadius: 16,
-                  padding: '0.75rem 1rem',
-                  minHeight: 150,
+                  padding: '0.5rem 1rem',
+                  height: grandStaff ? GRAND_STAFF_BOX.height : SINGLE_STAFF_BOX.height,
                   width: '100%',
                   maxWidth: 320,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  overflow: 'hidden',
                 }}
-              />
+              >
+                <div ref={paperRef} />
+              </div>
 
               <Box mih={78} w="100%">
                 {feedback.kind === 'partial' && (

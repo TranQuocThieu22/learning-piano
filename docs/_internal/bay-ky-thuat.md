@@ -915,6 +915,46 @@ hình hiểu, và không phần mềm nào tranh mất cú chạm.
 
 ---
 
+## 27. Khuông nhạc nhảy lên nhảy xuống mỗi câu một chỗ
+
+**Triệu chứng.** Bài luyện nhận nốt đổi câu thì **năm dòng kẻ nhảy lên nhảy xuống**, mắt
+phải tìm lại khuông trước khi đọc được nốt. Nốt càng cao hoặc càng trầm thì nhảy càng xa.
+Cả cái thẻ cũng cao thấp theo, nên hai cái nút bên dưới cũng nhảy.
+
+**Nguyên nhân.** abcjs vẽ ảnh SVG **cao vừa đúng nội dung**: nốt xa khuông thì phải kẻ thêm
+dòng kẻ phụ, ảnh cao thêm. Khung chứa lại canh giữa theo chiều dọc, nên ảnh cao thấp khác
+nhau kéo theo khuông nhạc trôi đi. Đo thật ở tỉ lệ đang dùng: ảnh cao từ **186px** (Đô3 khóa
+Pha) tới **512px** (Si7 khóa Sol), và dòng kẻ trên cùng nằm ở **22px** hay **162px** tính từ
+mép ảnh tuỳ nốt.
+
+**Cách sửa.** Khung cao cố định, bỏ canh giữa, rồi sau khi vẽ xong thì **dịch ảnh sao cho
+dòng kẻ trên cùng luôn rơi đúng một chỗ**:
+
+```ts
+const ink = svg.getBBox();
+const topLineY = svg.querySelector('.abcjs-top-line').getBBox().y;
+const { scale, translateY } = anchorTransform(box, topLineY, ink.y, ink.y + ink.height);
+svg.style.transformOrigin = 'top center';
+svg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+```
+
+Luật tính nằm ở `src/lib/staff-anchor.ts`, có test riêng. Ảnh nào cao quá khung thì thu nhỏ
+vừa đủ — thà chữ bé đi còn hơn cắt mất cái nốt đang hỏi. Với các quãng đang cho chọn thì
+việc thu nhỏ gần như không bao giờ xảy ra; nó là lưới an toàn.
+
+**Chỗ mất thêm nửa giờ: đo bằng `getBoundingClientRect` thì lệch 7px.** Bản đầu đo vị trí
+dòng kẻ bằng toạ độ màn hình (`rect` của dòng kẻ trừ `rect` của ảnh), và kết quả là khuông
+vẫn nhảy trong khoảng 8px. Lý do: lúc effect chạy, trình duyệt chưa xếp xong chỗ cho ảnh
+trong trang, nên hai toạ độ màn hình đó chưa ăn khớp nhau. **`getBBox` đo trong hệ toạ độ
+của chính ảnh SVG** nên đo lúc nào cũng ra một số. Sau khi đổi, dòng kẻ đứng đúng một chỗ
+qua hai mươi câu liên tiếp.
+
+**Bài học chung.** Đo cái gì thuộc về bên trong một ảnh SVG thì đo bằng `getBBox`, đừng đo
+bằng toạ độ màn hình. Toạ độ màn hình phụ thuộc vào chỗ ảnh nằm trong trang, mà chỗ đó chưa
+chắc đã chốt vào lúc mã của mình chạy.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -923,6 +963,7 @@ hình hiểu, và không phần mềm nào tranh mất cú chạm.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `fix: Neo khuông nhạc đứng yên, không nhảy theo cao độ nốt` | Thêm bẫy 27 — abcjs vẽ ảnh cao vừa nội dung nên khuông nhạc trôi mỗi câu một chỗ; kèm chuyện đo bằng `getBoundingClientRect` lệch 7px vì lúc effect chạy trang chưa xếp xong chỗ, phải đo bằng `getBBox` trong hệ toạ độ của chính ảnh SVG |
 | 12/09/2026 | `fix: Chọn quãng bằng nút bấm, hình đàn chỉ bôi vùng đang tập` | Thêm bẫy 26 — chạm vào hình SVG có chữ trên Android làm kính lúp chọn chữ nhảy ra che nửa màn hình, và `pointer-events: none` trên thẻ `text` không cứu được; ghi kèm bài học lớn hơn là đừng bắt người học chạm thẳng vào hình vẽ để chọn |
 | 11/09/2026 | `fix: Sửa nốt sai của Für Elise và thêm bản nâng cao hai tay cho mọi bài hát` | Thêm bẫy 25 — dấu hoá trong ABC có hiệu lực tới hết ô nhịp nên nốt Rê của Für Elise phát ra Rê thăng trong khi bản nhạc nhìn vẫn đúng; ghi kèm cách đọc cao độ thật bằng `getMidiFile` thay vì đọc lại chuỗi ABC bằng mắt, và vì sao nhạc viết tay cần test gác riêng |
 | 11/09/2026 | `docs(internal): Ghi nhật ký phiên tối 11/09 và bẫy 24` | Thêm bẫy 24 — `{ once: true }` chỉ gỡ listener vừa bắn nên cái anh em sống tới hết phiên và bật nhạc nền lúc phải im; ghi kèm chuyện phải hỏi lại điều kiện lúc bắn chứ không phải lúc gắn, và vì sao lỗi này không tái hiện được bằng trình duyệt chạy tự động |

@@ -60,6 +60,11 @@
   **không có hai nốt cách nhau nửa cung** (chồng kiểu đó nghe như đặt nhầm tay, nhìn cũng
   không giống bản nhạc). Mỗi câu bốc ngẫu nhiên từ một tới mức đã chọn — câu nào cũng đủ
   chồng thì không giống bản nhạc thật.
+- **Neo khuông nhạc đứng yên.** Người dùng báo khuông nhạc nhảy lên nhảy xuống tuỳ nốt cao
+  hay thấp. abcjs vẽ ảnh cao vừa đúng nội dung — từ 186px tới 512px tuỳ số dòng kẻ phụ — mà
+  khung lại canh giữa, nên năm dòng kẻ trôi mỗi câu một chỗ. Nay khung cao cố định và ảnh
+  được dịch sao cho dòng kẻ trên cùng luôn rơi đúng một chỗ; ảnh nào cao quá khung thì thu
+  nhỏ vừa đủ chứ không cắt. Ghi thành **bẫy 27**.
 - **Nói rõ vì sao số nốt hụt so với số quãng đã chọn.** Chọn bốn quãng với cả hai tay không
   ra 4×2 phần bài, vì quãng quá trầm thì khóa Sol không đọc được và ngược lại. Trước đây app
   im lặng, người dùng đếm thấy hụt và tưởng app nuốt mất nốt. Nay có dòng tách rõ: khóa Sol
@@ -67,6 +72,10 @@
 
 **Quan sát**
 
+- **Đo bên trong một ảnh SVG thì phải dùng `getBBox`, không dùng toạ độ màn hình.** Bản neo
+  khuông nhạc đầu tiên đo bằng `getBoundingClientRect` và lệch 7px — lúc effect chạy, trình
+  duyệt chưa xếp xong chỗ cho ảnh trong trang nên hai toạ độ màn hình chưa ăn khớp. Đổi sang
+  `getBBox` là đứng yên tuyệt đối. Mất nửa giờ cho một dòng mã.
 - **Hai lỗ chỉ lộ ra khi viết test cho câu hai nốt, không lỗ nào nhìn ra được bằng mắt.**
   Thứ nhất: micro nghe cả hai nốt trong CÙNG một lần, nên chỗ xử lý chạy hai lần liền nhau
   trước khi React kịp vẽ lại — đọc state thì lần thứ hai vẫn thấy giá trị cũ và câu không
