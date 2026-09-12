@@ -46,6 +46,7 @@ khiển ngón độc lập.
 
 | Chương | Nội dung | Số bài | Trạng thái |
 |---|---|---|---|
+| 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Bảng cách nghe đàn thêm đường thứ ba (Web Bluetooth nối thẳng), vì hai đường cũ không dùng được với đàn Bluetooth trên Android |
 | 0 | Vì sao bạn muốn chơi piano — bài đọc tạo động lực, không có bài tập; lịch sử piano tách sang trang *Đọc thêm* | 0 | ✅ Xong |
 | 1 | 5 nốt đầu tiên C-D-E-F-G, độc lập ngón | 2 | ✅ Xong |
 | 2 | Trường độ (đen/trắng/tròn), phối hợp 2 tay | 3 | ✅ Xong |
@@ -183,9 +184,11 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
     đo trên máy thật** — xem Giai đoạn D của `lo-trinh-phat-trien.md`. Mã ở
     `src/lib/mic-*.ts`.
   - **MIDI:** chính xác tuyệt đối. Nối bằng **dây** (điện thoại cần cáp OTG) hoặc bằng
-    **Bluetooth** nếu đàn có — cả hai đi qua cùng một API nên mã không phân biệt. Riêng Bluetooth
-    trên Android: ghép đôi ở Cài đặt **chỉ nối phần tiếng**; phải có một app gọi
-    `MidiManager.openBluetoothDevice()` (app của hãng đàn) thì đàn mới hiện ra cho trình duyệt. Chạy trên
+    **Bluetooth** nếu đàn có — cả hai đi qua cùng một API nên mã không phân biệt. Riêng **Bluetooth trên
+    Android không đi qua Web MIDI được** (Chrome không liệt kê thiết bị BLE MIDI — bẫy 35), nên
+    có đường thứ ba: **Web Bluetooth nối thẳng tới đàn**, tự đọc gói BLE-MIDI
+    (`src/lib/ble-midi.ts` + `useBleMidiInput`). Người học bấm một nút chọn đàn là xong, không
+    cần dây cũng không cần app của hãng. Chạy trên
     **điện thoại và tablet Android** (Chrome/Edge) và máy tính. **Không chạy trên iPhone/iPad**
     — mọi trình duyệt iOS đều dùng WebKit, mà WebKit không có Web MIDI.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).

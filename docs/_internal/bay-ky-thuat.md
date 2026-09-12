@@ -428,6 +428,7 @@ Bản nhạc nằm sâu trong hai lớp đều dính:
 
 | Tổ tiên | Thuộc tính | Bật lúc nào |
 |---|---|---|
+| 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Viết lại bẫy 35 sau khi thử tới cùng: Chrome trên Android KHÔNG liệt kê thiết bị BLE MIDI cho Web MIDI, kể cả khi app của hãng đàn đã nối và trang đã xin lại quyền — nên cách sửa thật là bỏ Web MIDI, nối thẳng bằng Web Bluetooth; ghi kèm ba chỗ dễ sai khi tự đọc gói BLE-MIDI |
 | `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
 | `.markdown-pre-wrapper` | `transform: translateY(-2px)` | khi rê chuột vào khối |
 
@@ -1224,13 +1225,29 @@ sách rỗng, đúng như đang không có đàn nào.
 Tài liệu của chính Roland nói rõ điều này theo chiều ngược lại: **đừng ghép đôi MIDI ở phần Cài
 đặt** — nếu máy tự ghép thì xoá đi, và nối từ trong Roland Piano App.
 
-**Cách sửa (phía người học).** Mở kết nối từ **app của hãng đàn** (Roland Piano App với đàn
-Roland), để app đó chạy nền, rồi quay lại web bấm *Tìm lại đàn*.
+**Đã thử tới cùng, và đều KHÔNG ăn:**
 
-**Cách sửa (phía mình).** Đừng viết "đàn có Bluetooth thì ghép đôi là xong" — câu đó đã lên
-production một lần và người dùng kẹt đúng ở đó. Chỗ nào nói tới Bluetooth cũng phải nói kèm bước
-mở kết nối bằng app. Muốn bỏ hẳn app trung gian thì phải tự nối BLE bằng **Web Bluetooth** và tự
-đọc gói BLE-MIDI, chứ không dùng được Web MIDI — đó là một tính năng riêng, chưa làm.
+1. Ghép đôi ở Cài đặt → chỉ nối hồ sơ âm thanh, danh sách MIDI vẫn rỗng.
+2. Nối bằng **Roland Piano App** cho tới khi app báo *Connected: FP-30X* → trang web vẫn không
+   thấy đàn nào.
+3. Cho nút *Tìm lại đàn* gọi lại `requestMIDIAccess` để trình duyệt **điểm danh lại từ đầu**
+   (chứ không chỉ đọc lại `access.inputs` cũ) → vẫn rỗng.
+4. Tải lại trang trong lúc app của hãng vẫn đang nối → vẫn rỗng.
+
+Kết luận: **Chrome trên Android không liệt kê thiết bị BLE MIDI cho Web MIDI.** Chữa phía app
+bao nhiêu cũng vô ích.
+
+**Cách sửa thật: bỏ hẳn Web MIDI cho đường Bluetooth.** Dùng **Web Bluetooth** nối thẳng tới đàn
+rồi tự đọc gói BLE-MIDI — `src/lib/ble-midi.ts` (bộ đọc thuần, có test) và
+`src/hooks/useBleMidiInput.ts` (phần nối). Kiểm trước khi làm: service BLE MIDI
+(`03b80e5a-ede8-4b33-a751-6ce34ec4c700`) **không** nằm trong danh sách chặn GATT của Web
+Bluetooth, nên đường này hợp lệ. Đổi lại người học phải bấm một nút để chọn đàn — Web Bluetooth
+bắt buộc có cú bấm thật, không cho nối tự động.
+
+**Ba chỗ dễ sai khi tự đọc gói**, đều đã có test gác: một gói chứa nhiều thông điệp (hợp âm ba
+nốt về cùng lúc), *running status* lược cả byte status lẫn byte mốc thời gian, và `note on` với
+velocity 0 chính là `note off` — đàn Roland dùng cách này, hiểu nhầm là mỗi lần nhấc tay app
+tưởng vừa đánh thêm một nốt.
 
 **Bài học chung.** Một API trả về danh sách rỗng không có nghĩa là "không có thiết bị" — có thể
 là "thiết bị có đó nhưng chưa ai mở cửa cho nó". Trước khi viết hướng dẫn kết nối cho người

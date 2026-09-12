@@ -101,9 +101,8 @@ export default async function NoteRecognitionPage() {
           <Text size="sm">
             <b>Nối MIDI</b> — chính xác tuyệt đối, dành cho đàn có cổng USB hoặc có Bluetooth.
             Cắm dây thì vào điện thoại Android bằng cáp OTG (Chrome hoặc Edge), hoặc vào máy tính.
-            Nối Bluetooth trên Android thì cần thêm một bước mà máy không nói ra: <b>ghép đôi ở
-            Cài đặt chỉ ra tiếng, không ra MIDI</b> — phải mở kết nối từ app của hãng đàn (Roland
-            Piano App với đàn Roland), để app đó chạy nền, rồi quay lại đây bấm <i>Tìm lại đàn</i>.
+            Đàn có Bluetooth thì bấm <b>Nối thẳng qua Bluetooth</b> rồi chọn đàn trong danh
+            sách — không cần dây, không cần app của hãng đàn, chỉ cần bật Bluetooth MIDI trên đàn.
             iPhone và iPad chưa nối MIDI được bằng đường nào — dùng micro là đủ.
           </Text>
           <Text size="sm" c="dimmed">

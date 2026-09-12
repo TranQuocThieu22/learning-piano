@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMidiInput } from '@/hooks/useMidiInput';
+import { useBleMidiInput } from '@/hooks/useBleMidiInput';
 import { useMicInput, type MicOptions } from '@/hooks/useMicInput';
 import type { HeardEvent } from '@/lib/mic-listener';
 
@@ -44,6 +45,16 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
     if (modeRef.current === 'mic') handlersRef.current.onMicHeard(event, atMs);
   }, micOptions);
 
+  /*
+   * Đường thứ hai của chế độ MIDI: nối thẳng Bluetooth, không qua Web MIDI. Trên
+   * Android đây là đường DUY NHẤT chạy được với đàn Bluetooth (bẫy 35). Nốt về
+   * cùng một chỗ với nốt đi qua dây, nên phần bài tập không cần biết nốt tới bằng
+   * đường nào.
+   */
+  const ble = useBleMidiInput((note) => {
+    if (modeRef.current === 'midi') handlersRef.current.onMidiNote(note);
+  });
+
   /**
    * Máy có nối dây MIDI được không. Đọc trong effect chứ không lúc render: máy chủ
    * không có `navigator`, đọc lúc render là HTML hai bên lệch nhau.
@@ -57,6 +68,7 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
 
   const { connect: connectMic, disconnect: disconnectMic } = mic;
   const { connect: connectMidi } = midi;
+  const { disconnect: disconnectBle } = ble;
 
   const chooseMic = useCallback(() => {
     modeRef.current = 'mic';
@@ -71,19 +83,27 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
     connectMidi();
   }, [connectMidi, disconnectMic]);
 
-  /** Quay về màn hình chọn cách nối, tắt micro nếu đang bật. */
+  /** Quay về màn hình chọn cách nối, tắt micro và ngắt Bluetooth nếu đang nối. */
   const reset = useCallback(() => {
     modeRef.current = null;
     setMode(null);
     disconnectMic();
-  }, [disconnectMic]);
+    disconnectBle();
+  }, [disconnectMic, disconnectBle]);
 
-  /** Đã sẵn sàng nghe chưa — với MIDI thì còn phải thấy ít nhất một cây đàn. */
+  /**
+   * Đã sẵn sàng nghe chưa.
+   *
+   * Chế độ MIDI sẵn sàng khi **một trong hai** đường có đàn: Web MIDI thấy thiết
+   * bị (dây, hoặc Bluetooth trên máy tính), hoặc đã nối thẳng Bluetooth.
+   */
   const ready = mode === 'mic'
     ? mic.status === 'ready'
-    : mode === 'midi' && midi.status === 'ready' && midi.devices.length > 0;
+    : mode === 'midi' && (
+      (midi.status === 'ready' && midi.devices.length > 0) || ble.status === 'connected'
+    );
 
-  return { mode, ready, midi, mic, midiSupported, chooseMic, chooseMidi, reset };
+  return { mode, ready, midi, mic, ble, midiSupported, chooseMic, chooseMidi, reset };
 }
 
 export type PianoInput = ReturnType<typeof usePianoInput>;

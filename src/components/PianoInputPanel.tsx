@@ -171,6 +171,72 @@ const MIC_PROBLEMS: Record<Exclude<PianoInput['mic']['status'], 'ready' | 'idle'
 
 function MidiStatus({ input, switchButton, children }: { input: PianoInput; switchButton: ReactNode; children?: ReactNode }) {
   const { status, errorMessage, devices, selectedDeviceId, selectDevice, heldNotes } = input.midi;
+  const { ble } = input;
+
+  /**
+   * Nối thẳng Bluetooth, không qua danh sách thiết bị MIDI của máy.
+   *
+   * Trên Android đây là đường duy nhất chạy được với đàn Bluetooth: hệ thống
+   * không chịu liệt kê đàn cho trình duyệt, dù app của hãng đàn đã nối (bẫy 35).
+   * Nút này phải nằm trong một cú bấm thật của người dùng — Web Bluetooth từ
+   * chối nếu gọi tự động.
+   */
+  const bleButton = ble.supported ? (
+    <Button
+      size="xs"
+      onClick={ble.connect}
+      loading={ble.status === 'connecting'}
+      data-testid="ble-connect"
+    >
+      Nối thẳng qua Bluetooth
+    </Button>
+  ) : null;
+
+  if (ble.status === 'connected') {
+    return (
+      <Card withBorder padding="md" data-testid="ble-ready">
+        <Group justify="space-between" align="flex-end" wrap="wrap" gap="sm">
+          <Text size="sm" c="dimmed">
+            Đàn qua Bluetooth: <b>{ble.deviceName}</b>
+          </Text>
+          <Box ta="right">
+            <Text size="xs" c="dimmed">Phím đang bấm</Text>
+            <Text size="sm" fw={500} data-testid="held-notes">
+              {ble.heldNotes.length === 0 ? '—' : ble.heldNotes.map(describeMidiNote).join(', ')}
+            </Text>
+          </Box>
+        </Group>
+        {children}
+        <Group justify="flex-end" mt="xs" gap="xs">
+          <Button size="xs" variant="subtle" onClick={ble.disconnect}>Ngắt Bluetooth</Button>
+          {switchButton}
+        </Group>
+      </Card>
+    );
+  }
+
+  if (ble.status === 'lost') {
+    return (
+      <Alert color="yellow" title="Mất kết nối Bluetooth">
+        <Text size="sm" mb="xs">
+          Đàn đã ngắt — thường là do đi ra xa, đàn tắt, hoặc máy ngủ một lúc. Nối lại là chạy tiếp.
+        </Text>
+        <Group gap="xs">{bleButton}{switchButton}</Group>
+      </Alert>
+    );
+  }
+
+  if (ble.status === 'denied') {
+    return (
+      <Alert color="red" title="Chưa nối được Bluetooth">
+        <Text size="sm" mb="xs">
+          {ble.errorMessage ?? 'Không rõ lý do.'} Kiểm tra đàn đã bật Bluetooth MIDI chưa, và
+          đứng gần đàn hơn một chút.
+        </Text>
+        <Group gap="xs">{bleButton}{switchButton}</Group>
+      </Alert>
+    );
+  }
 
   if (status === 'unsupported') {
     return (
@@ -180,7 +246,7 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
           và máy tính. iPhone và iPad chưa hỗ trợ, và đó là giới hạn của trình duyệt trên iOS chứ
           không phải của cây đàn — dùng micro là đủ.
         </Text>
-        {switchButton}
+        <Group gap="xs">{bleButton}{switchButton}</Group>
       </Alert>
     );
   }
@@ -194,6 +260,7 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
         </Text>
         <Group gap="xs">
           <Button size="xs" onClick={input.chooseMidi}>Thử lại</Button>
+          {bleButton}
           {switchButton}
         </Group>
       </Alert>
@@ -216,15 +283,11 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
           Cắm vào là tự nhận, không cần tải lại trang.
         </Text>
         <Text size="sm" mb="xs">
-          <b>Nối Bluetooth trên Android:</b> ghép đôi ở phần Cài đặt là <b>chưa đủ</b> — cách đó
-          chỉ ra tiếng, không ra MIDI. Phải mở kết nối từ <b>app của hãng đàn</b> (đàn Roland thì
-          dùng Roland Piano App), để app đó chạy nền, rồi quay lại đây bấm <i>Tìm lại đàn</i>.
-        </Text>
-        <Text size="xs" c="dimmed" mb="xs">
-          App của hãng đàn đã báo <i>Connected</i> mà đây vẫn trống? Tải lại trang một lần —
-          trình duyệt trên Android có khi chỉ điểm danh thiết bị MIDI đúng lúc trang mở.
+          <b>Đàn có Bluetooth:</b> bấm <i>Nối thẳng qua Bluetooth</i> bên dưới rồi chọn đàn trong
+          danh sách. Không cần dây, không cần app của hãng đàn. Trên đàn nhớ bật Bluetooth MIDI.
         </Text>
         <Group gap="xs">
+          {bleButton}
           <Button size="xs" variant="light" onClick={input.midi.refresh} data-testid="midi-refresh">
             Tìm lại đàn
           </Button>
