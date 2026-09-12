@@ -19,6 +19,11 @@ description: Soạn bài học piano mới theo cấu trúc Chương/Bài của 
 - **Verify every bar adds up.** In `M: 4/4` each bar must total exactly 4 quarter-notes; in `M: 3/4` exactly 3. Remember a whole note (`C4`) does NOT fit in a 3/4 bar — use a dotted half (`C3`) instead.
 - Use `%%staves {1 2}` with `V: 1 clef=treble` / `V: 2 clef=bass` for Grand Staff exercises. Both voices must have the same number of bars.
 - **Write ABC header fields (`T:`, `C:`) in proper Vietnamese WITH diacritics** — `T: Bài tập 4A - Pha và Sol Khóa Pha`, `C: Gia sư Piano`. abcjs renders diacritics correctly (verified in-browser); an earlier version of this rule claimed otherwise and was wrong. Unaccented Vietnamese on a paid product reads as sloppy, and the product sells on being Vietnamese. Song titles that are genuinely English stay as they are (`T: Jingle Bells - Grand Staff`).
+- **Show it, don't only describe it.** Theory chapters ran almost entirely on prose until 12/09/2026 — learners skim walls of text. Two block types render as pictures, and both are checked by `pnpm test` / `pnpm check:lessons`, so a typo fails a gate instead of silently vanishing:
+  - ```` ```keys ```` — a piano diagram of one hand shape. First line is the notes in international names (`C4 E4 G4`), the rest is an optional caption shown under the picture. Right for chords, hand positions, and any sentence that describes *which keys*.
+  - ```` ```abc ```` — a real staff. Right for slurs, staccato dots, dynamics, rhythm — anything the learner must recognise *on paper*.
+
+  Pick by what the learner needs to recognise: keys under the fingers, or marks on the page. A sentence like "ba ngón cách nhau đều đặn, giữa mỗi cặp có một phím trắng bỏ trống" is a picture pretending to be a paragraph.
 - Run `pnpm check:lessons` after writing any lesson. It parses every ABC block with the same abcjs the app uses and fails on: bars that do not add up to `M:`, Grand Staff voices with unequal bar counts, notes outside the taught 5-finger position, filenames or titles that break the `chuong-XX-bai-YY` contract, and Vietnamese titles missing their diacritics.
 
 # Daily Practice Structure

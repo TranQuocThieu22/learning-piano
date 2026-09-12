@@ -10,7 +10,8 @@
  * đường chạy đó — nó sinh ra cả 'wrong' lẫn 'missing'.
  */
 
-import { octaveOf, pitchClass } from './pitch';
+import { octaveOf } from './pitch';
+import { shortNoteName } from './midi-notes';
 
 /** Một thời điểm trong bản nhạc: có thể là một nốt, hoặc nhiều nốt cùng vang (hai tay). */
 export interface ScoreEvent {
@@ -198,14 +199,12 @@ function analyseTiming(expected: ScoreEvent[], played: PlayedEvent[], results: E
   return { offBeatCount, tempoRatio: median, measurable: true };
 }
 
-const PITCH_CLASS_VI = ['Đô', 'Đô♯', 'Rê', 'Mi♭', 'Mi', 'Pha', 'Pha♯', 'Sol', 'Sol♯', 'La', 'Si♭', 'Si'];
-
 /** Đọc tên một hoặc nhiều nốt cùng lúc thành chuỗi tiếng Việt. */
 export function describePitchList(pitches: number[]): string {
   if (pitches.length === 0) return 'không có nốt nào';
   return pitches
     .map((p) => {
-      return `${PITCH_CLASS_VI[pitchClass(p)]}${octaveOf(p)}`;
+      return `${shortNoteName(p)}${octaveOf(p)}`;
     })
     .join(' + ');
 }

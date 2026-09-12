@@ -10,6 +10,16 @@ Chương này gỡ bỏ giới hạn đó. Sau chương này, tay bạn đi lạ
 
 Trước khi học cách di chuyển, cần có chỗ để đi tới. Ba nốt mới nằm ngay bên phải nốt Sol quen thuộc:
 
+```keys
+C4 D4 E4 F4 G4
+Năm chương vừa qua: năm ngón trên năm phím, bàn tay đứng yên
+```
+
+```keys
+C4 D4 E4 F4 G4 A4 B4 C5
+Từ chương này: thêm La, Si và Đô cao — tám phím, mà tay vẫn chỉ có năm ngón
+```
+
 | Nốt | Ký hiệu | Vị trí trên Khóa Sol |
 |---|---|---|
 | **La** | A | Khe thứ 2 (ngay trên dòng kẻ số 2) |
@@ -32,6 +42,11 @@ Bên **Khóa Pha** (tay trái) cũng có ba nốt mới tương ứng, nằm tr�
 ## 2. Vì sao không thể chỉ với ngón út ra?
 
 Câu hỏi rất hợp lý: cần thêm ba nốt thì cứ với ngón út ra thêm ba phím, việc gì phải học kỹ thuật mới?
+
+```keys
+C4 C5
+Ngón cái giữ ở Đô, ngón út với tới Đô cao — bảy phím trắng. Thử xem tay bạn với nổi không.
+```
 
 Thử là thấy ngay. Giữ ngón cái ở nốt Đô rồi cố với ngón út tới nốt Đô cao: bàn tay căng ra như cái nan quạt, cổ tay lệch đi, và các ngón giữa bị kéo đờ ra không bấm nổi. Chưa kể tám phím thì vượt xa tầm với của tay người mới.
 

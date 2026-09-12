@@ -792,6 +792,20 @@ export function checkAnswer(played: number, target: number): AnswerVerdict {
 }
 
 const PITCH_CLASS_NAMES = ['Đô', 'Đô♯/Rê♭', 'Rê', 'Rê♯/Mi♭', 'Mi', 'Pha', 'Pha♯/Sol♭', 'Sol', 'Sol♯/La♭', 'La', 'La♯/Si♭', 'Si'];
+
+/**
+ * Tên ngắn, mỗi phím đen chỉ một cách gọi.
+ *
+ * Khác bảng trên **có chủ ý**, đừng gộp: bảng trên dùng khi người học vừa bấm
+ * một phím lạ và cần biết nó còn tên gọi nào (`Đô♯/Rê♭`); bảng này dùng ở chỗ
+ * chữ phải lọt vừa một phím trên hình, hoặc phải liệt kê một chuỗi nốt.
+ */
+const SHORT_PITCH_NAMES = ['Đô', 'Đô♯', 'Rê', 'Mi♭', 'Mi', 'Pha', 'Pha♯', 'Sol', 'Sol♯', 'La', 'Si♭', 'Si'];
+
+/** Tên nốt tiếng Việt dạng ngắn, không kèm quãng tám. */
+export function shortNoteName(midi: number): string {
+  return SHORT_PITCH_NAMES[pitchClass(midi)];
+}
 const PITCH_CLASS_LATIN = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G♭', 'G', 'G♯/A♭', 'A', 'A♯/B♭', 'B'];
 
 /** Mô tả nốt bất kỳ người học bấm phải, kể cả nốt ngoài phạm vi bài. */

@@ -19,6 +19,11 @@ Ví dụ bắt đầu từ Đô:
 - Đô — bỏ Rê — **Mi** — bỏ Pha — **Sol**
 - Ba nốt **Đô, Mi, Sol** vang cùng nhau chính là hợp âm **Đô trưởng**.
 
+```keys
+C4 E4 G4
+Ba phím tô đậm là hợp âm Đô trưởng. Để ý hai phím trắng bị bỏ trống ở giữa — Rê và Pha.
+```
+
 Nhìn xuống tay bạn khi bấm: ba ngón cách nhau đều đặn, giữa mỗi cặp có đúng một phím trắng bị bỏ trống. Hình dạng đó lặp lại cho mọi hợp âm bạn sắp học.
 
 > [!NOTE]
@@ -34,7 +39,22 @@ Với ba hợp âm dưới đây, bạn đệm được hàng nghìn bài hát. 
 | **Pha trưởng** | F | Pha - La - Đô | 5 - 3 - 1 |
 | **Sol trưởng** | G | Sol - Si - Rê | 5 - 3 - 1 |
 
-Cả ba đều **chỉ dùng phím trắng**, và cả ba đều bấm bằng đúng một thế tay: ngón 5 nốt dưới, ngón 3 nốt giữa, ngón 1 nốt trên.
+```keys
+C3 E3 G3
+Đô trưởng (C) — tay trái, ngón 5 - 3 - 1
+```
+
+```keys
+F3 A3 C4
+Pha trưởng (F) — cùng hình dạng ấy, dịch lên ba phím trắng
+```
+
+```keys
+G3 B3 D4
+Sol trưởng (G) — vẫn đúng hình dạng đó, dịch thêm một phím trắng nữa
+```
+
+Cả ba đều **chỉ dùng phím trắng**, và cả ba đều bấm bằng đúng một thế tay: ngón 5 nốt dưới, ngón 3 nốt giữa, ngón 1 nốt trên. Ba hình trên là cùng một bàn tay trượt dọc bàn phím — nhìn ba hình cạnh nhau sẽ thấy rõ hơn đọc mười dòng chữ.
 
 Người ta gọi ba hợp âm này là **ba bậc chính** của giọng Đô trưởng. Đô là nhà, Pha là chuyến đi xa, Sol là sự chờ đợi kéo bạn về nhà. Chơi thử C - F - G - C rồi nghe: câu chuyện tự kể ra, và tai bạn *biết* bài đã kết thúc khi về tới Đô.
 
@@ -44,7 +64,17 @@ Người ta gọi ba hợp âm này là **ba bậc chính** của giọng Đô t
 
 Lấy hợp âm Đô trưởng (Đô - Mi - Sol) rồi **hạ đúng nốt giữa xuống nửa cung**: Mi thành Mi giáng (phím đen ngay bên trái). Bấm lại: Đô - Mi giáng - Sol.
 
-Cùng ba ngón đó, cùng hai nốt ngoài đó, chỉ một nốt xê dịch **một phím** — mà cả cảm giác đổi hẳn. Từ sáng sủa thành u buồn.
+```keys
+C4 E4 G4
+Đô TRƯỞNG — nốt giữa là Mi, phím trắng
+```
+
+```keys
+C4 Eb4 G4
+Đô THỨ — nốt giữa tụt xuống phím đen ngay bên trái. Hai phím ngoài không đổi.
+```
+
+Cùng ba ngón đó, cùng hai nốt ngoài đó, chỉ một nốt xê dịch **một phím** — mà cả cảm giác đổi hẳn. Từ sáng sủa thành u buồn. Đặt hai hình trên cạnh nhau là thấy ngay chỗ khác biệt duy nhất nằm ở đâu.
 
 > **Trưởng và thứ khác nhau đúng ở nốt giữa.** Nốt giữa cao là **trưởng** (nghe vui, sáng). Nốt giữa thấp hơn nửa cung là **thứ** (nghe buồn, tối).
 
@@ -57,6 +87,11 @@ Cùng ba ngón đó, cùng hai nốt ngoài đó, chỉ một nốt xê dịch *
 | **La thứ** | Am | La - Đô - Mi |
 | **Rê thứ** | Dm | Rê - Pha - La |
 | **Mi thứ** | Em | Mi - Sol - Si |
+
+```keys
+A3 C4 E4
+La thứ (Am) — vẫn là "lấy một nốt, bỏ một phím trắng, lấy nốt tiếp"
+```
 
 Chúng cũng theo đúng quy tắc "bỏ một phím trắng" như trên. Sự khác biệt trưởng - thứ nằm sẵn trong cách các phím đen được xếp trên bàn phím, nên bạn không phải nhớ gì thêm cả.
 

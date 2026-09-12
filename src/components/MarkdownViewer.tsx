@@ -3,6 +3,7 @@ import ReactMarkdown, { type Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 import { SheetViewer } from './SheetViewer';
+import { KeyboardDiagram } from './KeyboardDiagram';
 
 /**
  * GitHub-style alert markers (`> [!WARNING]`) are not part of CommonMark or GFM,
@@ -69,6 +70,10 @@ const components: Components = {
     const match = /language-(\w+)/.exec(className ?? '');
     if (match?.[1] === 'abc') {
       return <SheetViewer abcNotation={String(children).replace(/\n$/, '')} />;
+    }
+    // Hình bàn phím minh hoạ một thế bấm — xem `keyboard-diagram.ts`.
+    if (match?.[1] === 'keys') {
+      return <KeyboardDiagram spec={String(children)} />;
     }
     return <code className={className}>{children}</code>;
   },

@@ -20,6 +20,17 @@ Hãy hình dung **trọng lượng cánh tay được chuyển** từ ngón này
 
 **Trên bản nhạc**, legato được ghi bằng một **đường cong** vắt qua nhóm nốt — gọi là **dấu luyến**. Nó không đổi cao độ hay trường độ, chỉ nói: *nhóm nốt này phải liền nhau*.
 
+```abc
+X: 501
+T: Dấu luyến - bốn nốt này phải liền nhau
+M: 4/4
+L: 1/4
+K: C
+(C D E F) | G4 |]
+```
+
+Đường cong ở trên là dấu luyến. Bấm thử và nghe: bốn nốt đầu phải nối vào nhau như một hơi thở, không có vết đứt nào ở giữa.
+
 ## 2. Staccato — nảy ngón
 
 **Staccato** (tiếng Ý: "tách rời") ngược hẳn với legato: mỗi nốt vang lên ngắn gọn rồi tắt ngay, giữa các nốt có khoảng lặng rõ ràng. Nghe gọn, tươi, nhiều năng lượng.
@@ -35,6 +46,17 @@ Hãy hình dung **trọng lượng cánh tay được chuyển** từ ngón này
 Nếu bạn cố tạo staccato bằng cách co ngón tay lại, tay sẽ cứng và mỏi rất nhanh. Cổ tay mềm mới là chìa khoá.
 
 **Trên bản nhạc**, staccato là một **dấu chấm nhỏ đặt ngay trên hoặc dưới đầu nốt**. Đừng nhầm với dấu chấm đặt **bên phải** nốt — dấu đó là dấu chấm dôi, làm nốt *dài thêm* một nửa, ngược hẳn ý nghĩa.
+
+```abc
+X: 502
+T: Dấu chấm nảy nằm TRÊN đầu nốt
+M: 4/4
+L: 1/4
+K: C
+.C .D .E .F | G4 |]
+```
+
+So hai hình: ở mục trên, đường cong vắt qua bốn nốt. Ở đây, mỗi nốt đội một dấu chấm riêng. Cùng bốn nốt Đô - Rê - Mi - Pha, hai cách đánh hoàn toàn khác nhau.
 
 ## 3. Cường độ — to và nhỏ (Dynamics)
 
@@ -55,6 +77,17 @@ Ngoài mức cố định còn có hai ký hiệu **thay đổi dần**, vẽ nh
 
 - **Crescendo** (`<`): to dần lên.
 - **Diminuendo** (`>`): nhỏ dần đi.
+
+```abc
+X: 503
+T: Bắt đầu nhỏ rồi to dần lên
+M: 4/4
+L: 1/4
+K: C
+!p! C D !crescendo(! E F | !crescendo)! !f! G4 |]
+```
+
+Chữ *p* ở đầu là bắt đầu nhỏ; cái nêm mở rộng dần là crescendo; chữ *f* ở cuối là đã to. Cả câu chỉ có năm nốt, nhưng đánh đúng cường độ thì nó đã là **âm nhạc** chứ không còn là bài tập ngón.
 
 **Cường độ đến từ đâu?** Từ **tốc độ ngón rơi xuống phím**, không phải từ lực ấn. Phím đàn piano nối với một cái búa gõ vào dây: ngón rơi nhanh thì búa gõ mạnh, tiếng to. Ấn thật lực vào phím **sau khi** nó đã chạm đáy không làm to thêm chút nào — chỉ làm mỏi tay và căng cơ.
 
