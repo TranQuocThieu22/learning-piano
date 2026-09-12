@@ -295,6 +295,8 @@ public/images/             MỘT THƯ MỤC CHO MỖI TRANG, tên trùng slug c�
 src/
   app/                     Trang Next.js
   components/              SheetViewer, Metronome, NoteRecognitionDrill, ScorePractice...
+  hooks/                   Nghe đàn (micro/MIDI), kho nhớ, và BỐN cửa duy nhất gọi abcjs:
+                           useSheetRender, useSheetAudio, useDrillStaff, usePhrasePlayer
   lib/                     markdown, lessons, progress, payment/, admin/
   db/schema.ts             Auth.js + lesson_completion + 3 bảng thanh toán
 scripts/check-lessons.mjs  Kiểm tra toàn bộ giáo trình bằng parser abcjs
@@ -320,6 +322,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `refactor: Hai bài luyện cũng đi qua cửa abcjs, không component nào gọi thẳng nữa` | Sơ đồ thư mục thêm `hooks/` và nói rõ bốn cửa duy nhất gọi abcjs — để người sửa sau biết đụng vào thư viện vẽ nhạc là đụng vào đâu, thay vì lần theo import trong từng component |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Đổi tên `AbcjsViewer` thành `SheetViewer` trong sơ đồ thư mục: component không còn mang tên thư viện vẽ nhạc, vì abcjs nay nằm sau hai hook `useSheetRender` / `useSheetAudio` chứ không nằm trong component |
 | 12/09/2026 | `feat: Luyện tai — app phát một câu, người học mò trên đàn thật` | Bảng các trang thêm `/ear-trainer` — chiều ngược lại của `/note-trainer`, dạy tai → tay thay vì mắt → tay |
 | 12/09/2026 | `refactor: Gỡ mục Lý thuyết khỏi Mục lục, chương đã có nhà ở Đường đi` | Chốt ranh giới giữa hai trang mục lục: `/path` giữ mọi thứ NẰM TRÊN đường đi, `/library` giữ mọi thứ KHÔNG nằm trên đường đi. Gỡ mục Lý thuyết khỏi `/library` vì liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ — và danh sách ở Mục lục còn không có ô tick, không biết người học đang ở chương nào |

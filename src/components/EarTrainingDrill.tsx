@@ -1,7 +1,6 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import ABCJS from 'abcjs';
 import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, Stack, Text,
 } from '@mantine/core';
@@ -12,7 +11,7 @@ import {
 } from '@/lib/ear-training';
 import { describeMidiNote, noteAt } from '@/lib/midi-notes';
 import { holdAmbient } from '@/lib/ambient-hold';
-import { loadSavedProgram, normalizeBufferVolume, synthOptions } from '@/lib/soundfont';
+import { usePhrasePlayer } from '@/hooks/usePhrasePlayer';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { createLocalStore } from '@/lib/local-store';
 import { useLocalStore } from '@/hooks/useLocalStore';
@@ -88,7 +87,7 @@ export function EarTrainingDrill() {
   const [answered, setAnswered] = useState(0);
   const [firstTryCorrect, setFirstTryCorrect] = useState(0);
   const [tries, setTries] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const { sinkRef, playing, play: playPhrase } = usePhrasePlayer();
   /**
    * Câu đang hỏi đã được phát lần nào chưa.
    *
@@ -102,9 +101,6 @@ export function EarTrainingDrill() {
   const lockedRef = useRef(false);
   const missedRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** Thẻ ẩn để abcjs có chỗ dựng bản nhạc; ở đây chỉ cần phần tiếng. */
-  const sinkRef = useRef<HTMLDivElement>(null);
-  const synthRef = useRef<InstanceType<typeof ABCJS.synth.CreateSynth> | null>(null);
 
   /* Đổi mức thì bốc câu mới và xoá thống kê, ngay trong lúc vẽ — cách React
      khuyến nghị để đặt lại state khi đầu vào đổi. */
@@ -128,40 +124,17 @@ export function EarTrainingDrill() {
 
   useEffect(() => () => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    synthRef.current?.stop();
   }, []);
 
   /**
-   * Phát câu hỏi.
-   *
-   * Dựng lại bộ phát mỗi lần thay vì giữ một cái: câu đổi thì chuỗi âm thanh
-   * cũng đổi, mà `CreateSynth` gắn chặt với đúng một bản nhạc. Dừng cái cũ trước
-   * khi dựng cái mới, nếu không bấm *Nghe lại* nhanh hai lần là hai câu kêu chồng.
+   * Phát câu hỏi. Phần máy móc nằm ở `usePhrasePlayer`; ở đây chỉ dựng chuỗi ABC
+   * và nhớ là người học đã nghe câu này ít nhất một lần.
    */
   const playQuestion = useCallback(async (notes: number[], withReference: boolean) => {
-    const sink = sinkRef.current;
-    if (!sink || !ABCJS.synth.supportsAudio()) return;
-
-    synthRef.current?.stop();
-    setPlaying(true);
-    setHeardOnce(true);
-    try {
-      const [tune] = ABCJS.renderAbc(sink, questionAbc(notes, withReference), {});
-      const synth = new ABCJS.synth.CreateSynth();
-      synthRef.current = synth;
-      await synth.init({ visualObj: tune, options: synthOptions(loadSavedProgram()) });
-      await synth.prime();
-      // Bộ mẫu âm thu rất nhỏ; kéo to ngay trên buffer như chỗ phát bản nhạc mẫu.
-      const buffer = synth.getAudioBuffer?.();
-      if (buffer) normalizeBufferVolume(buffer);
-      synth.start();
-    } catch {
-      // Trình duyệt chặn âm thanh khi chưa có cử chỉ người dùng, hoặc mẫu âm tải
-      // hỏng. Không ném ra ngoài: bài luyện vẫn dùng được, chỉ là chưa nghe thấy.
-    } finally {
-      setPlaying(false);
-    }
-  }, []);
+    // Chỉ đổi chữ trên nút khi thật sự đã kêu: trình duyệt chặn tiếng thì nút
+    // vẫn phải ghi *Nghe câu này*, xem chú thích ở `heardOnce`.
+    if (await playPhrase(questionAbc(notes, withReference))) setHeardOnce(true);
+  }, [playPhrase]);
 
   const advance = useCallback((previous: number[] | null, forOptions: EarOptions) => {
     lockedRef.current = false;

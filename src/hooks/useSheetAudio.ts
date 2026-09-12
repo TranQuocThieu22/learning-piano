@@ -10,9 +10,9 @@ import type { SheetTune } from './useSheetRender';
 
 /**
  * **Cửa TIẾNG của khung xem bản nhạc trong bài học.** Cửa còn lại là
- * `useSheetRender.ts` (phần vẽ). `EarTrainingDrill` cũng phát tiếng từ một đoạn
- * ABC nhưng bằng `CreateSynth` gọi thẳng — nó chỉ cần phát một câu ngắn, không
- * cần tua/lặp/đổi tốc độ, nên chưa gộp vào đây.
+ * `useSheetRender.ts` (phần vẽ). Bài luyện tai cũng phát tiếng từ một đoạn ABC
+ * nhưng đi qua `usePhrasePlayer` — nó chỉ cần kêu lên một câu, không tua, không
+ * lặp, không đổi tốc độ, nên gộp vào đây chỉ được một hàm đầy cờ bật/tắt.
  *
  * Gói trọn bộ phát của abcjs: nạp bản nhạc, phát, tạm dừng, tua, lặp, đổi tốc
  * độ, đổi tiếng đàn, và **dừng hẳn khi rời trang**. Component chỉ thấy một nắm

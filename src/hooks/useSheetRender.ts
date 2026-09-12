@@ -8,9 +8,11 @@ import { bpmAtWarp } from '@/lib/sheet-tempo';
 
 /**
  * **Cửa VẼ của khung xem bản nhạc trong bài học.** Cửa còn lại là
- * `useSheetAudio.ts` (phần tiếng). Hai hook này là chỗ duy nhất mà phần *xem bản
- * nhạc* chạm tới abcjs — còn hai bài luyện (`NoteRecognitionDrill`,
- * `EarTrainingDrill`) thì vẫn gọi thẳng thư viện, chưa đi qua đây.
+ * `useSheetAudio.ts` (phần tiếng).
+ *
+ * abcjs chỉ được gọi ở **bốn hook**, không ở đâu khác trong repo: hai hook này
+ * cho bài học, `useDrillStaff` cho bài luyện nhận nốt, `usePhrasePlayer` cho bài
+ * luyện tai. Component không import abcjs.
  *
  * Vì sao tách: `AbcjsViewer.tsx` từng ôm cả vẽ, phát tiếng, phóng to, chế độ tập
  * trung và nối phím đàn trong 570 dòng — không ai nhìn ra gỡ abcjs ra thì đứt

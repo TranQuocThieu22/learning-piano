@@ -17,6 +17,7 @@ một chi tiết khác nhau.
 | Tên nốt, hoá biểu, sinh câu hỏi, chuỗi ABC | `src/lib/midi-notes.ts` |
 | Hình học bàn phím để vẽ SVG | `src/lib/piano-keyboard.ts` |
 | Nghe đàn thật (micro hoặc MIDI) | `src/hooks/usePianoInput.ts`, `src/lib/mic-*.ts` |
+| Vẽ hoặc phát bản nhạc (abcjs) | **Chỉ bốn hook**: `useSheetRender`, `useSheetAudio` (bài học), `useDrillStaff` (luyện nhận nốt), `usePhrasePlayer` (luyện tai). Component đừng import abcjs |
 | Con trỏ đi theo bản nhạc | `src/lib/score-follow.ts` |
 | Đọc file markdown trong `docs/` | `markdown.ts` (bài học), `internal-docs.ts` (`_internal`), `updates.ts` (`09-cap-nhat`) |
 | Kiểm đầu vào của Server Action | `src/lib/validation.ts` |
