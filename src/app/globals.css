@@ -907,6 +907,20 @@ body {
 }
 
 /*
+ * Bề ngang thanh điều hướng khi nó dời sang cạnh trái (xoay ngang).
+ *
+ * Bằng 0 ở mọi nơi khác, nên mọi chỗ cộng nó vào đều vô hại khi thanh vẫn nằm
+ * dưới đáy. Đây là biến duy nhất phải sửa nếu đổi bề ngang thanh dọc: nội dung,
+ * thanh mời cài đặt và chính thanh đó đều đọc từ đây.
+ *
+ * Bề ngang lúc MỞ RỘNG cố ý không nằm ở biến này: thanh mở rộng đè lên nội dung
+ * chứ không đẩy nội dung, nên không ai ngoài chính nó cần biết con số đó.
+ */
+:root {
+  --rail-w: 0px;
+}
+
+/*
  * Khoảng trống dưới đáy thanh tab. KHÔNG dùng thẳng `--safe-bottom` ở đây.
  *
  * Vì sao: app chạy `display: 'fullscreen'` (xem `src/app/manifest.ts`) nên hệ
@@ -944,13 +958,13 @@ body {
   padding-bottom: calc(
     var(--mantine-spacing-xl) + var(--tab-bar-bottom) + var(--tab-bar-h)
   );
-  padding-inline: calc(var(--mantine-spacing-md) + var(--safe-left))
+  padding-inline: calc(var(--mantine-spacing-md) + var(--safe-left) + var(--rail-w))
     calc(var(--mantine-spacing-md) + var(--safe-right));
 }
 
 @media (max-width: 48em) {
   .app-content {
-    padding-inline: calc(var(--mantine-spacing-xs) + var(--safe-left))
+    padding-inline: calc(var(--mantine-spacing-xs) + var(--safe-left) + var(--rail-w))
       calc(var(--mantine-spacing-xs) + var(--safe-right));
   }
 }
@@ -1269,6 +1283,125 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 
 .tab-bar__item[data-active] .tab-bar__label {
   font-weight: 700;
+}
+
+/* Nút mở rộng / thu nhỏ. Ẩn hẳn khi thanh còn nằm dưới đáy — ở đó đã có nhãn chữ
+   sẵn, không có gì để mở thêm. */
+.tab-bar__toggle {
+  display: none;
+}
+
+/* --- THANH ĐIỀU HƯỚNG DỜI SANG CẠNH TRÁI KHI XOAY NGANG --- */
+/*
+ * Vì sao đổi hẳn hướng: xoay ngang là lúc **chiều cao** thành thứ khan hiếm nhất
+ * — điện thoại chỉ còn khoảng 360px, mà một dải ngang 76px ăn hơn một phần năm
+ * trong đó. Bề ngang thì đang thừa. Dời sang cạnh trái là trả lại đúng thứ đang
+ * thiếu bằng thứ đang thừa. Lý do chọn mép TRÁI ghi ở `TabBar.tsx`.
+ *
+ * Điều kiện trùng đúng với ngưỡng "màn hình thấp mà rộng" dùng ở chỗ khác trong
+ * file này, để hai thứ không bao giờ đổi kiểu ở hai mốc khác nhau. Máy tính bảng
+ * xoay ngang vẫn còn thừa chiều cao nên giữ nguyên thanh dưới đáy.
+ */
+@media (orientation: landscape) and (max-height: 540px) {
+  :root {
+    --rail-w: 60px;
+    /* Không còn thanh nào dưới đáy, nên đừng chừa chỗ cho nó nữa: hai biến này
+       được cộng vào padding dưới của bài đọc và vào chỗ đứng của thanh mời cài đặt. */
+    --tab-bar-h: 0px;
+    --tab-bar-bottom: 0px;
+  }
+
+  /*
+   * Mở rộng thì ĐẨY nội dung dạt ra, không đè lên.
+   *
+   * Bản đầu cho nó đè (giữ `--rail-w` cố định) vì sợ mỗi lần gạt là cả trang xô
+   * một cái. Nhìn ảnh chụp mới thấy cái giá đắt hơn: thanh 172px che mất một
+   * mảng bên trái, mà bên trái là chỗ mọi dòng chữ bắt đầu — tiêu đề thẻ bị cụt
+   * đúng phần đầu câu.
+   *
+   * `:has()` là thứ cho phép một con báo ngược lên `:root` để đổi biến bề ngang.
+   * Trình duyệt nào chưa có nó thì thanh quay về kiểu đè lên — vẫn dùng được,
+   * chỉ là mất phần đẩy.
+   */
+  :root:has(.tab-bar[data-expanded]) {
+    --rail-w: 172px;
+  }
+
+  .tab-bar {
+    top: 0;
+    bottom: 0;
+    right: auto;
+    width: calc(var(--rail-w) + var(--safe-left));
+    height: auto;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding: 0;
+    padding-left: var(--safe-left);
+    padding-block: calc(var(--safe-top) + 44px) calc(var(--safe-bottom) + 8px);
+    border-top: none;
+    border-right: 1px solid var(--mantine-color-default-border);
+    box-shadow: 6px 0 24px rgba(34, 18, 84, 0.06);
+    transition: width 160ms ease;
+  }
+
+  .tab-bar__item {
+    flex: 0 0 auto;
+    max-width: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 10px;
+    /* 48px: đủ cao để bấm trúng khi tay vừa rời phím đàn, mà bốn mục cộng nút
+       gạt vẫn lọt trong 360px chiều cao. */
+    min-height: 48px;
+    padding-inline: 3px;
+  }
+
+  .tab-bar__icon {
+    flex-shrink: 0;
+    width: 54px;
+  }
+
+  /* Nhãn chữ chỉ hiện khi đã mở rộng. `display: none` chứ không phải ẩn bằng bề
+     ngang: chữ bị bóp về 0 vẫn chiếm chỗ trong phép tính flex và đẩy biểu tượng
+     lệch khỏi giữa ô. */
+  .tab-bar__label {
+    display: none;
+    font-size: 13px;
+  }
+
+  .tab-bar[data-expanded] .tab-bar__label {
+    display: block;
+  }
+
+  /*
+   * Nút gạt neo ở ĐỈNH thanh, tách khỏi bốn mục đang canh giữa.
+   *
+   * Dùng `position: absolute` chứ không để nó tham gia dòng chảy flex: nằm trong
+   * dòng chảy thì nó kéo bốn mục lệch xuống dưới, mà bốn mục canh giữa mới là
+   * chỗ ngón cái với tới dễ nhất khi hai tay đang ôm hai cạnh máy.
+   */
+  .tab-bar__toggle {
+    position: absolute;
+    top: calc(var(--safe-top) + 8px);
+    left: calc(var(--safe-left) + 3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 32px;
+    border: none;
+    border-radius: 999px;
+    background: var(--mantine-color-default-hover);
+    color: var(--mantine-color-dimmed);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 120ms ease;
+  }
+
+  .tab-bar__toggle:active {
+    transform: scale(0.9);
+  }
 }
 
 /*

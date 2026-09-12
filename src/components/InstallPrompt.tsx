@@ -156,7 +156,9 @@ export function InstallPrompt() {
       hiddenFrom="sm"
       style={{
         position: 'fixed',
-        left: 8,
+        // Cộng --rail-w để không nằm khuất sau thanh điều hướng dọc lúc xoay
+        // ngang; biến này bằng 0 khi thanh vẫn ở dưới đáy.
+        left: 'calc(8px + var(--rail-w, 0px))',
         right: 8,
         // Phải nổi TRÊN thanh tab chứ không đè lên nó, nên cộng trọn chiều cao
         // thật của thanh tab: --tab-bar-h cộng --tab-bar-bottom (khoảng trống

@@ -1,8 +1,9 @@
 'use client';
 
-import { IconBook2, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
+import { IconBook2, IconChevronLeft, IconChevronRight, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSyncExternalStore } from 'react';
 
 /**
  * Thanh tab dưới đáy — đường điều hướng chính của app.
@@ -35,6 +36,74 @@ import { usePathname } from 'next/navigation';
  * *Mục lục* ở lại vì nó còn Lộ trình và Đọc thêm — những bài KHÔNG nằm trên đường
  * đi, không có thứ tự, và không tick được.
  */
+/**
+ * Xoay ngang thì thanh tab dời sang **mép trái** và thu lại còn biểu tượng.
+ *
+ * Vì sao đổi hẳn hướng chứ không chỉ làm mỏng đi: xoay ngang là lúc **chiều cao**
+ * thành thứ khan hiếm nhất — điện thoại chỉ còn khoảng 360px, mà một dải ngang 76px
+ * ăn hơn một phần năm trong đó. Bề ngang thì ngược lại, đang thừa. Dời sang cạnh
+ * trái là trả lại đúng thứ đang thiếu bằng thứ đang thừa.
+ *
+ * Mép TRÁI chứ không mép phải: xoay ngang thì hai tay ôm hai cạnh máy, mà thao tác
+ * điều hướng hầu như luôn đi trước thao tác đọc — tay trái rảnh hơn tay phải đang
+ * chực cuộn.
+ *
+ * Mở rộng ra có nhãn chữ thì thanh **đẩy nội dung dạt ra**, không đè lên. Bản đầu
+ * cho nó đè vì sợ mỗi lần gạt là cả trang xô một cái, nhưng cái giá đắt hơn: thanh
+ * 172px che mất mảng bên trái, mà bên trái là chỗ mọi dòng chữ bắt đầu — tiêu đề
+ * thẻ bị cụt đúng phần đầu câu.
+ */
+const RAIL_KEY = 'tab-bar-rail';
+
+/**
+ * Kho nhớ trạng thái thu/mở của thanh dọc.
+ *
+ * Vì sao phải qua `useSyncExternalStore` chứ không đọc `localStorage` trong một
+ * hiệu ứng: máy chủ không có `localStorage`, nên đọc lúc dựng state là HTML hai
+ * bên khác nhau và React báo lệch hydration; còn đọc trong hiệu ứng thì đó là
+ * `setState` thẳng trong effect, thứ quy tắc lint của repo cấm và cũng làm vẽ
+ * thừa một lần. `useSyncExternalStore` sinh ra đúng cho chuyện này: nó dùng ảnh
+ * chụp của máy chủ trong lúc hydrate rồi mới đổi sang ảnh chụp thật.
+ *
+ * Cùng khuôn với kho nhớ lựa chọn ở `NoteRecognitionDrill.tsx`.
+ */
+const listeners = new Set<() => void>();
+let cached: boolean | null = null;
+
+function getSnapshot(): boolean {
+  if (cached === null) {
+    try {
+      cached = window.localStorage.getItem(RAIL_KEY) === 'expanded';
+    } catch {
+      // Chế độ riêng tư chặn localStorage — cứ để thu lại, app vẫn chạy.
+      cached = false;
+    }
+  }
+  return cached;
+}
+
+/** Máy chủ luôn vẽ trạng thái thu lại, nên lần vẽ đầu ở hai bên giống hệt nhau. */
+function getServerSnapshot(): boolean {
+  return false;
+}
+
+function subscribe(onChange: () => void): () => void {
+  listeners.add(onChange);
+  return () => {
+    listeners.delete(onChange);
+  };
+}
+
+function storeRail(next: boolean) {
+  cached = next;
+  try {
+    window.localStorage.setItem(RAIL_KEY, next ? 'expanded' : 'collapsed');
+  } catch {
+    // Không lưu được thì thôi, lần sau mở lại ở trạng thái thu.
+  }
+  for (const onChange of listeners) onChange();
+}
+
 const TABS = [
   { href: '/', label: 'Trang chủ', Icon: IconHome, section: 'home' },
   { href: '/library', label: 'Mục lục', Icon: IconBook2, section: 'library' },
@@ -68,8 +137,29 @@ function activeTabHref(pathname: string): string {
 export function TabBar() {
   const activeHref = activeTabHref(usePathname());
 
+  const expanded = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
   return (
-    <nav className="tab-bar" aria-label="Điều hướng nhanh">
+    <nav
+      className="tab-bar"
+      data-expanded={expanded || undefined}
+      aria-label="Điều hướng nhanh"
+    >
+      {/*
+        Chỉ hiện khi thanh đã dời sang cạnh trái (CSS lo việc ẩn/hiện): thanh nằm
+        dưới đáy vốn đã có nhãn chữ sẵn, không có gì để mở thêm.
+      */}
+      <button
+        type="button"
+        className="tab-bar__toggle"
+        onClick={() => storeRail(!expanded)}
+        aria-expanded={expanded}
+        aria-label={expanded ? 'Thu nhỏ thanh điều hướng' : 'Mở rộng thanh điều hướng'}
+        data-testid="rail-toggle"
+      >
+        {expanded ? <IconChevronLeft size={18} /> : <IconChevronRight size={18} />}
+      </button>
+
       {TABS.map(({ href, label, Icon, section }) => {
         const active = activeHref === href;
         return (
