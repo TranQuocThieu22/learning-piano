@@ -15,7 +15,7 @@ import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
-import { anchorTransform, staffBox, staffScale } from '@/lib/staff-anchor';
+import { anchorTransform, BAR_MIN_UNITS, staffBox, staffScale } from '@/lib/staff-anchor';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
@@ -23,14 +23,13 @@ const ADVANCE_DELAY_MS = 900;
 const STORAGE_KEY = 'note-trainer-options';
 
 /**
- * Bề ngang thật của ô nhịp trên màn hình, tính bằng px.
+ * Bề ngang khung giấy nhạc ở chế độ MỘT NỐT, tính bằng px.
  *
- * Khung chứa rộng tối đa 320px, trừ 1rem padding mỗi bên còn 288px. Lấy 280 để
- * còn dư hai mép. `staffwidth` của abcjs tính TRƯỚC khi nhân tỉ lệ, nên phải
- * chia ngược lại — không thì khuông đôi (tỉ lệ nhỏ hơn) vẽ ra bé tí giữa một
- * khung trống hoác.
+ * Giữ hẹp có chủ ý: cả khung chỉ có mỗi một nốt ở giữa, kéo rộng ra thì nốt vẫn
+ * thế mà hai bên toàn khoảng trắng. Ô nhịp thì ngược lại — nó dùng hết bề ngang
+ * có được, vì càng rộng thì bốn nốt càng giãn ra và càng dễ đọc từ giá nhạc.
  */
-const BAR_STAFF_PX = 280;
+const SINGLE_NOTE_BOX_PX = 320;
 
 const HAND_LABELS: { value: Hands; label: string }[] = [
   { value: 'right', label: 'Tay phải' },
@@ -403,14 +402,22 @@ export function NoteRecognitionDrill() {
       paper.innerHTML = '';
       return;
     }
-    /*
-     * Cả ô nhịp vẽ nhỏ hơn một phách — tỉ lệ lấy từ `staff-anchor.ts`, cùng chỗ
-     * với khung, để hai thứ không bao giờ lệch nhau. Chia theo một hằng số chứ
-     * không theo số phách: mọi câu trong cùng một chế độ phải cùng cỡ chữ, không
-     * thì mắt phải làm quen lại mỗi câu.
-     */
     const bar = current.beats.length > 1;
-    const abcScale = staffScale(grandStaff, bar);
+    const abcScale = staffScale(grandStaff);
+
+    /*
+     * **Đo bề ngang khung TRƯỚC khi vẽ**, vì `staffwidth` phải biết có bao nhiêu
+     * chỗ thì mới kéo giãn được cho đầy. Xoá `width` abcjs ghi lần trước, không
+     * thì lần này đo lại chính cái ảnh cũ — bẫy 30.
+     *
+     * `staffwidth` tính bằng đơn vị abcjs, tức là TRƯỚC khi nhân tỉ lệ, nên phải
+     * chia ngược lại. Có sàn `BAR_MIN_UNITS` để khung quá hẹp thì thà thu nhỏ cả
+     * bản nhạc còn hơn ép bốn nốt dính vào nhau; phép ép bề ngang bên dưới lo nốt
+     * phần thu nhỏ ấy.
+     */
+    paper.style.width = '';
+    const availPx = paper.clientWidth;
+    const barUnits = Math.max(BAR_MIN_UNITS, Math.round(availPx / abcScale));
     const [tune] = ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
@@ -419,8 +426,20 @@ export function NoteRecognitionDrill() {
        * nằm trọn trong khung, khác khuông đơn chỉ có mỗi nốt ở giữa nên hai mép
        * trống bị cắt cũng không mất gì.
        */
-      staffwidth: bar ? Math.round(BAR_STAFF_PX / abcScale) : grandStaff ? 190 : 220,
-      scale: abcScale,
+      staffwidth: bar ? barUnits : grandStaff ? 190 : 220,
+      /*
+       * **`scale` ở đây KHÔNG phải cỡ chữ cuối cùng.** Phép vẽ cuối do transform
+       * của mình quyết (xem bẫy 28), nên cái `scale` truyền cho abcjs còn đúng
+       * một tác dụng: nó **chia** chỗ dành cho nhạc — nhạc chỉ được xếp vừa
+       * `staffwidth / scale` đơn vị, phần còn lại của khung bỏ trống.
+       *
+       * Đo thật ở tỉ lệ 1.25: nhạc chiếm 76% bề ngang khung, 24% còn lại trắng
+       * trơn — đúng cái khoảng trống bên phải mà người dùng chụp màn hình gửi về.
+       *
+       * Ô nhịp muốn chiếm HẾT bề ngang nên truyền 1. Một nốt lẻ thì giữ nguyên
+       * như cũ: nốt nằm giữa một khung rộng gấp đôi, và đó là chủ ý.
+       */
+      scale: bar ? 1 : abcScale,
       paddingtop: 8,
       paddingbottom: 8,
       paddingleft: 0,
@@ -446,14 +465,6 @@ export function NoteRecognitionDrill() {
     paper.style.overflow = 'visible';
 
     /*
-     * abcjs cũng ghi `width` lên chính thẻ này, đúng bằng bề ngang ẢNH. Đo
-     * `clientWidth` sau khi vẽ mà không xoá đi thì phép ép bề ngang ở dưới đem
-     * ảnh so với chính nó, tỉ lệ luôn ra 1 và ô nhịp vẫn tràn ra ngoài khung —
-     * không có lỗi nào báo, chỉ mất nốt ở hai mép.
-     */
-    paper.style.width = '';
-
-    /*
      * Đo **trong hệ toạ độ của chính ảnh SVG** bằng `getBBox`, không dùng
      * `getBoundingClientRect`: toạ độ màn hình phụ thuộc vào chỗ ảnh nằm trong
      * trang, mà lúc effect chạy thì trang chưa xếp xong chỗ cho nó — đã thử và
@@ -465,7 +476,7 @@ export function NoteRecognitionDrill() {
     const ink = svg.getBBox();
     const topLineY = (topLine as SVGGraphicsElement).getBBox().y * abcScale;
     const { scale, translateX, translateY } = anchorTransform(
-      staffBox(grandStaff, bar),
+      staffBox(grandStaff),
       topLineY,
       ink.y * abcScale,
       (ink.y + ink.height) * abcScale,
@@ -476,10 +487,7 @@ export function NoteRecognitionDrill() {
        * phần lề đó cũng chiếm chỗ thật trong khung.
        */
       bar
-        ? {
-          ink: Number(svg.getAttribute('width') ?? 0) * abcScale,
-          box: paper.clientWidth,
-        }
+        ? { ink: Number(svg.getAttribute('width') ?? 0) * abcScale, box: availPx }
         : undefined,
     );
 
@@ -811,9 +819,10 @@ export function NoteRecognitionDrill() {
                   border: '1px solid #d0d0d0',
                   borderRadius: 16,
                   padding: '0.5rem 1rem',
-                  height: staffBox(grandStaff, current.beats.length > 1).height,
+                  height: staffBox(grandStaff).height,
                   width: '100%',
-                  maxWidth: 320,
+                  // Ô nhịp dùng hết bề ngang có được; một nốt thì giữ khung hẹp.
+                  maxWidth: current.beats.length > 1 ? undefined : SINGLE_NOTE_BOX_PX,
                   overflow: 'hidden',
                 }}
               >

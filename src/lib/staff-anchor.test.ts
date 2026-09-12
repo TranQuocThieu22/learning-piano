@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
-  anchorTransform, BAR_SHRINK, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX,
+  anchorTransform, BAR_MIN_UNITS, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX,
   SINGLE_STAFF_SCALE, staffBox, staffScale, type StaffBox,
 } from './staff-anchor';
 
@@ -14,37 +14,25 @@ const sauKhiDich = (box: StaffBox, topLineY: number, inkTop: number, inkBottom: 
  * Ép bề ngang chỉ dành cho ô nhịp 4/4. Một nốt lẻ cố ý để ảnh tràn ra ngoài
  * khung — hai mép bị cắt toàn khoảng trắng, đổi lại nốt to hơn.
  */
-describe('khung và tỉ lệ cho ô nhịp', () => {
-  it('một phách giữ nguyên khung và tỉ lệ cũ', () => {
-    expect(staffBox(false, false)).toEqual(SINGLE_STAFF_BOX);
-    expect(staffBox(true, false)).toEqual(GRAND_STAFF_BOX);
-    expect(staffScale(false, false)).toBe(SINGLE_STAFF_SCALE);
-    expect(staffScale(true, false)).toBe(GRAND_STAFF_SCALE);
+describe('khung và tỉ lệ chung cho cả hai chế độ', () => {
+  /*
+   * Ô nhịp KHÔNG còn thu nhỏ. Bản đầu có thu vì tưởng bốn nốt không lọt bề
+   * ngang, nhưng chỗ thắt thật là abcjs không kéo giãn dòng nhạc cho đầy khung —
+   * `%%stretchlast 1` sửa đúng chỗ đó. Sửa rồi thì chữ nhạc hai chế độ phải bằng
+   * nhau, không thì đổi chế độ là mắt phải làm quen lại cỡ chữ.
+   */
+  it('một nốt và cả ô nhịp dùng chung tỉ lệ lẫn khung', () => {
+    expect(staffScale(false)).toBe(SINGLE_STAFF_SCALE);
+    expect(staffScale(true)).toBe(GRAND_STAFF_SCALE);
+    expect(staffBox(false)).toEqual(SINGLE_STAFF_BOX);
+    expect(staffBox(true)).toEqual(GRAND_STAFF_BOX);
   });
 
-  /*
-   * Khung và ảnh phải thu cùng một tỉ lệ. Thu mỗi ảnh thì khuông nhạc bé tí nằm
-   * giữa khoảng trống cao 240px; thu mỗi khung thì ảnh bị cắt.
-   */
-  it('ô nhịp thu cả khung lẫn tỉ lệ theo cùng một hằng số', () => {
-    for (const grand of [false, true]) {
-      const thuong = staffBox(grand, false);
-      const oNhip = staffBox(grand, true);
-      expect(oNhip.height).toBe(Math.round(thuong.height / BAR_SHRINK));
-      expect(oNhip.anchor).toBe(Math.round(thuong.anchor / BAR_SHRINK));
-      expect(staffScale(grand, true)).toBeCloseTo(staffScale(grand, false) / BAR_SHRINK, 5);
-    }
-  });
-
-  /*
-   * Thu cùng tỉ lệ nên chỗ dư quanh khuông nhạc phải giữ nguyên: nốt cao nhất
-   * vừa khung ở chế độ một phách thì cũng phải vừa khung ở chế độ ô nhịp.
-   */
-  it('nốt rìa đàn vừa khung ở chế độ nào cũng không phải thu nhỏ thêm', () => {
-    const siQuang6 = [51, 24, 138] as const;
-    expect(anchorTransform(staffBox(false, false), ...siQuang6).scale).toBe(1);
-    const nho = siQuang6.map((v) => v / BAR_SHRINK) as unknown as [number, number, number];
-    expect(anchorTransform(staffBox(false, true), ...nho).scale).toBe(1);
+  it('có sàn bề ngang cho ô nhịp, để khung hẹp thì thu nhỏ chứ không ép nốt dính nhau', () => {
+    expect(BAR_MIN_UNITS).toBeGreaterThan(0);
+    // Sàn phải nhỏ hơn bề ngang một khuông đơn ở chế độ một nốt (220 đơn vị),
+    // không thì máy nào cũng chạm sàn và lúc nào cũng phải thu nhỏ.
+    expect(BAR_MIN_UNITS).toBeLessThan(220);
   });
 });
 

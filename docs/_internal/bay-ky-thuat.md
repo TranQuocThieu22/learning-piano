@@ -1077,6 +1077,45 @@ nó. Tới đây đã đủ ba thuộc tính bị ghi đè: `transform` (bẫy 2
 **giả định mặc định là mọi thuộc tính hình học trên thẻ đó đều đã bị nó ghi**, và dọn trước
 khi đo.
 
+## 31. Tuỳ chọn `scale` của abcjs không phải cỡ chữ, nó CHIA chỗ dành cho nhạc
+
+**Triệu chứng.** Ô nhịp 4/4 vẽ ra **chỉ chiếm quá nửa khung giấy nhạc**, phần bên phải
+trắng trơn — đo thật trên máy người dùng: khuông nhạc rộng 160px trong khung 320px. Nới
+`staffwidth` to ra thì khung to theo nhưng **khuông nhạc vẫn đúng ngần ấy**, khoảng trống
+bên phải chỉ càng rộng.
+
+**Nguyên nhân.** Hai chỗ cùng lúc:
+
+1. abcjs xếp nhạc vừa **`staffwidth / scale`** đơn vị chứ không phải trọn `staffwidth`.
+   Đo ở tỉ lệ 1.25 thì nhạc chiếm đúng 76% bề ngang khung, và tỉ lệ này **không đổi** dù
+   `staffwidth` to nhỏ thế nào (đo ở 253, 316, 395 đều ra 76-77%).
+2. Mà ở component này, `scale` truyền cho abcjs **không quyết định cỡ chữ cuối cùng** —
+   phép vẽ cuối do `style.transform` của mình ghi đè (bẫy 28). Nên nó còn đúng một tác
+   dụng duy nhất, và tác dụng đó lại là cái vừa nói ở trên: bóp nhạc lại trong khung.
+
+**Cách sửa.** Chỗ nào muốn nhạc chiếm hết bề ngang thì **truyền `scale: 1`** cho abcjs rồi
+để transform của mình lo cỡ chữ:
+
+```ts
+ABCJS.renderAbc(paper, abc, {
+  staffwidth: Math.round(availPx / tiLeMinhSeApDung),
+  scale: 1,
+});
+```
+
+Sau khi sửa: khuông nhạc 305px trong khung 316px — 96%, phần còn lại là chỗ dấu ngoặc ôm
+hai khuông.
+
+**Đừng đi nhầm hướng như lần đầu.** Triệu chứng "nhạc không đầy khung" trông hệt như lỗi
+thiếu kéo giãn, nên phản xạ đầu tiên là đi tìm `%%stretchlast`. Nhưng đo riêng abcjs ngoài
+app thì **khuông nhạc đã đầy 96% sẵn, có hay không có `%%stretchlast` cũng thế** — nghĩa là
+lỗi không nằm ở đó. Chính chỗ số đo ngoài app khác số đo trong app mới chỉ ra thủ phạm là
+một tuỳ chọn đang truyền vào.
+
+**Cách soi nhanh cho mọi bẫy họ này.** Dựng lại đúng đoạn ABC đó trong một trang trắng,
+nạp `node_modules/abcjs/dist/abcjs-basic-min.js`, rồi quét qua các giá trị tuỳ chọn và đo
+`.abcjs-top-line`. Vài chục giây, và nó trả lời dứt khoát câu "tại thư viện hay tại mình".
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1085,6 +1124,7 @@ khi đo.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `fix: Ô nhịp 4/4 kéo giãn hết bề ngang khung, chữ nhạc to như chế độ một nốt` | Thêm bẫy 31: tuỳ chọn `scale` của abcjs xếp nhạc vừa `staffwidth / scale` chứ không trọn `staffwidth`, nên ở chỗ đã ghi đè `transform` (bẫy 28) thì nó chỉ còn tác dụng bóp nhạc lại — ô nhịp 4/4 chiếm 76% khung, nới `staffwidth` cũng vô ích. Ghi kèm cách soi: dựng lại đoạn ABC trong trang trắng rồi đo, vì chính chỗ số đo ngoài app khác số đo trong app mới chỉ ra thủ phạm là một tuỳ chọn đang truyền vào |
 | 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Thêm bẫy 30: abcjs ghi cả `width` lên thẻ chứa, nên phép thu nhỏ cho vừa khung đem ảnh so với chính nó và luôn ra tỉ lệ 1 — ô nhịp tràn ra ngoài, mất nốt ở hai mép, không lỗi nào báo. Ghi kèm dấu hiệu nhận ra sớm (tỉ lệ *nội dung trên khung* mà luôn đúng bằng 1) và chốt bài học chung của cả ba bẫy 28-29-30: giả định mọi thuộc tính hình học trên thẻ đưa cho thư viện vẽ đều đã bị nó ghi đè |
 | 12/09/2026 | `feat: Dấu hoá đứng ở hoá biểu đầu khuông, và bản nhạc to lại như cũ` | Thêm bẫy 28 và 29 — abcjs cài tuỳ chọn `scale` bằng chính `style.transform` của thẻ SVG, lại còn bọc ảnh trong một `div` `overflow: hidden` cao đúng bằng ảnh chưa dịch nên khuông Pha mất ba dòng kẻ dưới cùng, nên bản sửa neo khuông ở bẫy 27 đã âm thầm xoá tỉ lệ và cho production chạy bản nhạc bé một nửa mấy ngày; ghi kèm chuyện `getBBox` trả về đơn vị trước khi nhân tỉ lệ, và ba số phải đo lại mỗi lần đụng vào chỗ vẽ bản nhạc |
 | 12/09/2026 | `fix: Neo khuông nhạc đứng yên, không nhảy theo cao độ nốt` | Thêm bẫy 27 — abcjs vẽ ảnh cao vừa nội dung nên khuông nhạc trôi mỗi câu một chỗ; kèm chuyện đo bằng `getBoundingClientRect` lệch 7px vì lúc effect chạy trang chưa xếp xong chỗ, phải đo bằng `getBBox` trong hệ toạ độ của chính ảnh SVG |

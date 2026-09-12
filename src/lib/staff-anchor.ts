@@ -51,36 +51,31 @@ export const SINGLE_STAFF_BOX: StaffBox = { height: 240, anchor: 100 };
 export const GRAND_STAFF_BOX: StaffBox = { height: 275, anchor: 72 };
 
 /**
- * Ô nhịp 4/4 vẽ nhỏ hơn một phách bao nhiêu lần.
+ * Số đơn vị abcjs tối thiểu cho một ô nhịp 4/4.
  *
- * Một nốt lẻ thì ảnh cố ý rộng hơn khung: hai mép bị cắt toàn khoảng trắng, đổi
- * lại nốt to. **Ô nhịp thì cắt mép là mất nốt thứ tư**, nên phải thu cả ảnh lại.
- *
- * 1.6 là số đo thật trên khung 320px: bốn nốt đen cộng số chỉ nhịp vừa lọt, mà
- * nốt vẫn to hơn cỡ chữ bản nhạc in.
+ * Khung hẹp hơn chừng này thì ép nốt sát nhau tới mức khó đọc; lúc đó thà thu
+ * nhỏ cả bản nhạc (phép ép bề ngang ở `anchorTransform` lo) còn hơn giữ nguyên
+ * cỡ chữ mà bốn nốt dính vào nhau. 150 là số đo thật: khoá nhạc, số chỉ nhịp,
+ * bốn nốt đen và vạch nhịp cuối vừa đủ thở.
  */
-export const BAR_SHRINK = 1.6;
-
-/** Tỉ lệ vẽ cho một câu: khuông đơn hay đôi, một phách hay cả ô nhịp. */
-export function staffScale(grandStaff: boolean, bar: boolean): number {
-  return (grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE) / (bar ? BAR_SHRINK : 1);
-}
+export const BAR_MIN_UNITS = 150;
 
 /**
- * Khung cho một câu.
+ * Tỉ lệ vẽ cho một câu.
  *
- * Ô nhịp thu **cả khung** theo đúng tỉ lệ đã thu ảnh, nên chỗ dư quanh khuông
- * nhạc giữ nguyên như cũ. Giữ nguyên khung cũ thì khuông nhạc bé tí nằm giữa
- * một khoảng trống cao 240px — mà chiều cao là thứ khan hiếm nhất trên điện
- * thoại đặt ở giá nhạc.
+ * Ô nhịp dùng **đúng tỉ lệ của một phách**, không thu nhỏ. Bản đầu có thu
+ * (`BAR_SHRINK`), vì tưởng bốn nốt không lọt bề ngang — nhưng chỗ thắt thật sự
+ * là abcjs không kéo giãn dòng nhạc cho đầy khung, và `%%stretchlast 1` mới là
+ * thứ sửa đúng chỗ đó. Sửa đúng chỗ rồi thì không còn lý do gì để chữ nhạc ở
+ * chế độ ô nhịp bé hơn chế độ một nốt.
  */
-export function staffBox(grandStaff: boolean, bar: boolean): StaffBox {
-  const box = grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX;
-  if (!bar) return box;
-  return {
-    height: Math.round(box.height / BAR_SHRINK),
-    anchor: Math.round(box.anchor / BAR_SHRINK),
-  };
+export function staffScale(grandStaff: boolean): number {
+  return grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE;
+}
+
+/** Khung cho một câu. Một phách hay cả ô nhịp đều dùng chung, nên nó không nhảy cỡ. */
+export function staffBox(grandStaff: boolean): StaffBox {
+  return grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX;
 }
 
 export interface StaffTransform {

@@ -549,6 +549,9 @@ describe('questionAbc — ô nhịp 4/4', () => {
   it('có số chỉ nhịp 4/4, nốt đen, và vạch nhịp đóng ô', () => {
     const abc = questionAbc(bar([60, 62, 64, 65]));
     expect(abc).toContain('M:4/4');
+    // Không có dòng này thì `staffwidth` chỉ là mức trần: bốn nốt xếp theo
+    // khoảng cách tự nhiên rồi dừng, chiếm quá nửa khung, phần còn lại trắng trơn.
+    expect(abc).toContain('%%stretchlast 1');
     expect(abc).toContain('L:1/4');
     expect(abc.trim().endsWith('|')).toBe(true);
     expect(abc).toContain('C D E F|');
@@ -558,6 +561,7 @@ describe('questionAbc — ô nhịp 4/4', () => {
     const abc = questionAbc(bar([60]));
     expect(abc).toContain('M:none');
     expect(abc).not.toContain('|');
+    expect(abc).not.toContain('stretchlast');
   });
 
   /*

@@ -34,3 +34,6 @@ giáo trình.
 
 Ô nhịp dùng được với mọi lựa chọn sẵn có: một tay hay cả hai tay (lúc đó là khuông đôi
 như bản nhạc piano thật), chồng nốt như hợp âm, và hoá biểu đổi mỗi câu.
+
+**Ô nhịp kéo giãn hết bề ngang màn hình**, và chữ nhạc to bằng đúng chế độ một nốt. Xoay
+máy ngang thì cả ô trải rộng ra, đọc được từ khoảng cách đặt máy trên giá nhạc.

@@ -407,7 +407,18 @@ export function questionAbc(question: DrillQuestion, grandStaff = false): string
    * một phần của thứ đang tập đọc. `L:1/4` cho nốt viết trơn thành nốt đen, đủ
    * bốn phách lấp kín ô.
    */
-  const head = bar ? ['X:1', 'L:1/4', 'M:4/4'] : ['X:1', 'L:1/1', 'M:none'];
+  const head = bar
+    /*
+     * `%%stretchlast 1` là thứ kéo bốn nốt giãn ra cho ĐẦY bề ngang.
+     *
+     * Không có nó thì `staffwidth` chỉ là mức TRẦN: abcjs xếp nốt theo khoảng
+     * cách tự nhiên rồi dừng ở đâu thì dừng, nên một ô nhịp bốn nốt chỉ chiếm
+     * quá nửa khung, phần còn lại trắng trơn — đo thật: khuông rộng 160px trong
+     * khung 320px. Nới `staffwidth` to ra cũng vô ích vì abcjs không dùng tới
+     * chỗ dư đó.
+     */
+    ? ['X:1', '%%stretchlast 1', 'L:1/4', 'M:4/4']
+    : ['X:1', 'L:1/1', 'M:none'];
   const key = question.key;
 
   /*
