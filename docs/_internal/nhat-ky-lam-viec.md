@@ -50,6 +50,11 @@
   26**. Sửa không dừng ở chỗ tắt kính lúp: chuyển hẳn việc chọn xuống hàng nút thật, hình
   cây đàn giữ đúng một việc là **bôi màu vùng đang tập**. Đây cũng là điều người dùng nói —
   "cho button bên dưới cũng được, chọn xong thì bôi vùng lên đàn".
+- **Mỗi câu chọn được một nốt, hai nốt hai khuông, hay lúc một lúc hai.** Hai nốt là hai
+  tay bấm cùng lúc, bấm nốt nào trước cũng được — app đợi đủ cả hai mới sang câu mới, và
+  báo "đúng một nốt rồi, còn khuông kia". Kiểu ngẫu nhiên sát bản nhạc thật nhất: bản nhạc
+  cũng có chỗ một tay đánh, chỗ hai tay cùng đánh. Ô chọn này chỉ hiện khi đang tập cả hai
+  tay, vì một khuông thì "hai nốt hai khóa" không tồn tại.
 - **Nói rõ vì sao số nốt hụt so với số quãng đã chọn.** Chọn bốn quãng với cả hai tay không
   ra 4×2 phần bài, vì quãng quá trầm thì khóa Sol không đọc được và ngược lại. Trước đây app
   im lặng, người dùng đếm thấy hụt và tưởng app nuốt mất nốt. Nay có dòng tách rõ: khóa Sol
@@ -57,6 +62,16 @@
 
 **Quan sát**
 
+- **Hai lỗ chỉ lộ ra khi viết test cho câu hai nốt, không lỗ nào nhìn ra được bằng mắt.**
+  Thứ nhất: micro nghe cả hai nốt trong CÙNG một lần, nên chỗ xử lý chạy hai lần liền nhau
+  trước khi React kịp vẽ lại — đọc state thì lần thứ hai vẫn thấy giá trị cũ và câu không
+  bao giờ xong. Phải giữ bản gốc trong ref. Thứ hai: người học bấm nốt thứ nhất rồi giữ
+  nguyên ngón trong lúc tìm nốt thứ hai, tiếng đàn còn ngân nên micro nghe lại nốt đó — nếu
+  tính là bấm sai thì báo sai oan liên tục. Cả hai đều sinh ra từ việc tách luật so phím
+  thành hàm thuần rồi viết ca test cho nó.
+- **Lại đúng bẫy "đếm số test là chưa đủ".** Hai lần trong một buổi: sửa file test bằng
+  script làm mất dấu nháy đóng, file không nạp được, mà dòng tổng vẫn hiện "364 ca pass"
+  trông rất bình thường. Chỉ dòng `Test Files 1 failed` mới nói ra.
 - **Ảnh chụp màn hình của người dùng đáng giá hơn mọi phép đo tự động.** Cục tròn kia không
   bao giờ hiện trên máy tính, không test nào bắt được, và cả trình duyệt chạy tự động cũng
   không tái hiện — vì chuột không có thao tác giữ để chọn chữ. Chỉ một tấm ảnh chụp đúng lúc

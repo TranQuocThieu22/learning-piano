@@ -25,10 +25,26 @@ export interface DrillNote {
 export type ClefName = 'treble' | 'bass';
 export type Hands = 'right' | 'left' | 'both';
 
-/** Một câu hỏi: nốt nào, vẽ trên khóa nào. Khóa đi theo câu chứ không theo buổi tập. */
-export interface DrillQuestion {
+/** Một nốt nằm trên một khóa. Khóa đi theo nốt chứ không theo buổi tập. */
+export interface DrillPart {
   note: DrillNote;
   clef: ClefName;
+}
+
+/**
+ * Một câu hỏi: **một hoặc hai nốt**.
+ *
+ * Hai nốt thì mỗi nốt một khóa — một cho tay phải, một cho tay trái, bấm cùng
+ * lúc. Đây là bước gần bản nhạc thật nhất mà bài luyện này làm được: đọc bản
+ * nhạc piano là đọc hai khuông một lúc, không phải đọc lần lượt.
+ */
+export interface DrillQuestion {
+  parts: DrillPart[];
+}
+
+/** Khoá nhận dạng một phần câu hỏi, để so xem hai câu có trùng nhau không. */
+function partKey(part: DrillPart): string {
+  return `${part.clef}:${part.note.midi}`;
 }
 
 /**
@@ -111,7 +127,18 @@ export interface DrillOptions {
   fiveFinger: boolean;
   /** Có đưa phím đen vào không. */
   accidentals: boolean;
+  /**
+   * Mỗi câu hỏi mấy nốt. Chỉ có nghĩa khi tập cả hai tay.
+   *
+   * - `one` — một nốt, nằm ở khuông nào thì đọc khuông đó.
+   * - `both` — hai nốt cùng lúc, mỗi khuông một nốt; phải bấm đủ cả hai mới xong.
+   * - `mixed` — khi một khi hai, không đoán trước được. Đây là kiểu sát bản nhạc
+   *   thật nhất: có chỗ chỉ một tay đánh, có chỗ hai tay cùng đánh.
+   */
+  notesPerQuestion: NotesPerQuestion;
 }
+
+export type NotesPerQuestion = 'one' | 'both' | 'mixed';
 
 /** Nốt cao nhất của thế tay 5 ngón, tính từ nốt Đô của quãng: Đô-Rê-Mi-Pha-Sol. */
 const FIVE_FINGER_SEMITONES = 7;
@@ -121,6 +148,7 @@ export const DEFAULT_OPTIONS: DrillOptions = {
   octaves: [4],
   fiveFinger: true,
   accidentals: false,
+  notesPerQuestion: 'one',
 };
 
 export function clefsFor(hands: Hands): ClefName[] {
@@ -147,7 +175,7 @@ export function octavesFor(hands: Hands): number[] {
 }
 
 /**
- * Kho câu hỏi suy ra từ lựa chọn của người học.
+ * Kho nốt suy ra từ lựa chọn của người học — mỗi phần tử là một nốt trên một khóa.
  *
  * Trả về mảng đã **bỏ trùng theo cặp (khóa, nốt)**: hai vùng chồng lên nhau —
  * thế tay Đô nằm trong quãng Đô giữa chẳng hạn — thì nốt chung chỉ xuất hiện một
@@ -156,9 +184,9 @@ export function octavesFor(hands: Hands): number[] {
  * Xếp theo khóa rồi tới cao độ để thứ tự ổn định, tiện cho test và cho việc suy
  * ra tầm nghe của micro.
  */
-export function questionsForOptions(options: DrillOptions): DrillQuestion[] {
+export function notePoolForOptions(options: DrillOptions): DrillPart[] {
   const seen = new Set<string>();
-  const out: DrillQuestion[] = [];
+  const out: DrillPart[] = [];
 
   for (const clef of clefsFor(options.hands)) {
     for (const octave of [...options.octaves].sort((a, b) => a - b)) {
@@ -179,49 +207,129 @@ export function questionsForOptions(options: DrillOptions): DrillQuestion[] {
 }
 
 /**
- * Dựng đoạn ABC vẽ đúng một nốt tròn, không có số chỉ nhịp cho đỡ rối.
+ * Dựng đoạn ABC vẽ câu hỏi, mỗi nốt một hình tròn, không có số chỉ nhịp cho đỡ rối.
  *
  * `grandStaff` bật thì vẽ **cả hai khuông như bản nhạc piano thật**: khóa Sol ở
- * trên, khóa Pha ở dưới, nốt nằm ở khuông của nó còn khuông kia để trống. Đây là
- * chế độ cho người chọn tập cả hai tay — việc đọc được nốt nằm ở khuông NÀO cũng
- * là một phần của bài, mà vẽ mỗi một khuông thì mất hẳn phần đó.
+ * trên, khóa Pha ở dưới, nốt nằm ở khuông của nó còn khuông kia để trống. Câu hai
+ * nốt thì mỗi khuông một nốt, thẳng hàng nhau — đúng như hai tay bấm cùng lúc.
  *
  * Khuông trống dùng `x` (lặng ẩn) chứ không dùng `z`: dấu lặng vẽ ra giữa khuông
  * trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa gì.
  */
-export function singleNoteAbc(note: DrillNote, clef: ClefName, grandStaff = false): string {
+export function questionAbc(question: DrillQuestion, grandStaff = false): string {
+  const head = ['X:1', 'L:1/1', 'M:none'];
+  const noteOn = (clef: ClefName) => question.parts.find((p) => p.clef === clef)?.note.abc ?? 'x';
+
   if (!grandStaff) {
-    return ['X:1', 'L:1/1', 'M:none', `K:C clef=${clef}`, note.abc].join('\n');
+    const only = question.parts[0];
+    return [...head, `K:C clef=${only.clef}`, only.note.abc].join('\n');
   }
+
   return [
-    'X:1',
-    'L:1/1',
-    'M:none',
+    ...head,
     '%%staves {1 2}',
     'K:C',
     'V:1 clef=treble',
-    clef === 'treble' ? note.abc : 'x',
+    noteOn('treble'),
     'V:2 clef=bass',
-    clef === 'bass' ? note.abc : 'x',
+    noteOn('bass'),
   ].join('\n');
 }
 
 /**
- * Chọn câu hỏi kế tiếp, tránh lặp lại ngay câu vừa rồi để người học không đoán mò.
+ * Bốc một nốt trong danh sách, né những nốt vừa hỏi xong.
+ *
+ * Né hết mà không còn gì thì lấy cả danh sách: kho chỉ có một nốt vẫn phải hỏi
+ * được, thà hỏi lại còn hơn không có câu nào.
+ */
+function pickPart(list: DrillPart[], avoid: Set<string>, random: () => number): DrillPart {
+  const free = list.filter((p) => !avoid.has(partKey(p)));
+  const usable = free.length > 0 ? free : list;
+  return usable[Math.floor(random() * usable.length) % usable.length];
+}
+
+/**
+ * Chọn câu hỏi kế tiếp từ kho nốt, tránh lặp lại ngay câu vừa rồi.
+ *
+ * Số nốt mỗi câu do `options.notesPerQuestion` quyết, nhưng **luôn có đường lùi**:
+ * đòi hai nốt mà kho chỉ có một khóa (đang tập một tay, hoặc quãng đã chọn chỉ
+ * đọc được ở một khóa) thì ra câu một nốt, chứ không trả về câu rỗng.
+ *
  * `random` tách ra thành tham số để kiểm thử được.
  */
 export function pickNextQuestion(
-  pool: DrillQuestion[],
+  pool: DrillPart[],
   previous: DrillQuestion | null,
+  options: DrillOptions,
   random: () => number = Math.random,
-): DrillQuestion {
-  if (pool.length === 0) throw new Error('Kho câu hỏi rỗng');
-  if (pool.length === 1) return pool[0];
-  const rest = previous
-    ? pool.filter((q) => q.note.midi !== previous.note.midi || q.clef !== previous.clef)
-    : pool;
-  const usable = rest.length > 0 ? rest : pool;
-  return usable[Math.floor(random() * usable.length) % usable.length];
+): DrillQuestion | null {
+  if (pool.length === 0) return null;
+  const avoid = new Set((previous?.parts ?? []).map(partKey));
+
+  const muonHai = options.notesPerQuestion === 'both'
+    || (options.notesPerQuestion === 'mixed' && random() < 0.5);
+
+  if (muonHai) {
+    const treble = pool.filter((p) => p.clef === 'treble');
+    const bass = pool.filter((p) => p.clef === 'bass');
+    if (treble.length > 0 && bass.length > 0) {
+      return { parts: [pickPart(treble, avoid, random), pickPart(bass, avoid, random)] };
+    }
+  }
+
+  return { parts: [pickPart(pool, avoid, random)] };
+}
+
+/**
+ * Kết quả của một lần bấm phím vào câu hỏi đang chờ.
+ *
+ * Trả về luôn danh sách nốt đã đúng sau lần bấm này, thay vì bắt chỗ gọi tự cộng
+ * dồn. Lý do rất cụ thể: **micro nghe cả hai nốt trong cùng một lần**, nên chỗ
+ * gọi xử lý hai phím liền nhau trong một nhịp. Nếu nó phải đọc state React để
+ * biết đã đúng nốt nào thì lần thứ hai vẫn đọc ra giá trị cũ — cả hai lần đều
+ * thấy "còn thiếu nốt kia" và câu không bao giờ xong.
+ */
+export type AnswerOutcome =
+  | { kind: 'partial'; done: DrillPart; collected: number[] }
+  | { kind: 'correct'; collected: number[] }
+  /** Nốt này đã đúng từ trước — bỏ qua, không khen lại cũng không tính sai. */
+  | { kind: 'again' }
+  | { kind: 'wrong-octave' }
+  | { kind: 'wrong' };
+
+/**
+ * So phím vừa bấm với câu hỏi đang chờ.
+ *
+ * Câu hai nốt **không bắt bấm đúng thứ tự**: hai tay đặt xuống bàn phím không
+ * bao giờ chạm cùng một mili giây, mà ai chạm trước là tuỳ người.
+ */
+export function answerQuestion(
+  question: DrillQuestion,
+  collected: number[],
+  played: number,
+): AnswerOutcome {
+  const conThieu = question.parts.filter((p) => !collected.includes(p.note.midi));
+  if (conThieu.length === 0) return { kind: 'correct', collected };
+
+  /*
+   * Nốt đã đúng mà nghe lại lần nữa thì im lặng bỏ qua.
+   *
+   * Không có nhánh này thì micro báo sai oan liên tục: người học bấm nốt thứ
+   * nhất rồi GIỮ NGUYÊN ngón trong lúc tìm nốt thứ hai, mà tiếng đàn còn ngân
+   * thì lần nghe nào micro cũng nghe lại nốt đó.
+   */
+  if (collected.includes(played)) return { kind: 'again' };
+
+  const trung = conThieu.find((p) => p.note.midi === played);
+  if (trung) {
+    const next = [...collected, trung.note.midi];
+    return conThieu.length === 1
+      ? { kind: 'correct', collected: next }
+      : { kind: 'partial', done: trung, collected: next };
+  }
+
+  const saiQuangTam = conThieu.some((p) => checkAnswer(played, p.note.midi) === 'wrong-octave');
+  return saiQuangTam ? { kind: 'wrong-octave' } : { kind: 'wrong' };
 }
 
 export type AnswerVerdict = 'correct' | 'wrong-octave' | 'wrong';

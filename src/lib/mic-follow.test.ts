@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { answerFromHeard, EXTRA_NOTE_MIN_STRENGTH, pitchesForFollow } from './mic-follow';
+import { answerFromHeard, answersFromHeard, EXTRA_NOTE_MIN_STRENGTH, pitchesForFollow } from './mic-follow';
 import { createFollowState, followNote } from './score-follow';
 import type { ScoreEvent } from './score-compare';
 import type { DetectedNote } from './mic-pitch';
@@ -74,6 +74,32 @@ describe('pitchesForFollow', () => {
 
   it('không nghe được gì thì không đưa gì', () => {
     expect(pitchesForFollow([], score(60), 0)).toEqual([]);
+  });
+});
+
+describe('answersFromHeard — câu hỏi có thể chờ hai nốt', () => {
+  it('nghe được cả hai nốt đang chờ thì nhận cả hai', () => {
+    expect(answersFromHeard(heard([60, 1], [48, 0.8]), [60, 48]).sort()).toEqual([48, 60]);
+  });
+
+  it('mới nghe được một nốt thì nhận một, chờ nốt kia', () => {
+    expect(answersFromHeard(heard([60, 1], [90, 0.2]), [60, 48])).toEqual([60]);
+  });
+
+  /*
+   * Bấm sai MỘT phím phải được báo sai MỘT lần. Trả về cả ba nốt nghe được là
+   * người học bấm nhầm một cái mà thấy báo sai dồn dập.
+   */
+  it('không khớp nốt nào thì chỉ trả về một phím', () => {
+    expect(answersFromHeard(heard([70, 0.9], [75, 0.4]), [60, 48])).toHaveLength(1);
+  });
+
+  it('ưu tiên phím cùng tên khác quãng tám, để được báo sai quãng tám', () => {
+    expect(answersFromHeard(heard([90, 0.9], [72, 0.3]), [60, 48])).toEqual([72]);
+  });
+
+  it('không nghe được gì thì không trả về gì', () => {
+    expect(answersFromHeard([], [60])).toEqual([]);
   });
 });
 

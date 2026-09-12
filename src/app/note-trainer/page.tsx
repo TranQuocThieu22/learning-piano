@@ -52,6 +52,11 @@ export default async function NoteRecognitionPage() {
             nào trước, rồi mới đọc nốt. Đây đúng là việc phải làm khi đọc bản nhạc thật.
           </Text>
           <Text size="sm">
+            <b>Chọn được mỗi câu một hay hai nốt.</b> Hai nốt là hai tay bấm cùng lúc, mỗi khuông một
+            nốt — bấm nốt nào trước cũng được, app đợi đủ cả hai. Chọn &quot;lúc 1 lúc 2&quot; thì không
+            đoán trước được, sát bản nhạc thật nhất: có chỗ chỉ một tay đánh, có chỗ hai tay cùng đánh.
+          </Text>
+          <Text size="sm">
             <b>Đừng nhìn xuống tay.</b> Tìm phím bằng cảm giác, dựa vào cụm hai phím đen và ba phím
             đen làm mốc. Nếu buộc phải nhìn thì nhìn, nhưng hãy cố giảm dần.
           </Text>

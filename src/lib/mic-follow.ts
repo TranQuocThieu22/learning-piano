@@ -68,6 +68,29 @@ export function pitchesForFollow(heard: DetectedNote[], expected: ScoreEvent[], 
 }
 
 /**
+ * Chọn những phím làm câu trả lời cho bài luyện nhận nốt, từ một lần micro nghe.
+ *
+ * Câu hỏi có thể đang chờ **một hoặc hai nốt** (hai tay bấm cùng lúc), mà micro
+ * nghe cả hai trong cùng một lần. Nên:
+ *
+ * - Nghe được nốt nào đang chờ thì trả về hết những nốt đó — mỗi nốt tự tìm chỗ
+ *   của nó, không cần bấm đúng thứ tự.
+ * - Không khớp nốt nào thì chỉ trả về MỘT phím: người học bấm sai một phím thì
+ *   được báo sai một lần, không phải ba. Ưu tiên phím cùng tên khác quãng tám —
+ *   để được báo "đúng tên nốt, sai quãng tám" thay vì "sai".
+ */
+export function answersFromHeard(heard: DetectedNote[], targets: number[]): number[] {
+  if (heard.length === 0) return [];
+  const chờ = new Set(targets);
+  const trúng = heard.filter((n) => chờ.has(n.midi)).map((n) => n.midi);
+  if (trúng.length > 0) return trúng;
+
+  const cùngTên = heard.find((n) => targets.some((t) => ((n.midi - t) % 12 + 12) % 12 === 0));
+  if (cùngTên) return [cùngTên.midi];
+  return [heard.reduce((mạnh, n) => (n.strength > mạnh.strength ? n : mạnh)).midi];
+}
+
+/**
  * Chọn MỘT phím làm câu trả lời cho bài luyện nhận nốt, từ một lần micro nghe.
  *
  * Nghe thấy đúng nốt đang hỏi thì lấy nó. Không thì ưu tiên nốt cùng tên khác

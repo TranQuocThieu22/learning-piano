@@ -6,12 +6,13 @@ import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
 import {
-  checkAnswer, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillQuestion, Hands,
-  octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionsForOptions, singleNoteAbc,
+  answerQuestion, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart, DrillQuestion, Hands,
+  notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
+  pickNextQuestion, questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
-import { answerFromHeard } from '@/lib/mic-follow';
+import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
@@ -23,6 +24,12 @@ const HAND_LABELS: { value: Hands; label: string }[] = [
   { value: 'right', label: 'Tay phải' },
   { value: 'left', label: 'Tay trái' },
   { value: 'both', label: 'Cả hai tay' },
+];
+
+const COUNT_LABELS: { value: NotesPerQuestion; label: string }[] = [
+  { value: 'one', label: '1 nốt' },
+  { value: 'both', label: '2 nốt' },
+  { value: 'mixed', label: 'Lúc 1 lúc 2' },
 ];
 
 /**
@@ -48,11 +55,15 @@ function loadOptions(): DrillOptions {
     const octaves = Array.isArray(saved.octaves)
       ? saved.octaves.filter((o) => typeof o === 'number' && valid.includes(o))
       : [];
+    const count: NotesPerQuestion = saved.notesPerQuestion === 'both' || saved.notesPerQuestion === 'mixed'
+      ? saved.notesPerQuestion
+      : 'one';
     return {
       hands,
       octaves: octaves.length > 0 ? octaves : DEFAULT_OPTIONS.octaves,
       fiveFinger: saved.fiveFinger !== false,
       accidentals: saved.accidentals === true,
+      notesPerQuestion: count,
     };
   } catch {
     // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
@@ -89,15 +100,17 @@ function storeOptions(next: DrillOptions) {
 
 type Feedback =
   | { kind: 'none' }
+  /** Câu hai nốt, mới bấm đúng một nốt — còn chờ nốt kia. */
+  | { kind: 'partial'; done: DrillPart }
   | { kind: 'correct' }
   | { kind: 'wrong-octave'; played: number }
   | { kind: 'wrong'; played: number };
 
 export function NoteRecognitionDrill() {
   const options = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-  const pool = useMemo(() => questionsForOptions(options), [options]);
+  const pool = useMemo(() => notePoolForOptions(options), [options]);
   const selectableOctaves = useMemo(() => octavesFor(options.hands), [options.hands]);
-  const activeMidis = useMemo(() => new Set(pool.map((q) => q.note.midi)), [pool]);
+  const activeMidis = useMemo(() => new Set(pool.map((p) => p.note.midi)), [pool]);
   /**
    * Tách kho câu hỏi theo khóa nhạc.
    *
@@ -107,21 +120,37 @@ export function NoteRecognitionDrill() {
    */
   const theoKhoa = useMemo(() => ({
     treble: {
-      notes: pool.filter((q) => q.clef === 'treble').length,
+      notes: pool.filter((p) => p.clef === 'treble').length,
       octaves: options.octaves.filter((o) => OCTAVES_BY_CLEF.treble.includes(o)),
     },
     bass: {
-      notes: pool.filter((q) => q.clef === 'bass').length,
+      notes: pool.filter((p) => p.clef === 'bass').length,
       octaves: options.octaves.filter((o) => OCTAVES_BY_CLEF.bass.includes(o)),
     },
   }), [pool, options.octaves]);
   /** Cả hai tay thì vẽ khuông đôi như bản nhạc piano thật. */
   const grandStaff = options.hands === 'both';
 
-  const [current, setCurrent] = useState<DrillQuestion | null>(() => {
-    const first = questionsForOptions(DEFAULT_OPTIONS);
-    return first.length > 0 ? pickNextQuestion(first, null) : null;
-  });
+  const [current, setCurrent] = useState<DrillQuestion | null>(
+    () => pickNextQuestion(notePoolForOptions(DEFAULT_OPTIONS), null, DEFAULT_OPTIONS),
+  );
+  /**
+   * Những nốt của câu hiện tại đã bấm đúng.
+   *
+   * Câu hai nốt phải bấm đủ cả hai mới tính xong, mà hai tay không bao giờ chạm
+   * phím đúng cùng một mili giây — nên phải nhớ nốt nào đã đúng rồi. Giữ trong
+   * state (không phải ref) vì màn hình cần hiện "còn nốt ở khuông kia".
+   */
+  const [collected, setCollected] = useState<number[]>([]);
+  /**
+   * Bản gốc của `collected`, giữ trong ref.
+   *
+   * Micro đưa cả hai nốt của một câu trong cùng một nhịp, nên `handleNoteOn` chạy
+   * hai lần liền nhau trước khi React kịp vẽ lại. Đọc state thì lần thứ hai vẫn
+   * thấy giá trị cũ và câu không bao giờ xong — ref là chỗ duy nhất đọc ra được
+   * giá trị vừa ghi.
+   */
+  const collectedRef = useRef<number[]>([]);
   const [feedback, setFeedback] = useState<Feedback>({ kind: 'none' });
   const [answered, setAnswered] = useState(0);
   const [firstTryCorrect, setFirstTryCorrect] = useState(0);
@@ -155,45 +184,72 @@ export function NoteRecognitionDrill() {
   const [shownFor, setShownFor] = useState(options);
   if (shownFor !== options) {
     setShownFor(options);
-    setCurrent(pool.length > 0 ? pickNextQuestion(pool, null) : null);
+    setCurrent(pickNextQuestion(pool, null, options));
+    setCollected([]);
     setFeedback({ kind: 'none' });
     setAnswered(0);
     setFirstTryCorrect(0);
     setMistakes({});
   }
 
-  const advance = useCallback((next: DrillQuestion[], previous: DrillQuestion | null) => {
+  const advance = useCallback((notes: DrillPart[], previous: DrillQuestion | null, forOptions: DrillOptions) => {
     lockedRef.current = false;
     missedCurrentRef.current = false;
+    collectedRef.current = [];
     setFeedback({ kind: 'none' });
-    setCurrent(next.length > 0 ? pickNextQuestion(next, previous) : null);
+    setCollected([]);
+    setCurrent(pickNextQuestion(notes, previous, forOptions));
   }, []);
 
+  /**
+   * Nhận một phím vừa bấm.
+   *
+   * Toàn bộ luật so phím nằm ở `answerQuestion`; chỗ này chỉ lo phần màn hình và
+   * thống kê. Đọc nốt đã đúng từ **ref** chứ không từ state — xem `collectedRef`.
+   */
   const handleNoteOn = (played: number) => {
     if (lockedRef.current || !current) return;
-    const verdict = checkAnswer(played, current.note.midi);
+    const outcome = answerQuestion(current, collectedRef.current, played);
 
-    if (verdict === 'correct') {
-      lockedRef.current = true;
-      setFeedback({ kind: 'correct' });
-      setAnswered((n) => n + 1);
-      if (!missedCurrentRef.current) setFirstTryCorrect((n) => n + 1);
-      timerRef.current = setTimeout(() => advance(pool, current), ADVANCE_DELAY_MS);
+    // Nốt đã đúng, nghe lại lần nữa: không làm gì cả. Xem `answerQuestion`.
+    if (outcome.kind === 'again') return;
+
+    if (outcome.kind === 'partial') {
+      collectedRef.current = outcome.collected;
+      setCollected(outcome.collected);
+      setFeedback({ kind: 'partial', done: outcome.done });
       return;
     }
 
+    if (outcome.kind === 'correct') {
+      lockedRef.current = true;
+      collectedRef.current = outcome.collected;
+      setCollected(outcome.collected);
+      setFeedback({ kind: 'correct' });
+      setAnswered((n) => n + 1);
+      if (!missedCurrentRef.current) setFirstTryCorrect((n) => n + 1);
+      timerRef.current = setTimeout(() => advance(pool, current, options), ADVANCE_DELAY_MS);
+      return;
+    }
+
+    // Sai: tính một lần cho cả câu, và ghi vào sổ nhầm những nốt còn đang chờ.
     if (!missedCurrentRef.current) {
       missedCurrentRef.current = true;
-      setMistakes((m) => ({ ...m, [current.note.midi]: (m[current.note.midi] ?? 0) + 1 }));
+      const conThieu = current.parts.filter((p) => !collectedRef.current.includes(p.note.midi));
+      setMistakes((m) => {
+        const next = { ...m };
+        for (const p of conThieu) next[p.note.midi] = (next[p.note.midi] ?? 0) + 1;
+        return next;
+      });
     }
-    setFeedback(verdict === 'wrong-octave' ? { kind: 'wrong-octave', played } : { kind: 'wrong', played });
+    setFeedback({ kind: outcome.kind, played });
   };
 
   // Micro chỉ nghe trong tầm đang tập, nới mỗi bên một quãng tám để vẫn bắt được
   // khi người học đặt nhầm tay sang quãng khác (thành câu "sai quãng tám").
   const micRange = useMemo<[number, number]>(() => {
     if (pool.length === 0) return [48, 72];
-    const midis = pool.map((q) => q.note.midi);
+    const midis = pool.map((p) => p.note.midi);
     return [Math.min(...midis) - 12, Math.max(...midis) + 12];
   }, [pool]);
 
@@ -202,13 +258,22 @@ export function NoteRecognitionDrill() {
       onMidiNote: handleNoteOn,
       onMicHeard: (event) => {
         if (!current) return;
-        const answer = answerFromHeard(event.notes, current.note.midi);
-        if (answer !== null) handleNoteOn(answer);
+        // Câu hai nốt thì micro nghe cả hai trong cùng một lần — đưa hết vào, mỗi
+        // nốt tự tìm chỗ của nó. Không khớp gì thì chỉ báo sai MỘT lần.
+        const conThieu = current.parts.filter((p) => !collectedRef.current.includes(p.note.midi));
+        for (const midi of answersFromHeard(event.notes, conThieu.map((p) => p.note.midi))) {
+          handleNoteOn(midi);
+        }
       },
     },
     // Báo trước nốt đang hỏi: đã kiểm trên hàng chục lần trả lời sai rằng gợi ý này
     // không bao giờ biến một lần đánh sai thành "Chính xác" (mic-accuracy.test.ts).
-    { hint: current ? [current.note.midi] : [], range: micRange, maxNotes: 2 },
+    {
+      hint: current ? current.parts.map((p) => p.note.midi) : [],
+      range: micRange,
+      // Câu hai nốt cần nghe được hai nốt thật cộng chỗ cho một nốt lạ.
+      maxNotes: current && current.parts.length > 1 ? 3 : 2,
+    },
   );
 
   // Vẽ lại khuông nhạc mỗi khi đổi nốt hoặc đổi khóa nhạc.
@@ -218,7 +283,7 @@ export function NoteRecognitionDrill() {
       paperRef.current.innerHTML = '';
       return;
     }
-    ABCJS.renderAbc(paperRef.current, singleNoteAbc(current.note, current.clef, grandStaff), {
+    ABCJS.renderAbc(paperRef.current, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
        * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
@@ -245,6 +310,7 @@ export function NoteRecognitionDrill() {
     if (timerRef.current) clearTimeout(timerRef.current);
     lockedRef.current = false;
     missedCurrentRef.current = false;
+    collectedRef.current = [];
     storeOptions(next);
   };
 
@@ -263,7 +329,7 @@ export function NoteRecognitionDrill() {
 
   const skip = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    advance(pool, current);
+    advance(pool, current, options);
   };
 
   const restart = () => {
@@ -271,7 +337,7 @@ export function NoteRecognitionDrill() {
     setAnswered(0);
     setFirstTryCorrect(0);
     setMistakes({});
-    advance(pool, current);
+    advance(pool, current, options);
   };
 
   const accuracy = answered > 0 ? Math.round((firstTryCorrect / answered) * 100) : 0;
@@ -334,6 +400,32 @@ export function NoteRecognitionDrill() {
             : 'Chưa chọn quãng nào — chạm một nút ở trên.'}
         </Text>
 
+        {/*
+          Chỉ có nghĩa khi tập cả hai tay: một khuông thì "hai nốt hai khóa" không
+          tồn tại. Ẩn hẳn thay vì để mờ — một ô chọn bấm không được chỉ làm người
+          học tưởng app hỏng.
+        */}
+        {grandStaff && (
+          <>
+            <Text size="sm" fw={500} mt="md" mb={6}>
+              Mỗi câu mấy nốt
+            </Text>
+            <SegmentedControl
+              className="drill-hands-picker"
+              fullWidth
+              value={options.notesPerQuestion}
+              onChange={(value) => applyOptions({ ...options, notesPerQuestion: value as NotesPerQuestion })}
+              data={COUNT_LABELS}
+              data-testid="count-picker"
+            />
+            <Text size="xs" c="dimmed" mt={6}>
+              {options.notesPerQuestion === 'one' && 'Mỗi câu một nốt, nằm ở khuông trên hoặc khuông dưới.'}
+              {options.notesPerQuestion === 'both' && 'Mỗi câu hai nốt cùng lúc, mỗi khuông một nốt — bấm đủ cả hai mới sang câu mới.'}
+              {options.notesPerQuestion === 'mixed' && 'Khi một nốt khi hai nốt, không đoán trước được — sát bản nhạc thật nhất.'}
+            </Text>
+          </>
+        )}
+
         <Switch
           mt="md"
           checked={options.fiveFinger}
@@ -390,10 +482,12 @@ export function NoteRecognitionDrill() {
           {current ? (
             <>
               <Text size="sm" c="dimmed">
-                Nốt này là nốt gì? Hãy bấm phím tương ứng trên đàn.
+                {current.parts.length > 1
+                  ? 'Hai nốt này là nốt gì? Bấm cả hai trên đàn — không cần cùng lúc, nốt nào trước cũng được.'
+                  : 'Nốt này là nốt gì? Hãy bấm phím tương ứng trên đàn.'}
                 {/* Khuông đôi đã tự nói nốt nằm ở tay nào, nên không nhắc thêm —
                     nhắc ra là trả lời hộ nửa câu hỏi. */}
-                {grandStaff && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
+                {grandStaff && current.parts.length === 1 && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
               </Text>
 
               {/* Khuông nhạc luôn để nền trắng chữ đen như bản nhạc giấy, kể cả khi trang đang ở chế độ tối. */}
@@ -416,16 +510,34 @@ export function NoteRecognitionDrill() {
               />
 
               <Box mih={78} w="100%">
+                {feedback.kind === 'partial' && (
+                  <Alert color="teal" variant="light" title="Đúng một nốt rồi" data-testid="feedback-partial">
+                    <b>{feedback.done.note.name} ({feedback.done.note.scientific})</b> ở{' '}
+                    {feedback.done.clef === 'treble' ? 'khuông trên' : 'khuông dưới'} đúng rồi. Giữ
+                    nguyên tay đó và bấm nốt còn lại ở{' '}
+                    {feedback.done.clef === 'treble' ? 'khuông dưới' : 'khuông trên'}.
+                  </Alert>
+                )}
                 {feedback.kind === 'correct' && (
                   <Alert color="teal" title="Chính xác" data-testid="feedback-correct">
-                    Đó là <b>{current.note.name} ({current.note.scientific})</b>.
+                    Đó là{' '}
+                    {current.parts.map((p, i) => (
+                      <span key={p.note.midi}>
+                        {i > 0 && ' và '}
+                        <b>{p.note.name} ({p.note.scientific})</b>
+                      </span>
+                    ))}.
                   </Alert>
                 )}
                 {feedback.kind === 'wrong-octave' && (
                   <Alert color="yellow" title="Đúng tên nốt, nhưng sai quãng tám" data-testid="feedback-octave">
-                    Bạn đọc đúng đây là nốt <b>{current.note.name}</b> rồi. Chỉ là tay đang đặt ở quãng khác —
-                    nốt đang hỏi nằm ở <b>{current.clef === 'treble' ? 'khóa Sol, quãng của tay phải' : 'khóa Pha, quãng của tay trái'}</b> ({current.note.scientific}).
-                    Cứ thử lại, không tính là sai hẳn đâu.
+                    Bạn đọc đúng tên nốt rồi. Chỉ là tay đang đặt ở quãng khác — nốt đang chờ nằm ở{' '}
+                    <b>
+                      {current.parts
+                        .filter((p) => !collected.includes(p.note.midi))
+                        .map((p) => `${p.note.scientific} (${p.clef === 'treble' ? 'khuông trên' : 'khuông dưới'})`)
+                        .join(' và ')}
+                    </b>. Cứ thử lại, không tính là sai hẳn đâu.
                   </Alert>
                 )}
                 {feedback.kind === 'wrong' && (
@@ -440,7 +552,9 @@ export function NoteRecognitionDrill() {
               </Box>
 
               <Group justify="center">
-                <Button variant="default" size="md" onClick={skip}>Bỏ qua nốt này</Button>
+                <Button variant="default" size="md" onClick={skip}>
+                  {current.parts.length > 1 ? 'Bỏ qua câu này' : 'Bỏ qua nốt này'}
+                </Button>
                 <Button variant="subtle" color="gray" size="md" onClick={restart}>Làm lại từ đầu</Button>
               </Group>
             </>
