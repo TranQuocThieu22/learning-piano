@@ -3,11 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import ABCJS from 'abcjs';
 import {
-  Alert, Badge, Box, Button, Card, Group, Progress, SegmentedControl, Stack, Switch, Text,
+  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
 import {
   checkAnswer, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillQuestion, Hands,
-  octavesFor, pickNextQuestion, questionsForOptions, singleNoteAbc,
+  octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionsForOptions, singleNoteAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
@@ -98,6 +98,23 @@ export function NoteRecognitionDrill() {
   const pool = useMemo(() => questionsForOptions(options), [options]);
   const selectableOctaves = useMemo(() => octavesFor(options.hands), [options.hands]);
   const activeMidis = useMemo(() => new Set(pool.map((q) => q.note.midi)), [pool]);
+  /**
+   * Tách kho câu hỏi theo khóa nhạc.
+   *
+   * Cần vì một quãng chỉ đọc được ở một khóa: chọn bốn quãng với cả hai tay
+   * không ra 4×2 phần bài. Không nói ra thì người học đếm nốt thấy hụt và tưởng
+   * app nuốt mất nốt — chính là câu hỏi đã nhận được.
+   */
+  const theoKhoa = useMemo(() => ({
+    treble: {
+      notes: pool.filter((q) => q.clef === 'treble').length,
+      octaves: options.octaves.filter((o) => OCTAVES_BY_CLEF.treble.includes(o)),
+    },
+    bass: {
+      notes: pool.filter((q) => q.clef === 'bass').length,
+      octaves: options.octaves.filter((o) => OCTAVES_BY_CLEF.bass.includes(o)),
+    },
+  }), [pool, options.octaves]);
   /** Cả hai tay thì vẽ khuông đôi như bản nhạc piano thật. */
   const grandStaff = options.hands === 'both';
 
@@ -244,14 +261,6 @@ export function NoteRecognitionDrill() {
     applyOptions({ ...options, hands, octaves: kept.length > 0 ? kept : [fallback] });
   };
 
-  /** Chạm vào một quãng trên bàn phím: đang chọn thì bỏ, chưa chọn thì thêm. */
-  const toggleOctave = (octave: number) => {
-    const next = options.octaves.includes(octave)
-      ? options.octaves.filter((o) => o !== octave)
-      : [...options.octaves, octave].sort((a, b) => a - b);
-    applyOptions({ ...options, octaves: next });
-  };
-
   const skip = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
     advance(pool, current);
@@ -291,18 +300,38 @@ export function NoteRecognitionDrill() {
         />
 
         <Text size="sm" fw={500} mt="md" mb={6}>
-          Quãng nào <Text span size="xs" c="dimmed">— chạm vào bàn phím, chọn được nhiều quãng</Text>
+          Quãng nào <Text span size="xs" c="dimmed">— chọn được nhiều quãng, vùng chọn hiện lên hình đàn</Text>
         </Text>
         <OctaveKeyboard
           activeMidis={activeMidis}
           selectedOctaves={options.octaves}
           selectableOctaves={selectableOctaves}
-          onToggle={toggleOctave}
         />
+        {/*
+          Nút chọn nằm DƯỚI hình đàn, không phải chạm thẳng lên đàn: xem lý do ở
+          `OctaveKeyboard`. Nhãn nút trùng đúng nhãn ghi trên hình, để nhìn nút là
+          biết nó bôi vùng nào.
+        */}
+        <Chip.Group
+          multiple
+          value={options.octaves.map(String)}
+          onChange={(value) => applyOptions({
+            ...options,
+            octaves: value.map(Number).sort((a, b) => a - b),
+          })}
+        >
+          <Group gap={6} mt="sm">
+            {selectableOctaves.map((octave) => (
+              <Chip key={octave} value={String(octave)} size="sm" data-testid={`octave-chip-${octave}`}>
+                {octaveLabel(octave)}
+              </Chip>
+            ))}
+          </Group>
+        </Chip.Group>
         <Text size="xs" c="dimmed" mt={6}>
           {options.octaves.length > 0
-            ? 'Chạm lần nữa để bỏ chọn. Quãng để xám là quãng khóa nhạc đang chọn không đọc được.'
-            : 'Chưa chọn quãng nào — chạm vào một cụm phím ở trên.'}
+            ? 'Chạm lần nữa để bỏ chọn. Vùng xanh trên hình đàn là chỗ đang tập.'
+            : 'Chưa chọn quãng nào — chạm một nút ở trên.'}
         </Text>
 
         <Switch
@@ -327,6 +356,23 @@ export function NoteRecognitionDrill() {
           Đang tập <b>{pool.length}</b> nốt
           {grandStaff ? ', hiện cả hai khuông như bản nhạc piano' : ''}.
         </Text>
+        {/*
+          Chỉ hiện khi tập cả hai tay, vì chỉ lúc đó mới có chuyện một quãng thuộc
+          về tay này mà không thuộc tay kia.
+        */}
+        {grandStaff && (
+          <Text size="xs" c="dimmed" mt={4} data-testid="pool-split">
+            Khóa Sol {theoKhoa.treble.notes} nốt
+            {theoKhoa.treble.octaves.length > 0 && ` (${theoKhoa.treble.octaves.map(octaveLabel).join(', ')})`}
+            {' · '}
+            khóa Pha {theoKhoa.bass.notes} nốt
+            {theoKhoa.bass.octaves.length > 0 && ` (${theoKhoa.bass.octaves.map(octaveLabel).join(', ')})`}.
+            {' '}
+            Quãng quá cao thì khóa Pha không đọc được, quãng quá trầm thì khóa Sol không —
+            nên một quãng có khi chỉ tập được ở một tay.
+          </Text>
+        )}
+
       </Card>
 
       {input.mode ? (

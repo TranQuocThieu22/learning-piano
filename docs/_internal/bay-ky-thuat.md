@@ -883,6 +883,38 @@ nghe, và nói thẳng ra là chưa ai nghe.
 
 ---
 
+## 26. Chạm vào hình SVG có chữ trên Android: kính lúp chọn chữ nhảy ra che nửa màn hình
+
+**Triệu chứng.** Người dùng gửi ảnh chụp màn hình: giữa bàn phím piano vẽ bằng SVG có **một
+cục tròn trắng to đùng** che mất ba quãng, hai bên là hai mảng đen cong. Không phải lỗi vẽ
+— nó chỉ hiện lúc ngón tay đang chạm, và ảnh chụp lại bắt được đúng khoảnh khắc đó.
+
+**Nguyên nhân.** Cục tròn đó là **kính lúp chọn chữ** của Android. Hình SVG có thẻ `<text>`
+(nhãn "Đô giữa", "Đô3"…), nên ngón tay giữ lâu một chút trên hình được hệ điều hành hiểu là
+đang định bôi đen chữ; nó bật kính lúp để người dùng ngắm con trỏ cho chính xác. Trên máy
+tính không bao giờ thấy, vì chuột không có thao tác giữ để chọn chữ.
+
+`pointer-events: none` trên chính thẻ `<text>` **không cứu được**: sự kiện chạm vẫn đi vào
+phần tử cha, và cơ chế chọn chữ làm việc trên cả cây DOM chứ không theo từng thẻ.
+
+**Cách sửa.** Trên thẻ bọc ngoài hình:
+
+```css
+user-select: none;
+-webkit-user-select: none;
+-webkit-touch-callout: none;
+```
+
+**Bài học chung, và là cái đáng giá hơn.** Chỗ sai thật ra nằm sớm hơn một bước: **bắt người
+học chạm thẳng vào một hình vẽ để chọn**. Hình SVG không phải nút bấm — nó không có tên đọc
+được, trình đọc màn hình không hiểu, vùng chạm phải tự dựng bằng ô trong suốt, và hệ điều
+hành có quyền hiểu cú chạm theo cách của nó (đúng như kính lúp ở đây). Bản sửa không chỉ tắt
+kính lúp mà **chuyển hẳn việc chọn xuống một hàng nút thật** ở dưới, còn hình vẽ giữ đúng
+một việc: bôi màu cho thấy đang chọn vùng nào. Nút thật thì bấm trúng chắc chắn, đọc màn
+hình hiểu, và không phần mềm nào tranh mất cú chạm.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -891,6 +923,7 @@ nghe, và nói thẳng ra là chưa ai nghe.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `fix: Chọn quãng bằng nút bấm, hình đàn chỉ bôi vùng đang tập` | Thêm bẫy 26 — chạm vào hình SVG có chữ trên Android làm kính lúp chọn chữ nhảy ra che nửa màn hình, và `pointer-events: none` trên thẻ `text` không cứu được; ghi kèm bài học lớn hơn là đừng bắt người học chạm thẳng vào hình vẽ để chọn |
 | 11/09/2026 | `fix: Sửa nốt sai của Für Elise và thêm bản nâng cao hai tay cho mọi bài hát` | Thêm bẫy 25 — dấu hoá trong ABC có hiệu lực tới hết ô nhịp nên nốt Rê của Für Elise phát ra Rê thăng trong khi bản nhạc nhìn vẫn đúng; ghi kèm cách đọc cao độ thật bằng `getMidiFile` thay vì đọc lại chuỗi ABC bằng mắt, và vì sao nhạc viết tay cần test gác riêng |
 | 11/09/2026 | `docs(internal): Ghi nhật ký phiên tối 11/09 và bẫy 24` | Thêm bẫy 24 — `{ once: true }` chỉ gỡ listener vừa bắn nên cái anh em sống tới hết phiên và bật nhạc nền lúc phải im; ghi kèm chuyện phải hỏi lại điều kiện lúc bắn chứ không phải lúc gắn, và vì sao lỗi này không tái hiện được bằng trình duyệt chạy tự động |
 | 11/09/2026 | `fix: Nhạc nền không kêu chồng lên bản nhạc mẫu nữa` | Thêm bẫy 23 — `pointerdown` bắn trước `click` nên lệnh bật nhạc nền chạy trước lệnh dừng, rồi về đích sau khi `resume()` xong; kèm cách dựng AudioContext giả để tái hiện cuộc đua và lời nhắc phải gỡ bản sửa ra thử lại |

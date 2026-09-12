@@ -129,6 +129,17 @@ export function clefsFor(hands: Hands): ClefName[] {
   return ['treble', 'bass'];
 }
 
+/**
+ * Tên quãng hiện cho người học.
+ *
+ * Gọi theo nốt Đô mở đầu quãng chứ không theo số thứ tự khoa học, vì trên bàn
+ * phím người học tìm nốt Đô trước rồi mới đếm — và quãng 4 luôn gọi là "Đô giữa",
+ * cái mốc duy nhất ai cũng biết.
+ */
+export function octaveLabel(octave: number): string {
+  return octave === 4 ? 'Đô giữa' : `Đô${octave}`;
+}
+
 /** Những quãng chọn được với tay đang chọn, thấp tới cao. */
 export function octavesFor(hands: Hands): number[] {
   const all = clefsFor(hands).flatMap((clef) => OCTAVES_BY_CLEF[clef]);

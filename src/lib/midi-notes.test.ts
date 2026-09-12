@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, isBlackKey, noteAt, octavesFor,
-  OCTAVES_BY_CLEF, pickNextQuestion, questionsForOptions, singleNoteAbc,
+  checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, isBlackKey, noteAt, octaveLabel,
+  octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionsForOptions, singleNoteAbc,
 } from './midi-notes';
 
 describe('noteAt — dựng nốt từ số MIDI', () => {
@@ -118,6 +118,12 @@ describe('octavesFor — quãng nào chọn được với tay nào', () => {
   it('quãng Đô giữa thuộc về cả hai khóa', () => {
     expect(OCTAVES_BY_CLEF.treble).toContain(4);
     expect(OCTAVES_BY_CLEF.bass).toContain(4);
+  });
+
+  it('tên quãng gọi theo nốt Đô, riêng quãng 4 là Đô giữa', () => {
+    expect(octaveLabel(4)).toBe('Đô giữa');
+    expect(octaveLabel(2)).toBe('Đô2');
+    expect(octaveLabel(7)).toBe('Đô7');
   });
 
   it('clefsFor trả đúng khóa cho từng tay', () => {

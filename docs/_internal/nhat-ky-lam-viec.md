@@ -40,6 +40,34 @@
 
 ---
 
+## 12/09/2026 — Sửa theo người dùng thật, hai lần trong một ngày
+
+**Đã làm**
+
+- **Chọn quãng đổi từ chạm-vào-hình sang hàng nút bấm.** Người dùng gửi ảnh chụp màn hình
+  có **một cục tròn trắng che mất ba quãng** — đó là kính lúp chọn chữ của Android, nhảy ra
+  vì hình SVG có thẻ `text` và ngón tay đặt lên bị hiểu là đang bôi đen chữ. Ghi thành **bẫy
+  26**. Sửa không dừng ở chỗ tắt kính lúp: chuyển hẳn việc chọn xuống hàng nút thật, hình
+  cây đàn giữ đúng một việc là **bôi màu vùng đang tập**. Đây cũng là điều người dùng nói —
+  "cho button bên dưới cũng được, chọn xong thì bôi vùng lên đàn".
+- **Nói rõ vì sao số nốt hụt so với số quãng đã chọn.** Chọn bốn quãng với cả hai tay không
+  ra 4×2 phần bài, vì quãng quá trầm thì khóa Sol không đọc được và ngược lại. Trước đây app
+  im lặng, người dùng đếm thấy hụt và tưởng app nuốt mất nốt. Nay có dòng tách rõ: khóa Sol
+  bao nhiêu nốt ở quãng nào, khóa Pha bao nhiêu.
+
+**Quan sát**
+
+- **Ảnh chụp màn hình của người dùng đáng giá hơn mọi phép đo tự động.** Cục tròn kia không
+  bao giờ hiện trên máy tính, không test nào bắt được, và cả trình duyệt chạy tự động cũng
+  không tái hiện — vì chuột không có thao tác giữ để chọn chữ. Chỉ một tấm ảnh chụp đúng lúc
+  ngón tay đang chạm là đủ để thấy.
+- **Hai lỗi hôm nay đều sinh ra từ cùng một chỗ: bắt hình vẽ làm việc của nút bấm.** Hình
+  SVG không có tên đọc được, trình đọc màn hình không hiểu, vùng chạm phải tự dựng bằng ô
+  trong suốt, và hệ điều hành có quyền hiểu cú chạm theo cách của nó. Nút thật thì không có
+  chuyện đó. Hình vẽ hợp với việc **hiển thị trạng thái**, không hợp với việc nhận lệnh.
+
+---
+
 ## 11/09/2026 — Điện thoại là thiết bị chính, và app biết nghe đàn
 
 **Đã làm**

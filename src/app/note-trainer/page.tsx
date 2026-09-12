@@ -41,9 +41,10 @@ export default async function NoteRecognitionPage() {
             tập. Tập lâu quá sẽ mệt mắt mà không thêm được gì.
           </Text>
           <Text size="sm">
-            <b>Chọn đúng phần mình đang yếu.</b> Chạm vào hình bàn phím để chọn quãng — một quãng cho
-            quen mặt chữ, hai ba quãng cách xa nhau để tập mắt nhảy. Tắt &quot;chỉ năm nốt Đô–Sol&quot; khi
-            tay đã quen với tới, bật dấu hoá khi bắt đầu gặp phím đen trong bài.
+            <b>Chọn đúng phần mình đang yếu.</b> Bấm các nút quãng ở trên — một quãng cho quen mặt
+            chữ, hai ba quãng cách xa nhau để tập mắt nhảy. Hình cây đàn phía trên bôi xanh đúng vùng
+            bạn vừa chọn, nên đối chiếu được ngay với cây đàn trước mặt. Tắt &quot;chỉ năm nốt Đô–Sol&quot;
+            khi tay đã quen với tới, bật dấu hoá khi bắt đầu gặp phím đen trong bài.
           </Text>
           <Text size="sm">
             <b>&quot;Cả hai tay&quot; là mức khó nhất.</b> Bản nhạc hiện đủ hai khuông như bản nhạc piano
