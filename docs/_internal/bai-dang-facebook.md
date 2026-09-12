@@ -106,6 +106,33 @@ tiền: https://pianojourney.rehover.io/07-doc-them/chon-dan-dau-tien
 
 ---
 
+## 4b. Bài đăng số 3 — soạn 12/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** đây là thứ gỡ đúng một cái cớ có thật để không tập — "nối đàn vào
+> máy lằng nhằng lắm". Và nó kể được một chuyện thật: mất một buổi tối mới tìm ra vì sao
+> đàn không nối được, nên bài có cái để kể ngoài tên tính năng.
+
+```text
+Đàn có Bluetooth thì giờ nối thẳng vào web được — không dây, không cáp, không cài thêm app
+nào. App nghe đúng từng nốt bạn bấm, kể cả lúc phòng ồn.
+
+Bật Bluetooth MIDI trên đàn. Vào bài luyện nhận nốt, bấm "Nối MIDI" rồi "Nối thẳng qua
+Bluetooth". Trình duyệt xin quyền thì bấm Cho phép. Chọn đúng tên đàn trong danh sách. Xong.
+
+Chuyện phía sau: hôm nay tôi mất cả buổi tối vì đàn ghép đôi xong, app của hãng báo đã kết
+nối, mà web vẫn không thấy đàn nào. Hoá ra trình duyệt trên Android không nhận đàn Bluetooth
+theo đường thông thường — phải nối thẳng bằng một đường khác. Ai từng bỏ dở vì "nối đàn lằng
+nhằng" thì chỗ đó giờ hết lằng nhằng rồi.
+
+Chi tiết ở đây: https://pianojourney.rehover.io/updates
+```
+
+**Lưu ý khi đăng:** đừng hứa iPhone làm được — iPhone và iPad chưa nối MIDI được bằng đường
+nào, cả dây lẫn Bluetooth. Nếu có ai hỏi thì trả lời thẳng là giới hạn của trình duyệt trên
+iOS, và trên máy đó micro vẫn đủ để tập mọi bài.
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -163,4 +190,5 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Soạn bài đăng số 3 về chuyện nối đàn qua Bluetooth — chọn chủ đề này vì nó gỡ đúng một cái cớ có thật để không tập, và có chuyện thật để kể (mất một buổi tối mới tìm ra vì sao đàn không nối được) chứ không chỉ có tên tính năng |
 | 12/09/2026 | `docs(internal): Soạn bài đăng Facebook số 2 và mẫu bài cập nhật hệ thống` | Tạo file — trước đó bài đăng trên Trang không có chỗ chứa nào, nên mỗi lần lại soạn từ đầu và mỗi lần một giọng. Chốt luôn vai trò của Trang (chỗ người lạ kiểm tra mình là ai, không phải kênh tuyển), thứ tự viết bài web trước rồi rút thành bài Facebook để khỏi viết hai lần, và ba bài dự trữ rút sẵn từ `docs/09-cap-nhat/` để tuần sau không rơi vào cảnh không có gì đăng |

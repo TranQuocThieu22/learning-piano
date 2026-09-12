@@ -288,6 +288,18 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
             trong danh sách. Không cần dây, không cần app của hãng đàn. Trên đàn nhớ bật Bluetooth
             MIDI. Danh sách hiện mọi thiết bị quanh đó, nên chọn đúng dòng có tên đàn.
           </Text>
+        ) : null}
+        {ble.supported ? (
+          /*
+           * Câu này là mảnh khiến người dùng đầu tiên kẹt cả buổi tối: họ bấm nút,
+           * trình duyệt xin quyền, họ không biết đó là bước bắt buộc. Nói trước thì
+           * không ai phải đoán.
+           */
+          <Text size="xs" c="dimmed" mb="xs">
+            Lần đầu bấm, trình duyệt sẽ <b>xin quyền dùng Bluetooth</b> — phải bấm Cho phép,
+            không thì không thấy đàn nào. Nếu trước đó đã bấm Chặn thì mở lại quyền trong phần
+            cài đặt trang của trình duyệt.
+          </Text>
         ) : (
           /*
            * Nói ra vì sao không có nút, thay vì để người học nhìn một ô thông báo

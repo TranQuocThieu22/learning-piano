@@ -428,6 +428,7 @@ Bản nhạc nằm sâu trong hai lớp đều dính:
 
 | Tổ tiên | Thuộc tính | Bật lúc nào |
 |---|---|---|
+| 12/09/2026 | `feat: Nói trước về hộp xin quyền Bluetooth, và viết bài Có gì mới` | Bổ sung vào bẫy 35 hai mảnh cuối tìm ra khi người dùng thử trên máy thật: quyền Bluetooth của trình duyệt (không bấm Cho phép thì hộp thoại trống, trông y như không có đàn) và bộ lọc theo service làm đàn không hiện; kèm bài học là bước nào do trình duyệt hỏi thì app phải nói trước |
 | 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Viết lại bẫy 35 sau khi thử tới cùng: Chrome trên Android KHÔNG liệt kê thiết bị BLE MIDI cho Web MIDI, kể cả khi app của hãng đàn đã nối và trang đã xin lại quyền — nên cách sửa thật là bỏ Web MIDI, nối thẳng bằng Web Bluetooth; ghi kèm ba chỗ dễ sai khi tự đọc gói BLE-MIDI |
 | `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
 | `.markdown-pre-wrapper` | `transform: translateY(-2px)` | khi rê chuột vào khối |
@@ -1243,6 +1244,18 @@ rồi tự đọc gói BLE-MIDI — `src/lib/ble-midi.ts` (bộ đọc thuần, 
 (`03b80e5a-ede8-4b33-a751-6ce34ec4c700`) **không** nằm trong danh sách chặn GATT của Web
 Bluetooth, nên đường này hợp lệ. Đổi lại người học phải bấm một nút để chọn đàn — Web Bluetooth
 bắt buộc có cú bấm thật, không cho nối tự động.
+
+**Mảnh cuối, và là mảnh làm người dùng đầu tiên kẹt cả buổi tối: QUYỀN của trình duyệt.**
+Web Bluetooth xin quyền ở lần bấm đầu, và nếu không bấm Cho phép thì hộp thoại chọn thiết bị
+không hiện đàn nào — trông y như đàn không tồn tại. Người dùng không biết đó là bước bắt buộc
+vì app không nói ra. Nay câu "trình duyệt sẽ xin quyền dùng Bluetooth, phải bấm Cho phép" nằm
+ngay cạnh cái nút. **Bài học: bước nào do trình duyệt hỏi thì app phải nói trước**, vì khi
+người dùng bấm Chặn thì thứ họ thấy là "không có gì", không phải "bị chặn".
+
+**Bộ lọc thiết bị cũng từng làm hộp thoại trống trơn.** Bản đầu lọc theo service MIDI
+(`filters: [{ services: [...] }]`), nhưng nhiều đàn BLE MIDI **không quảng bá** UUID service
+trong gói phát sóng — chúng chỉ để lộ sau khi đã nối. Nay dùng `acceptAllDevices` kèm
+`optionalServices`; danh sách rối hơn nhưng không rỗng.
 
 **Ba chỗ dễ sai khi tự đọc gói**, đều đã có test gác: một gói chứa nhiều thông điệp (hợp âm ba
 nốt về cùng lúc), *running status* lược cả byte status lẫn byte mốc thời gian, và `note on` với
