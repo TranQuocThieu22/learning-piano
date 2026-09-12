@@ -121,7 +121,7 @@ CMS, không có bảng bài học trong database.
 | Đường dẫn | Chức năng |
 |---|---|
 | `/` | Màn hình chủ — nút *Học tiếp*, tiến độ, và các ô đường tắt |
-| `/library` | Mục lục phần chữ: lý thuyết, lộ trình, đọc thêm |
+| `/library` | Mục lục những bài NGOÀI đường đi: lộ trình, đọc thêm, bài hát, tin cập nhật. Lý thuyết từng chương nằm ở `/path` (gỡ khỏi đây 12/09/2026) |
 | `/songs` | Góc bài hát: bài quen tai để thử cho vui, miễn phí, không tick |
 | `/path` | Đường đi: danh sách 8 chương kèm tiến độ từng chương |
 | `/path/[chapter]` | Một chương thành từng bước: lý thuyết rồi các bài tập, tick ngay tại chỗ |
@@ -139,9 +139,12 @@ tới được. Đăng nhập/đăng xuất và đổi nền dời vào thẻ t�
 lại thì dùng cử chỉ vuốt của điện thoại, nút back của trình duyệt, hoặc nút *Bài trước* ở
 cuối mỗi bài.
 
-Mục lục đầy đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/library` cho phần
-chữ và `/path` cho đường đi — cả hai đều nằm trên thanh tab. Bỏ thanh bên mà
-không có hai trang đó thì mới là làm mất đường đi.
+Mục lục đầy đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/path` cho mọi thứ
+**nằm trên đường đi** (lý thuyết và bài tập của từng chương), `/library` cho mọi thứ
+**không nằm trên đường đi** (lộ trình, đọc thêm, bài hát, tin cập nhật) — cả hai đều trên
+thanh tab. Ranh giới đó chốt ngày 12/09/2026, khi mục Lý thuyết bị gỡ khỏi `/library`:
+liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ, mà danh sách ở Mục lục còn
+không có ô tick và không biết người học đang ở chương nào.
 
 **Toàn màn hình.** App cố ý chạy không có thanh trạng thái của điện thoại, vì chiều cao
 là thứ khan hiếm nhất lúc tập. Hai lớp: manifest khai `display: 'fullscreen'` (chỉ ăn với
@@ -316,6 +319,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `refactor: Gỡ mục Lý thuyết khỏi Mục lục, chương đã có nhà ở Đường đi` | Chốt ranh giới giữa hai trang mục lục: `/path` giữ mọi thứ NẰM TRÊN đường đi, `/library` giữ mọi thứ KHÔNG nằm trên đường đi. Gỡ mục Lý thuyết khỏi `/library` vì liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ — và danh sách ở Mục lục còn không có ô tick, không biết người học đang ở chương nào |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm `/songs` vào bảng đường dẫn — chỗ chơi tách khỏi giáo trình, chỉ chứa nhạc đã hết hạn bảo hộ |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Bảng đường dẫn: thêm `/path` và `/path/[chapter]`, đánh dấu `/exercises` và `/journal` nay chỉ chuyển hướng; sửa dòng theo dõi tiến độ cho khớp chỗ tick mới |
 | 11/09/2026 | `feat: Thêm hai bài nhạc nền nữa, người học tự chọn` | Mục Nhạc nền: từ một bài thành ba bài chọn được, ghi rõ ràng buộc cả ba phải ở Đô trưởng để không nghịch tai với nốt người học đang bấm |

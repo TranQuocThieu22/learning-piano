@@ -1,46 +1,33 @@
-import { Badge, Container, Stack, Text, Title } from '@mantine/core';
-import {
-  IconBook,
-  IconBook2,
-  IconBulb,
-  IconLock,
-  IconMusic,
-  IconRoute,
-  IconSparkles,
-} from '@tabler/icons-react';
+import { Container, Stack, Text, Title } from '@mantine/core';
+import { IconBook2, IconBulb, IconMusic, IconRoute, IconSparkles } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { LinkRow } from '@/components/LinkRow';
 import { PageHeader } from '@/components/PageHeader';
-import { auth } from '@/auth';
 import { getAllMarkdownFiles, type MarkdownFile } from '@/lib/markdown';
-import { canReadLesson } from '@/lib/access';
-import { viewerHasFullAccess } from '@/lib/access-server';
 import { listUpdates } from '@/lib/updates';
 
 /**
- * Mục lục của phần chữ: lý thuyết, lộ trình và đọc thêm.
+ * Mục lục những bài KHÔNG nằm trên đường đi: lộ trình, đọc thêm, bài hát, cập nhật.
  *
- * Tên trang là "Mục lục" chứ không phải "Lý thuyết" dù lý thuyết chiếm phần lớn:
- * ở đây còn có lộ trình và đọc thêm, mà đặt tên theo mục to nhất thì hai mục kia
- * thành ra bị giấu.
+ * **Lý thuyết đã được gỡ khỏi đây (12/09/2026).** Từ đợt gom lý thuyết, bài tập và
+ * ô tick thành một đường đi theo chương, tám chương lý thuyết đã có nhà chính thức
+ * ở `/path` — mỗi chương một trang, lý thuyết đứng đầu rồi tới từng bài tập, tick
+ * ngay tại chỗ. Liệt kê lại ở đây là **hai danh sách vẽ cùng một thứ**, đúng cái
+ * bệnh mà đợt gom đó đã chữa cho `/exercises` và `/journal`: người học phải nhớ
+ * trang nào làm việc gì. Danh sách ở đây còn tệ hơn danh sách kia một bậc vì nó
+ * không có ô tick và không biết người học đang ở chương nào.
  *
- * Đây là nơi thanh bên cũ đi về. Bỏ thanh bên mà không có trang này thì tám
- * chương lý thuyết và mấy bài đọc thêm không còn đường nào tới — phần bài tập đã
- * có bản đồ riêng ở `/exercises`, còn phần chữ thì trước giờ chỉ nằm trong thanh
- * bên.
+ * Vì vậy trang này nay chỉ còn đúng những bài **không có thứ tự và không tick
+ * được**. Đó cũng là lý do nó vẫn ở lại trên thanh tab.
  *
- * Xếp theo slug chứ không theo tiêu đề: `chuong-00` … `chuong-07` là thứ tự học,
- * còn sắp theo tiêu đề tiếng Việt thì dấu làm lộn xộn ngay.
+ * Kéo theo: không còn mục nào ở đây thuộc `PAID_CATEGORIES` (xem `access.ts`), nên
+ * cũng không còn nhãn "Trả phí" — bỏ luôn phần tra quyền, và trang thành tĩnh.
+ *
+ * Xếp theo slug chứ không theo tiêu đề: sắp theo tiêu đề tiếng Việt thì dấu làm
+ * lộn xộn ngay.
  */
 
 const SECTIONS = [
-  {
-    category: '02-chapters',
-    label: 'Lý thuyết',
-    hint: 'Đọc để hiểu vì sao, trước khi tập',
-    section: 'library',
-    Icon: IconBook,
-  },
   {
     category: '01-roadmap',
     label: 'Lộ trình',
@@ -73,16 +60,8 @@ const SECTIONS = [
  */
 const SO_BAI_CAP_NHAT = 4;
 
-/** Số chương lấy từ slug `chuong-03` → `3`, để in lên ô màu đầu dòng. */
-function chapterNumberOf(slug: string): number | null {
-  const match = /^chuong-(\d+)$/.exec(slug);
-  return match ? Number(match[1]) : null;
-}
-
-export default async function LibraryPage() {
-  const session = await auth();
+export default function LibraryPage() {
   const allFiles = getAllMarkdownFiles();
-  const hasFullAccess = await viewerHasFullAccess(session);
   const updates = listUpdates();
 
   const byCategory = (category: string): MarkdownFile[] =>
@@ -97,7 +76,7 @@ export default async function LibraryPage() {
           section="library"
           icon={<IconBook2 size={26} />}
           title="Mục lục"
-          description="Toàn bộ phần chữ của giáo trình, theo thứ tự nên đọc."
+          description="Những bài đọc ngoài đường đi. Lý thuyết từng chương nằm ở Đường đi."
         />
 
         <Stack gap="xl">
@@ -115,42 +94,18 @@ export default async function LibraryPage() {
                 </Text>
 
                 <Stack gap="xs">
-                  {files.map((file) => {
-                    const locked = !canReadLesson({
-                      category: file.category,
-                      slug: file.slug,
-                      hasFullAccess,
-                    });
-                    const so = chapterNumberOf(file.slug);
-
-                    return (
-                      <LinkRow
-                        key={file.slug}
-                        href={`/${file.category}/${file.slug}`}
-                        title={file.title}
-                        leading={
-                          <span className="section-icon section-icon--xs" data-section={section} aria-hidden>
-                            {so !== null ? so : <Icon size={20} />}
-                          </span>
-                        }
-                        /* Ổ khoá chỉ để báo hiệu, không chặn bấm — việc chặn thật
-                           nằm ở server, xem `[category]/[slug]/page.tsx`. */
-                        trailing={
-                          locked ? (
-                            <Badge
-                              color="gray"
-                              variant="light"
-                              size="sm"
-                              leftSection={<IconLock size={12} />}
-                              style={{ flexShrink: 0 }}
-                            >
-                              Trả phí
-                            </Badge>
-                          ) : undefined
-                        }
-                      />
-                    );
-                  })}
+                  {files.map((file) => (
+                    <LinkRow
+                      key={file.slug}
+                      href={`/${file.category}/${file.slug}`}
+                      title={file.title}
+                      leading={
+                        <span className="section-icon section-icon--xs" data-section={section} aria-hidden>
+                          <Icon size={20} />
+                        </span>
+                      }
+                    />
+                  ))}
                 </Stack>
               </div>
             );

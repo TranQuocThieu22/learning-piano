@@ -113,8 +113,10 @@ const TABS = [
 
 /**
  * Tab nào đang sáng. Trang bài học không có tab riêng nên sáng tab đã dẫn tới nó:
- * bài tập thuộc *Bài tập*, còn lý thuyết, lộ trình và đọc thêm thuộc *Mục lục*.
- * Không có dòng này thì đang đọc bài là cả năm tab đều tắt, mất mốc định hướng.
+ * lý thuyết và bài tập thuộc *Đường đi* (từ 12/09/2026 đó là đường DUY NHẤT tới
+ * lý thuyết — Mục lục không liệt kê chương nữa), còn lộ trình, đọc thêm, bài hát
+ * và tin cập nhật thuộc *Mục lục*. Không có hàm này thì đang đọc bài là cả bốn
+ * tab đều tắt, mất mốc định hướng.
  *
  * Tên thư mục nội dung giữ tiếng Việt có chủ ý — xem mục đường dẫn ở `AGENTS.md`.
  */
