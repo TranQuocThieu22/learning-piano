@@ -40,7 +40,7 @@
 
 ---
 
-## 12/09/2026 — Sửa theo người dùng thật, hai lần trong một ngày
+## 12/09/2026 — Sáu vòng sửa bài luyện nhận nốt theo người dùng thật
 
 **Đã làm**
 
@@ -134,6 +134,20 @@
   SVG không có tên đọc được, trình đọc màn hình không hiểu, vùng chạm phải tự dựng bằng ô
   trong suốt, và hệ điều hành có quyền hiểu cú chạm theo cách của nó. Nút thật thì không có
   chuyện đó. Hình vẽ hợp với việc **hiển thị trạng thái**, không hợp với việc nhận lệnh.
+- **Sáu vòng trong một ngày, và vòng nào cũng bắt đầu bằng một câu ngắn của người dùng.**
+  Không vòng nào xuất phát từ danh sách việc đã lên kế hoạch. Đây là bằng chứng cho cách
+  làm việc đang chạy: dựng bản nhỏ, đưa xem, sửa theo cái người ta nói ngay lúc đó.
+
+**Tiếp theo**
+
+- **Công tắc "Đổi hoá biểu mỗi câu" đang mặc định TẮT.** Người mới mở app ra vẫn là Đô
+  trưởng như trước. Chờ chủ sản phẩm quyết có bật sẵn cho mọi người không — đổi một dòng
+  trong `DEFAULT_OPTIONS` là xong.
+- **Câu còn treo: có nên cho mọi quãng đọc được ở CẢ HAI khoá không.** Hiện khoá Pha chỉ
+  nhận quãng 2-3-4, khoá Sol chỉ 4-5-6, vì quãng ngoài tầm phải kẻ tới bảy dòng kẻ phụ. Mà
+  bản nhạc thật thỉnh thoảng vẫn viết thế. Chưa hỏi, chưa làm.
+- **Chưa ai tập thử bài luyện nhận nốt bản mới trên đàn thật.** Mọi thứ hôm nay đo bằng
+  trình duyệt và test; phần nghe qua micro với chồng nốt bốn nốt thì càng cần tai người.
 
 ---
 

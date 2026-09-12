@@ -41,6 +41,7 @@ cũng ra.
 | Có chỗ cho người học thử các bài hát nổi tiếng họ thích không? | **Có — `Góc bài hát` (`/songs`), miễn phí, không tick, không chấm.** Nhưng CHỈ nhạc đã hết hạn bảo hộ bản quyền | Chủ sản phẩm xin một chỗ để thử những bài quen tai, ví dụ *Đông Miên*. Bài đó (司南, 2019) còn trong thời hạn bảo hộ; soạn và phát hành bản nhạc của nó trong một sản phẩm **có bán** là nhân bản tác phẩm được bảo hộ, ở Việt Nam cần giấy phép (VCPMC quản lý tập thể quyền tác giả âm nhạc). Đây là đường dự án đã giữ từ đầu: nhạc nền tự sinh bằng Web Audio *chính vì* bản quyền, một ảnh anime đã bị gỡ vì bản quyền, và cả giáo trình chỉ dùng nhạc hết hạn bảo hộ (Ode to Joy 40 lần, Twinkle 22, Jingle Bells 15, Mary Had a Little Lamb 5, Für Elise 1) — không một bài nào còn bản quyền. Nên dựng **khung** dùng được cho cả hai loại, nạp trước ba bài hết hạn bảo hộ, và mỗi file bắt buộc khai trường `nguon` ghi vì sao bài đó được phép có mặt — có test gác, thêm bài mà bỏ trống là đỏ. Muốn có nhạc đang thịnh hành thì **mua giấy phép trước rồi ghi số giấy phép vào `nguon`**. Để MIỄN PHÍ cho mọi người: người chưa mua mà đánh được một câu quen tai là lý do quay lại tốt hơn mọi lời quảng cáo. Không tick, không đếm tiến độ — đây là chỗ chơi, biến nó thành danh sách phải hoàn thành là phá ràng buộc "không tạo áp lực" của `AGENTS.md` |
 | Thiết kế cho máy tính hay cho điện thoại? | **Điện thoại và tablet là chính**, máy tính là phụ. Vẫn là web, không làm app trên store | Người học đặt máy lên giá nhạc của đàn; laptop không có chỗ đặt trên đàn nên không ai mở nó lúc tập. Đợt dựng lại điều hướng 10-11/09 đã đi theo hướng này nhưng chưa ghi thành nguyên tắc, nên chữ cũ sót lại: app và bài tuyển beta vẫn ghi Web MIDI "chỉ chạy trên máy tính", trong khi chủ sản phẩm dùng nó trên điện thoại Android hằng ngày. Chốt thành văn 11/09/2026, bốn hệ quả ghi ở `AGENTS.md`. Không mâu thuẫn với dòng đầu bảng: "di động" ở đây là cỡ màn hình, không phải kênh phân phối |
 | Người học dùng iPhone thì app nghe đàn bằng gì? | **Micro, ngay trên web.** Là cách mặc định; dây MIDI đứng thứ hai | iPhone/iPad không có Web MIDI. Micro chạy trên mọi máy, cả đàn cơ không có cổng cắm, không cần mua cáp — khớp với việc người học đặt điện thoại trên giá nhạc. Đã cân nhắc và xếp sau: app bọc web lên App Store (vướng thanh toán qua store, rủi ro bị từ chối) và bảo người học cài trình duyệt riêng (thêm một chỗ để bỏ cuộc) — xem mục 8 của `lo-trinh-phat-trien.md`. Buổi sáng 11/09 mới ghi là hướng cần thử; cùng ngày chủ sản phẩm chốt làm luôn và làm đầy đủ. Hai giới hạn đã chấp nhận và nói rõ với người học: phòng ồn thì nghe nhầm nhiều hơn, hai tay cách nhau đúng một quãng tám thì không tách được |
+| Bài luyện nhận nốt: cho chọn giọng rồi giữ nguyên, hay đổi mỗi câu? | **Đổi ngẫu nhiên mỗi câu**, không có ô chọn giọng cố định. Tắt công tắc thì câu nào cũng Đô trưởng | Bản đầu làm đúng kiểu ô chọn: bảy giọng, chọn một rồi giữ nguyên cả buổi. Chủ sản phẩm bác ngay trong vòng vài phút — *"hoá biểu phải ngẫu nhiên mỗi lần qua nốt chứ không phải cho chọn cố định"* — và lý do đứng vững: **chọn cố định thì sau vài câu người học thuộc lòng "đang Sol trưởng" rồi thôi không nhìn đầu khuông nữa**, mà nhìn hoá biểu rồi nhớ nó mới đúng là kỹ năng cần rèn; mở một bản nhạc lạ thì giọng gì cũng phải tự đọc ra. Kéo theo về mã: hoá biểu đi theo TỪNG CÂU (`DrillQuestion.key`) chứ không theo buổi tập, nên chỗ vẽ và chỗ chấm không thể lệch giọng nhau; kho nốt phải dựng lại theo từng giọng lúc bốc câu vì cách viết mỗi nốt phụ thuộc giọng (trong Sol trưởng, Pha thăng là nốt trơn của giọng còn Pha thường mới là nốt phải ghi dấu bình). Tên giọng chỉ hiện SAU khi trả lời đúng — hiện lúc đang hỏi là làm hộ đúng phần cần rèn |
 | Có nên làm nhánh `dev`/`preview`? | **Có đường sẵn nhưng tạm chưa dùng.** Beta vẫn test local rồi đẩy thẳng `main` | Một người làm; mỗi thay đổi nhỏ mà phải qua preview thì chậm hơn phần lợi thu được. Quy trình nhánh đã viết sẵn ở `quy-trinh-lam-viec.md` để bật lên khi có khách thật |
 
 ---
@@ -200,6 +201,37 @@ báo "đã im" vì máy đo bám nhầm bộ nén của bộ phát đã tắt.
 Web Audio rồi đọc số. Ba lần suýt kết luận sai chỉ vì phép đo — đo sai còn tệ hơn không đo,
 vì nó cho một con số trông như bằng chứng.
 
+### 12/09 — bài luyện nhận nốt, sáu vòng sửa theo người dùng trong một ngày
+
+Cả ngày làm đúng một trang: `/note-trainer`. Không vòng nào xuất phát từ kế hoạch có sẵn —
+mỗi vòng bắt đầu bằng một câu ngắn của chủ sản phẩm sau khi xem bản trước.
+
+1. **Chọn quãng bằng nút bấm, hình đàn chỉ bôi vùng.** Bản trước bắt chạm thẳng vào hình
+   bàn phím 88 phím để chọn; trên Android, chạm vào SVG có chữ làm **kính lúp chọn chữ** nhảy
+   ra che nửa màn hình (bẫy 26). Bài học lớn hơn cái bẫy: hình vẽ hợp với việc **hiện trạng
+   thái**, không hợp với việc nhận lệnh.
+2. **Mỗi câu một nốt, hai nốt hai khuông, hay lúc một lúc hai.**
+3. **Chồng nốt như hợp âm**, tối đa bốn nốt mỗi khuông, luôn nằm trong tầm một bàn tay và
+   không có hai nốt cách nhau nửa cung.
+4. **Neo khuông nhạc đứng yên** (bẫy 27) — trước đó khuông trôi lên xuống theo cao độ nốt vì
+   abcjs vẽ ảnh cao vừa đúng nội dung.
+5. **Dấu hoá chuyển lên hoá biểu đầu khuông** như bản nhạc thật.
+6. **Hoá biểu đổi ngẫu nhiên mỗi câu** thay cho ô chọn giọng — xem dòng tương ứng ở bảng
+   mục 1, đây là quyết định đáng nhớ nhất của ngày.
+
+**Hai lỗi vẽ do chính bản sửa ở bước 4 gây ra, và cả hai đều lọt qua năm lệnh kiểm.** abcjs
+cài tuỳ chọn `scale` bằng chính `style.transform` của thẻ SVG, nên phép dịch ảnh ghi đè lên
+đã **xoá tỉ lệ và cho production chạy bản nhạc bé một nửa** (bẫy 28); nó còn bọc ảnh trong
+một `div` có sẵn `overflow: hidden` cao đúng bằng ảnh chưa dịch, nên khuông Pha **mất ba
+dòng kẻ dưới cùng** (bẫy 29). Cả hai đều không có lỗi nào báo ra, và DOM thì nói mọi thứ
+đều đúng chỗ. Thứ bắt được chúng là đo trên trình duyệt thật: bề rộng nét vẽ cho cái thứ
+nhất, đếm dòng kẻ trên ảnh chụp cho cái thứ hai. Từ nay đụng vào chỗ vẽ bản nhạc thì đo cả
+ba số: vị trí dòng kẻ, chiều cao khung, bề rộng nét vẽ.
+
+**Cách làm việc:** mỗi vòng đều dựng bản production rồi mở bằng trình duyệt thật ở khung
+điện thoại 390x844 và khung xoay ngang 780x360, đo bằng số chứ không nhìn ảnh chụp. Hai lỗi
+trên là bằng chứng vì sao: nhìn một ảnh chụp riêng lẻ thì cả hai đều trông bình thường.
+
 ---
 
 ## 3. Còn treo
@@ -218,6 +250,12 @@ Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. 
   trên tiếng đàn tổng hợp. Thứ tự đo thật ở Giai đoạn D của `lo-trinh-phat-trien.md`. Chỉ
   khi đo thật cho thấy micro không đủ chuẩn **và** phần lớn người beta dùng iOS (xem mục hệ
   điều hành trong Vercel Analytics) thì mới đụng lại câu "không làm app mobile".
+- **Công tắc "Đổi hoá biểu mỗi câu" đang mặc định TẮT.** Người mới mở bài luyện nhận nốt vẫn
+  chỉ gặp Đô trưởng. Chưa hỏi chủ sản phẩm có muốn bật sẵn không; đổi một dòng trong
+  `DEFAULT_OPTIONS` của `midi-notes.ts` là xong.
+- **Chưa quyết có cho mọi quãng đọc được ở cả hai khoá không.** Hiện khoá Pha chỉ nhận quãng
+  2-3-4 và khoá Sol chỉ 4-5-6, vì quãng ngoài tầm phải kẻ tới bảy dòng kẻ phụ — mà bản nhạc
+  thật thỉnh thoảng vẫn viết thế.
 - **Giai đoạn 3 và 4** là sản phẩm riêng, chỉ quảng bá khi đã soạn xong.
 - **Năm tab ở màn hình hẹp** — 390px chia năm là 78px mỗi ô. Chưa thử trên máy cỡ chữ hệ
   thống to; chữ tràn thì rút còn bốn tab hoặc bỏ chữ chỉ giữ biểu tượng.
@@ -250,6 +288,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `docs(internal): Ghi nhật ký phiên 12/09 và chốt hoá biểu ngẫu nhiên` | Thêm dòng quyết định vào mục 1 (hoá biểu đổi ngẫu nhiên mỗi câu thay vì cho chọn một giọng cố định, kèm lý do: chọn cố định thì vài câu là người học thuộc lòng rồi thôi không nhìn đầu khuông nữa), thêm mốc 12/09 vào dòng thời gian với sáu vòng sửa và hai lỗi vẽ lọt qua năm lệnh kiểm, và hai việc còn treo mới ở mục 3 |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm dòng quyết định vào mục 1: có chỗ thử bài hát, nhưng chỉ nhạc hết hạn bảo hộ, kèm lý do pháp lý và đường đi nếu muốn nhạc còn bản quyền |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm dòng quyết định vào mục 1: gộp Bài tập và Nhật ký thành Đường đi theo chương, lý thuyết thành bước tick được, và ghi rõ quyết định cũ nào bị lật cùng lý do lật |
 | 11/09/2026 | `docs(internal): Ghi nhật ký phiên chiều 11/09` | Ghi vào dòng quyết định `fullscreen` một hướng đã dựng xong rồi bỏ (chỉ ẩn khi xoay ngang), kèm lý do web không tách được thanh điều hướng khỏi thanh trạng thái — để lần sau không ai đề xuất lại rồi làm lại từ đầu |
