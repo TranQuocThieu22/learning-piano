@@ -40,6 +40,54 @@
 
 ---
 
+## 12/09/2026 — Mục *Có gì mới*, và bài đăng thứ hai
+
+**Đã làm**
+
+- **Dựng mục *Có gì mới* (`/updates`).** Trước hôm nay, người lạ ghé qua web không có cách
+  nào biết nó đang được làm tiếp hay đã bị bỏ — ba ngày vừa rồi đổi rất nhiều thứ nhưng
+  không thứ nào có ngày tháng gắn vào. Nay có một trang liệt kê các bài cập nhật, mới nhất
+  trên cùng, cả nội dung hiện trọn trên một trang chứ không tách thành từng trang con: mỗi
+  bài chỉ dài vài đoạn, tách ra là bắt người đọc chạm thêm một lần rồi bấm quay lại.
+- **Ba chỗ dẫn vào nó**: bài mới nhất hiện ở **màn hình chủ** ngay dưới chương đang học
+  (có tiêu đề và ngày, chứ không phải một chữ "Cập nhật" chung chung — có ngày tháng thì
+  mới là bằng chứng), bốn bài gần nhất ở **cuối trang Mục lục**, và trang đầy đủ ở
+  `/updates`. Mục này **miễn phí cho mọi người**: người chưa mua mới là người cần câu trả
+  lời "chỗ này còn ai làm không" nhất.
+- **Viết bốn bài cập nhật đầu tiên**, dựng lại từ việc đã làm từ 10/09 tới nay: giao diện
+  mới cho điện thoại, app nghe đàn thật qua micro, Góc bài hát, và bài luyện nhận nốt tự
+  chọn. Viết cho người học đọc — kể bằng việc họ làm được, không nhắc tên file.
+- **Ngày lấy từ tên file** (`2026-09-12-....md`) chứ không khai trong phần đầu file, để
+  không bao giờ có hai ngày lệch nhau cho cùng một bài. Đổi lại: đặt tên file sai mẫu thì
+  bài **im lặng biến mất** khỏi trang, nên có một ca kiểm đếm số file `.md` trong thư mục
+  phải khớp số bài đọc được.
+- **Soạn `bai-dang-facebook.md`**: bài đăng số 2 (chưa đăng), mẫu bài "cập nhật hệ thống"
+  bốn đoạn, và ba bài dự trữ rút sẵn từ `docs/09-cap-nhat/`.
+- **Thêm mục 5b vào quy trình làm việc**: viết bài cập nhật là một bước của vòng đời thay
+  đổi, không phải việc làm thêm khi rảnh.
+
+**Quan sát**
+
+- **Bài đăng số 1 (09/09) mới chỉ nói *có một giáo trình*.** Câu tiếp theo của người còn
+  phân vân là *nó khác gì những thứ tôi đã thử rồi*, nên bài số 2 chọn đúng một chỗ khác
+  biệt kiểm chứng được ngay: app nghe cây đàn thật qua micro **mà không bắt chơi theo nhạc
+  chạy**. Chỗ "không làm gì" hoá ra dễ kể hơn chỗ "làm được gì".
+- **Bài trên web là bản gốc, Facebook là bản rút gọn dẫn về nó** — chốt theo thứ tự này để
+  khỏi viết hai lần, và để thứ tồn tại lâu dài nằm trên miền của mình chứ không nằm trên
+  tường Facebook.
+- Việc dựng mục này cũng phơi ra một chuyện: **phần lớn việc làm từ 10/09 tới nay chưa ai
+  ngoài mình biết**. Ba ngày đổi giao diện, thêm micro, thêm sáu bài hát — mà người đã thấy
+  bài đăng số 1 rồi thì vẫn đang giữ ấn tượng của phiên bản ngày 09/09.
+
+**Tiếp theo**
+
+- **Đăng bài số 2 lên Trang, kèm ảnh chụp màn hình điện thoại đặt trên giá nhạc** — ảnh
+  chụp màn hình trần không có cây đàn thì yếu hơn hẳn, vì thứ cần chứng minh là nó dùng
+  được *lúc đang ngồi ở đàn*.
+- **Ba bài dự trữ ở mục 5 của `bai-dang-facebook.md` rải ra tuần tới**, đừng dồn một ngày.
+- Các việc chốt hôm 09/09 vẫn còn nguyên: **đăng vào 4-6 nhóm tự học piano** và **chốt chặn
+  1 khoảng 23/09**.
+
 ## 12/09/2026 — Sáu vòng sửa bài luyện nhận nốt theo người dùng thật
 
 **Đã làm**
