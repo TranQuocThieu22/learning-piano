@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import {
   allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
-  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES,
+  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, KEY_SIGNATURES,
   MAX_PER_STAFF, noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
   pickNextQuestion, presetOf, questionAbc,
 } from './midi-notes';
+import { isBlackPitch } from './pitch';
 
 /** Lựa chọn dựng nhanh cho test, khỏi phải khai đủ năm trường mỗi lần. */
 const opts = (extra: Partial<DrillOptions> = {}): DrillOptions => ({ ...DEFAULT_OPTIONS, ...extra });
@@ -36,7 +37,7 @@ describe('noteAt — dựng nốt từ số MIDI', () => {
 
   it('mỗi quãng tám có đúng năm phím đen', () => {
     const black = [];
-    for (let midi = 60; midi < 72; midi++) if (isBlackKey(midi)) black.push(midi);
+    for (let midi = 60; midi < 72; midi++) if (isBlackPitch(midi)) black.push(midi);
     expect(black).toEqual([61, 63, 66, 68, 70]);
   });
 });
@@ -199,13 +200,13 @@ describe('notePoolForOptions — kho nốt', () => {
 
   it('tắt dấu hoá thì không phím đen nào lọt vào', () => {
     const pool = notePoolForOptions(opts({ hands: 'both', octaves: [1, 2, 3, 4, 5, 6, 7], fiveFinger: false, accidentals: false }));
-    expect(pool.some((q) => isBlackKey(q.note.midi))).toBe(false);
+    expect(pool.some((q) => isBlackPitch(q.note.midi))).toBe(false);
   });
 
   it('bật dấu hoá thì một quãng đủ mười hai nốt', () => {
     const pool = notePoolForOptions(opts({ hands: 'right', octaves: [4], fiveFinger: false, accidentals: true }));
     expect(pool).toHaveLength(12);
-    expect(pool.filter((q) => isBlackKey(q.note.midi))).toHaveLength(5);
+    expect(pool.filter((q) => isBlackPitch(q.note.midi))).toHaveLength(5);
   });
 
   it('thế tay 5 ngón có dấu hoá thì lấy đủ tám phím liền nhau Đô–Sol', () => {

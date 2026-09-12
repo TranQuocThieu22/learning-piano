@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent, TuneObject } from 'abcjs';
 import {
@@ -16,6 +16,8 @@ import {
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
+import { createLocalStore } from '@/lib/local-store';
+import { useLocalStore } from '@/hooks/useLocalStore';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 import {
@@ -92,20 +94,16 @@ const DONE_CLASS = 'practice-correct';
 /**
  * Kho nhớ lựa chọn giữa hai buổi tập.
  *
- * Vì sao phải qua `useSyncExternalStore` chứ không đọc thẳng `localStorage` lúc
- * dựng state: bảng chọn này nằm ngay trong lần vẽ đầu tiên, mà máy chủ không có
- * `localStorage`. Đọc thẳng là HTML của máy chủ (mặc định) khác HTML của máy
- * người học (đã lưu) — React báo lệch hydration. `useSyncExternalStore` sinh ra
- * đúng cho chuyện này: nó dùng ảnh chụp của máy chủ trong lúc hydrate rồi mới
- * đổi sang ảnh chụp thật.
+ * Phần đọc/ghi/chống lệch hydration nằm ở `createLocalStore`; ở đây chỉ còn
+ * phần riêng của bài này — **kiểm lại từng trường** của bản đã lưu. Phải kiểm vì
+ * bản lưu có thể còn sót từ phiên bản cũ (thời chưa có ô nhịp 4/4, chưa có hoá
+ * biểu ngẫu nhiên), mà một trường sai kiểu lọt xuống bộ bốc câu hỏi thì nó bốc
+ * ra rỗng và màn hình trắng trơn chẳng chỉ ra nguyên nhân nằm ở đây.
  */
-const listeners = new Set<() => void>();
-let cached: DrillOptions | null = null;
-
-function loadOptions(): DrillOptions {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_OPTIONS;
+const optionsStore = createLocalStore<DrillOptions>({
+  key: STORAGE_KEY,
+  fallback: DEFAULT_OPTIONS,
+  parse: (raw) => {
     const saved = JSON.parse(raw) as Partial<DrillOptions>;
     const hands: Hands = saved.hands === 'left' || saved.hands === 'both' ? saved.hands : 'right';
     const valid = octavesFor(hands);
@@ -128,38 +126,8 @@ function loadOptions(): DrillOptions {
       randomKeys: saved.randomKeys === true,
       questionLength: saved.questionLength === 'bar' ? 'bar' : 'one',
     };
-  } catch {
-    // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
-    return DEFAULT_OPTIONS;
-  }
-}
-
-/** Phải trả về CÙNG một đối tượng cho tới khi có thay đổi thật, không thì React vẽ lại vô tận. */
-function getSnapshot(): DrillOptions {
-  if (!cached) cached = loadOptions();
-  return cached;
-}
-
-function getServerSnapshot(): DrillOptions {
-  return DEFAULT_OPTIONS;
-}
-
-function subscribe(onChange: () => void): () => void {
-  listeners.add(onChange);
-  return () => {
-    listeners.delete(onChange);
-  };
-}
-
-function storeOptions(next: DrillOptions) {
-  cached = next;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-  } catch {
-    // Không lưu được thì thôi, buổi tập vẫn chạy bình thường.
-  }
-  for (const onChange of listeners) onChange();
-}
+  },
+});
 
 type Feedback =
   | { kind: 'none' }
@@ -170,7 +138,7 @@ type Feedback =
   | { kind: 'wrong'; played: number };
 
 export function NoteRecognitionDrill() {
-  const options = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const options = useLocalStore(optionsStore);
   const pool = useMemo(() => notePoolForOptions(options), [options]);
   const selectableOctaves = useMemo(() => octavesFor(options.hands), [options.hands]);
   const activeMidis = useMemo(() => new Set(pool.map((p) => p.note.midi)), [pool]);
@@ -710,7 +678,7 @@ export function NoteRecognitionDrill() {
     missedCurrentRef.current = false;
     collectedRef.current = [];
     beatIndexRef.current = 0;
-    storeOptions(next);
+    optionsStore.save(next);
   };
 
   /**

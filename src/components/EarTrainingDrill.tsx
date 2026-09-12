@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
 import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, Stack, Text,
@@ -14,6 +14,8 @@ import { describeMidiNote, noteAt } from '@/lib/midi-notes';
 import { holdAmbient } from '@/lib/ambient-hold';
 import { loadSavedProgram, normalizeBufferVolume, synthOptions } from '@/lib/soundfont';
 import { usePianoInput } from '@/hooks/usePianoInput';
+import { createLocalStore } from '@/lib/local-store';
+import { useLocalStore } from '@/hooks/useLocalStore';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 
@@ -25,58 +27,32 @@ const NOTE_GAP = ' ';
 /** Dừng lại sau khi trúng, đủ để đọc tên nốt rồi mới sang câu mới. */
 const ADVANCE_DELAY_MS = 1400;
 
-/*
- * Kho nhớ lựa chọn, cùng khuôn với `NoteRecognitionDrill.tsx`: `useSyncExternalStore`
- * vì máy chủ không có `localStorage`, đọc lúc dựng state là lệch hydration.
- */
-const listeners = new Set<() => void>();
-let cached: EarOptions | null = null;
-
-function loadOptions(): EarOptions {
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_EAR_OPTIONS;
-    const saved = JSON.parse(raw) as Partial<EarOptions>;
-    const found = EAR_PRESETS.find((p) => p.id === (saved as { presetId?: string }).presetId);
-    return found ? found.options : DEFAULT_EAR_OPTIONS;
-  } catch {
-    return DEFAULT_EAR_OPTIONS;
-  }
-}
-
-function getSnapshot(): EarOptions {
-  if (!cached) cached = loadOptions();
-  return cached;
-}
-
-function getServerSnapshot(): EarOptions {
-  return DEFAULT_EAR_OPTIONS;
-}
-
-function subscribe(onChange: () => void): () => void {
-  listeners.add(onChange);
-  return () => {
-    listeners.delete(onChange);
-  };
-}
-
 /**
- * Chỉ lưu MÃ MỨC, không lưu cả bộ lựa chọn.
+ * Kho nhớ lựa chọn.
  *
- * Bài này chưa có đường tự chỉnh từng thứ, nên lưu cả bộ là mời gọi một trạng
- * thái không mức nào nhận — và lúc đó bảng mức không biết tô đậm cái nào. Lưu mã
- * thì sửa một mức về sau là mọi người đang ở mức đó được hưởng ngay.
+ * **Chỉ lưu MÃ MỨC, không lưu cả bộ lựa chọn.** Bài này chưa có đường tự chỉnh
+ * từng thứ, nên lưu cả bộ là mời gọi một trạng thái không mức nào nhận — và lúc
+ * đó bảng mức không biết tô đậm cái nào. Lưu mã thì sửa một mức về sau là mọi
+ * người đang ở mức đó được hưởng ngay.
+ *
+ * Vì thế thứ ĐỌC RA là cả bộ lựa chọn còn thứ GHI XUỐNG là mã mức — đúng chỗ
+ * `serialize` sinh ra để làm.
  */
-function storeOptions(presetId: string) {
+const optionsStore = createLocalStore<EarOptions>({
+  key: STORAGE_KEY,
+  fallback: DEFAULT_EAR_OPTIONS,
+  parse: (raw) => {
+    const saved = JSON.parse(raw) as { presetId?: string };
+    const found = EAR_PRESETS.find((p) => p.id === saved.presetId);
+    return found ? found.options : DEFAULT_EAR_OPTIONS;
+  },
+  serialize: (options) => JSON.stringify({ presetId: earPresetOf(options)?.id }),
+});
+
+/** Người học bấm một mức: đổi cả bộ lựa chọn sang mức đó. Mã lạ thì bỏ qua. */
+function chooseEarPreset(presetId: string) {
   const found = EAR_PRESETS.find((p) => p.id === presetId);
-  if (!found) return;
-  cached = found.options;
-  try {
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify({ presetId }));
-  } catch {
-    // Chế độ riêng tư chặn localStorage — buổi tập vẫn chạy bình thường.
-  }
-  for (const onChange of listeners) onChange();
+  if (found) optionsStore.save(found.options);
 }
 
 type Feedback =
@@ -98,7 +74,7 @@ function questionAbc(notes: number[], withReference: boolean): string {
 }
 
 export function EarTrainingDrill() {
-  const options = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const options = useLocalStore(optionsStore);
   const preset = earPresetOf(options) ?? EAR_PRESETS[0];
   const pool = useMemo(() => earNotePool(options), [options]);
 
@@ -296,7 +272,7 @@ export function EarTrainingDrill() {
         <Chip.Group
           multiple={false}
           value={preset.id}
-          onChange={(value) => typeof value === 'string' && storeOptions(value)}
+          onChange={(value) => typeof value === 'string' && chooseEarPreset(value)}
         >
           <Group gap={6}>
             {EAR_PRESETS.map((p) => (

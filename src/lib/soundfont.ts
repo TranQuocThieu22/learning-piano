@@ -1,4 +1,5 @@
 import type { SynthOptions } from 'abcjs';
+import { createLocalStore } from './local-store';
 
 /**
  * Mẫu âm tự host trong `public/soundfonts/` (bộ MusyngKite).
@@ -50,18 +51,29 @@ export const INSTRUMENTS: Instrument[] = [
 
 export const DEFAULT_PROGRAM = INSTRUMENTS[0].program;
 
-const STORAGE_KEY = 'piano-journey:instrument';
+/**
+ * Ghi nhớ lựa chọn để người học không phải chọn lại ở từng bài.
+ *
+ * Lọc qua `INSTRUMENTS` chứ không tin số đã lưu: bản lưu từ trước có thể trỏ tới
+ * một nhạc cụ đã gỡ khỏi bảng, mà số lạ xuống tới bộ phát thì nó nạp một tệp
+ * tiếng không tồn tại và im lặng không ra tiếng gì.
+ */
+const instrumentStore = createLocalStore<number>({
+  key: 'piano-journey:instrument',
+  fallback: DEFAULT_PROGRAM,
+  parse: (raw) => {
+    const saved = Number(raw);
+    return INSTRUMENTS.some((i) => i.program === saved) ? saved : DEFAULT_PROGRAM;
+  },
+  serialize: String,
+});
 
-/** Ghi nhớ lựa chọn để người học không phải chọn lại ở từng bài. */
 export function loadSavedProgram(): number {
-  if (typeof window === 'undefined') return DEFAULT_PROGRAM;
-  const saved = Number(window.localStorage.getItem(STORAGE_KEY));
-  return INSTRUMENTS.some((i) => i.program === saved) ? saved : DEFAULT_PROGRAM;
+  return instrumentStore.getSnapshot();
 }
 
 export function saveProgram(program: number) {
-  if (typeof window === 'undefined') return;
-  window.localStorage.setItem(STORAGE_KEY, String(program));
+  instrumentStore.save(program);
 }
 
 export function synthOptions(program: number): SynthOptions {

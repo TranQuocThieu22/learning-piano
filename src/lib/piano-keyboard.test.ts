@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import {
-  BLACK_WIDTH, FIRST_MIDI, isBlackPitch, LAST_MIDI, octaveOf, pianoLayout, WHITE_WIDTH,
+  BLACK_WIDTH, FIRST_MIDI, LAST_MIDI, pianoLayout, WHITE_WIDTH,
 } from './piano-keyboard';
+import { isBlackPitch, octaveOf } from './pitch';
 
 const layout = pianoLayout();
 

@@ -1171,6 +1171,32 @@ bản nhạc KHÔNG vẽ lại, cố ý — vẽ lại là cả ô nhịp nháy 
 Luật chung: **thứ gì phải chạy sau mỗi lần vẽ thì gọi trong chỗ vẽ, đừng gửi gắm cho một
 hiệu ứng khác.** Danh sách phụ thuộc thứ hai là thứ sẽ lệch.
 
+## 34. Gom hàm dùng chung: biến trùng tên hàm vừa import, app vẫn chạy nhưng đọc sai nốt
+
+**Triệu chứng.** Sau khi gom ba hàm "phím đen hay phím trắng" về `src/lib/pitch.ts`, hai ca
+test trượt: nốt MIDI 58 đáng ra là **Si giáng** thì ra **La thăng**. Không có lỗi nào ném
+ra, kiểu vẫn xanh, lint vẫn xanh. Nếu không có test thì thứ đi ra ngoài là tên nốt hiện sai
+trên màn hình người học, ở đúng những nốt hoá — chỗ người mới ít tự tin nhất để nghi ngờ.
+
+**Nguyên nhân.** Trong `noteAt` có biến cục bộ tên `pitchClass`. File vừa được thêm dòng
+`import { pitchClass } from './pitch'`, và biến cục bộ được đổi tên thành `pc` cho khỏi che
+mất hàm. Đổi chỗ khai báo và một chỗ dùng thì thấy ngay, nhưng còn một chỗ dùng nữa nằm sâu
+trong một biểu thức: `key.chromatic?.[pitchClass]`. Sau khi đổi, nó không còn tra bảng bằng
+**số** nữa mà bằng **hàm** — `undefined`, rồi rơi xuống nhánh mặc định `prefersSharp`.
+
+Vì sao trượt khỏi mọi lưới: lấy một hàm làm khoá object là chuyện TypeScript cho phép (khoá
+bị ép về chuỗi), nên `tsc` im lặng; và nhánh mặc định vẫn trả về một cách viết **hợp lệ**,
+chỉ là không phải cách viết đúng của giọng đó.
+
+**Cách sửa.** Đổi tên xong thì **đọc lại cả file bằng `grep` chính cái tên cũ**, đừng tin
+mắt — `grep -n "pitchClass" src/lib/midi-notes.ts`. Và khi gom hàm dùng chung, ưu tiên đặt
+tên hàm khác hẳn tên biến hay gặp (`isBlackPitch` chứ không phải `black`), để lần import
+sau không tạo ra cảnh che tên.
+
+Luật chung: **gom trùng lặp là việc đáng làm, nhưng mỗi lần gom phải có test chạy qua chỗ
+gom.** Ba bản sao cùng đúng thì xoá hai bản không ai thấy gì; một bản sai lệch thì chỉ test
+mới chỉ ra, vì lỗi kiểu này không ném lỗi mà chỉ trả lời khác đi.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1179,6 +1205,7 @@ hiệu ứng khác.** Danh sách phụ thuộc thứ hai là thứ sẽ lệch.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `refactor: Gộp bốn kho nhớ và ba hàm phím đen về một chỗ, kèm quy ước viết mã` | Thêm bẫy 34 — đổi tên biến trùng tên hàm vừa import làm `key.chromatic?.[pitchClass]` tra bảng bằng hàm, nốt Si giáng lặng lẽ hiện thành La thăng mà `tsc` và lint đều xanh; ghi kèm luật mỗi lần gom trùng lặp phải có test chạy qua chỗ gom |
 | 12/09/2026 | `fix: Vẽ lại khuông nhạc khi xoay máy, và tô lại con trỏ ngay sau mỗi lần vẽ` | Thêm bẫy 32 và 33, cả hai đều là lỗi im lặng gặp trên máy thật. Bẫy 32: vẽ theo số đo px thì phải tự theo dõi kích thước bằng `ResizeObserver`, không thì xoay máy là bản nhạc giữ nguyên cỡ hướng cũ rồi bị cắt. Bẫy 33: tô màu lên phần tử do thư viện vẽ mà để trong một hiệu ứng riêng thì hai danh sách phụ thuộc phải khớp nhau đời đời — đã hỏng ba lần vì đúng lý do đó, nên chuyển thành gọi thẳng ở cuối chỗ vẽ |
 | 12/09/2026 | `fix: Ô nhịp 4/4 kéo giãn hết bề ngang khung, chữ nhạc to như chế độ một nốt` | Thêm bẫy 31: tuỳ chọn `scale` của abcjs xếp nhạc vừa `staffwidth / scale` chứ không trọn `staffwidth`, nên ở chỗ đã ghi đè `transform` (bẫy 28) thì nó chỉ còn tác dụng bóp nhạc lại — ô nhịp 4/4 chiếm 76% khung, nới `staffwidth` cũng vô ích. Ghi kèm cách soi: dựng lại đoạn ABC trong trang trắng rồi đo, vì chính chỗ số đo ngoài app khác số đo trong app mới chỉ ra thủ phạm là một tuỳ chọn đang truyền vào |
 | 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Thêm bẫy 30: abcjs ghi cả `width` lên thẻ chứa, nên phép thu nhỏ cho vừa khung đem ảnh so với chính nó và luôn ra tỉ lệ 1 — ô nhịp tràn ra ngoài, mất nốt ở hai mép, không lỗi nào báo. Ghi kèm dấu hiệu nhận ra sớm (tỉ lệ *nội dung trên khung* mà luôn đúng bằng 1) và chốt bài học chung của cả ba bẫy 28-29-30: giả định mọi thuộc tính hình học trên thẻ đưa cho thư viện vẽ đều đã bị nó ghi đè |

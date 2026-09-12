@@ -9,9 +9,9 @@ import { saveAmbientSettings, useAmbientSettings } from '@/hooks/useAmbientSetti
  * Thẻ bật/tắt nhạc nền ở màn hình chủ.
  *
  * Tiếng do `AmbientMusic.tsx` phát (nằm ở layout gốc để nhạc không đứt khi
- * chuyển trang); ở đây chỉ ghi cài đặt xuống localStorage rồi bắn một sự kiện —
- * xem `useAmbientSettings.ts`. Rẻ hơn nhiều so với dựng một context xuyên cả app
- * cho đúng một cái công tắc.
+ * chuyển trang); ở đây chỉ ghi cài đặt xuống kho nhớ chung, và kho tự báo cho bộ
+ * phát — xem `useAmbientSettings.ts`. Rẻ hơn nhiều so với dựng một context xuyên
+ * cả app cho đúng một cái công tắc.
  *
  * Mặc định BẬT từ 11/09/2026 (xem `AMBIENT_DEFAULT` trong `ambient.ts` để biết vì
  * sao và vì sao việc đó không phá ràng buộc của `AGENTS.md`). Gạt tắt thì app nhớ,

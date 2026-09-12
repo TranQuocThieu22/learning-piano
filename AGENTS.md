@@ -89,6 +89,24 @@ Lý do: đường dẫn là mã, không phải nội dung. Trộn hai ngôn ng�
 - **Chữ hiển thị cho người học** luôn là tiếng Việt có dấu. Quy định này chỉ nói về đường dẫn.
 
 
+# Quy ước viết mã
+
+**Trước khi viết một hàm mới hay sửa bất cứ file nào trong `src/`, đọc
+`.claude/skills/code-standards/SKILL.md`.** Nó có bảng tra "cần gì thì đã có sẵn ở
+đâu", sáu quy tắc kèm chỗ từng quy tắc đã cứu repo này, và danh sách những chỗ
+**đừng** refactor. Ba điều hay bị vi phạm nhất:
+
+- **Chép một khuôn sang chỗ mới là cách repo này sinh lỗi nhiều nhất.** Kho nhớ
+  lựa chọn từng có bốn bản sao, câu hỏi "phím đen hay phím trắng" từng có ba cái
+  tên. Cần nhớ lựa chọn thì dùng `createLocalStore` (`src/lib/local-store.ts`);
+  cần tính trên số MIDI thì dùng `src/lib/pitch.ts`. Tách xong chỉ để lại **một
+  cửa** — đừng re-export cho tiện.
+- **Phần tính toán tách khỏi phần chạm trình duyệt.** Vitest chạy ở `environment:
+  'node'` nên `src/lib/` không được chạm `window`; thứ gì thuộc về trình duyệt thì
+  nhận qua tham số để test thay được (xem `StoreHost`).
+- **Mở rộng bằng cách thêm một dòng vào bảng dữ liệu**, không phải thêm một nhánh
+  `if`: `EAR_PRESETS`, `DRILL_PRESETS`, `PIECES`, `INSTRUMENTS`, `KEY_SIGNATURES`.
+
 # Quy trình làm việc
 
 **Đọc `docs/_internal/quy-trinh-lam-viec.md`** trước khi commit hoặc đổi cấu trúc bảng. Cần bản rút gọn để mở ra lúc đang làm thì dùng `docs/_internal/lam-viec-hang-ngay.md` — nó chỉ trả lời *làm gì tiếp*, còn *vì sao* vẫn nằm ở file đầy đủ. Ba điều hay bị vi phạm nhất:

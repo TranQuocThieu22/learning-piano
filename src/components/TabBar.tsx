@@ -3,7 +3,8 @@
 import { IconBook2, IconChevronLeft, IconChevronRight, IconHome, IconMap2, IconMetronome } from '@tabler/icons-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSyncExternalStore } from 'react';
+import { createLocalStore } from '@/lib/local-store';
+import { useLocalStore } from '@/hooks/useLocalStore';
 
 /**
  * Thanh tab dưới đáy — đường điều hướng chính của app.
@@ -58,51 +59,18 @@ const RAIL_KEY = 'tab-bar-rail';
 /**
  * Kho nhớ trạng thái thu/mở của thanh dọc.
  *
- * Vì sao phải qua `useSyncExternalStore` chứ không đọc `localStorage` trong một
- * hiệu ứng: máy chủ không có `localStorage`, nên đọc lúc dựng state là HTML hai
- * bên khác nhau và React báo lệch hydration; còn đọc trong hiệu ứng thì đó là
- * `setState` thẳng trong effect, thứ quy tắc lint của repo cấm và cũng làm vẽ
- * thừa một lần. `useSyncExternalStore` sinh ra đúng cho chuyện này: nó dùng ảnh
- * chụp của máy chủ trong lúc hydrate rồi mới đổi sang ảnh chụp thật.
- *
- * Cùng khuôn với kho nhớ lựa chọn ở `NoteRecognitionDrill.tsx`.
+ * Lưu bằng chữ `expanded`/`collapsed` chứ không phải `true`/`false`: mở
+ * `localStorage` ra đọc là hiểu ngay, khỏi phải đoán `true` nghĩa là mở hay là
+ * đã từng thu. Phần máy móc — chống lệch hydration, bắt lỗi chế độ riêng tư,
+ * giữ nguyên tham chiếu — nằm ở `createLocalStore`.
  */
-const listeners = new Set<() => void>();
-let cached: boolean | null = null;
-
-function getSnapshot(): boolean {
-  if (cached === null) {
-    try {
-      cached = window.localStorage.getItem(RAIL_KEY) === 'expanded';
-    } catch {
-      // Chế độ riêng tư chặn localStorage — cứ để thu lại, app vẫn chạy.
-      cached = false;
-    }
-  }
-  return cached;
-}
-
-/** Máy chủ luôn vẽ trạng thái thu lại, nên lần vẽ đầu ở hai bên giống hệt nhau. */
-function getServerSnapshot(): boolean {
-  return false;
-}
-
-function subscribe(onChange: () => void): () => void {
-  listeners.add(onChange);
-  return () => {
-    listeners.delete(onChange);
-  };
-}
-
-function storeRail(next: boolean) {
-  cached = next;
-  try {
-    window.localStorage.setItem(RAIL_KEY, next ? 'expanded' : 'collapsed');
-  } catch {
-    // Không lưu được thì thôi, lần sau mở lại ở trạng thái thu.
-  }
-  for (const onChange of listeners) onChange();
-}
+const railStore = createLocalStore<boolean>({
+  key: RAIL_KEY,
+  /** Máy chủ luôn vẽ trạng thái thu lại, nên lần vẽ đầu ở hai bên giống hệt nhau. */
+  fallback: false,
+  parse: (raw) => raw === 'expanded',
+  serialize: (expanded) => (expanded ? 'expanded' : 'collapsed'),
+});
 
 const TABS = [
   { href: '/', label: 'Trang chủ', Icon: IconHome, section: 'home' },
@@ -139,7 +107,7 @@ function activeTabHref(pathname: string): string {
 export function TabBar() {
   const activeHref = activeTabHref(usePathname());
 
-  const expanded = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const expanded = useLocalStore(railStore);
 
   return (
     <nav
@@ -154,7 +122,7 @@ export function TabBar() {
       <button
         type="button"
         className="tab-bar__toggle"
-        onClick={() => storeRail(!expanded)}
+        onClick={() => railStore.save(!expanded)}
         aria-expanded={expanded}
         aria-label={expanded ? 'Thu nhỏ thanh điều hướng' : 'Mở rộng thanh điều hướng'}
         data-testid="rail-toggle"

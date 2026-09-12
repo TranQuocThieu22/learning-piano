@@ -10,6 +10,8 @@
  * đường chạy đó — nó sinh ra cả 'wrong' lẫn 'missing'.
  */
 
+import { octaveOf, pitchClass } from './pitch';
+
 /** Một thời điểm trong bản nhạc: có thể là một nốt, hoặc nhiều nốt cùng vang (hai tay). */
 export interface ScoreEvent {
   index: number;
@@ -203,8 +205,7 @@ export function describePitchList(pitches: number[]): string {
   if (pitches.length === 0) return 'không có nốt nào';
   return pitches
     .map((p) => {
-      const pc = ((p % 12) + 12) % 12;
-      return `${PITCH_CLASS_VI[pc]}${Math.floor(p / 12) - 1}`;
+      return `${PITCH_CLASS_VI[pitchClass(p)]}${octaveOf(p)}`;
     })
     .join(' + ');
 }

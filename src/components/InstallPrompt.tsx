@@ -1,6 +1,7 @@
 'use client';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Button, CloseButton, Group, Paper, Text } from '@mantine/core';
+import { createLocalStore } from '@/lib/local-store';
 
 /**
  * Mời người học trên điện thoại thêm web vào màn hình chính.
@@ -68,16 +69,22 @@ function isIosSafari(): boolean {
   return !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
 }
 
+/** Lúc người học tắt lời mời, tính bằng mili giây. `null` là chưa từng tắt. */
+const dismissedStore = createLocalStore<number | null>({
+  key: STORAGE_KEY,
+  fallback: null,
+  parse: (raw) => {
+    const at = Number(raw);
+    return Number.isFinite(at) ? at : null;
+  },
+  // Chỉ ghi lúc người học tắt lời mời, nên `null` không bao giờ xuống tới đây.
+  serialize: (at) => String(at ?? Date.now()),
+});
+
 function snoozed(): boolean {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return false;
-    const days = (Date.now() - Number(raw)) / 86_400_000;
-    return Number.isFinite(days) && days < SNOOZE_DAYS;
-  } catch {
-    // Chế độ riêng tư hoặc trình duyệt chặn lưu trữ: coi như chưa từng tắt.
-    return false;
-  }
+  const at = dismissedStore.getSnapshot();
+  if (at === null) return false;
+  return (Date.now() - at) / 86_400_000 < SNOOZE_DAYS;
 }
 
 export function InstallPrompt() {
@@ -86,11 +93,7 @@ export function InstallPrompt() {
 
   const dismiss = useCallback(() => {
     setMode('none');
-    try {
-      localStorage.setItem(STORAGE_KEY, String(Date.now()));
-    } catch {
-      // Không lưu được thì thôi, lần sau hiện lại. Không đáng để vỡ giao diện.
-    }
+    dismissedStore.save(Date.now());
   }, []);
 
   useEffect(() => {
@@ -139,11 +142,7 @@ export function InstallPrompt() {
     // Dù họ đồng ý hay từ chối cũng không mời lại: sự kiện này chỉ dùng được một
     // lần, và hỏi lại người vừa từ chối là làm phiền.
     deferredRef.current = null;
-    try {
-      localStorage.setItem(STORAGE_KEY, String(Date.now()));
-    } catch {
-      // Bỏ qua, xem chú thích ở dismiss().
-    }
+    dismissedStore.save(Date.now());
   }, []);
 
   if (mode === 'none') return null;

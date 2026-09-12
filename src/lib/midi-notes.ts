@@ -12,6 +12,8 @@
  * Mấy thứ đó nhân với nhau ra kho câu hỏi; chọn kiểu gì cũng không cần thêm mã.
  */
 
+import { octaveOf, pitchClass } from './pitch';
+
 export interface DrillNote {
   /** Số hiệu nốt MIDI. Đô giữa (C4) = 60. */
   midi: number;
@@ -126,11 +128,6 @@ const LETTER_NAME: Record<string, string> = {
   C: 'Đô', D: 'Rê', E: 'Mi', F: 'Pha', G: 'Sol', A: 'La', B: 'Si',
 };
 
-/** Phím đen: đúng năm cái trong mỗi quãng tám. */
-export function isBlackKey(midi: number): boolean {
-  return [1, 3, 6, 8, 10].includes(((midi % 12) + 12) % 12);
-}
-
 /** Dấu quãng tám của ABC, bám theo CHỮ CÁI chứ không theo phím. */
 function abcLetter(letter: string, octave: number): string {
   let out = octave >= 5 ? letter.toLowerCase() : letter;
@@ -155,15 +152,15 @@ function abcLetter(letter: string, octave: number): string {
  * 3 viết là `_B,` — dấu phẩy thuộc về chữ B.
  */
 export function noteAt(midi: number, key: KeySignature = KEY_SIGNATURES[0]): DrillNote {
-  const pitchClass = ((midi % 12) + 12) % 12;
+  const pc = pitchClass(midi);
 
   /** Mọi cách viết ra đúng phím này, kèm thứ hạng ưu tiên — nhỏ hơn là hợp hơn. */
   const cachViet = LETTERS.flatMap((letter) => [0, 1, -1].map((alter) => {
-    if ((LETTER_SEMITONE[letter] + alter + 12) % 12 !== pitchClass) return null;
+    if ((LETTER_SEMITONE[letter] + alter + 12) % 12 !== pc) return null;
     const cuaGiong = key.alter[letter] ?? 0;
     if (alter === cuaGiong) return { letter, alter, hang: 0 };
     if (alter === 0) return { letter, alter, hang: 1 };
-    const quenViet = key.chromatic?.[pitchClass] ?? (key.prefersSharp ? 1 : -1);
+    const quenViet = key.chromatic?.[pc] ?? (key.prefersSharp ? 1 : -1);
     if (alter === quenViet) return { letter, alter, hang: 2 };
     return { letter, alter, hang: 3 };
   })).filter((c) => c !== null);
@@ -799,7 +796,7 @@ const PITCH_CLASS_LATIN = ['C', 'C♯/D♭', 'D', 'D♯/E♭', 'E', 'F', 'F♯/G
 
 /** Mô tả nốt bất kỳ người học bấm phải, kể cả nốt ngoài phạm vi bài. */
 export function describeMidiNote(midi: number): string {
-  const pc = ((midi % 12) + 12) % 12;
-  const octave = Math.floor(midi / 12) - 1;
+  const pc = pitchClass(midi);
+  const octave = octaveOf(midi);
   return `${PITCH_CLASS_NAMES[pc]} (${PITCH_CLASS_LATIN[pc]}${octave})`;
 }

@@ -237,8 +237,6 @@ export interface AmbientSettings {
 export const AMBIENT_DEFAULT: AmbientSettings = { on: true, volume: 0.5, piece: DEFAULT_PIECE_ID };
 
 export const AMBIENT_STORAGE_KEY = 'pj-ambient';
-/** Tên sự kiện để thẻ điều khiển và bộ phát nói chuyện với nhau. */
-export const AMBIENT_EVENT = 'pj-ambient-change';
 
 /**
  * Đọc cài đặt từ chuỗi đã lưu, sai kiểu gì cũng không được ném lỗi.

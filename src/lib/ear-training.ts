@@ -18,6 +18,8 @@
  * có nút bỏ qua khi kẹt.
  */
 
+import { isBlackPitch } from './pitch';
+
 /** Nốt mẫu phát trước mỗi câu ở các mức dễ: Đô giữa (C4). */
 export const REFERENCE_MIDI = 60;
 
@@ -26,11 +28,6 @@ const FIVE_FINGER_SEMITONES = 7;
 
 /** Hai nốt liền nhau trong một câu không cách nhau quá một quãng tám. */
 const MAX_LEAP = 12;
-
-/** Phím đen: đúng năm cái trong mỗi quãng tám. */
-function isBlack(midi: number): boolean {
-  return [1, 3, 6, 8, 10].includes(((midi % 12) + 12) % 12);
-}
 
 export interface EarOptions {
   /** Mấy nốt mỗi câu. Nhiều hơn một thì phải đánh lại ĐÚNG THỨ TỰ. */
@@ -139,7 +136,7 @@ export function earNotePool(options: EarOptions): number[] {
     const first = (octave + 1) * 12;
     const last = first + (options.fiveFinger ? FIVE_FINGER_SEMITONES : 11);
     for (let midi = first; midi <= last; midi++) {
-      if (!options.blackKeys && isBlack(midi)) continue;
+      if (!options.blackKeys && isBlackPitch(midi)) continue;
       out.push(midi);
     }
   }

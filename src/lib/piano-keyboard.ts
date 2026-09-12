@@ -9,7 +9,10 @@
  * Mọi con số ở đây tính theo **bề rộng một phím trắng = 1**. Component chỉ việc
  * đặt `viewBox` theo `width`/`height` rồi cho SVG tự co giãn theo bề ngang màn
  * hình, nên bàn phím vừa khít cả trên điện thoại lẫn trên máy tính.
+ *
+ * Phím đen hay trắng, quãng tám thứ mấy — hỏi `pitch.ts`, file này chỉ lo hình.
  */
+import { isBlackPitch, octaveOf } from './pitch';
 
 /** La0 — phím thấp nhất của đàn 88 phím. */
 export const FIRST_MIDI = 21;
@@ -28,15 +31,6 @@ export const BLACK_HEIGHT = 4;
 /** Chỗ chừa dưới phím để ghi tên quãng. */
 export const LABEL_HEIGHT = 1.6;
 
-const BLACK_PITCH_CLASSES = new Set([1, 3, 6, 8, 10]);
-
-export function isBlackPitch(midi: number): boolean {
-  return BLACK_PITCH_CLASSES.has(((midi % 12) + 12) % 12);
-}
-
-export function octaveOf(midi: number): number {
-  return Math.floor(midi / 12) - 1;
-}
 
 export interface PianoKey {
   midi: number;
