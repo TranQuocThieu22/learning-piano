@@ -254,6 +254,47 @@ export function NoteRecognitionDrill() {
   /** Điện thoại dựng đứng — nơi bề ngang chặn cứng, xoay ngang mới là lời giải. */
   const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
 
+  /**
+   * Kích thước thật của khung giấy nhạc, cập nhật mỗi khi nó đổi.
+   *
+   * **Vì sao phải theo dõi:** bản nhạc được vẽ theo số đo px của khung tại đúng
+   * lúc vẽ — bề ngang quyết `staffwidth`, chiều cao quyết hệ số phóng. Xoay máy
+   * là hai con số đó đổi hết, mà không có gì bắt vẽ lại: khuông nhạc giữ nguyên
+   * cỡ của hướng cũ. Đo được khi xoay ngang: khung rộng 876px mà bản nhạc vẫn
+   * 354px, và trong chế độ tập trung thì bản nhạc **thò xuống dưới đáy khung
+   * 209px** rồi bị `overflow: hidden` cắt mất khuông Pha.
+   *
+   * Dùng `ResizeObserver` chứ không nghe `orientationchange`: nó bắt được mọi
+   * kiểu đổi kích thước (xoay máy, đổi cỡ cửa sổ, bàn phím ảo đẩy màn hình,
+   * vào/ra chế độ tập trung), và nó bắn SAU khi trình duyệt xếp xong chỗ nên số
+   * đo lấy ra là số thật.
+   */
+  const [boxSize, setBoxSize] = useState({ w: 0, h: 0 });
+
+  /*
+   * Chỉ cần gắn lại khi khung XUẤT HIỆN hay BIẾN MẤT, không phải mỗi lần đổi câu:
+   * vẫn đúng cái thẻ đó, gắn lại là tháo ra lắp vào vô ích.
+   */
+  const coCauHoi = current !== null;
+
+  useEffect(() => {
+    const el = staffBoxRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+
+    const observer = new ResizeObserver(() => {
+      const w = Math.round(el.clientWidth);
+      const h = Math.round(el.clientHeight);
+      /*
+       * Chỉ báo khi số đo ĐỔI THẬT, và trả về chính đối tượng cũ khi không đổi.
+       * Đây là chỗ chặn vòng lặp: hiệu ứng vẽ chạy lại mỗi lần state này đổi, mà
+       * nó lại ghi vào DOM trong khung — báo bừa là vẽ lại vô tận.
+       */
+      setBoxSize((truoc) => (truoc.w === w && truoc.h === h ? truoc : { w, h }));
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [coCauHoi, focused]);
+
   /*
    * **Đổi lựa chọn thì bốc nốt mới và xoá thống kê, ngay trong lúc vẽ.**
    *
@@ -412,6 +453,51 @@ export function NoteRecognitionDrill() {
     },
   );
 
+  /**
+   * Tô con trỏ lên khuông nhạc: phách đã xong màu xanh, phách đang chờ màu tím.
+   *
+   * Là **hàm**, không phải hiệu ứng riêng, và đây là chỗ đã sai hai lần theo cùng
+   * một kiểu. Mỗi lần khuông nhạc được vẽ lại — đổi câu, vào/ra chế độ tập trung,
+   * **xoay máy** — thì `beatElementsRef` trỏ sang phần tử SVG mới toanh, còn màu
+   * thì vừa được đặt lên mấy phần tử vừa bị vứt đi. Để tô màu trong một hiệu ứng
+   * riêng thì mỗi lần thêm một thứ khiến bản nhạc vẽ lại là phải nhớ thêm nó vào
+   * danh sách phụ thuộc của hiệu ứng kia nữa — và quên là con trỏ lặng lẽ biến
+   * mất, không lỗi nào báo. Gọi thẳng ở cuối chỗ vẽ thì không có gì để quên.
+   */
+  const paintCursor = useCallback((beat: number, done: boolean) => {
+    const groups = beatElementsRef.current;
+    if (groups.length === 0) return;
+
+    for (const [i, group] of groups.entries()) {
+      for (const el of group) {
+        el.classList?.remove(DONE_CLASS, WAITING_CLASS);
+        if (i < beat) el.classList?.add(DONE_CLASS);
+        else if (i === beat) el.classList?.add(WAITING_CLASS);
+      }
+    }
+
+    /*
+     * Phách vừa trả lời xong cũng tô xanh ngay, đừng đợi con trỏ nhích: có 900ms
+     * giữa lúc đúng và lúc sang phách mới, không tô thì đúng khoảng đó khuông
+     * nhạc không phản hồi gì.
+     */
+    if (done) {
+      for (const el of groups[beat] ?? []) {
+        el.classList?.remove(WAITING_CLASS);
+        el.classList?.add(DONE_CLASS);
+      }
+    }
+  }, []);
+
+  /*
+   * Con trỏ nhích hay phách vừa xong đổi màu thì CHỈ tô lại, không vẽ lại bản
+   * nhạc: vẽ lại là cả ô nhịp nháy một cái mỗi lần bấm đúng một nốt, mà mắt người
+   * học đang bám vào đúng chỗ đó.
+   */
+  useEffect(() => {
+    paintCursor(beatIndex, feedback.kind === 'correct');
+  }, [beatIndex, feedback, paintCursor]);
+
   /*
    * Vẽ lại khuông nhạc mỗi khi đổi câu hỏi hoặc đổi số khuông — rồi **neo nó lại**.
    *
@@ -505,6 +591,8 @@ export function NoteRecognitionDrill() {
     // Nhặt phần tử của từng phách NGAY sau khi vẽ, trước khi hiệu ứng tô màu
     // chạy — hiệu ứng đó chỉ gắn lớp, không đụng tới DOM của abcjs.
     beatElementsRef.current = beatElements(tune, current.beats.length);
+    // Tô lại NGAY, đừng đợi hiệu ứng khác: phần tử vừa thay mới toàn bộ.
+    paintCursor(beatIndexRef.current, false);
 
     const svg = paper.querySelector('svg');
     const topLine = paper.querySelector('.abcjs-top-line');
@@ -561,45 +649,7 @@ export function NoteRecognitionDrill() {
      */
     svg.style.transformOrigin = '0 0';
     svg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${abcScale * scale})`;
-  }, [current, grandStaff, focused]);
-
-  /*
-   * Tô con trỏ lên khuông nhạc: phách đã xong màu xanh, phách đang chờ có dấu.
-   *
-   * Hiệu ứng RIÊNG, không gộp vào chỗ vẽ: gộp thì mỗi lần bấm đúng một nốt là
-   * vẽ lại cả ô nhịp, mà mắt người học đang bám vào đúng chỗ đó. Ở đây chỉ thêm
-   * bớt lớp CSS trên phần tử abcjs đã vẽ sẵn.
-   *
-   * Chạy cả ở chế độ "1 nhịp" — lúc đó chỉ có một phách và nó luôn là phách đang
-   * chờ, nên chỉ thấy dấu con trỏ, không thấy màu xanh nào trước khi trả lời.
-   */
-  useEffect(() => {
-    const groups = beatElementsRef.current;
-    if (groups.length === 0) return;
-
-    for (const [i, group] of groups.entries()) {
-      for (const el of group) {
-        el.classList?.remove(DONE_CLASS, WAITING_CLASS);
-        if (i < beatIndex) el.classList?.add(DONE_CLASS);
-        else if (i === beatIndex) el.classList?.add(WAITING_CLASS);
-      }
-    }
-
-    /*
-     * Phách vừa trả lời xong cũng tô xanh ngay, đừng đợi con trỏ nhích: có 900ms
-     * giữa lúc đúng và lúc sang phách mới, không tô thì đúng khoảng đó khuông
-     * nhạc không phản hồi gì.
-     */
-    if (feedback.kind === 'correct') {
-      for (const el of groups[beatIndex] ?? []) {
-        el.classList?.remove(WAITING_CLASS);
-        el.classList?.add(DONE_CLASS);
-      }
-    }
-    // `focused` có mặt ở đây vì vào/ra chế độ tập trung là VẼ LẠI khuông nhạc:
-    // `beatElementsRef` thành phần tử mới toanh, mà màu thì nằm trên phần tử cũ.
-    // Thiếu nó thì bật tập trung lên là con trỏ biến mất, không lỗi nào báo.
-  }, [current, beatIndex, feedback, focused]);
+  }, [current, grandStaff, focused, boxSize, paintCursor]);
 
   /**
    * Khoá cuộn nền và cho phím Esc thoát, chỉ trong lúc đang tập trung.

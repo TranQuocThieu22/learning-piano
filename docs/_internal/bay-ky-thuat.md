@@ -1116,6 +1116,61 @@ một tuỳ chọn đang truyền vào.
 nạp `node_modules/abcjs/dist/abcjs-basic-min.js`, rồi quét qua các giá trị tuỳ chọn và đo
 `.abcjs-top-line`. Vài chục giây, và nó trả lời dứt khoát câu "tại thư viện hay tại mình".
 
+## 32. Vẽ theo số đo px thì phải theo dõi kích thước, không thì xoay máy là hỏng
+
+**Triệu chứng.** Xoay điện thoại xong, khuông nhạc **giữ nguyên cỡ của hướng cũ**. Xoay
+ngang thì bản nhạc bé tí nằm nép bên trái một cái khung rộng gấp đôi; trong chế độ tập
+trung thì ngược lại — bản nhạc **thò xuống dưới đáy khung rồi bị cắt mất khuông Pha**. Đo
+được: khung rộng 876px mà bản nhạc vẫn 354px, và thò xuống dưới đáy 209px.
+
+**Nguyên nhân.** Bản nhạc được vẽ theo **số đo px của khung tại đúng lúc vẽ** — bề ngang
+quyết `staffwidth`, chiều cao quyết hệ số phóng. Mà hiệu ứng vẽ chỉ chạy lại khi đổi câu
+hỏi hoặc vào/ra chế độ tập trung. Xoay máy không đụng tới cái nào trong hai thứ đó, nên
+không có gì bắt vẽ lại.
+
+Đây là cái giá của việc tự tính kích thước. Chỗ vẽ bản nhạc bài học không dính vì nó dùng
+`responsive: 'resize'` của abcjs — abcjs tự theo dõi khung. Chỗ nào **tự tính** thì phải
+**tự theo dõi**.
+
+**Cách sửa.** `ResizeObserver` trên khung, đẩy số đo vào state, cho hiệu ứng vẽ phụ thuộc
+state đó:
+
+```ts
+const observer = new ResizeObserver(() => {
+  const w = Math.round(el.clientWidth);
+  const h = Math.round(el.clientHeight);
+  // Chỉ báo khi ĐỔI THẬT, và trả về chính đối tượng cũ khi không đổi —
+  // hiệu ứng vẽ ghi vào DOM bên trong khung, báo bừa là vẽ lại vô tận.
+  setBoxSize((truoc) => (truoc.w === w && truoc.h === h ? truoc : { w, h }));
+});
+```
+
+Chọn `ResizeObserver` chứ không nghe `orientationchange`: nó bắt được mọi kiểu đổi kích
+thước (xoay máy, đổi cỡ cửa sổ, bàn phím ảo, vào/ra lớp phủ), và nó bắn **sau** khi trình
+duyệt xếp xong chỗ nên số đo lấy ra là số thật.
+
+## 33. Tô màu lên thứ thư viện vừa vẽ: đừng để trong một hiệu ứng riêng
+
+**Triệu chứng.** Con trỏ màu trên khuông nhạc **lặng lẽ biến mất**. Ba lần, mỗi lần một
+nguyên nhân bề mặt khác nhau: lần đầu khi bật chế độ tập trung, lần hai ngay khi mới mở
+trang, lần ba khi xoay máy. Không lỗi nào báo ra.
+
+**Nguyên nhân, chung cho cả ba.** Màu được đặt bằng cách thêm lớp CSS lên **phần tử SVG do
+thư viện vẽ ra**, và tham chiếu tới chúng giữ trong một ref. Mỗi lần bản nhạc được vẽ lại,
+thư viện vứt hết phần tử cũ và dựng phần tử mới — màu vừa đặt nằm trên mấy thẻ vừa bị vứt.
+Hiệu ứng tô màu thì có danh sách phụ thuộc RIÊNG, nên nó không chạy lại.
+
+Cái bẫy nằm ở chỗ: **mỗi lần thêm một thứ khiến bản nhạc vẽ lại thì phải nhớ thêm thứ đó
+vào danh sách phụ thuộc của hiệu ứng tô màu nữa.** Hai danh sách phải khớp nhau đời đời,
+mà không có gì bắt buộc điều đó — quên là hỏng, và hỏng im lặng.
+
+**Cách sửa.** Tách việc tô màu thành một **hàm**, rồi **gọi thẳng ở cuối chỗ vẽ**, ngay sau
+khi nhặt lại tham chiếu phần tử. Hiệu ứng riêng chỉ giữ lại cho việc con trỏ nhích (lúc đó
+bản nhạc KHÔNG vẽ lại, cố ý — vẽ lại là cả ô nhịp nháy một cái mỗi lần bấm đúng một nốt).
+
+Luật chung: **thứ gì phải chạy sau mỗi lần vẽ thì gọi trong chỗ vẽ, đừng gửi gắm cho một
+hiệu ứng khác.** Danh sách phụ thuộc thứ hai là thứ sẽ lệch.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1124,6 +1179,7 @@ nạp `node_modules/abcjs/dist/abcjs-basic-min.js`, rồi quét qua các giá tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `fix: Vẽ lại khuông nhạc khi xoay máy, và tô lại con trỏ ngay sau mỗi lần vẽ` | Thêm bẫy 32 và 33, cả hai đều là lỗi im lặng gặp trên máy thật. Bẫy 32: vẽ theo số đo px thì phải tự theo dõi kích thước bằng `ResizeObserver`, không thì xoay máy là bản nhạc giữ nguyên cỡ hướng cũ rồi bị cắt. Bẫy 33: tô màu lên phần tử do thư viện vẽ mà để trong một hiệu ứng riêng thì hai danh sách phụ thuộc phải khớp nhau đời đời — đã hỏng ba lần vì đúng lý do đó, nên chuyển thành gọi thẳng ở cuối chỗ vẽ |
 | 12/09/2026 | `fix: Ô nhịp 4/4 kéo giãn hết bề ngang khung, chữ nhạc to như chế độ một nốt` | Thêm bẫy 31: tuỳ chọn `scale` của abcjs xếp nhạc vừa `staffwidth / scale` chứ không trọn `staffwidth`, nên ở chỗ đã ghi đè `transform` (bẫy 28) thì nó chỉ còn tác dụng bóp nhạc lại — ô nhịp 4/4 chiếm 76% khung, nới `staffwidth` cũng vô ích. Ghi kèm cách soi: dựng lại đoạn ABC trong trang trắng rồi đo, vì chính chỗ số đo ngoài app khác số đo trong app mới chỉ ra thủ phạm là một tuỳ chọn đang truyền vào |
 | 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Thêm bẫy 30: abcjs ghi cả `width` lên thẻ chứa, nên phép thu nhỏ cho vừa khung đem ảnh so với chính nó và luôn ra tỉ lệ 1 — ô nhịp tràn ra ngoài, mất nốt ở hai mép, không lỗi nào báo. Ghi kèm dấu hiệu nhận ra sớm (tỉ lệ *nội dung trên khung* mà luôn đúng bằng 1) và chốt bài học chung của cả ba bẫy 28-29-30: giả định mọi thuộc tính hình học trên thẻ đưa cho thư viện vẽ đều đã bị nó ghi đè |
 | 12/09/2026 | `feat: Dấu hoá đứng ở hoá biểu đầu khuông, và bản nhạc to lại như cũ` | Thêm bẫy 28 và 29 — abcjs cài tuỳ chọn `scale` bằng chính `style.transform` của thẻ SVG, lại còn bọc ảnh trong một `div` `overflow: hidden` cao đúng bằng ảnh chưa dịch nên khuông Pha mất ba dòng kẻ dưới cùng, nên bản sửa neo khuông ở bẫy 27 đã âm thầm xoá tỉ lệ và cho production chạy bản nhạc bé một nửa mấy ngày; ghi kèm chuyện `getBBox` trả về đơn vị trước khi nhân tỉ lệ, và ba số phải đo lại mỗi lần đụng vào chỗ vẽ bản nhạc |
