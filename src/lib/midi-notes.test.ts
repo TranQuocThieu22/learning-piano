@@ -91,7 +91,7 @@ describe('hoá biểu', () => {
   });
 
   it('kho nốt theo giọng: Pha thăng có mặt, Pha thường thì không', () => {
-    const pool = notePoolForOptions(opts({ keyId: 'G', octaves: [4], fiveFinger: false }));
+    const pool = notePoolForOptions(opts({ octaves: [4], fiveFinger: false }), G);
     const midis = pool.map((p) => p.note.midi);
     expect(midis).toContain(66); // Pha thăng — nốt của giọng
     expect(midis).not.toContain(65); // Pha thường — nốt hoá bất thường
@@ -99,20 +99,70 @@ describe('hoá biểu', () => {
   });
 
   it('bật nốt hoá bất thường thì đủ mười hai phím, có cả dấu bình', () => {
-    const pool = notePoolForOptions(opts({
-      keyId: 'G', octaves: [4], fiveFinger: false, accidentals: true,
-    }));
+    const pool = notePoolForOptions(opts({ octaves: [4], fiveFinger: false, accidentals: true }), G);
     expect(pool).toHaveLength(12);
     expect(pool.find((p) => p.note.midi === 65)!.note.abc).toBe('=F');
   });
 
   it('bản nhạc ghi đúng hoá biểu ở đầu khuông', () => {
-    const cau: DrillQuestion = { parts: [{ note: noteAt(66, G), clef: 'treble' }] };
-    expect(questionAbc(cau, false, G)).toContain('K:G clef=treble');
-    expect(questionAbc(cau, true, G)).toContain('K:G');
-    expect(questionAbc(cau, false, findKey('Eb'))).toContain('K:Eb');
-    // Không truyền giọng thì vẫn là Đô trưởng như cũ.
-    expect(questionAbc(cau)).toContain('K:C clef=treble');
+    const cau: DrillQuestion = { key: G, parts: [{ note: noteAt(66, G), clef: 'treble' }] };
+    expect(questionAbc(cau)).toContain('K:G clef=treble');
+    expect(questionAbc(cau, true)).toContain('K:G');
+
+    const eb = findKey('Eb');
+    expect(questionAbc({ key: eb, parts: [{ note: noteAt(63, eb), clef: 'treble' }] })).toContain('K:Eb');
+  });
+
+  /*
+   * Đây là chỗ chủ sản phẩm bắt sửa: chọn một giọng rồi giữ nguyên thì sau vài
+   * câu người học thuộc lòng giọng đó và thôi không nhìn đầu khuông nữa.
+   */
+  it('bật đổi hoá biểu thì mỗi câu một giọng, và không lặp lại giọng vừa rồi', () => {
+    const o = opts({ randomKeys: true, octaves: [4], fiveFinger: false });
+    let truoc = pickNextQuestion(o, null, () => 0)!;
+    const daGap = new Set([truoc.key.id]);
+    for (let i = 1; i < 20; i++) {
+      const sau = pickNextQuestion(o, truoc, () => (i * 13 % 31) / 31)!;
+      expect(sau.key.id).not.toBe(truoc.key.id);
+      daGap.add(sau.key.id);
+      truoc = sau;
+    }
+    expect(daGap.size).toBeGreaterThan(3);
+  });
+
+  it('tắt đổi hoá biểu thì câu nào cũng Đô trưởng', () => {
+    const o = opts({ randomKeys: false });
+    for (let i = 0; i < 10; i++) {
+      expect(pickNextQuestion(o, null, () => i / 10)!.key.id).toBe('C');
+    }
+  });
+
+  /*
+   * Nốt của câu phải viết theo ĐÚNG giọng của câu đó. Sai chỗ này thì bản nhạc
+   * hiện một đằng, app chờ một nẻo — mà nhìn bằng mắt vẫn thấy hợp lý.
+   */
+  it('nốt trong câu viết theo đúng giọng của chính câu đó', () => {
+    const o = opts({ randomKeys: true, octaves: [4], fiveFinger: false, accidentals: true });
+    for (let i = 0; i < 30; i++) {
+      const cau = pickNextQuestion(o, null, () => (i * 17 % 41) / 41)!;
+      for (const part of cau.parts) {
+        expect(part.note.abc).toBe(noteAt(part.note.midi, cau.key).abc);
+      }
+    }
+  });
+
+  /*
+   * Kho nốt hiện cho người học (không truyền giọng) phải là kho GỘP: cả buổi tập
+   * thì gặp hết các giọng, nên Mi giáng của giọng Mi giáng cũng là nốt đang tập.
+   */
+  it('không truyền giọng thì gộp kho của mọi giọng đang bật', () => {
+    const tat = notePoolForOptions(opts({ octaves: [4], fiveFinger: false, randomKeys: false }));
+    const bat = notePoolForOptions(opts({ octaves: [4], fiveFinger: false, randomKeys: true }));
+    expect(tat.map((p) => p.note.midi)).not.toContain(63); // Mi giáng
+    expect(bat.map((p) => p.note.midi)).toContain(63);
+    expect(bat.length).toBeGreaterThan(tat.length);
+    // Gộp rồi vẫn không được trùng phím.
+    expect(new Set(bat.map((p) => `${p.clef}:${p.note.midi}`)).size).toBe(bat.length);
   });
 });
 
@@ -221,32 +271,38 @@ describe('pickNextQuestion — câu một nốt', () => {
   const pool = notePoolForOptions(DEFAULT_OPTIONS);
 
   it('không hỏi lại ngay câu vừa rồi', () => {
-    const first: DrillQuestion = { parts: [pool[0]] };
+    const first: DrillQuestion = { key: KEY_SIGNATURES[0], parts: [pool[0]] };
     for (let i = 0; i < 20; i++) {
-      const next = pickNextQuestion(pool, first, DEFAULT_OPTIONS, () => i / 20)!;
+      const next = pickNextQuestion(DEFAULT_OPTIONS, first, () => i / 20)!;
       expect(next.parts).toHaveLength(1);
       expect(next.parts[0].note.midi).not.toBe(pool[0].note.midi);
     }
   });
 
-  it('kho chỉ có một nốt thì đành hỏi lại chính nó', () => {
-    const one = pool.slice(0, 1);
-    const next = pickNextQuestion(one, { parts: one }, DEFAULT_OPTIONS)!;
-    expect(next.parts[0].note.midi).toBe(one[0].note.midi);
+  /*
+   * Né hết kho rồi thì thà hỏi lại còn hơn trả về câu rỗng. Dựng bằng cách cho
+   * câu trước ôm trọn kho — không thì không có cách nào chạm tới nhánh này.
+   */
+  it('né hết kho thì đành hỏi lại nốt cũ chứ không bỏ trống', () => {
+    const hep = opts({ octaves: [6], fiveFinger: true });
+    const kho = notePoolForOptions(hep);
+    const truoc: DrillQuestion = { key: KEY_SIGNATURES[0], parts: kho };
+    const next = pickNextQuestion(hep, truoc)!;
+    expect(next.parts).toHaveLength(1);
+    expect(kho.map((p) => p.note.midi)).toContain(next.parts[0].note.midi);
   });
 
   it('kho rỗng thì trả về null chứ không ném lỗi', () => {
-    expect(pickNextQuestion([], null, DEFAULT_OPTIONS)).toBeNull();
+    expect(pickNextQuestion(opts({ octaves: [] }), null)).toBeNull();
   });
 });
 
 describe('pickNextQuestion — câu hai nốt', () => {
   const haiTay = opts({ hands: 'both', octaves: [4], notesPerQuestion: 'both' });
-  const pool = notePoolForOptions(haiTay);
 
   it('ra hai nốt, mỗi khuông một nốt', () => {
     for (let i = 0; i < 10; i++) {
-      const q = pickNextQuestion(pool, null, haiTay, () => i / 10)!;
+      const q = pickNextQuestion(haiTay, null, () => i / 10)!;
       expect(q.parts).toHaveLength(2);
       expect(q.parts.map((p) => p.clef).sort()).toEqual(['bass', 'treble']);
     }
@@ -259,7 +315,7 @@ describe('pickNextQuestion — câu hai nốt', () => {
    */
   it('kho chỉ có một khóa thì lùi về câu một nốt', () => {
     const motTay = opts({ notesPerQuestion: 'both' });
-    const q = pickNextQuestion(notePoolForOptions(motTay), null, motTay)!;
+    const q = pickNextQuestion(motTay, null)!;
     expect(q.parts).toHaveLength(1);
     expect(q.parts[0].clef).toBe('treble');
   });
@@ -267,14 +323,14 @@ describe('pickNextQuestion — câu hai nốt', () => {
   it('quãng chỉ đọc được ở một khóa cũng lùi về một nốt', () => {
     // Quãng 6 không đọc được ở khóa Pha, nên dù chọn cả hai tay vẫn chỉ có bè trên.
     const chiCao = opts({ hands: 'both', octaves: [6], notesPerQuestion: 'both' });
-    const q = pickNextQuestion(notePoolForOptions(chiCao), null, chiCao)!;
+    const q = pickNextQuestion(chiCao, null)!;
     expect(q.parts).toHaveLength(1);
   });
 
   it('ngẫu nhiên thì khi một nốt khi hai nốt', () => {
     const nganNhien = opts({ hands: 'both', octaves: [4], notesPerQuestion: 'mixed' });
-    const nho = pickNextQuestion(pool, null, nganNhien, () => 0.2)!;
-    const lon = pickNextQuestion(pool, null, nganNhien, () => 0.9)!;
+    const nho = pickNextQuestion(nganNhien, null, () => 0.2)!;
+    const lon = pickNextQuestion(nganNhien, null, () => 0.9)!;
     expect(nho.parts).toHaveLength(2);
     expect(lon.parts).toHaveLength(1);
   });
@@ -286,10 +342,10 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
   });
 
   /** Bốc nhiều câu bằng nhiều giá trị random khác nhau, để không rơi vào một ca may mắn. */
-  const nhieuCau = (o: DrillOptions, lan = 30) => {
-    const pool = notePoolForOptions(o);
-    return Array.from({ length: lan }, (_, i) => pickNextQuestion(pool, null, o, () => (i * 7 % 29) / 29)!);
-  };
+  const nhieuCau = (o: DrillOptions, lan = 30) => Array.from(
+    { length: lan },
+    (_, i) => pickNextQuestion(o, null, () => (i * 7 % 29) / 29)!,
+  );
 
   it('không câu nào vượt quá số nốt tối đa mỗi khuông', () => {
     for (const q of nhieuCau(chord())) {
@@ -349,7 +405,10 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
 });
 
 describe('questionAbc', () => {
-  const mot = (midi: number, clef: 'treble' | 'bass'): DrillQuestion => ({ parts: [{ note: noteAt(midi), clef }] });
+  const mot = (midi: number, clef: 'treble' | 'bass'): DrillQuestion => ({
+    key: KEY_SIGNATURES[0],
+    parts: [{ note: noteAt(midi), clef }],
+  });
 
   it('vẽ đúng một nốt, đúng khóa, không có số chỉ nhịp', () => {
     expect(questionAbc(mot(60, 'treble'))).toContain('clef=treble');
@@ -376,6 +435,7 @@ describe('questionAbc', () => {
 
   it('nhiều nốt cùng khuông gom vào một cặp ngoặc, xếp từ thấp lên cao', () => {
     const abc = questionAbc({
+      key: KEY_SIGNATURES[0],
       parts: [
         { note: noteAt(67), clef: 'treble' },
         { note: noteAt(60), clef: 'treble' },
@@ -387,6 +447,7 @@ describe('questionAbc', () => {
 
   it('câu hai nốt thì mỗi khuông một nốt, không khuông nào để lặng', () => {
     const abc = questionAbc({
+      key: KEY_SIGNATURES[0],
       parts: [{ note: noteAt(67), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }],
     }, true);
     expect(abc).toContain('V:1 clef=treble\nG');
@@ -396,8 +457,9 @@ describe('questionAbc', () => {
 });
 
 describe('answerQuestion — so phím với câu đang chờ', () => {
-  const mot: DrillQuestion = { parts: [{ note: noteAt(60), clef: 'treble' }] };
+  const mot: DrillQuestion = { key: KEY_SIGNATURES[0], parts: [{ note: noteAt(60), clef: 'treble' }] };
   const hai: DrillQuestion = {
+    key: KEY_SIGNATURES[0],
     parts: [{ note: noteAt(67), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }],
   };
 

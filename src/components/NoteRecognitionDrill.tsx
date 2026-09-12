@@ -3,13 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import ABCJS from 'abcjs';
 import {
-  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Select, Stack, Switch,
-  Text,
+  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
 import {
   answerQuestion, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart, DrillQuestion, Hands,
-  findKey, KEY_SIGNATURES, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel,
-  octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionAbc,
+  MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
+  pickNextQuestion, questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
@@ -65,7 +64,6 @@ function loadOptions(): DrillOptions {
     const maxPerStaff = typeof saved.maxPerStaff === 'number'
       ? Math.max(1, Math.min(MAX_PER_STAFF, Math.round(saved.maxPerStaff)))
       : 1;
-    const keyId = KEY_SIGNATURES.some((k) => k.id === saved.keyId) ? saved.keyId! : 'C';
     return {
       hands,
       octaves: octaves.length > 0 ? octaves : DEFAULT_OPTIONS.octaves,
@@ -73,7 +71,7 @@ function loadOptions(): DrillOptions {
       accidentals: saved.accidentals === true,
       notesPerQuestion: count,
       maxPerStaff,
-      keyId,
+      randomKeys: saved.randomKeys === true,
     };
   } catch {
     // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
@@ -140,10 +138,9 @@ export function NoteRecognitionDrill() {
   }), [pool, options.octaves]);
   /** Cả hai tay thì vẽ khuông đôi như bản nhạc piano thật. */
   const grandStaff = options.hands === 'both';
-  const key = useMemo(() => findKey(options.keyId), [options.keyId]);
 
   const [current, setCurrent] = useState<DrillQuestion | null>(
-    () => pickNextQuestion(notePoolForOptions(DEFAULT_OPTIONS), null, DEFAULT_OPTIONS),
+    () => pickNextQuestion(DEFAULT_OPTIONS, null),
   );
   /**
    * Những nốt của câu hiện tại đã bấm đúng.
@@ -195,7 +192,7 @@ export function NoteRecognitionDrill() {
   const [shownFor, setShownFor] = useState(options);
   if (shownFor !== options) {
     setShownFor(options);
-    setCurrent(pickNextQuestion(pool, null, options));
+    setCurrent(pickNextQuestion(options, null));
     setCollected([]);
     setFeedback({ kind: 'none' });
     setAnswered(0);
@@ -203,13 +200,13 @@ export function NoteRecognitionDrill() {
     setMistakes({});
   }
 
-  const advance = useCallback((notes: DrillPart[], previous: DrillQuestion | null, forOptions: DrillOptions) => {
+  const advance = useCallback((previous: DrillQuestion | null, forOptions: DrillOptions) => {
     lockedRef.current = false;
     missedCurrentRef.current = false;
     collectedRef.current = [];
     setFeedback({ kind: 'none' });
     setCollected([]);
-    setCurrent(pickNextQuestion(notes, previous, forOptions));
+    setCurrent(pickNextQuestion(forOptions, previous));
   }, []);
 
   /**
@@ -239,7 +236,7 @@ export function NoteRecognitionDrill() {
       setFeedback({ kind: 'correct' });
       setAnswered((n) => n + 1);
       if (!missedCurrentRef.current) setFirstTryCorrect((n) => n + 1);
-      timerRef.current = setTimeout(() => advance(pool, current, options), ADVANCE_DELAY_MS);
+      timerRef.current = setTimeout(() => advance(current, options), ADVANCE_DELAY_MS);
       return;
     }
 
@@ -302,7 +299,7 @@ export function NoteRecognitionDrill() {
       return;
     }
     const abcScale = grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE;
-    ABCJS.renderAbc(paper, questionAbc(current, grandStaff, key), {
+    ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
        * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
@@ -358,7 +355,7 @@ export function NoteRecognitionDrill() {
      */
     svg.style.transformOrigin = '0 0';
     svg.style.transform = `translateY(${translateY}px) scale(${abcScale * scale})`;
-  }, [current, grandStaff, key]);
+  }, [current, grandStaff]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
@@ -389,7 +386,7 @@ export function NoteRecognitionDrill() {
 
   const skip = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
-    advance(pool, current, options);
+    advance(current, options);
   };
 
   const restart = () => {
@@ -397,7 +394,7 @@ export function NoteRecognitionDrill() {
     setAnswered(0);
     setFirstTryCorrect(0);
     setMistakes({});
-    advance(pool, current, options);
+    advance(current, options);
   };
 
   const accuracy = answered > 0 ? Math.round((firstTryCorrect / answered) * 100) : 0;
@@ -517,16 +514,18 @@ export function NoteRecognitionDrill() {
           data-testid="five-finger-switch"
         />
 
-        <Select
+        {/*
+          Hoá biểu KHÔNG cho chọn một giọng rồi giữ nguyên: chọn cố định thì sau
+          vài câu người học thuộc lòng "đang Sol trưởng" và thôi không nhìn đầu
+          khuông nữa — mà nhìn hoá biểu rồi nhớ nó chính là việc cần rèn.
+        */}
+        <Switch
           mt="md"
-          label="Hoá biểu"
-          description="Mấy dấu thăng giáng đứng ở đầu khuông, đúng như bản nhạc thật. Nốt nằm trong hoá biểu thì không có dấu nào bên cạnh — phải tự nhớ."
-          value={options.keyId}
-          onChange={(value) => value && applyOptions({ ...options, keyId: value })}
-          data={KEY_SIGNATURES.map((k) => ({ value: k.id, label: k.label }))}
-          allowDeselect={false}
-          comboboxProps={{ withinPortal: false }}
-          data-testid="key-picker"
+          checked={options.randomKeys}
+          onChange={(e) => applyOptions({ ...options, randomKeys: e.currentTarget.checked })}
+          label="Đổi hoá biểu mỗi câu"
+          description="Mỗi câu bốc một giọng khác trong bảy giọng thông dụng (0-3 dấu), dấu đứng ở đầu khuông đúng như bản nhạc thật. Nốt nằm trong hoá biểu thì không có dấu nào bên cạnh — phải nhìn đầu khuông mà nhớ. Tắt thì câu nào cũng Đô trưởng, không dấu."
+          data-testid="random-keys-switch"
         />
 
         <Switch
@@ -582,6 +581,8 @@ export function NoteRecognitionDrill() {
                 {/* Khuông đôi đã tự nói nốt nằm ở tay nào, nên không nhắc thêm —
                     nhắc ra là trả lời hộ nửa câu hỏi. */}
                 {grandStaff && current.parts.length === 1 && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
+                {/* Nhắc nhìn hoá biểu chứ KHÔNG nói giọng gì — nói ra là trả lời hộ. */}
+                {options.randomKeys && ' Hoá biểu đầu khuông mỗi câu một khác, nhìn nó trước đã.'}
               </Text>
 
               {/* Khuông nhạc luôn để nền trắng chữ đen như bản nhạc giấy, kể cả khi trang đang ở chế độ tối. */}
@@ -626,6 +627,11 @@ export function NoteRecognitionDrill() {
                         <b>{p.note.name} ({p.note.scientific})</b>
                       </span>
                     ))}.
+                    {/*
+                      Tên giọng chỉ hiện SAU khi đã trả lời xong. Hiện lúc đang hỏi
+                      là làm hộ phần đọc hoá biểu, mà đó mới là phần cần rèn.
+                    */}
+                    {options.randomKeys && <> Câu này ở giọng <b>{current.key.label}</b>.</>}
                   </Alert>
                 )}
                 {feedback.kind === 'wrong-octave' && (

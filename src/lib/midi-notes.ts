@@ -6,9 +6,10 @@
  *
  * 1. **Tay nào** — khóa Sol, khóa Pha, hay cả hai (mỗi câu hỏi đổi khóa).
  * 2. **Quãng nào** — chọn ngay trên hình bàn phím 88 phím, nhiều quãng cùng lúc.
- * 3. **Có dấu hoá không** — phím đen bật/tắt.
+ * 3. **Có nốt hoá bất thường không** — phím đen ngoài hoá biểu, bật/tắt.
+ * 4. **Hoá biểu đổi mỗi câu hay không** — bật thì mỗi câu bốc một giọng.
  *
- * Ba thứ đó nhân với nhau ra kho câu hỏi; chọn kiểu gì cũng không cần thêm mã.
+ * Mấy thứ đó nhân với nhau ra kho câu hỏi; chọn kiểu gì cũng không cần thêm mã.
  */
 
 export interface DrillNote {
@@ -40,6 +41,14 @@ export interface DrillPart {
  */
 export interface DrillQuestion {
   parts: DrillPart[];
+  /**
+   * Hoá biểu của riêng câu này.
+   *
+   * Đi theo CÂU chứ không theo buổi tập, vì mỗi câu bốc một giọng khác nhau. Để
+   * nó ở đây thì chỗ vẽ và chỗ chấm không thể dùng hai giọng khác nhau được: cách
+   * viết của từng nốt đã tính theo đúng giọng này ngay lúc bốc câu.
+   */
+  key: KeySignature;
 }
 
 /** Khoá nhận dạng một phần câu hỏi, để so xem hai câu có trùng nhau không. */
@@ -96,6 +105,11 @@ export const KEY_SIGNATURES: KeySignature[] = [
 
 export function findKey(id: string): KeySignature {
   return KEY_SIGNATURES.find((k) => k.id === id) ?? KEY_SIGNATURES[0];
+}
+
+/** Những giọng câu hỏi được phép bốc trúng, theo lựa chọn đang bật. */
+export function keysForOptions(options: DrillOptions): KeySignature[] {
+  return options.randomKeys ? KEY_SIGNATURES : [KEY_SIGNATURES[0]];
 }
 
 const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const;
@@ -217,8 +231,17 @@ export interface DrillOptions {
    * dấu ngay cạnh nốt như bản nhạc thật vẫn làm.
    */
   accidentals: boolean;
-  /** Hoá biểu: mấy dấu thăng giáng đứng ở đầu khuông. Xem `KEY_SIGNATURES`. */
-  keyId: string;
+  /**
+   * Mỗi câu một hoá biểu khác, bốc ngẫu nhiên trong `KEY_SIGNATURES`.
+   *
+   * **Vì sao ngẫu nhiên chứ không cho chọn một giọng rồi giữ nguyên:** chọn cố
+   * định thì sau vài câu người học thuộc lòng "bài này đang Sol trưởng" và thôi
+   * không nhìn đầu khuông nữa — mà nhìn hoá biểu rồi nhớ nó chính là kỹ năng cần
+   * rèn. Mở một bản nhạc lạ cũng vậy: giọng gì là phải tự đọc ra.
+   *
+   * Tắt thì mọi câu là Đô trưởng, không dấu nào ở đầu khuông.
+   */
+  randomKeys: boolean;
   /**
    * Mỗi câu hỏi mấy nốt. Chỉ có nghĩa khi tập cả hai tay.
    *
@@ -253,7 +276,7 @@ export const DEFAULT_OPTIONS: DrillOptions = {
   accidentals: false,
   notesPerQuestion: 'one',
   maxPerStaff: 1,
-  keyId: 'C',
+  randomKeys: false,
 };
 
 export function clefsFor(hands: Hands): ClefName[] {
@@ -289,31 +312,40 @@ export function octavesFor(hands: Hands): number[] {
  * Xếp theo khóa rồi tới cao độ để thứ tự ổn định, tiện cho test và cho việc suy
  * ra tầm nghe của micro.
  */
-export function notePoolForOptions(options: DrillOptions): DrillPart[] {
-  const key = findKey(options.keyId);
+export function notePoolForOptions(options: DrillOptions, key?: KeySignature): DrillPart[] {
+  /*
+   * Không truyền giọng thì gộp kho của MỌI giọng đang bật, bỏ trùng theo phím.
+   * Đây là cái màn hình cần: "đang tập bao nhiêu nốt" và vùng bôi trên hình đàn
+   * nói về cả buổi tập, mà cả buổi thì người học gặp hết các giọng. Lúc bốc câu
+   * thì ngược lại — phải là kho của đúng một giọng, không thì cùng một câu có nốt
+   * viết theo giọng này, nốt viết theo giọng kia.
+   */
+  const keys = key ? [key] : keysForOptions(options);
   const seen = new Set<string>();
   const out: DrillPart[] = [];
 
-  for (const clef of clefsFor(options.hands)) {
-    for (const octave of [...options.octaves].sort((a, b) => a - b)) {
-      if (!OCTAVES_BY_CLEF[clef].includes(octave)) continue;
-      const first = (octave + 1) * 12;
-      const last = first + (options.fiveFinger ? FIVE_FINGER_SEMITONES : 11);
-      for (let midi = first; midi <= last; midi++) {
-        const note = noteAt(midi, key);
-        /*
-         * Lọc theo CÁCH VIẾT chứ không theo phím trắng đen. Trong giọng Sol
-         * trưởng, Pha thăng là nốt bình thường của giọng — nó nằm trong hoá biểu,
-         * viết trơn không dấu, nên phải có mặt kể cả khi người học tắt nốt hoá
-         * bất thường. Ngược lại, Pha thường trong giọng đó lại là nốt hoá bất
-         * thường (phải ghi dấu bình), dù nó là phím trắng.
-         */
-        const laHoaBatThuong = note.abc.startsWith('^') || note.abc.startsWith('_') || note.abc.startsWith('=');
-        if (!options.accidentals && laHoaBatThuong) continue;
-        const key2 = `${clef}:${midi}`;
-        if (seen.has(key2)) continue;
-        seen.add(key2);
-        out.push({ note, clef });
+  for (const giong of keys) {
+    for (const clef of clefsFor(options.hands)) {
+      for (const octave of [...options.octaves].sort((a, b) => a - b)) {
+        if (!OCTAVES_BY_CLEF[clef].includes(octave)) continue;
+        const first = (octave + 1) * 12;
+        const last = first + (options.fiveFinger ? FIVE_FINGER_SEMITONES : 11);
+        for (let midi = first; midi <= last; midi++) {
+          const note = noteAt(midi, giong);
+          /*
+           * Lọc theo CÁCH VIẾT chứ không theo phím trắng đen. Trong giọng Sol
+           * trưởng, Pha thăng là nốt bình thường của giọng — nó nằm trong hoá
+           * biểu, viết trơn không dấu, nên phải có mặt kể cả khi người học tắt
+           * nốt hoá bất thường. Ngược lại, Pha thường trong giọng đó lại là nốt
+           * hoá bất thường (phải ghi dấu bình), dù nó là phím trắng.
+           */
+          const laHoaBatThuong = note.abc.startsWith('^') || note.abc.startsWith('_') || note.abc.startsWith('=');
+          if (!options.accidentals && laHoaBatThuong) continue;
+          const daCo = `${clef}:${midi}`;
+          if (seen.has(daCo)) continue;
+          seen.add(daCo);
+          out.push({ note, clef });
+        }
       }
     }
   }
@@ -331,8 +363,9 @@ export function notePoolForOptions(options: DrillOptions): DrillPart[] {
  * Khuông trống dùng `x` (lặng ẩn) chứ không dùng `z`: dấu lặng vẽ ra giữa khuông
  * trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa gì.
  */
-export function questionAbc(question: DrillQuestion, grandStaff = false, key = KEY_SIGNATURES[0]): string {
+export function questionAbc(question: DrillQuestion, grandStaff = false): string {
   const head = ['X:1', 'L:1/1', 'M:none'];
+  const key = question.key;
 
   /*
    * Nhiều nốt cùng khuông gom vào một cặp ngoặc vuông — cú pháp hợp âm của ABC.
@@ -421,7 +454,10 @@ function pickStack(
 }
 
 /**
- * Chọn câu hỏi kế tiếp từ kho nốt, tránh lặp lại ngay câu vừa rồi.
+ * Chọn câu hỏi kế tiếp, tránh lặp lại ngay câu vừa rồi.
+ *
+ * Câu hỏi gồm **hoá biểu và mấy nốt viết theo đúng hoá biểu đó**. Bật
+ * `randomKeys` thì mỗi câu một giọng khác, né giọng của câu vừa rồi.
  *
  * Số nốt mỗi câu do `options.notesPerQuestion` quyết, nhưng **luôn có đường lùi**:
  * đòi hai nốt mà kho chỉ có một khóa (đang tập một tay, hoặc quãng đã chọn chỉ
@@ -430,12 +466,50 @@ function pickStack(
  * `random` tách ra thành tham số để kiểm thử được.
  */
 export function pickNextQuestion(
+  options: DrillOptions,
+  previous: DrillQuestion | null,
+  random: () => number = Math.random,
+): DrillQuestion | null {
+  /*
+   * Giọng bốc trước, kho nốt dựng sau — vì cách viết của từng nốt phụ thuộc vào
+   * giọng. Giọng nào dựng ra kho rỗng thì thử giọng kế tiếp, thà đổi giọng còn
+   * hơn không có câu nào để hỏi.
+   */
+  for (const key of thuTuGiong(options, previous, random)) {
+    const pool = notePoolForOptions(options, key);
+    if (pool.length === 0) continue;
+    return { key, parts: bocNot(pool, previous, options, random) };
+  }
+  return null;
+}
+
+/**
+ * Thứ tự thử các giọng: giọng bốc trúng đứng đầu, còn lại là đường lùi.
+ *
+ * **Né giọng của câu vừa rồi** khi còn giọng khác để chọn. Bốc trúng lại chính
+ * nó thì người học tưởng hoá biểu đứng yên và thôi không nhìn đầu khuông nữa —
+ * mà nhìn hoá biểu mới là việc cần rèn.
+ */
+function thuTuGiong(
+  options: DrillOptions,
+  previous: DrillQuestion | null,
+  random: () => number,
+): KeySignature[] {
+  const all = keysForOptions(options);
+  if (all.length === 1) return all;
+  const khac = previous ? all.filter((k) => k.id !== previous.key.id) : all;
+  const list = khac.length > 0 ? khac : all;
+  const chon = list[Math.floor(random() * list.length) % list.length];
+  return [chon, ...all.filter((k) => k !== chon)];
+}
+
+/** Bốc phần nốt của câu hỏi trong kho của MỘT giọng. */
+function bocNot(
   pool: DrillPart[],
   previous: DrillQuestion | null,
   options: DrillOptions,
-  random: () => number = Math.random,
-): DrillQuestion | null {
-  if (pool.length === 0) return null;
+  random: () => number,
+): DrillPart[] {
   const avoid = new Set((previous?.parts ?? []).map(partKey));
   const limit = Math.max(1, Math.min(MAX_PER_STAFF, options.maxPerStaff));
 
@@ -446,12 +520,10 @@ export function pickNextQuestion(
     const treble = pool.filter((p) => p.clef === 'treble');
     const bass = pool.filter((p) => p.clef === 'bass');
     if (treble.length > 0 && bass.length > 0) {
-      return {
-        parts: [
-          ...pickStack(treble, limit, avoid, random),
-          ...pickStack(bass, limit, avoid, random),
-        ],
-      };
+      return [
+        ...pickStack(treble, limit, avoid, random),
+        ...pickStack(bass, limit, avoid, random),
+      ];
     }
   }
 
@@ -461,7 +533,7 @@ export function pickNextQuestion(
    */
   const first = pickPart(pool, avoid, random);
   const cungKhuong = pool.filter((p) => p.clef === first.clef);
-  return { parts: pickStack(cungKhuong, limit, avoid, random) };
+  return pickStack(cungKhuong, limit, avoid, random);
 }
 
 export type AnswerOutcome =

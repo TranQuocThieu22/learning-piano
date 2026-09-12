@@ -83,6 +83,15 @@
   gộp chung một chuỗi, tỉ lệ thành hằng số đặt tên trong `staff-anchor.ts`, và nhân tiện bỏ
   quãng 1 và quãng 7 khỏi danh sách chọn (quá xa khuông, kéo theo cả chục dòng kẻ phụ) nên
   nay **không câu nào phải thu nhỏ nữa**.
+- **Hoá biểu đổi ngẫu nhiên mỗi câu, không cho chọn cố định nữa.** Bản đầu cho chọn một trong
+  bảy giọng rồi giữ nguyên; chủ sản phẩm bác ngay: *"hoá biểu phải ngẫu nhiên mỗi lần qua nốt
+  chứ không phải cho chọn cố định"*. Lý do đúng và đáng ghi lại: **chọn cố định thì sau vài câu
+  người học thuộc lòng "đang Sol trưởng" và thôi không nhìn đầu khuông nữa** — mà nhìn hoá biểu
+  rồi nhớ nó chính là kỹ năng cần rèn. Nay hoá biểu đi theo **từng câu** (`DrillQuestion.key`)
+  chứ không theo buổi tập, mỗi câu bốc một giọng khác và né giọng của câu vừa rồi. Kéo theo:
+  kho nốt phải dựng lại theo từng giọng lúc bốc câu (cách viết mỗi nốt phụ thuộc giọng), còn
+  con số hiện cho người học thì gộp kho của cả bảy giọng, vì cả buổi tập thì gặp hết. Tên giọng
+  chỉ hiện **sau** khi trả lời đúng — hiện lúc đang hỏi là làm hộ phần cần rèn.
 - **Và một lỗi thứ hai nữa cũng do bản neo khuông: khuông Pha mất ba dòng kẻ dưới cùng.**
   abcjs bọc ảnh trong một `div` của riêng nó, đặt sẵn `overflow: hidden` với chiều cao đúng
   bằng ảnh **chưa dịch** — phép neo dịch ảnh xuống thì phần thò ra bị cắt lặng lẽ. DOM nói

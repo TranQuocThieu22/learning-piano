@@ -47,14 +47,18 @@ export default async function NoteRecognitionPage() {
             khi tay đã quen với tới.
           </Text>
           <Text size="sm">
-            <b>Hoá biểu — mấy dấu thăng giáng đứng ở đầu khuông.</b> Bản nhạc thật không viết dấu
-            thăng cạnh từng nốt; nó ghi một lần ở đầu khuông rồi coi như bạn nhớ. Chọn giọng ở ô
-            &quot;Hoá biểu&quot; thì bài tập cũng làm đúng như vậy: nốt nằm trong giọng hiện ra
-            <b>không có dấu nào bên cạnh</b>, bạn phải tự nhớ nó là phím đen hay phím trắng. Bắt đầu
-            bằng giọng Đô trưởng (không dấu nào), rồi khi trong bài đang tập gặp giọng nào thì chọn
-            đúng giọng đó. Công tắc &quot;thêm nốt hoá bất thường&quot; là chuyện khác: nó thêm những
-            nốt nằm <i>ngoài</i> hoá biểu, có dấu thăng, giáng hay bình viết ngay cạnh nốt — bản nhạc
-            thật cũng làm thế khi cần một nốt lạ.
+            <b>&quot;Đổi hoá biểu mỗi câu&quot; — mấy dấu thăng giáng đứng ở đầu khuông.</b> Bản nhạc
+            thật không viết dấu thăng cạnh từng nốt; nó ghi một lần ở đầu khuông rồi coi như bạn nhớ.
+            Bật công tắc này thì <b>mỗi câu một giọng khác</b> trong bảy giọng thông dụng, và nốt nằm
+            trong giọng hiện ra <b>không có dấu nào bên cạnh</b> — bạn phải nhìn đầu khuông rồi tự
+            nhớ nó là phím đen hay phím trắng. Cố ý không cho chọn một giọng rồi giữ nguyên: chỉ vài
+            câu là bạn thuộc lòng giọng đó và thôi không nhìn đầu khuông nữa, mà nhìn được hoá biểu
+            mới là thứ cần tập. Đáp án hiện tên giọng sau khi bạn bấm đúng, để đối chiếu lại.
+          </Text>
+          <Text size="sm">
+            <b>&quot;Thêm nốt hoá bất thường&quot; là chuyện khác.</b> Nó thêm những nốt nằm
+            <i>ngoài</i> hoá biểu, có dấu thăng, giáng hay bình viết ngay cạnh nốt — bản nhạc thật
+            cũng làm thế khi cần một nốt lạ. Bật khi trong bài đang tập bắt đầu gặp phím đen.
           </Text>
           <Text size="sm">
             <b>&quot;Cả hai tay&quot; là mức khó nhất.</b> Bản nhạc hiện đủ hai khuông như bản nhạc piano
