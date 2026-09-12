@@ -53,7 +53,7 @@ App **đi tuần tự từng nốt**: nó đợi đúng nốt đang chờ, khôn
 Có hai cách để app nghe được bạn:
 
 - **Qua micro** — cách mặc định. Chỉ cần chiếc điện thoại hay máy tính bảng đặt trên giá nhạc, chạy trên cả iPhone, iPad, Android, với cả đàn cơ lẫn đàn điện. Âm thanh chỉ được xử lý ngay trên máy để nhận ra nốt — không ghi âm, không lưu, không gửi đi đâu.
-- **Qua MIDI** — chính xác tuyệt đối, cho đàn có cổng USB hoặc có Bluetooth. Đàn có Bluetooth thì ghép đôi với máy là xong, không cần dây gì cả; đàn chỉ có cổng USB thì cắm vào điện thoại Android bằng cáp OTG, hoặc vào máy tính. iPhone và iPad chưa nối MIDI được bằng đường nào.
+- **Qua MIDI** — chính xác tuyệt đối, cho đàn có cổng USB hoặc có Bluetooth. Đàn chỉ có cổng USB thì cắm vào điện thoại Android bằng cáp OTG, hoặc vào máy tính. Đàn có Bluetooth thì khỏi dây, nhưng trên Android có một bước mà máy không nói ra: **ghép đôi ở phần Cài đặt chỉ nối được phần tiếng, không nối được MIDI** — phải mở kết nối từ app của hãng đàn (Roland Piano App với đàn Roland) rồi để app đó chạy nền, lúc đó trình duyệt mới thấy đàn. iPhone và iPad chưa nối MIDI được bằng đường nào.
 
 Micro thì tiện nhưng không hoàn hảo, nói trước để bạn khỏi bất ngờ:
 

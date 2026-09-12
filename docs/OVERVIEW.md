@@ -183,7 +183,9 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
     đo trên máy thật** — xem Giai đoạn D của `lo-trinh-phat-trien.md`. Mã ở
     `src/lib/mic-*.ts`.
   - **MIDI:** chính xác tuyệt đối. Nối bằng **dây** (điện thoại cần cáp OTG) hoặc bằng
-    **Bluetooth** nếu đàn có — cả hai đi qua cùng một API nên mã không phân biệt. Chạy trên
+    **Bluetooth** nếu đàn có — cả hai đi qua cùng một API nên mã không phân biệt. Riêng Bluetooth
+    trên Android: ghép đôi ở Cài đặt **chỉ nối phần tiếng**; phải có một app gọi
+    `MidiManager.openBluetoothDevice()` (app của hãng đàn) thì đàn mới hiện ra cho trình duyệt. Chạy trên
     **điện thoại và tablet Android** (Chrome/Edge) và máy tính. **Không chạy trên iPhone/iPad**
     — mọi trình duyệt iOS đều dùng WebKit, mà WebKit không có Web MIDI.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).

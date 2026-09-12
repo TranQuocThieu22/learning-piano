@@ -216,8 +216,9 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
           Cắm vào là tự nhận, không cần tải lại trang.
         </Text>
         <Text size="sm" mb="xs">
-          <b>Nối Bluetooth:</b> bật Bluetooth trên đàn, ghép đôi ở phần Cài đặt của máy, rồi
-          bấm <i>Tìm lại đàn</i> bên dưới.
+          <b>Nối Bluetooth trên Android:</b> ghép đôi ở phần Cài đặt là <b>chưa đủ</b> — cách đó
+          chỉ ra tiếng, không ra MIDI. Phải mở kết nối từ <b>app của hãng đàn</b> (đàn Roland thì
+          dùng Roland Piano App), để app đó chạy nền, rồi quay lại đây bấm <i>Tìm lại đàn</i>.
         </Text>
         <Group gap="xs">
           <Button size="xs" variant="light" onClick={input.midi.refresh} data-testid="midi-refresh">

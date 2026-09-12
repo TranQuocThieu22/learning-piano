@@ -1206,6 +1206,36 @@ Luật chung: **gom trùng lặp là việc đáng làm, nhưng mỗi lần gom 
 gom.** Ba bản sao cùng đúng thì xoá hai bản không ai thấy gì; một bản sai lệch thì chỉ test
 mới chỉ ra, vì lỗi kiểu này không ném lỗi mà chỉ trả lời khác đi.
 
+## 35. Bluetooth MIDI trên Android: ghép đôi ở Cài đặt chỉ nối được phần TIẾNG
+
+**Triệu chứng.** Người dùng bật Bluetooth trên đàn Roland FP-30X, ghép đôi ở phần Cài đặt của
+điện thoại, mở trang luyện nhận nốt, chọn *Nối MIDI* — và app báo **"Chưa thấy đàn nào"**. Bấm
+*Tìm lại đàn* cũng không ra gì. Trong Cài đặt Bluetooth thì thấy hai dòng: **"FP-30X Audio"** ghi
+*Đã kết nối*, còn **"FP-30X MIDI"** nằm ở mục *Thiết bị Bluetooth đã lưu* — tức là đã ghép đôi
+nhưng CHƯA kết nối. Không có lỗi nào báo ra.
+
+**Nguyên nhân.** Trên Android, ghép đôi một cây đàn ở Cài đặt chỉ dựng hồ sơ **âm thanh** (A2DP).
+Thiết bị **BLE MIDI** là chuyện khác hẳn: nó chỉ hiện ra cho hệ thống sau khi có một app gọi
+`MidiManager.openBluetoothDevice()`. Khi đã có một app làm việc đó thì đàn xuất hiện như một
+thiết bị MIDI bình thường và **mọi app khác, kể cả trình duyệt, đều thấy** — nhưng trước đó thì
+không ai thấy gì. Trình duyệt không tự mở kết nối BLE hộ, nên `requestMIDIAccess` trả về danh
+sách rỗng, đúng như đang không có đàn nào.
+
+Tài liệu của chính Roland nói rõ điều này theo chiều ngược lại: **đừng ghép đôi MIDI ở phần Cài
+đặt** — nếu máy tự ghép thì xoá đi, và nối từ trong Roland Piano App.
+
+**Cách sửa (phía người học).** Mở kết nối từ **app của hãng đàn** (Roland Piano App với đàn
+Roland), để app đó chạy nền, rồi quay lại web bấm *Tìm lại đàn*.
+
+**Cách sửa (phía mình).** Đừng viết "đàn có Bluetooth thì ghép đôi là xong" — câu đó đã lên
+production một lần và người dùng kẹt đúng ở đó. Chỗ nào nói tới Bluetooth cũng phải nói kèm bước
+mở kết nối bằng app. Muốn bỏ hẳn app trung gian thì phải tự nối BLE bằng **Web Bluetooth** và tự
+đọc gói BLE-MIDI, chứ không dùng được Web MIDI — đó là một tính năng riêng, chưa làm.
+
+**Bài học chung.** Một API trả về danh sách rỗng không có nghĩa là "không có thiết bị" — có thể
+là "thiết bị có đó nhưng chưa ai mở cửa cho nó". Trước khi viết hướng dẫn kết nối cho người
+dùng, **thử trên máy thật**; ở đây chỉ có một dòng chữ sai mà người dùng mất cả buổi tối.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1214,6 +1244,7 @@ mới chỉ ra, vì lỗi kiểu này không ném lỗi mà chỉ trả lời kh
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `fix: Sửa hướng dẫn nối Bluetooth — ghép đôi ở Cài đặt chỉ ra tiếng, không ra MIDI` | Thêm bẫy 35 — trên Android, BLE MIDI chỉ hiện ra sau khi một app gọi `MidiManager.openBluetoothDevice()`, nên ghép đôi ở Cài đặt xong vẫn "chưa thấy đàn nào"; ghi kèm chuyện hướng dẫn sai đã lên production một lần vì viết mà chưa thử trên máy thật |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Ghi vào bẫy 28 lý do `abcjs` bị ghim đúng `6.7.0` không có `^`: bẫy 28-33 đều bám vào chi tiết bên trong thư viện, mà chi tiết đó đổi thì cả năm lệnh kiểm vẫn xanh và chỉ bản nhạc trên màn hình là sai. Sửa tên file cho khớp: `AbcjsViewer.tsx` nay là `SheetViewer.tsx`, phần vá `SynthControllerInternals` dời sang `src/hooks/useSheetAudio.ts` |
 | 12/09/2026 | `refactor: Gộp bốn kho nhớ và ba hàm phím đen về một chỗ, kèm quy ước viết mã` | Thêm bẫy 34 — đổi tên biến trùng tên hàm vừa import làm `key.chromatic?.[pitchClass]` tra bảng bằng hàm, nốt Si giáng lặng lẽ hiện thành La thăng mà `tsc` và lint đều xanh; ghi kèm luật mỗi lần gom trùng lặp phải có test chạy qua chỗ gom |
 | 12/09/2026 | `fix: Vẽ lại khuông nhạc khi xoay máy, và tô lại con trỏ ngay sau mỗi lần vẽ` | Thêm bẫy 32 và 33, cả hai đều là lỗi im lặng gặp trên máy thật. Bẫy 32: vẽ theo số đo px thì phải tự theo dõi kích thước bằng `ResizeObserver`, không thì xoay máy là bản nhạc giữ nguyên cỡ hướng cũ rồi bị cắt. Bẫy 33: tô màu lên phần tử do thư viện vẽ mà để trong một hiệu ứng riêng thì hai danh sách phụ thuộc phải khớp nhau đời đời — đã hỏng ba lần vì đúng lý do đó, nên chuyển thành gọi thẳng ở cuối chỗ vẽ |
