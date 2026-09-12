@@ -33,3 +33,17 @@ export const slugSchema = z
 
 /** Ghi chú admin gõ tay. Chặn trên để không ai nhét megabyte vào cột text. */
 export const noteSchema = z.string().trim().max(500).catch('');
+
+/**
+ * Hai lựa chọn của nút phản hồi cuối bài.
+ *
+ * Đúng hai, và đừng thêm mức thứ ba kiểu "tạm được": cái giá của một cú chạm
+ * phải bằng không thì người đang bí mới chạm. Ba lựa chọn là bắt người ta cân
+ * nhắc, mà cân nhắc thì họ đóng tab.
+ *
+ * Danh sách hợp lệ chốt ở đây chứ không ở cột database: cột để `text` vì suốt
+ * beta không được đổi kiểu (mục 7 `quy-trinh-lam-viec.md`).
+ */
+export const feedbackVerdictSchema = z.enum(['ok', 'stuck']);
+
+export type FeedbackVerdict = z.infer<typeof feedbackVerdictSchema>;

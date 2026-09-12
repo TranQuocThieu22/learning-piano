@@ -31,6 +31,9 @@ export default async function AdminLayout({
           <NavAnchor href="/admin/payments" size="sm" c="blue">
             Thanh toán
           </NavAnchor>
+          <NavAnchor href="/admin/feedback" size="sm" c="blue">
+            Phản hồi
+          </NavAnchor>
           <NavAnchor href="/admin/docs" size="sm" c="blue">
             Tài liệu
           </NavAnchor>

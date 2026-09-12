@@ -4,6 +4,7 @@ import { db } from '@/db';
 import {
   entitlements,
   lessonCompletions,
+  lessonFeedback,
   orders,
   payments,
   users,
@@ -207,5 +208,37 @@ export async function listOrders(limit = 100): Promise<AdminOrderRow[]> {
     .from(orders)
     .leftJoin(users, eq(users.id, orders.userId))
     .orderBy(desc(orders.createdAt))
+    .limit(limit);
+}
+
+/**
+ * Một bài học kèm số phiếu phản hồi, xếp bài bị kêu khó nhiều nhất lên đầu.
+ *
+ * Đây là bảng để trả lời đúng một câu: **viết lại bài nào trước.** Nên xếp theo
+ * số phiếu `stuck` chứ không theo tỷ lệ: tỷ lệ 100% của một bài có đúng một
+ * phiếu trông đáng sợ hơn 40% của bài có hai mươi phiếu, trong khi bài thứ hai
+ * mới là bài đang chặn nhiều người.
+ */
+export interface AdminFeedbackRow {
+  lessonSlug: string;
+  stuck: number;
+  ok: number;
+  lastAt: Date;
+}
+
+export async function listLessonFeedback(limit = 200): Promise<AdminFeedbackRow[]> {
+  return db
+    .select({
+      lessonSlug: lessonFeedback.lessonSlug,
+      stuck: sql<number>`count(*) filter (where ${lessonFeedback.verdict} = 'stuck')::int`,
+      ok: sql<number>`count(*) filter (where ${lessonFeedback.verdict} = 'ok')::int`,
+      lastAt: sql<Date>`max(${lessonFeedback.updatedAt})`,
+    })
+    .from(lessonFeedback)
+    .groupBy(lessonFeedback.lessonSlug)
+    .orderBy(
+      desc(sql`count(*) filter (where ${lessonFeedback.verdict} = 'stuck')`),
+      desc(sql`max(${lessonFeedback.updatedAt})`)
+    )
     .limit(limit);
 }

@@ -3,6 +3,8 @@ import { MarkdownViewer } from '@/components/MarkdownViewer';
 import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { LessonTickButton } from '@/components/LessonTickButton';
+import { LessonFeedback } from '@/components/LessonFeedback';
+import { getLessonFeedback } from '@/lib/feedback-actions';
 import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
@@ -42,6 +44,13 @@ export default async function Page({ params }: { params: Promise<{ category: str
    */
   const isPathStep = category === '02-chapters' || category === '03-exercises';
 
+  /*
+   * Phản hồi chỉ hỏi ở các bước trên đường đi, cùng chỗ với nút tick: đó là phần
+   * giáo trình mà cổng Giai đoạn A đang đo (bao nhiêu người đi hết Chương 1). Bài
+   * đọc thêm và bài hát không nằm trên đường đó, hỏi ở đấy chỉ loãng số liệu.
+   */
+  const feedback = isPathStep ? await getLessonFeedback(slug) : null;
+
   // Cổng chặn nội dung trả phí. Kiểm ở server và KHÔNG gửi nội dung xuống khi
   // chưa có quyền — làm mờ ở client là khoá giả, ai xem mã nguồn cũng đọc được.
   // Tính một lần rồi dùng cho cả cổng chặn lẫn tiêu đề bài phía dưới.
@@ -67,6 +76,13 @@ export default async function Page({ params }: { params: Promise<{ category: str
               signedIn={Boolean(session?.user)}
               variant="card"
               label={category === '02-chapters' ? 'Đã đọc xong chương này' : 'Đã học xong bài này'}
+            />
+          )}
+          {isPathStep && (
+            <LessonFeedback
+              lessonSlug={slug}
+              initialVerdict={feedback}
+              signedIn={Boolean(session?.user)}
             />
           )}
           <LessonNav {...stepNeighbors(slug)} />

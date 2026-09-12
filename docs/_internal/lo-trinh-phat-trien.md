@@ -71,6 +71,14 @@ Mọi con số về sau phải nói rõ đang ở tầng nào của phễu. Tr�
 | **T6 — Hoàn thành Giai đoạn 1** | Tick xong bài cuối Chương 6 | `lesson_completion` |
 | **T7 — Giới thiệu** | Khách mới nói do người cũ giới thiệu | Hỏi lúc mua |
 
+**Vì sao dừng — đo bằng `lesson_feedback` (thêm 12/09/2026).** Bảy tầng ở trên đo được
+người học dừng **ở đâu**, không đo được **vì sao**. Mà cổng Giai đoạn A lại đòi phỏng vấn
+người bỏ giữa chừng, trong khi chính họ là nhóm không trả lời tin nhắn và không điền form.
+Nút một chạm ở cuối mỗi bài (*Bài này ổn* / *Chỗ này tôi chưa hiểu*) là thứ phản hồi duy
+nhất lấy được từ nhóm đó; đọc ở `/admin/feedback`, bài bị kêu khó nhiều nhất xếp trên.
+Cố ý **không có ô nhập chữ**: chữ viết tay quý hơn, nhưng cái ô trống làm người đang bí bỏ
+luôn cả cú chạm — và cú chạm mới là thứ đang thiếu.
+
 **Chỉ số quyết định vẫn là T3 → T4** (mục 8 của `dinh-huong-kinh-doanh.md`): trong
 20-30 người học thật đầu tiên, bao nhiêu người đi hết Chương 1. Dưới một nửa thì vấn đề
 nằm ở **sản phẩm**, và chưa được tiêu một đồng quảng cáo nào.
@@ -369,6 +377,7 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Nút phản hồi một chạm ở cuối mỗi bài, và bảng đọc phản hồi ở khu quản trị` | Mục 2 thêm cách đo **vì sao** người học dừng, thứ bảy tầng phễu không đo được: bảng `lesson_feedback` và nút một chạm cuối bài. Ghi rõ vì sao không có ô nhập chữ — người bỏ cuộc không viết gì, và ô trống làm họ bỏ luôn cú chạm |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào Giai đoạn D mục nghe tiếng đàn qua micro — ban đầu ghi là hướng cần thử, cùng ngày chủ sản phẩm chốt làm luôn nên ghi thành đã làm, kèm số đo trên tiếng tổng hợp, giới hạn đã biết, và thứ tự đo trên máy thật vì chưa có con số nào từ điện thoại đặt cạnh đàn thật. Micro là đường duy nhất tìm được để iPhone/iPad và đàn cơ cũng tập với đàn được mà vẫn ở trên web. Thêm vào mục 8 hai lối đã cân nhắc cho iPhone (app bọc web, trình duyệt riêng) và vì sao xếp sau micro |
 | 11/09/2026 | `docs: Chốt điện thoại và tablet là thiết bị chính của người học` | Thêm vào Giai đoạn D việc phải đo tỷ lệ người học dùng iOS trước khi đầu tư vào lớp MIDI — người học chủ yếu tập bằng điện thoại, mà iPhone/iPad không có Web MIDI, nên điểm khác biệt này có thể chỉ tới được một phần người học |
 | 28/08/2026 | `fix: Tắt nhiễu NOTICE của script baseline và cập nhật bảng trạng thái` | Bảng mục 1 vẫn ghi "Chưa có" cho trang mua và khoá nội dung dù cả hai đã chạy từ lâu — kiểm lại trong mã rồi sửa, và tách ra dòng riêng cho thứ thật sự còn thiếu là trang bán hàng cho người lạ |
