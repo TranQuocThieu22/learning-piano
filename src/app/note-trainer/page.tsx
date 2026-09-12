@@ -99,9 +99,10 @@ export default async function NoteRecognitionPage() {
             Phòng càng yên thì máy nghe càng chuẩn.
           </Text>
           <Text size="sm">
-            <b>Nối dây MIDI</b> — chính xác tuyệt đối, dành cho đàn có cổng USB: cắm vào điện thoại
-            Android bằng cáp OTG (Chrome hoặc Edge), hoặc vào máy tính. iPhone và iPad chưa nối dây
-            được — dùng micro là đủ.
+            <b>Nối MIDI</b> — chính xác tuyệt đối, dành cho đàn có cổng USB hoặc có Bluetooth.
+            Đàn có Bluetooth thì ghép đôi là xong, không cần dây; đàn chỉ có cổng USB thì cắm vào
+            điện thoại Android bằng cáp OTG (Chrome hoặc Edge), hoặc vào máy tính. iPhone và iPad
+            chưa nối MIDI được bằng đường nào — dùng micro là đủ.
           </Text>
           <Text size="sm" c="dimmed">
             Đây là công cụ hỗ trợ, không phải phần bắt buộc của giáo trình. Không dùng tới nó thì bạn

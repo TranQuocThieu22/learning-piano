@@ -12,7 +12,8 @@ import type { HeardEvent } from '@/lib/mic-listener';
  *   và cả đàn cơ không có cổng cắm. Là cách mặc định, vì người học tập bằng điện
  *   thoại đặt trên giá nhạc (xem AGENTS.md).
  * - `midi` — nối dây USB MIDI. Chính xác tuyệt đối và nhanh hơn, nhưng chỉ chạy trên
- *   Android và máy tính, và cần đàn có cổng cắm cùng cáp OTG.
+ *   Android và máy tính. Đàn nối vào bằng dây (điện thoại cần cáp OTG) hoặc bằng Bluetooth
+ *   — cả hai đều hiện ra qua cùng một API nên phần mã không phân biệt.
  */
 export type PianoInputMode = 'mic' | 'midi';
 

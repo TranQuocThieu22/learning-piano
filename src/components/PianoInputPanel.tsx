@@ -51,7 +51,7 @@ export function PianoInputChooser({
               onClick={input.chooseMidi}
               data-testid="choose-midi"
             >
-              Nối dây MIDI
+              Nối MIDI
             </Button>
           )}
         </Group>
@@ -60,8 +60,9 @@ export function PianoInputChooser({
         </Text>
         {input.midiSupported && (
           <Text size="xs" c="dimmed">
-            Dây MIDI: chính xác tuyệt đối, dành cho đàn có cổng USB — cắm vào điện thoại Android
-            bằng cáp OTG, hoặc vào máy tính.
+            MIDI: chính xác tuyệt đối, dành cho đàn có cổng USB hoặc có Bluetooth — nối
+            Bluetooth thì không cần dây, cắm dây thì cần cáp OTG. Cả hai đường đều chạy trên
+            Android và máy tính.
           </Text>
         )}
       </Stack>
@@ -173,10 +174,11 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
 
   if (status === 'unsupported') {
     return (
-      <Alert color="orange" title="Máy này chưa nối dây MIDI được">
+      <Alert color="orange" title="Máy này chưa nối MIDI được">
         <Text size="sm" mb="xs">
-          Nối dây chạy trên điện thoại Android (Chrome, Edge) và máy tính. iPhone và iPad chưa hỗ trợ —
-          dùng micro là đủ.
+          Nối MIDI — cả bằng dây lẫn bằng Bluetooth — chạy trên điện thoại Android (Chrome, Edge)
+          và máy tính. iPhone và iPad chưa hỗ trợ, và đó là giới hạn của trình duyệt trên iOS chứ
+          không phải của cây đàn — dùng micro là đủ.
         </Text>
         {switchButton}
       </Alert>
@@ -209,10 +211,20 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
   if (devices.length === 0) {
     return (
       <Alert color="yellow" title="Chưa thấy đàn nào">
-        <Text size="sm" mb="xs">
-          Kiểm tra dây USB (điện thoại cần cáp OTG) và bật nguồn đàn. Cắm vào là tự nhận, không cần tải lại trang.
+        <Text size="sm" mb={4}>
+          <b>Nối bằng dây:</b> kiểm tra dây USB (điện thoại cần cáp OTG) và bật nguồn đàn.
+          Cắm vào là tự nhận, không cần tải lại trang.
         </Text>
-        {switchButton}
+        <Text size="sm" mb="xs">
+          <b>Nối Bluetooth:</b> bật Bluetooth trên đàn, ghép đôi ở phần Cài đặt của máy, rồi
+          bấm <i>Tìm lại đàn</i> bên dưới.
+        </Text>
+        <Group gap="xs">
+          <Button size="xs" variant="light" onClick={input.midi.refresh} data-testid="midi-refresh">
+            Tìm lại đàn
+          </Button>
+          {switchButton}
+        </Group>
       </Alert>
     );
   }

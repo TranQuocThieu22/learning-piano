@@ -26,6 +26,15 @@ export interface UseMidiInputResult {
   selectedDeviceId: string | null;
   selectDevice: (id: string) => void;
   connect: () => void;
+  /**
+   * Dò lại danh sách đàn.
+   *
+   * Cắm dây thì `onstatechange` tự báo, nhưng **nối Bluetooth thì không chắc**:
+   * người học thường ghép đôi đàn ở phần Cài đặt của máy trong lúc trang đang mở,
+   * và đường báo đó có thể tới muộn hoặc không tới. Một cái nút bấm được luôn rẻ
+   * hơn là bảo người ta tải lại trang.
+   */
+  refresh: () => void;
   /** Các phím đang được giữ, dùng để hiện phản hồi tức thời. */
   heldNotes: number[];
 }
@@ -86,6 +95,13 @@ export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void
       });
   }, [refreshDevices]);
 
+  /** Đọc lại danh sách từ quyền đã xin; chưa xin thì xin luôn. */
+  const refresh = useCallback(() => {
+    const access = accessRef.current;
+    if (access) refreshDevices(access);
+    else connect();
+  }, [connect, refreshDevices]);
+
   // Chỉ lắng nghe đúng thiết bị đang chọn, và luôn gỡ trình xử lý cũ trước.
   useEffect(() => {
     const access = accessRef.current;
@@ -133,6 +149,7 @@ export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void
     selectedDeviceId,
     selectDevice: setSelectedDeviceId,
     connect,
+    refresh,
     heldNotes,
   };
 }

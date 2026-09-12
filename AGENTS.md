@@ -45,7 +45,7 @@ dẫn về nó.
   1. **Kiểm trên khung điện thoại trước**, cả dọc lẫn xoay ngang (xoay ngang chỉ còn khoảng 360px chiều cao). Máy tính kiểm sau, để chắc là không vỡ.
   2. **Hai tư thế cầm máy, thiết kế cho cả hai.** Đọc bài lúc rảnh thì cầm một tay, ngón cái bấm. Lúc tập thì máy nằm trên giá nhạc cách mắt nửa sải tay, hai tay đang ở trên phím đàn — bản nhạc phải đọc được từ khoảng cách đó, nút phải to và ít bước, không bắt gõ chữ.
   3. **Chữ cho người học không giả định máy tính** — không viết "trên máy tính", "bấm chuột", "cắm vào máy tính" như thể đó là cách duy nhất.
-  4. **Web MIDI chạy trên Android (Chrome, Edge, cần cáp OTG) và máy tính, không chạy trên iPhone/iPad** — mọi trình duyệt trên iOS đều dùng WebKit, mà WebKit không có Web MIDI. Vì vậy **micro là cách nối mặc định**, MIDI đứng thứ hai. Tính năng nghe đàn nào cũng phải có cả hai đường, và không bài học nào được bắt buộc phải cho app nghe đàn.
+  4. **Web MIDI chạy trên Android (Chrome, Edge) và máy tính, không chạy trên iPhone/iPad**. Đàn nối vào bằng **dây** (điện thoại cần cáp OTG) hoặc bằng **Bluetooth MIDI** nếu đàn có — cả hai đều hiện ra qua cùng `requestMIDIAccess`, nên mã không phân biệt; Bluetooth chỉ thêm khoảng 15-40ms trễ, không đáng kể vì app cố ý không chấm thời gian thực — mọi trình duyệt trên iOS đều dùng WebKit, mà WebKit không có Web MIDI. Vì vậy **micro là cách nối mặc định**, MIDI đứng thứ hai. Tính năng nghe đàn nào cũng phải có cả hai đường, và không bài học nào được bắt buộc phải cho app nghe đàn.
 
 # Định hướng kinh doanh
 

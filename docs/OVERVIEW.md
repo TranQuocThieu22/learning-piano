@@ -182,9 +182,10 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
     ghi âm. Mới đo trên tiếng tổng hợp (~92% nốt nghe đúng khi tập theo bản nhạc), **chưa
     đo trên máy thật** — xem Giai đoạn D của `lo-trinh-phat-trien.md`. Mã ở
     `src/lib/mic-*.ts`.
-  - **Dây MIDI:** chính xác tuyệt đối. Chạy trên **điện thoại và tablet Android**
-    (Chrome/Edge, cáp OTG) và máy tính. **Không chạy trên iPhone/iPad** — mọi trình duyệt
-    iOS đều dùng WebKit, mà WebKit không có Web MIDI.
+  - **MIDI:** chính xác tuyệt đối. Nối bằng **dây** (điện thoại cần cáp OTG) hoặc bằng
+    **Bluetooth** nếu đàn có — cả hai đi qua cùng một API nên mã không phân biệt. Chạy trên
+    **điện thoại và tablet Android** (Chrome/Edge) và máy tính. **Không chạy trên iPhone/iPad**
+    — mọi trình duyệt iOS đều dùng WebKit, mà WebKit không có Web MIDI.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).
 
 **Thanh toán:** đã có phần backend — bảng `payment_order` / `payment_received` /
@@ -322,6 +323,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Nối đàn qua Bluetooth MIDI, khỏi cần dây` | Nói rõ MIDI nối được bằng cả dây lẫn Bluetooth — chỗ này trước chỉ ghi "dây MIDI, cáp OTG", đọc vào tưởng bắt buộc phải có dây, trong khi đàn có Bluetooth thì ghép đôi là chạy |
 | 12/09/2026 | `refactor: Hai bài luyện cũng đi qua cửa abcjs, không component nào gọi thẳng nữa` | Sơ đồ thư mục thêm `hooks/` và nói rõ bốn cửa duy nhất gọi abcjs — để người sửa sau biết đụng vào thư viện vẽ nhạc là đụng vào đâu, thay vì lần theo import trong từng component |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Đổi tên `AbcjsViewer` thành `SheetViewer` trong sơ đồ thư mục: component không còn mang tên thư viện vẽ nhạc, vì abcjs nay nằm sau hai hook `useSheetRender` / `useSheetAudio` chứ không nằm trong component |
 | 12/09/2026 | `feat: Luyện tai — app phát một câu, người học mò trên đàn thật` | Bảng các trang thêm `/ear-trainer` — chiều ngược lại của `/note-trainer`, dạy tai → tay thay vì mắt → tay |
