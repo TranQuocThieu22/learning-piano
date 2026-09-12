@@ -9,9 +9,10 @@ import {
 import { IconArrowsMaximize, IconArrowsMinimize } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import {
-  answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart,
-  DrillQuestion, Hands, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel,
-  octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, QuestionLength, questionAbc,
+  answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote, DRILL_PRESETS, DrillOptions,
+  DrillPart, DrillQuestion, Hands, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion,
+  octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, presetOf, QuestionLength,
+  questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
@@ -251,6 +252,19 @@ export function NoteRecognitionDrill() {
    * hình, nên trông chờ vào API đó thì phần lớn người học không được gì.
    */
   const [focused, setFocused] = useState(false);
+
+  /**
+   * Đang mở bảng chọn chi tiết hay không.
+   *
+   * Giữ trong state chứ không suy từ lựa chọn: bấm *Tuỳ chọn* thì chỉ **mở bảng
+   * ra**, không đổi gì cả — người học chọn mức Khó rồi muốn chỉnh đúng một ô thì
+   * phải giữ nguyên phần còn lại. Suy ra thì bấm Tuỳ chọn lúc đang khớp một mức
+   * sẽ chẳng có gì xảy ra.
+   *
+   * Mở sẵn khi lựa chọn đã lưu không khớp mức nào — người từng tự chỉnh thì lần
+   * sau mở app phải thấy lại đúng chỗ họ đang chỉnh dở.
+   */
+  const [hienChiTiet, setHienChiTiet] = useState(() => presetOf(DEFAULT_OPTIONS) === null);
   /** Điện thoại dựng đứng — nơi bề ngang chặn cứng, xoay ngang mới là lời giải. */
   const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
 
@@ -316,6 +330,16 @@ export function NoteRecognitionDrill() {
   const [shownFor, setShownFor] = useState(options);
   if (shownFor !== options) {
     setShownFor(options);
+    /*
+     * Lựa chọn không khớp mức nào thì MỞ bảng chi tiết ra.
+     *
+     * Chỗ này chạy cả lúc hydrate xong và lựa chọn đã lưu thay cho mặc định —
+     * mà đó chính là ca đã sai: người từng tự chỉnh, mở lại app thì chip ghi
+     * "Tuỳ chọn" trong khi bảng chi tiết vẫn đóng, nên không có đường nào nhìn
+     * lại thứ mình đang chỉnh dở. Bấm một mức dựng sẵn thì `presetOf` khớp nên
+     * không tự mở, đúng ý.
+     */
+    if (presetOf(options) === null) setHienChiTiet(true);
     setCurrent(pickNextQuestion(options, null));
     setCollected([]);
     setBeatIndex(0);
@@ -742,7 +766,60 @@ export function NoteRecognitionDrill() {
   return (
     <Stack gap="lg">
       <Card withBorder padding="md" data-testid="drill-options">
-        <Text size="sm" fw={500} mb={6}>Tập tay nào</Text>
+        {/*
+          Bốn mức dựng sẵn đứng TRÊN CÙNG, và bảng chi tiết chỉ mở khi bấm
+          *Tuỳ chọn*. Trước đây tám ô chọn bày ra cùng lúc ngay khi mở trang:
+          người mới không có cách nào biết nên bật cái nào trước, nên hoặc để
+          nguyên mặc định mãi, hoặc bật đại một thứ quá sức rồi tưởng mình dốt.
+
+          Dùng Chip chứ không dùng SegmentedControl: năm mục trên khung 320px thì
+          thanh phân đoạn bóp chữ đến mức không đọc nổi, còn chip thì tự xuống dòng.
+        */}
+        <Text size="sm" fw={500} mb={6}>Mức độ</Text>
+        <Chip.Group
+          multiple={false}
+          value={hienChiTiet ? 'tuy-chon' : (presetOf(options)?.id ?? 'tuy-chon')}
+          onChange={(value) => {
+            if (value === 'tuy-chon') {
+              setHienChiTiet(true);
+              return;
+            }
+            const preset = DRILL_PRESETS.find((p) => p.id === value);
+            if (!preset) return;
+            setHienChiTiet(false);
+            applyOptions(preset.options);
+          }}
+        >
+          <Group gap={6}>
+            {DRILL_PRESETS.map((preset) => (
+              <Chip key={preset.id} value={preset.id} size="sm" data-testid={`preset-${preset.id}`}>
+                {preset.label}
+              </Chip>
+            ))}
+            <Chip value="tuy-chon" size="sm" data-testid="preset-tuy-chon">
+              Tuỳ chọn
+            </Chip>
+          </Group>
+        </Chip.Group>
+        <Text size="xs" c="dimmed" mt={6} data-testid="preset-hint">
+          {hienChiTiet
+            ? 'Tự chỉnh từng thứ bên dưới. Chọn lại một mức ở trên là quay về bộ dựng sẵn.'
+            : (presetOf(options)?.hint ?? '')}
+        </Text>
+
+        {/* Hình đàn hiện cả lúc dùng mức dựng sẵn: nó không phải ô chọn, nó là
+            câu trả lời cho "mức này tập những phím nào trên đàn". */}
+        <Box mt="md">
+          <OctaveKeyboard
+            activeMidis={activeMidis}
+            selectedOctaves={options.octaves}
+            selectableOctaves={selectableOctaves}
+          />
+        </Box>
+
+        {hienChiTiet && (
+        <>
+        <Text size="sm" fw={500} mt="md" mb={6}>Tập tay nào</Text>
         <SegmentedControl
           className="drill-hands-picker"
           fullWidth
@@ -755,11 +832,6 @@ export function NoteRecognitionDrill() {
         <Text size="sm" fw={500} mt="md" mb={6}>
           Quãng nào <Text span size="xs" c="dimmed">— chọn được nhiều quãng, vùng chọn hiện lên hình đàn</Text>
         </Text>
-        <OctaveKeyboard
-          activeMidis={activeMidis}
-          selectedOctaves={options.octaves}
-          selectableOctaves={selectableOctaves}
-        />
         {/*
           Nút chọn nằm DƯỚI hình đàn, không phải chạm thẳng lên đàn: xem lý do ở
           `OctaveKeyboard`. Nhãn nút trùng đúng nhãn ghi trên hình, để nhìn nút là
@@ -887,6 +959,9 @@ export function NoteRecognitionDrill() {
           description="Nốt nằm NGOÀI hoá biểu, có dấu thăng, giáng hoặc bình viết ngay cạnh nốt — bản nhạc thật cũng làm thế khi cần một nốt lạ."
           data-testid="accidentals-switch"
         />
+
+        </>
+        )}
 
         <Text size="xs" c="dimmed" mt="md" data-testid="pool-size">
           Đang tập <b>{pool.length}</b> nốt

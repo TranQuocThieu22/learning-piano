@@ -302,16 +302,128 @@ export const MAX_PER_STAFF = 4;
 /** Nốt cao nhất của thế tay 5 ngón, tính từ nốt Đô của quãng: Đô-Rê-Mi-Pha-Sol. */
 const FIVE_FINGER_SEMITONES = 7;
 
-export const DEFAULT_OPTIONS: DrillOptions = {
-  hands: 'right',
-  octaves: [4],
-  fiveFinger: true,
-  accidentals: false,
-  notesPerQuestion: 'one',
-  maxPerStaff: 1,
-  randomKeys: false,
-  questionLength: 'one',
-};
+/**
+ * Bốn mức khó dựng sẵn, cộng đường tự chỉnh.
+ *
+ * **Vì sao cần:** bảng chọn có tám thứ nhân với nhau, và người mới không có cách
+ * nào biết nên bật cái nào trước. Tám ô chọn bày ra cùng lúc thì hoặc là họ để
+ * nguyên mặc định mãi, hoặc bật đại một thứ quá sức rồi thấy mình dốt. Bốn cái
+ * nút thì trả lời được ngay câu "giờ tôi nên tập cái gì".
+ *
+ * **Thang khó bám theo lộ trình giáo trình**, không phải bịa ra cho đủ bốn mức:
+ *
+ * | Mức | Ứng với | Bước khó thêm |
+ * |---|---|---|
+ * | Dễ | hết Chương 1 | thế tay 5 ngón, một tay, một khoá |
+ * | Trung bình | hết Chương 2-3 | **hai khuông** — phải đọc nốt nằm ở khuông nào |
+ * | Khó | hết Chương 4-6 | **cả ô nhịp**, **hoá biểu đổi mỗi câu**, nốt nhảy xa |
+ * | Rất khó | hết Chương 7 | **chồng nốt như hợp âm**, nốt hoá bất thường, cả đàn |
+ *
+ * Mỗi mức chỉ thêm hai tới ba thứ so với mức dưới. Thêm một thứ thì bốn mức
+ * không đủ trải hết tám ô chọn; thêm năm thứ thì bước nhảy nào cũng hụt hơi.
+ */
+export interface DrillPreset {
+  id: string;
+  label: string;
+  /** Một dòng nói mức này khó ở chỗ nào, viết cho người học. */
+  hint: string;
+  options: DrillOptions;
+}
+
+export const DRILL_PRESETS: DrillPreset[] = [
+  {
+    id: 'de',
+    label: 'Dễ',
+    hint: 'Tay phải, năm nốt Đô–Sol quanh Đô giữa, mỗi câu một nốt. Đây là đúng tầm của Chương 1.',
+    options: {
+      hands: 'right',
+      octaves: [4],
+      fiveFinger: true,
+      accidentals: false,
+      notesPerQuestion: 'one',
+      maxPerStaff: 1,
+      randomKeys: false,
+      questionLength: 'one',
+    },
+  },
+  {
+    id: 'trung-binh',
+    label: 'Trung bình',
+    hint: 'Cả hai khuông và trọn bảy nốt Đô–Si. Việc mới ở đây là đọc xem nốt nằm ở khuông trên hay khuông dưới — thứ bản nhạc piano nào cũng bắt làm.',
+    options: {
+      hands: 'both',
+      octaves: [3, 4],
+      fiveFinger: false,
+      accidentals: false,
+      notesPerQuestion: 'one',
+      maxPerStaff: 1,
+      randomKeys: false,
+      questionLength: 'one',
+    },
+  },
+  {
+    id: 'kho',
+    label: 'Khó',
+    hint: 'Đọc cả ô nhịp 4/4 thay vì một nốt, hoá biểu đổi mỗi câu, và nốt nhảy qua bốn quãng. Mắt phải đi tới, và phải nhớ hoá biểu suốt cả ô.',
+    options: {
+      hands: 'both',
+      octaves: [2, 3, 4, 5],
+      fiveFinger: false,
+      accidentals: false,
+      notesPerQuestion: 'mixed',
+      maxPerStaff: 1,
+      randomKeys: true,
+      questionLength: 'bar',
+    },
+  },
+  {
+    id: 'rat-kho',
+    label: 'Rất khó',
+    hint: 'Thêm chồng nốt như hợp âm, nốt hoá bất thường, và cả năm quãng đọc được. Gần nhất với một bản nhạc thật mà bài luyện này làm được.',
+    options: {
+      hands: 'both',
+      octaves: [2, 3, 4, 5, 6],
+      fiveFinger: false,
+      accidentals: true,
+      notesPerQuestion: 'both',
+      maxPerStaff: MAX_PER_STAFF,
+      randomKeys: true,
+      questionLength: 'bar',
+    },
+  },
+];
+
+/**
+ * Mặc định là mức Dễ.
+ *
+ * Trỏ thẳng vào bảng mức chứ không chép lại giá trị: chép thì sửa mức Dễ mà quên
+ * sửa mặc định, và người mở app lần đầu rơi vào một bộ lựa chọn không mức nào
+ * nhận — bảng mức hiện "Tuỳ chọn" ngay từ giây đầu.
+ */
+export const DEFAULT_OPTIONS: DrillOptions = DRILL_PRESETS[0].options;
+
+/**
+ * Lựa chọn hiện tại khớp mức nào, `null` nếu không khớp mức nào.
+ *
+ * Suy ra chứ KHÔNG lưu riêng tên mức: lưu riêng thì hai thứ lệch nhau được —
+ * người học chỉnh tay một ô rồi mở lại app vẫn thấy ghi "Khó" trong khi lựa chọn
+ * đã khác hẳn.
+ */
+export function presetOf(options: DrillOptions): DrillPreset | null {
+  return DRILL_PRESETS.find((p) => sameOptions(p.options, options)) ?? null;
+}
+
+function sameOptions(a: DrillOptions, b: DrillOptions): boolean {
+  const quang = (o: DrillOptions) => [...o.octaves].sort((x, y) => x - y).join(',');
+  return a.hands === b.hands
+    && quang(a) === quang(b)
+    && a.fiveFinger === b.fiveFinger
+    && a.accidentals === b.accidentals
+    && a.notesPerQuestion === b.notesPerQuestion
+    && a.maxPerStaff === b.maxPerStaff
+    && a.randomKeys === b.randomKeys
+    && a.questionLength === b.questionLength;
+}
 
 export function clefsFor(hands: Hands): ClefName[] {
   if (hands === 'right') return ['treble'];

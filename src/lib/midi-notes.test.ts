@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
-  DrillOptions, DrillPart, DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES, MAX_PER_STAFF,
-  noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion,
-  questionAbc,
+  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES,
+  MAX_PER_STAFF, noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
+  pickNextQuestion, presetOf, questionAbc,
 } from './midi-notes';
 
 /** Lựa chọn dựng nhanh cho test, khỏi phải khai đủ năm trường mỗi lần. */
@@ -595,6 +595,89 @@ describe('questionAbc — ô nhịp 4/4', () => {
       ],
     };
     expect(questionAbc(q)).toContain('[CE] F G A|');
+  });
+});
+
+/*
+ * Bốn mức khó dựng sẵn. Thứ dễ hỏng nhất ở đây không phải logic mà là **một mức
+ * khai ra bộ lựa chọn không dùng được** — chọn quãng không đọc được ở khoá đang
+ * bật chẳng hạn — vì lúc đó màn hình trống trơn mà không có lỗi nào báo.
+ */
+describe('mức khó dựng sẵn', () => {
+  it('mặc định chính là mức đầu tiên, không phải một bộ riêng', () => {
+    expect(DEFAULT_OPTIONS).toBe(DRILL_PRESETS[0].options);
+    expect(presetOf(DEFAULT_OPTIONS)?.id).toBe('de');
+  });
+
+  it('mức nào cũng có mã, nhãn và một dòng nói khó ở chỗ nào', () => {
+    for (const p of DRILL_PRESETS) {
+      expect(p.id, p.label).toMatch(/^[a-z-]+$/);
+      expect(p.label.length, p.id).toBeGreaterThan(0);
+      expect(p.hint.length, p.id).toBeGreaterThan(20);
+    }
+    expect(new Set(DRILL_PRESETS.map((p) => p.id)).size).toBe(DRILL_PRESETS.length);
+  });
+
+  /*
+   * Quãng phải đọc được ở khoá đang bật. Khai bừa thì kho nốt rỗng và bài luyện
+   * hiện "chưa có nốt nào để hỏi" ngay khi bấm vào mức đó.
+   */
+  it('mức nào cũng ra được câu hỏi, và mọi quãng đều dùng được với tay đã chọn', () => {
+    for (const p of DRILL_PRESETS) {
+      const hopLe = octavesFor(p.options.hands);
+      for (const o of p.options.octaves) expect(hopLe, `${p.id}: quãng ${o}`).toContain(o);
+      expect(notePoolForOptions(p.options).length, p.id).toBeGreaterThan(0);
+      expect(pickNextQuestion(p.options, null, () => 0.3), p.id).not.toBeNull();
+    }
+  });
+
+  it('mỗi mức tự nhận ra chính nó, và không mức nào trùng mức khác', () => {
+    for (const p of DRILL_PRESETS) expect(presetOf(p.options)?.id).toBe(p.id);
+  });
+
+  it('thứ tự quãng không làm lệch việc nhận mức', () => {
+    const kho = DRILL_PRESETS.find((p) => p.id === 'kho')!;
+    const daoNguoc = { ...kho.options, octaves: [...kho.options.octaves].reverse() };
+    expect(presetOf(daoNguoc)?.id).toBe('kho');
+  });
+
+  it('chỉnh tay một ô là không còn khớp mức nào', () => {
+    expect(presetOf({ ...DEFAULT_OPTIONS, accidentals: true })).toBeNull();
+    expect(presetOf({ ...DEFAULT_OPTIONS, octaves: [4, 5] })).toBeNull();
+    expect(presetOf({ ...DEFAULT_OPTIONS, maxPerStaff: 2 })).toBeNull();
+  });
+
+  /*
+   * Thang khó phải ĐI LÊN THẬT. Không có ca này thì một lần sửa mức Khó cho "dễ
+   * thở hơn" là thang đảo lộn mà chẳng ai nhận ra — nhãn vẫn ghi Khó.
+   */
+  it('kho nốt của mức sau không bao giờ nhỏ hơn mức trước', () => {
+    const co = DRILL_PRESETS.map((p) => notePoolForOptions(p.options).length);
+    for (let i = 1; i < co.length; i++) {
+      expect(co[i], DRILL_PRESETS[i].id).toBeGreaterThanOrEqual(co[i - 1]);
+    }
+  });
+
+  it('mức khó dần theo từng thứ đã bật, không mức nào lùi lại', () => {
+    const diem = (o: DrillOptions) => [
+      o.hands === 'both' ? 1 : 0,
+      o.fiveFinger ? 0 : 1,
+      o.randomKeys ? 1 : 0,
+      o.accidentals ? 1 : 0,
+      o.questionLength === 'bar' ? 1 : 0,
+      o.maxPerStaff > 1 ? 1 : 0,
+    ];
+    for (let i = 1; i < DRILL_PRESETS.length; i++) {
+      const truoc = diem(DRILL_PRESETS[i - 1].options);
+      const sau = diem(DRILL_PRESETS[i].options);
+      for (let k = 0; k < truoc.length; k++) {
+        expect(sau[k], `${DRILL_PRESETS[i].id}, trục ${k}`).toBeGreaterThanOrEqual(truoc[k]);
+      }
+    }
+  });
+
+  it('mức Rất khó dùng tới trần chồng nốt, không để thừa mức nào', () => {
+    expect(DRILL_PRESETS.at(-1)!.options.maxPerStaff).toBe(MAX_PER_STAFF);
   });
 });
 
