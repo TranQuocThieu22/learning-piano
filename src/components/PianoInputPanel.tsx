@@ -282,10 +282,24 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
           <b>Nối bằng dây:</b> kiểm tra dây USB (điện thoại cần cáp OTG) và bật nguồn đàn.
           Cắm vào là tự nhận, không cần tải lại trang.
         </Text>
-        <Text size="sm" mb="xs">
-          <b>Đàn có Bluetooth:</b> bấm <i>Nối thẳng qua Bluetooth</i> bên dưới rồi chọn đàn trong
-          danh sách. Không cần dây, không cần app của hãng đàn. Trên đàn nhớ bật Bluetooth MIDI.
-        </Text>
+        {ble.supported ? (
+          <Text size="sm" mb="xs">
+            <b>Đàn có Bluetooth:</b> bấm <i>Nối thẳng qua Bluetooth</i> bên dưới rồi chọn đàn
+            trong danh sách. Không cần dây, không cần app của hãng đàn. Trên đàn nhớ bật Bluetooth
+            MIDI. Danh sách hiện mọi thiết bị quanh đó, nên chọn đúng dòng có tên đàn.
+          </Text>
+        ) : (
+          /*
+           * Nói ra vì sao không có nút, thay vì để người học nhìn một ô thông báo
+           * thiếu mất một lựa chọn mà không hiểu tại sao. Trên iPhone và iPad thì
+           * đây là câu trả lời cuối cùng: WebKit không có Web Bluetooth.
+           */
+          <Text size="sm" mb="xs">
+            <b>Đàn có Bluetooth:</b> trình duyệt này không nối Bluetooth được (thiếu Web
+            Bluetooth). Trên Android hãy dùng Chrome hoặc Edge; trên iPhone và iPad thì chưa có
+            trình duyệt nào làm được — dùng micro là đủ.
+          </Text>
+        )}
         <Group gap="xs">
           {bleButton}
           <Button size="xs" variant="light" onClick={input.midi.refresh} data-testid="midi-refresh">

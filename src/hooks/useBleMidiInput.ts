@@ -51,9 +51,11 @@ interface BleDevice extends EventTarget {
 }
 interface BluetoothLike {
   requestDevice: (options: {
-    filters: { services: string[] }[];
+    filters?: { services: string[] }[];
+    acceptAllDevices?: boolean;
     optionalServices?: string[];
   }) => Promise<BleDevice>;
+  getAvailability?: () => Promise<boolean>;
 }
 
 function bluetooth(): BluetoothLike | null {
@@ -123,8 +125,21 @@ export function useBleMidiInput(onNoteOn?: (midi: number, velocity: number) => v
     void (async () => {
       try {
         const device = await ble.requestDevice({
-          // Chỉ hiện thiết bị có service MIDI — xem điều 2 ở đầu file.
-          filters: [{ services: [BLE_MIDI_SERVICE] }],
+          /*
+           * **Hiện MỌI thiết bị quanh đó, không lọc theo service MIDI.**
+           *
+           * Bản đầu lọc `filters: [{ services: [BLE_MIDI_SERVICE] }]` và hộp
+           * thoại trống trơn: rất nhiều đàn BLE MIDI **không quảng bá** UUID
+           * service trong gói phát sóng, chúng chỉ để lộ service sau khi đã nối.
+           * Lọc theo thứ đàn không nói ra thì đàn không bao giờ hiện.
+           *
+           * Đổi lại danh sách có cả tai nghe và mấy thứ khác trong phòng, nên
+           * người học phải tự chọn đúng tên đàn. Danh sách hơi rối vẫn hơn danh
+           * sách rỗng. `optionalServices` là bắt buộc: thiếu nó thì nối được
+           * nhưng `getPrimaryService` bị chặn.
+           */
+          acceptAllDevices: true,
+          optionalServices: [BLE_MIDI_SERVICE],
         });
         const gatt = await device.gatt?.connect();
         if (!gatt) throw new Error('Đàn không cho nối');
@@ -160,11 +175,24 @@ export function useBleMidiInput(onNoteOn?: (midi: number, velocity: number) => v
         /*
          * Người học bấm Huỷ ở hộp thoại chọn thiết bị cũng vào đây. Đó không
          * phải lỗi, nên về lại trạng thái ban đầu chứ không báo đỏ.
+         *
+         * Hộp thoại nay hiện mọi thiết bị, nên chọn nhầm tai nghe là chuyện sẽ
+         * xảy ra. Lúc đó `getPrimaryService` không tìm thấy service MIDI — dịch
+         * thành câu người học hiểu được, thay vì để nguyên thông báo tiếng Anh
+         * của trình duyệt.
          */
         const message = err instanceof Error ? err.message : String(err);
-        const daHuy = err instanceof Error && err.name === 'NotFoundError';
+        const daHuy = err instanceof Error && err.name === 'NotFoundError'
+          && /user|cancel/i.test(message);
+        const khongPhaiDan = /service/i.test(message) || err instanceof Error
+          && err.name === 'NotFoundError' && /service/i.test(message);
         setStatus(daHuy ? 'idle' : 'denied');
-        setErrorMessage(daHuy ? null : message);
+        setErrorMessage(
+          daHuy ? null
+            : khongPhaiDan
+              ? 'Thiết bị vừa chọn không phải đàn MIDI, hoặc đàn chưa bật Bluetooth MIDI. Chọn lại đúng tên đàn.'
+              : message,
+        );
       }
     })();
   }, []);
