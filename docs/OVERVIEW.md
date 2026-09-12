@@ -130,6 +130,7 @@ CMS, không có bảng bài học trong database.
 | `/journal` | Chuyển hướng về `/path` (gộp 11/09/2026) |
 | `/metronome` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
 | `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc, đánh trên đàn thật (micro hoặc dây MIDI) |
+| `/ear-trainer` | Bài luyện tai: app phát một câu, người học mò trên đàn thật; app chỉ nói cao hơn / thấp hơn |
 | `/admin`, `/admin/payments` | Quản trị người học và đối soát thanh toán |
 
 **Điều hướng.** Không còn `AppShell`, không còn thanh bên, và từ 10/09/2026 cũng không
@@ -319,6 +320,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Luyện tai — app phát một câu, người học mò trên đàn thật` | Bảng các trang thêm `/ear-trainer` — chiều ngược lại của `/note-trainer`, dạy tai → tay thay vì mắt → tay |
 | 12/09/2026 | `refactor: Gỡ mục Lý thuyết khỏi Mục lục, chương đã có nhà ở Đường đi` | Chốt ranh giới giữa hai trang mục lục: `/path` giữ mọi thứ NẰM TRÊN đường đi, `/library` giữ mọi thứ KHÔNG nằm trên đường đi. Gỡ mục Lý thuyết khỏi `/library` vì liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ — và danh sách ở Mục lục còn không có ô tick, không biết người học đang ở chương nào |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm `/songs` vào bảng đường dẫn — chỗ chơi tách khỏi giáo trình, chỉ chứa nhạc đã hết hạn bảo hộ |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Bảng đường dẫn: thêm `/path` và `/path/[chapter]`, đánh dấu `/exercises` và `/journal` nay chỉ chuyển hướng; sửa dòng theo dõi tiến độ cho khớp chỗ tick mới |

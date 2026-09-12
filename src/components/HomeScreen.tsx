@@ -5,6 +5,7 @@ import {
   IconBook2,
   IconChevronRight,
   IconMusic,
+  IconEar,
   IconMusicSearch,
   IconPlayerPlayFilled,
   IconRoute,
@@ -122,6 +123,15 @@ export function HomeScreen({
       label: 'Luyện nhận nốt',
       hint: 'Vài phút mỗi ngày',
       Icon: IconMusicSearch,
+      section: 'trainer',
+    },
+    {
+      // Đứng ngay cạnh *Luyện nhận nốt*: hai bài là hai chiều của cùng một việc
+      // (mắt → tay và tai → tay), để cạnh nhau thì người học thấy được cặp đó.
+      href: '/ear-trainer',
+      label: 'Luyện tai',
+      hint: 'Nghe rồi mò trên đàn',
+      Icon: IconEar,
       section: 'trainer',
     },
     ...(extraHref
