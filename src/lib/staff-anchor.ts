@@ -13,6 +13,12 @@
  * **Cách sửa:** khung cao cố định, rồi dịch ảnh sao cho **dòng kẻ trên cùng luôn
  * rơi đúng một vị trí**. Nốt nào vẽ ra cao quá khung thì thu nhỏ vừa đủ — thà chữ
  * bé đi một chút còn hơn cắt mất cái nốt đang hỏi, mà cũng còn hơn để khuông nhảy.
+ *
+ * **Cái bẫy nằm ở đây:** abcjs cài tuỳ chọn `scale` bằng chính `style.transform`
+ * của thẻ SVG. Ghi đè thuộc tính đó là **xoá luôn tỉ lệ của abcjs**, và bản nhạc
+ * bị vẽ nhỏ đi đúng bằng ngần ấy lần mà không có lỗi nào báo ra. Nên mọi con số ở
+ * đây tính bằng **px đã nhân tỉ lệ**, và chỗ gọi phải ghi lại cả tỉ lệ của abcjs
+ * trong cùng một chuỗi `transform`.
  */
 
 export interface StaffBox {
@@ -22,16 +28,27 @@ export interface StaffBox {
   anchor: number;
 }
 
-/**
- * Khung cho một khuông nhạc, tỉ lệ 2.
- *
- * Neo ở 95px: đủ chỗ cho nốt cao tới quãng 7 ở khóa Sol (cần 93px dòng kẻ phụ
- * phía trên). Còn lại 125px phía dưới, đủ cho nốt trầm tới quãng 2 ở khóa Pha.
- */
-export const SINGLE_STAFF_BOX: StaffBox = { height: 220, anchor: 95 };
+/** Tỉ lệ vẽ của abcjs. Một khuông thì to, khuông đôi phải nhỏ lại cho vừa màn hình. */
+export const SINGLE_STAFF_SCALE = 2;
+export const GRAND_STAFF_SCALE = 1.25;
 
-/** Khung cho khuông đôi, tỉ lệ 1,25 — hai khuông nên cần cao hơn, mà neo lại nông hơn. */
-export const GRAND_STAFF_BOX: StaffBox = { height: 250, anchor: 62 };
+/**
+ * Khung cho một khuông nhạc.
+ *
+ * Neo ở 100px và cao 240px, chọn theo số đo thật của abcjs ở tỉ lệ 2: nốt cao
+ * nhất trong tầm cho chọn (Si quãng 6) cần 85px dòng kẻ phụ phía trên, nốt trầm
+ * nhất (Đô quãng 2) cần 102px phía dưới. Cả hai đều còn dư chỗ, nên **không câu
+ * nào phải thu nhỏ** — kích thước chữ nhạc giữ nguyên suốt buổi tập.
+ */
+export const SINGLE_STAFF_BOX: StaffBox = { height: 240, anchor: 100 };
+
+/**
+ * Khung cho khuông đôi — hai khuông nên cao hơn, mà neo lại nông hơn.
+ *
+ * Đo trên ca chật nhất (hai khuông, hợp âm ba nốt, quãng 2 tới quãng 6): còn thừa
+ * khoảng 20px. Hạ xuống nữa là chạm vào chỗ phải thu nhỏ.
+ */
+export const GRAND_STAFF_BOX: StaffBox = { height: 275, anchor: 72 };
 
 export interface StaffTransform {
   scale: number;

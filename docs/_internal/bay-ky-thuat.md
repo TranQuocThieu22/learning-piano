@@ -932,10 +932,13 @@ dòng kẻ trên cùng luôn rơi đúng một chỗ**:
 
 ```ts
 const ink = svg.getBBox();
-const topLineY = svg.querySelector('.abcjs-top-line').getBBox().y;
-const { scale, translateY } = anchorTransform(box, topLineY, ink.y, ink.y + ink.height);
-svg.style.transformOrigin = 'top center';
-svg.style.transform = `translateY(${translateY}px) scale(${scale})`;
+const topLineY = svg.querySelector('.abcjs-top-line').getBBox().y * abcScale;
+const { scale, translateY } = anchorTransform(
+  box, topLineY, ink.y * abcScale, (ink.y + ink.height) * abcScale,
+);
+svg.style.transformOrigin = '0 0';
+// Phải ghi lại CẢ tỉ lệ của abcjs trong chuỗi này — xem bẫy 28.
+svg.style.transform = `translateY(${translateY}px) scale(${abcScale * scale})`;
 ```
 
 Luật tính nằm ở `src/lib/staff-anchor.ts`, có test riêng. Ảnh nào cao quá khung thì thu nhỏ
@@ -955,6 +958,97 @@ chắc đã chốt vào lúc mã của mình chạy.
 
 ---
 
+## 28. Ghi `style.transform` lên ảnh abcjs là xoá luôn tỉ lệ, bản nhạc bé đi một nửa
+
+**Triệu chứng.** Sau bản sửa ở bẫy 27, khuông nhạc **đứng yên đúng như mong muốn** — nhưng
+chữ nhạc bé đi thấy rõ, nốt đọc từ giá nhạc cách nửa sải tay thì phải nheo mắt. Không có lỗi
+nào trong console, năm lệnh kiểm xanh hết, test của `staff-anchor.ts` cũng xanh vì luật tính
+neo vẫn đúng. Bản bé một nửa này **đã nằm trên production** từ commit
+`fix: Neo khuông nhạc đứng yên, không nhảy theo cao độ nốt` cho tới lần sửa sau đó.
+
+**Nguyên nhân.** Tuỳ chọn `scale` của abcjs **không phải** thuộc tính `width`/`height` hay
+`viewBox` của SVG. abcjs cài nó bằng đúng một dòng `style` nội tuyến trên thẻ SVG:
+
+```html
+<svg style="transform: scale(2,2); transform-origin: 0px 0px" ...>
+```
+
+Nên `svg.style.transform = 'translateY(...)'` **ghi đè thẳng lên chỗ đó**. Tỉ lệ 2 biến mất,
+ảnh vẽ ở tỉ lệ 1 — đúng một nửa. Không có lỗi nào báo ra vì về mặt DOM thì chẳng có gì sai
+cả: mình ghi một `transform` hợp lệ lên một thẻ SVG hợp lệ.
+
+Hai chuyện đi kèm làm nó khó thấy:
+
+- **Tất cả các số đo vẫn "hợp lý".** Dòng kẻ vẫn được neo đúng chỗ, khuông vẫn đứng yên,
+  chỉ là mọi thứ nhỏ đi cùng một tỉ lệ nên nhìn ảnh chụp riêng lẻ không ai nhận ra.
+- **`getBBox()` trả về đơn vị TRƯỚC khi nhân tỉ lệ.** Nghĩa là lúc bản sửa đang xoá tỉ lệ,
+  các con số đo được lại đúng khớp với ảnh đã bị thu nhỏ, nên phép neo vẫn ra kết quả đẹp.
+  Sửa xong mới phải nhân `abcScale` vào cả ba số đo.
+
+**Cách sửa.** Gộp cả hai phép biến hình vào một chuỗi, và dùng đúng gốc toạ độ `0 0` của
+abcjs (để `top center` thì ảnh còn xê ngang):
+
+```ts
+svg.style.transformOrigin = '0 0';
+svg.style.transform = `translateY(${translateY}px) scale(${abcScale * scale})`;
+```
+
+Tỉ lệ của abcjs nay là hằng số đặt tên trong `src/lib/staff-anchor.ts`
+(`SINGLE_STAFF_SCALE`, `GRAND_STAFF_SCALE`) chứ không còn viết thẳng vào lời gọi
+`renderAbc`, để chỗ tính neo và chỗ vẽ không thể lệch nhau nữa.
+
+**Vì sao năm lệnh kiểm không bắt được, và cái gì bắt được.** Đây là lỗi *nhìn thấy*, không
+phải lỗi *chạy sai*: không có khẳng định nào để vi phạm. Thứ bắt được nó là **đo kích thước
+thật trên trình duyệt thật** — mở trang bằng Playwright rồi đọc `getBoundingClientRect()`
+của ảnh SVG và so với chiều cao khung. Từ nay hễ đụng vào chỗ vẽ bản nhạc thì đo cả **ba
+số**: vị trí dòng kẻ trên cùng (phải đứng yên), chiều cao khung (phải cố định), và **bề rộng
+nét vẽ** (phải giữ nguyên qua các câu) — số thứ ba chính là số phát hiện ra bẫy này.
+
+**Bài học chung.** Thư viện nào cũng có thể cài đặt một tuỳ chọn của nó bằng chính thuộc
+tính DOM mình đang định ghi đè. Trước khi ghi `style.*` lên phần tử do thư viện tạo ra,
+**đọc xem nó đang để sẵn cái gì ở đó** — một dòng `console.log(el.getAttribute('style'))` là
+đủ, và rẻ hơn nhiều so với việc bản production chạy sai suốt mấy ngày.
+
+---
+
+## 29. abcjs bọc ảnh trong `div` có `overflow: hidden`, dịch ảnh xuống là mất dòng kẻ
+
+**Triệu chứng.** Khuông đôi vẽ ra **thiếu ba dòng kẻ dưới cùng của khuông Pha**: còn mỗi khóa
+Pha và hai dòng kẻ, phần dưới trắng trơn. Không có lỗi nào báo ra, và **DOM nói mọi thứ đều
+bình thường** — đủ mười thẻ `path` dòng kẻ, `visibility: visible`, `opacity: 1`, toạ độ nằm
+gọn trong khung. Chỉ ảnh chụp màn hình mới thấy thiếu.
+
+**Nguyên nhân.** `renderAbc` không đặt ảnh SVG thẳng vào thẻ mình đưa cho nó: nó **bọc thêm
+một `div` của riêng nó**, và đặt inline lên `div` đó `overflow: hidden` cùng `height` đúng
+bằng chiều cao ảnh **chưa dịch**. Phép neo ở bẫy 27 dịch ảnh xuống mấy chục px, nên phần thò
+ra khỏi chiều cao ấy bị `div` kia cắt — cắt lặng lẽ, vì cắt bằng `overflow` thì phần tử vẫn
+còn nguyên trong DOM với đúng toạ độ của nó.
+
+Chỗ này là chỗ dễ mất nhiều thời gian nhất: mọi phép đo trong DOM đều nói "vẽ rồi, nằm đúng
+chỗ rồi". Muốn tìm ra thì phải **đi ngược cây cha mẹ từ thẻ SVG lên**, đọc `overflow` và
+chiều cao của từng đời, rồi so với vị trí đã dịch.
+
+**Cách sửa.** Sau mỗi lần vẽ (abcjs ghi lại thuộc tính này mỗi lần) thì trả nó về `visible`:
+
+```ts
+paper.style.overflow = 'visible';
+```
+
+Chỗ cắt thật lúc đó là cái khung ngoài do mình đặt — đúng như phép neo giả định.
+
+**Bài học chung, cùng một họ với bẫy 28.** Thư viện vẽ đồ hoạ hay **để lại inline style trên
+những thẻ nó tự tạo ra**, và hai thứ hay gặp nhất là `transform` (bẫy 28) với `overflow` +
+`height` (bẫy này). Cả hai đều không phá lúc mình mới ghi đè, chỉ phá về sau khi nội dung
+đổi. Nên mỗi khi phải dịch hay phóng thứ do thư viện vẽ: đọc inline style của chính thẻ đó
+**và của cả cây cha mẹ tới thẻ mình đưa cho thư viện**, trước khi ghi.
+
+**Cách kiểm rẻ nhất cho cả nhóm lỗi này: đếm dòng kẻ trên ẢNH CHỤP.** Năm dòng cho một
+khuông, mười dòng cho khuông đôi — đếm số hàng pixel đen chạy ngang gần hết bề ngang ảnh.
+Phép đếm này bắt được cả cắt mất, cả vẽ nhỏ đi, cả vẽ đè lên nhau; DOM thì không nói được gì
+về cả ba.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -963,6 +1057,7 @@ chắc đã chốt vào lúc mã của mình chạy.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Dấu hoá đứng ở hoá biểu đầu khuông, và bản nhạc to lại như cũ` | Thêm bẫy 28 và 29 — abcjs cài tuỳ chọn `scale` bằng chính `style.transform` của thẻ SVG, lại còn bọc ảnh trong một `div` `overflow: hidden` cao đúng bằng ảnh chưa dịch nên khuông Pha mất ba dòng kẻ dưới cùng, nên bản sửa neo khuông ở bẫy 27 đã âm thầm xoá tỉ lệ và cho production chạy bản nhạc bé một nửa mấy ngày; ghi kèm chuyện `getBBox` trả về đơn vị trước khi nhân tỉ lệ, và ba số phải đo lại mỗi lần đụng vào chỗ vẽ bản nhạc |
 | 12/09/2026 | `fix: Neo khuông nhạc đứng yên, không nhảy theo cao độ nốt` | Thêm bẫy 27 — abcjs vẽ ảnh cao vừa nội dung nên khuông nhạc trôi mỗi câu một chỗ; kèm chuyện đo bằng `getBoundingClientRect` lệch 7px vì lúc effect chạy trang chưa xếp xong chỗ, phải đo bằng `getBBox` trong hệ toạ độ của chính ảnh SVG |
 | 12/09/2026 | `fix: Chọn quãng bằng nút bấm, hình đàn chỉ bôi vùng đang tập` | Thêm bẫy 26 — chạm vào hình SVG có chữ trên Android làm kính lúp chọn chữ nhảy ra che nửa màn hình, và `pointer-events: none` trên thẻ `text` không cứu được; ghi kèm bài học lớn hơn là đừng bắt người học chạm thẳng vào hình vẽ để chọn |
 | 11/09/2026 | `fix: Sửa nốt sai của Für Elise và thêm bản nâng cao hai tay cho mọi bài hát` | Thêm bẫy 25 — dấu hoá trong ABC có hiệu lực tới hết ô nhịp nên nốt Rê của Für Elise phát ra Rê thăng trong khi bản nhạc nhìn vẫn đúng; ghi kèm cách đọc cao độ thật bằng `getMidiFile` thay vì đọc lại chuỗi ABC bằng mắt, và vì sao nhạc viết tay cần test gác riêng |

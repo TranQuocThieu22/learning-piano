@@ -48,55 +48,136 @@ function partKey(part: DrillPart): string {
 }
 
 /**
- * Cách viết của từng phím trong một quãng tám.
+ * Hoá biểu — mấy dấu thăng giáng đứng ngay sau khoá nhạc.
  *
- * **Phím đen có hai cách viết mà chỉ chọn được một.** Mi giáng hay Rê thăng là
- * cùng một phím; cách viết đúng phụ thuộc giọng của bản nhạc, mà bài luyện này
- * không có bản nhạc nào cả. Nên chốt lấy cách hay gặp nhất trong giáo trình sơ
- * cấp: thăng cho Đô, Pha, Sol (giọng Sol, Rê trưởng); giáng cho Mi, Si (giọng
- * Pha, Si giáng trưởng). Người học gặp cách viết kia trong bài thật thì vẫn là
- * phím đó — chỗ này chỉ dạy tay tìm phím, không dạy chính tả hoà thanh.
+ * **Vì sao phải có, thay vì dán dấu hoá cạnh từng nốt:** bản nhạc thật không viết
+ * thế. Giọng Sol trưởng ghi một dấu thăng ở đầu khuông, rồi mọi nốt Pha trong bài
+ * đều là Pha thăng mà không có dấu nào bên cạnh. Đọc được điều đó là một kỹ năng
+ * riêng, và là kỹ năng người học sẽ cần ngay khi mở một bản nhạc bất kỳ.
+ *
+ * Bảy giọng dưới đây đủ dùng cho Giai đoạn 1-2: từ không dấu tới ba dấu mỗi bên.
+ * Thứ tự dấu thăng là Pha-Đô-Sol-Rê, thứ tự dấu giáng là Si-Mi-La-Rê.
  */
-const PITCH_SPELLING: { letter: string; accidental: '' | '^' | '_'; name: string; symbol: string }[] = [
-  { letter: 'C', accidental: '', name: 'Đô', symbol: 'C' },
-  { letter: 'C', accidental: '^', name: 'Đô thăng', symbol: 'C♯' },
-  { letter: 'D', accidental: '', name: 'Rê', symbol: 'D' },
-  { letter: 'E', accidental: '_', name: 'Mi giáng', symbol: 'E♭' },
-  { letter: 'E', accidental: '', name: 'Mi', symbol: 'E' },
-  { letter: 'F', accidental: '', name: 'Pha', symbol: 'F' },
-  { letter: 'F', accidental: '^', name: 'Pha thăng', symbol: 'F♯' },
-  { letter: 'G', accidental: '', name: 'Sol', symbol: 'G' },
-  { letter: 'G', accidental: '^', name: 'Sol thăng', symbol: 'G♯' },
-  { letter: 'A', accidental: '', name: 'La', symbol: 'A' },
-  { letter: 'B', accidental: '_', name: 'Si giáng', symbol: 'B♭' },
-  { letter: 'B', accidental: '', name: 'Si', symbol: 'B' },
+export interface KeySignature {
+  id: string;
+  /** Giá trị cho dòng `K:` của ABC. */
+  abc: string;
+  label: string;
+  /** Chữ cái nào bị hoá sẵn, và hoá lên hay xuống. */
+  alter: Record<string, number>;
+  /** Giọng thăng hay giọng giáng — quyết cách viết nốt hoá bất thường. */
+  prefersSharp: boolean;
+  /**
+   * Cách viết riêng cho từng phím đen, khi `prefersSharp` là chưa đủ.
+   *
+   * Giọng Đô trưởng không nghiêng về bên nào, nhưng giáo trình sơ cấp vẫn có
+   * thói quen: **thăng cho Đô, Pha, Sol; giáng cho Mi, Si**. Đó là cách năm phím
+   * đen hay được gọi tên nhất khi chưa nói tới giọng nào.
+   */
+  chromatic?: Record<number, 1 | -1>;
+}
+
+export const KEY_SIGNATURES: KeySignature[] = [
+  {
+    id: 'C',
+    abc: 'C',
+    label: 'Đô trưởng — không dấu',
+    alter: {},
+    prefersSharp: true,
+    chromatic: { 1: 1, 3: -1, 6: 1, 8: 1, 10: -1 },
+  },
+  { id: 'G', abc: 'G', label: 'Sol trưởng — 1 thăng', alter: { F: 1 }, prefersSharp: true },
+  { id: 'D', abc: 'D', label: 'Rê trưởng — 2 thăng', alter: { F: 1, C: 1 }, prefersSharp: true },
+  { id: 'A', abc: 'A', label: 'La trưởng — 3 thăng', alter: { F: 1, C: 1, G: 1 }, prefersSharp: true },
+  { id: 'F', abc: 'F', label: 'Pha trưởng — 1 giáng', alter: { B: -1 }, prefersSharp: false },
+  { id: 'Bb', abc: 'Bb', label: 'Si giáng trưởng — 2 giáng', alter: { B: -1, E: -1 }, prefersSharp: false },
+  { id: 'Eb', abc: 'Eb', label: 'Mi giáng trưởng — 3 giáng', alter: { B: -1, E: -1, A: -1 }, prefersSharp: false },
 ];
+
+export function findKey(id: string): KeySignature {
+  return KEY_SIGNATURES.find((k) => k.id === id) ?? KEY_SIGNATURES[0];
+}
+
+const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const;
+const LETTER_SEMITONE: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
+const LETTER_NAME: Record<string, string> = {
+  C: 'Đô', D: 'Rê', E: 'Mi', F: 'Pha', G: 'Sol', A: 'La', B: 'Si',
+};
 
 /** Phím đen: đúng năm cái trong mỗi quãng tám. */
 export function isBlackKey(midi: number): boolean {
-  return PITCH_SPELLING[((midi % 12) + 12) % 12].accidental !== '';
+  return [1, 3, 6, 8, 10].includes(((midi % 12) + 12) % 12);
+}
+
+/** Dấu quãng tám của ABC, bám theo CHỮ CÁI chứ không theo phím. */
+function abcLetter(letter: string, octave: number): string {
+  let out = octave >= 5 ? letter.toLowerCase() : letter;
+  if (octave >= 6) out += "'".repeat(octave - 5);
+  if (octave <= 3) out += ','.repeat(4 - octave);
+  return out;
 }
 
 /**
- * Dựng một nốt từ số MIDI.
+ * Dựng một nốt từ số MIDI, viết theo hoá biểu đang dùng.
  *
- * Chỗ dễ sai: **dấu quãng tám trong ABC bám theo CHỮ CÁI, không bám theo phím.**
- * Si giáng quãng 3 viết là `_B,` — dấu phẩy thuộc về chữ B. Tính quãng tám từ
- * `midi` rồi mới ghép dấu thì tự khắc đúng, kể cả với nốt giáng.
+ * Thứ tự ưu tiên khi chọn cách viết — đúng thứ tự một người chép nhạc nghĩ:
+ *
+ * 1. **Nốt đã nằm sẵn trong hoá biểu** thì viết trơn, không dấu gì bên cạnh. Đây
+ *    là cả điểm của hoá biểu: giọng Sol trưởng thì mọi nốt Pha là Pha thăng.
+ * 2. **Nốt trắng mà hoá biểu có hoá chữ cái đó** thì phải ghi **dấu bình** — ví
+ *    dụ Pha thường trong giọng Sol trưởng viết là `=F`.
+ * 3. Còn lại là nốt hoá bất thường: giọng thăng viết dấu thăng, giọng giáng viết
+ *    dấu giáng. Chép nhạc thật cũng theo thói quen đó.
+ *
+ * Chỗ dễ sai: **dấu quãng tám bám theo chữ cái, không theo phím.** Si giáng quãng
+ * 3 viết là `_B,` — dấu phẩy thuộc về chữ B.
  */
-export function noteAt(midi: number): DrillNote {
-  const spelling = PITCH_SPELLING[((midi % 12) + 12) % 12];
-  const octave = Math.floor(midi / 12) - 1;
+export function noteAt(midi: number, key: KeySignature = KEY_SIGNATURES[0]): DrillNote {
+  const pitchClass = ((midi % 12) + 12) % 12;
 
-  let letter = octave >= 5 ? spelling.letter.toLowerCase() : spelling.letter;
-  if (octave >= 6) letter += "'".repeat(octave - 5);
-  if (octave <= 3) letter += ','.repeat(4 - octave);
+  /** Mọi cách viết ra đúng phím này, kèm thứ hạng ưu tiên — nhỏ hơn là hợp hơn. */
+  const cachViet = LETTERS.flatMap((letter) => [0, 1, -1].map((alter) => {
+    if ((LETTER_SEMITONE[letter] + alter + 12) % 12 !== pitchClass) return null;
+    const cuaGiong = key.alter[letter] ?? 0;
+    if (alter === cuaGiong) return { letter, alter, hang: 0 };
+    if (alter === 0) return { letter, alter, hang: 1 };
+    const quenViet = key.chromatic?.[pitchClass] ?? (key.prefersSharp ? 1 : -1);
+    if (alter === quenViet) return { letter, alter, hang: 2 };
+    return { letter, alter, hang: 3 };
+  })).filter((c) => c !== null);
+
+  const chon = cachViet.sort((a, b) => a.hang - b.hang)[0];
+  const cuaGiong = key.alter[chon.letter] ?? 0;
+
+  /*
+   * Quãng tám tính theo CHỮ CÁI, không tính thẳng từ số MIDI. Si giáng quãng 3
+   * mang số MIDI 58; lấy 58 chia ra thì vẫn ra quãng 3, nhưng trừ đi dấu giáng
+   * trước rồi mới chia mới đúng với mọi trường hợp.
+   */
+  const octave = Math.floor((midi - chon.alter) / 12) - 1;
+
+  /*
+   * Dấu viết cạnh nốt. Nốt đã nằm trong hoá biểu thì KHÔNG có dấu nào — đó là cả
+   * điểm của hoá biểu. Nốt trắng mà hoá biểu có hoá chữ cái đó thì phải ghi dấu
+   * bình, không thì người đọc vẫn hiểu là nốt đã hoá.
+   */
+  const dauCanhNot = chon.alter === cuaGiong ? ''
+    : chon.alter === 1 ? '^'
+      : chon.alter === -1 ? '_'
+        : '=';
+
+  const ten = chon.alter === 1 ? `${LETTER_NAME[chon.letter]} thăng`
+    : chon.alter === -1 ? `${LETTER_NAME[chon.letter]} giáng`
+      : LETTER_NAME[chon.letter];
+  const kyHieu = chon.alter === 1 ? `${chon.letter}♯`
+    : chon.alter === -1 ? `${chon.letter}♭`
+      : chon.letter;
 
   return {
     midi,
-    abc: spelling.accidental + letter,
-    name: spelling.name,
-    scientific: `${spelling.symbol}${octave}`,
+    abc: dauCanhNot + abcLetter(chon.letter, octave),
+    name: ten,
+    scientific: `${kyHieu}${octave}`,
   };
 }
 
@@ -107,11 +188,17 @@ export function noteAt(midi: number): DrillNote {
  * còn Đô quãng 1 ở khóa Sol cũng vậy. Người học tập đọc nốt chứ không tập đếm
  * dòng kẻ phụ, nên quãng nào khóa đó không đọc nổi thì ẩn hẳn khỏi bàn phím chọn.
  *
+ * **Hai quãng rìa đàn (1 và 7) cũng bỏ luôn**, kể cả ở khóa đọc được chúng: Si
+ * quãng 7 phải kẻ chín dòng kẻ phụ, vẽ ra cao gấp rưỡi khuông nhạc nên hoặc bị
+ * cắt hoặc phải thu nhỏ — mà thu nhỏ thì kích thước chữ nhạc lại nhảy mỗi câu
+ * một kiểu, đúng cái vừa sửa xong. Chúng vẫn hiện trên hình bàn phím, chỉ là
+ * không chọn được.
+ *
  * Quãng 4 — quãng của Đô giữa — thuộc về cả hai khóa, đúng như trên bản nhạc thật.
  */
 export const OCTAVES_BY_CLEF: Record<ClefName, number[]> = {
-  treble: [4, 5, 6, 7],
-  bass: [1, 2, 3, 4],
+  treble: [4, 5, 6],
+  bass: [2, 3, 4],
 };
 
 export interface DrillOptions {
@@ -125,8 +212,13 @@ export interface DrillOptions {
    * đứng yên một chỗ, không phải với. Tắt đi thì lấy trọn bảy nốt Đô–Si.
    */
   fiveFinger: boolean;
-  /** Có đưa phím đen vào không. */
+  /**
+   * Có đưa **nốt hoá bất thường** vào không — phím đen nằm ngoài hoá biểu, viết
+   * dấu ngay cạnh nốt như bản nhạc thật vẫn làm.
+   */
   accidentals: boolean;
+  /** Hoá biểu: mấy dấu thăng giáng đứng ở đầu khuông. Xem `KEY_SIGNATURES`. */
+  keyId: string;
   /**
    * Mỗi câu hỏi mấy nốt. Chỉ có nghĩa khi tập cả hai tay.
    *
@@ -161,6 +253,7 @@ export const DEFAULT_OPTIONS: DrillOptions = {
   accidentals: false,
   notesPerQuestion: 'one',
   maxPerStaff: 1,
+  keyId: 'C',
 };
 
 export function clefsFor(hands: Hands): ClefName[] {
@@ -197,6 +290,7 @@ export function octavesFor(hands: Hands): number[] {
  * ra tầm nghe của micro.
  */
 export function notePoolForOptions(options: DrillOptions): DrillPart[] {
+  const key = findKey(options.keyId);
   const seen = new Set<string>();
   const out: DrillPart[] = [];
 
@@ -206,11 +300,20 @@ export function notePoolForOptions(options: DrillOptions): DrillPart[] {
       const first = (octave + 1) * 12;
       const last = first + (options.fiveFinger ? FIVE_FINGER_SEMITONES : 11);
       for (let midi = first; midi <= last; midi++) {
-        if (!options.accidentals && isBlackKey(midi)) continue;
-        const key = `${clef}:${midi}`;
-        if (seen.has(key)) continue;
-        seen.add(key);
-        out.push({ note: noteAt(midi), clef });
+        const note = noteAt(midi, key);
+        /*
+         * Lọc theo CÁCH VIẾT chứ không theo phím trắng đen. Trong giọng Sol
+         * trưởng, Pha thăng là nốt bình thường của giọng — nó nằm trong hoá biểu,
+         * viết trơn không dấu, nên phải có mặt kể cả khi người học tắt nốt hoá
+         * bất thường. Ngược lại, Pha thường trong giọng đó lại là nốt hoá bất
+         * thường (phải ghi dấu bình), dù nó là phím trắng.
+         */
+        const laHoaBatThuong = note.abc.startsWith('^') || note.abc.startsWith('_') || note.abc.startsWith('=');
+        if (!options.accidentals && laHoaBatThuong) continue;
+        const key2 = `${clef}:${midi}`;
+        if (seen.has(key2)) continue;
+        seen.add(key2);
+        out.push({ note, clef });
       }
     }
   }
@@ -228,7 +331,7 @@ export function notePoolForOptions(options: DrillOptions): DrillPart[] {
  * Khuông trống dùng `x` (lặng ẩn) chứ không dùng `z`: dấu lặng vẽ ra giữa khuông
  * trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa gì.
  */
-export function questionAbc(question: DrillQuestion, grandStaff = false): string {
+export function questionAbc(question: DrillQuestion, grandStaff = false, key = KEY_SIGNATURES[0]): string {
   const head = ['X:1', 'L:1/1', 'M:none'];
 
   /*
@@ -246,13 +349,13 @@ export function questionAbc(question: DrillQuestion, grandStaff = false): string
 
   if (!grandStaff) {
     const clef = question.parts[0].clef;
-    return [...head, `K:C clef=${clef}`, noteOn(clef)].join('\n');
+    return [...head, `K:${key.abc} clef=${clef}`, noteOn(clef)].join('\n');
   }
 
   return [
     ...head,
     '%%staves {1 2}',
-    'K:C',
+    `K:${key.abc}`,
     'V:1 clef=treble',
     noteOn('treble'),
     'V:2 clef=bass',

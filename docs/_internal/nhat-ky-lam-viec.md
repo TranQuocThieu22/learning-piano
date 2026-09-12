@@ -69,6 +69,25 @@
   ra 4×2 phần bài, vì quãng quá trầm thì khóa Sol không đọc được và ngược lại. Trước đây app
   im lặng, người dùng đếm thấy hụt và tưởng app nuốt mất nốt. Nay có dòng tách rõ: khóa Sol
   bao nhiêu nốt ở quãng nào, khóa Pha bao nhiêu.
+- **Dấu hoá đứng ở hoá biểu đầu khuông, như bản nhạc thật.** Trước đây mỗi nốt đen mang một
+  dấu thăng/giáng viết ngay cạnh nó — đúng về cao độ nhưng không giống bất cứ bản nhạc nào
+  người học sẽ mở ra. Nay có ô **Hoá biểu** với bảy giọng hay gặp nhất (Đô, Sol, Rê, La,
+  Pha, Si giáng, Mi giáng): dấu đứng ở đầu khuông, nốt trong giọng thì **không có dấu nào
+  bên cạnh** và người học phải tự nhớ — đó mới đúng là kỹ năng đọc bản nhạc. Cái công tắc cũ
+  đổi tên thành **"Thêm nốt hoá bất thường"**, nay nói đúng việc nó làm: thêm nốt nằm *ngoài*
+  hoá biểu, có dấu viết ngay cạnh.
+- **Sửa lỗi bản nhạc bị vẽ nhỏ đi một nửa — lỗi do chính bản sửa hôm nay gây ra.** Bản neo
+  khuông nhạc ghi `svg.style.transform` để dịch ảnh, mà abcjs lại cài tuỳ chọn `scale` bằng
+  đúng thuộc tính đó, nên tỉ lệ 2 bị xoá sạch. Không lỗi nào báo ra, năm lệnh kiểm xanh hết,
+  và bản bé một nửa đã chạy trên production. Ghi thành **bẫy 28**. Nay hai phép biến hình
+  gộp chung một chuỗi, tỉ lệ thành hằng số đặt tên trong `staff-anchor.ts`, và nhân tiện bỏ
+  quãng 1 và quãng 7 khỏi danh sách chọn (quá xa khuông, kéo theo cả chục dòng kẻ phụ) nên
+  nay **không câu nào phải thu nhỏ nữa**.
+- **Và một lỗi thứ hai nữa cũng do bản neo khuông: khuông Pha mất ba dòng kẻ dưới cùng.**
+  abcjs bọc ảnh trong một `div` của riêng nó, đặt sẵn `overflow: hidden` với chiều cao đúng
+  bằng ảnh **chưa dịch** — phép neo dịch ảnh xuống thì phần thò ra bị cắt lặng lẽ. DOM nói
+  đủ mười dòng kẻ, đúng toạ độ, `visible` cả; chỉ ảnh chụp mới thấy thiếu. Ghi thành **bẫy
+  29**.
 
 **Quan sát**
 
@@ -86,6 +105,18 @@
 - **Lại đúng bẫy "đếm số test là chưa đủ".** Hai lần trong một buổi: sửa file test bằng
   script làm mất dấu nháy đóng, file không nạp được, mà dòng tổng vẫn hiện "364 ca pass"
   trông rất bình thường. Chỉ dòng `Test Files 1 failed` mới nói ra.
+- **Bản sửa cho một lỗi nhìn thấy được có thể đẻ ra một lỗi nhìn thấy được khác, và test
+  không đỡ nổi.** Neo khuông xong thì khuông đứng yên thật — chỉ là mọi thứ nhỏ đi cùng một
+  tỉ lệ nên nhìn riêng một ảnh chụp không ai nhận ra. Thứ bắt được nó là đo **bề rộng nét
+  vẽ** trên trình duyệt thật và so giữa các câu. Từ nay đụng vào chỗ vẽ bản nhạc thì đo cả
+  ba số: vị trí dòng kẻ (đứng yên), chiều cao khung (cố định), bề rộng nét vẽ (giữ nguyên).
+- **Trước khi ghi `style.*` lên phần tử do thư viện tạo ra, đọc xem nó đang để sẵn gì ở
+  đó — và đọc cả cây cha mẹ.** Một dòng `console.log(el.getAttribute('style'))` là đủ, và rẻ
+  hơn nhiều so với việc production chạy sai mấy ngày mà không ai biết. Hai lỗi hôm nay đều
+  nằm ở inline style abcjs để lại: một cái trên chính thẻ SVG, một cái trên thẻ bọc ngoài.
+- **Phép kiểm rẻ nhất cho chỗ vẽ bản nhạc là ĐẾM DÒNG KẺ TRÊN ẢNH CHỤP.** Năm dòng cho một
+  khuông, mười cho khuông đôi — đếm hàng pixel đen chạy ngang gần hết ảnh. Nó bắt được cả ba
+  kiểu hỏng (cắt mất, vẽ nhỏ đi, vẽ đè), mà mọi phép đo trong DOM đều nói "bình thường".
 - **Ảnh chụp màn hình của người dùng đáng giá hơn mọi phép đo tự động.** Cục tròn kia không
   bao giờ hiện trên máy tính, không test nào bắt được, và cả trình duyệt chạy tự động cũng
   không tái hiện — vì chuột không có thao tác giữ để chọn chữ. Chỉ một tấm ảnh chụp đúng lúc

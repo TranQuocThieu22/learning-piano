@@ -3,18 +3,21 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import ABCJS from 'abcjs';
 import {
-  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
+  Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Select, Stack, Switch,
+  Text,
 } from '@mantine/core';
 import {
   answerQuestion, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart, DrillQuestion, Hands,
-  MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
-  pickNextQuestion, questionAbc,
+  findKey, KEY_SIGNATURES, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel,
+  octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
-import { anchorTransform, GRAND_STAFF_BOX, SINGLE_STAFF_BOX } from '@/lib/staff-anchor';
+import {
+  anchorTransform, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX, SINGLE_STAFF_SCALE,
+} from '@/lib/staff-anchor';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
@@ -62,6 +65,7 @@ function loadOptions(): DrillOptions {
     const maxPerStaff = typeof saved.maxPerStaff === 'number'
       ? Math.max(1, Math.min(MAX_PER_STAFF, Math.round(saved.maxPerStaff)))
       : 1;
+    const keyId = KEY_SIGNATURES.some((k) => k.id === saved.keyId) ? saved.keyId! : 'C';
     return {
       hands,
       octaves: octaves.length > 0 ? octaves : DEFAULT_OPTIONS.octaves,
@@ -69,6 +73,7 @@ function loadOptions(): DrillOptions {
       accidentals: saved.accidentals === true,
       notesPerQuestion: count,
       maxPerStaff,
+      keyId,
     };
   } catch {
     // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
@@ -135,6 +140,7 @@ export function NoteRecognitionDrill() {
   }), [pool, options.octaves]);
   /** Cả hai tay thì vẽ khuông đôi như bản nhạc piano thật. */
   const grandStaff = options.hands === 'both';
+  const key = useMemo(() => findKey(options.keyId), [options.keyId]);
 
   const [current, setCurrent] = useState<DrillQuestion | null>(
     () => pickNextQuestion(notePoolForOptions(DEFAULT_OPTIONS), null, DEFAULT_OPTIONS),
@@ -295,7 +301,8 @@ export function NoteRecognitionDrill() {
       paper.innerHTML = '';
       return;
     }
-    ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
+    const abcScale = grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE;
+    ABCJS.renderAbc(paper, questionAbc(current, grandStaff, key), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
        * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
@@ -304,7 +311,7 @@ export function NoteRecognitionDrill() {
        * trống bị cắt cũng không mất gì.
        */
       staffwidth: grandStaff ? 190 : 220,
-      scale: grandStaff ? 1.25 : 2,
+      scale: abcScale,
       paddingtop: 8,
       paddingbottom: 8,
       paddingleft: 0,
@@ -316,26 +323,42 @@ export function NoteRecognitionDrill() {
     if (!svg || !topLine) return;
 
     /*
+     * abcjs bọc ảnh trong một thẻ `div` của riêng nó và đặt thẳng
+     * `overflow: hidden` cùng chiều cao đúng bằng ảnh CHƯA dịch. Phép neo bên
+     * dưới dịch ảnh xuống, nên phần thò ra khỏi chiều cao đó bị cắt — mất mấy
+     * dòng kẻ dưới cùng của khuông Pha mà không có lỗi nào báo ra. Trả nó về
+     * `visible` sau mỗi lần vẽ (abcjs ghi lại thuộc tính này mỗi lần); chỗ cắt
+     * thật là cái khung ngoài, đúng như phép neo giả định.
+     */
+    paper.style.overflow = 'visible';
+
+    /*
      * Đo **trong hệ toạ độ của chính ảnh SVG** bằng `getBBox`, không dùng
-     * `getBoundingClientRect`.
+     * `getBoundingClientRect`: toạ độ màn hình phụ thuộc vào chỗ ảnh nằm trong
+     * trang, mà lúc effect chạy thì trang chưa xếp xong chỗ cho nó — đã thử và
+     * lệch 7px.
      *
-     * Đã thử cách kia trước và lệch 7px: toạ độ màn hình phụ thuộc vào chỗ ảnh
-     * nằm trong trang, mà lúc effect chạy thì trang chưa xếp xong chỗ cho nó.
-     * `getBBox` chỉ nói về nét vẽ bên trong ảnh nên đo lúc nào cũng ra một số.
-     * abcjs không đặt `viewBox`, nên một đơn vị trong ảnh đúng bằng một px.
+     * `getBBox` trả về đơn vị TRƯỚC khi nhân tỉ lệ, nên phải nhân `abcScale` vào
+     * mới ra px thật trên màn hình.
      */
     const ink = svg.getBBox();
-    const topLineY = (topLine as SVGGraphicsElement).getBBox().y;
+    const topLineY = (topLine as SVGGraphicsElement).getBBox().y * abcScale;
     const { scale, translateY } = anchorTransform(
       grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX,
       topLineY,
-      ink.y,
-      ink.y + ink.height,
+      ink.y * abcScale,
+      (ink.y + ink.height) * abcScale,
     );
 
-    svg.style.transformOrigin = 'top center';
-    svg.style.transform = `translateY(${translateY}px) scale(${scale})`;
-  }, [current, grandStaff]);
+    /*
+     * **Ghi lại CẢ tỉ lệ của abcjs**, vì abcjs cài tuỳ chọn `scale` bằng chính
+     * `style.transform` này. Chỉ ghi phép dịch là xoá luôn tỉ lệ ấy và bản nhạc
+     * bị vẽ nhỏ đi một nửa mà không có lỗi nào báo ra. Gốc toạ độ để `0 0` cho
+     * khớp với abcjs, không thì ảnh còn xê ngang.
+     */
+    svg.style.transformOrigin = '0 0';
+    svg.style.transform = `translateY(${translateY}px) scale(${abcScale * scale})`;
+  }, [current, grandStaff, key]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
@@ -494,12 +517,24 @@ export function NoteRecognitionDrill() {
           data-testid="five-finger-switch"
         />
 
+        <Select
+          mt="md"
+          label="Hoá biểu"
+          description="Mấy dấu thăng giáng đứng ở đầu khuông, đúng như bản nhạc thật. Nốt nằm trong hoá biểu thì không có dấu nào bên cạnh — phải tự nhớ."
+          value={options.keyId}
+          onChange={(value) => value && applyOptions({ ...options, keyId: value })}
+          data={KEY_SIGNATURES.map((k) => ({ value: k.id, label: k.label }))}
+          allowDeselect={false}
+          comboboxProps={{ withinPortal: false }}
+          data-testid="key-picker"
+        />
+
         <Switch
           mt="sm"
           checked={options.accidentals}
           onChange={(e) => applyOptions({ ...options, accidentals: e.currentTarget.checked })}
-          label="Có dấu hoá (phím đen)"
-          description="Thêm thăng và giáng vào bài. Một phím đen viết được hai cách; ở đây dùng cách hay gặp trong giáo trình."
+          label="Thêm nốt hoá bất thường"
+          description="Nốt nằm NGOÀI hoá biểu, có dấu thăng, giáng hoặc bình viết ngay cạnh nốt — bản nhạc thật cũng làm thế khi cần một nốt lạ."
           data-testid="accidentals-switch"
         />
 

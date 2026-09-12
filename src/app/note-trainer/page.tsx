@@ -44,7 +44,17 @@ export default async function NoteRecognitionPage() {
             <b>Chọn đúng phần mình đang yếu.</b> Bấm các nút quãng ở trên — một quãng cho quen mặt
             chữ, hai ba quãng cách xa nhau để tập mắt nhảy. Hình cây đàn phía trên bôi xanh đúng vùng
             bạn vừa chọn, nên đối chiếu được ngay với cây đàn trước mặt. Tắt &quot;chỉ năm nốt Đô–Sol&quot;
-            khi tay đã quen với tới, bật dấu hoá khi bắt đầu gặp phím đen trong bài.
+            khi tay đã quen với tới.
+          </Text>
+          <Text size="sm">
+            <b>Hoá biểu — mấy dấu thăng giáng đứng ở đầu khuông.</b> Bản nhạc thật không viết dấu
+            thăng cạnh từng nốt; nó ghi một lần ở đầu khuông rồi coi như bạn nhớ. Chọn giọng ở ô
+            &quot;Hoá biểu&quot; thì bài tập cũng làm đúng như vậy: nốt nằm trong giọng hiện ra
+            <b>không có dấu nào bên cạnh</b>, bạn phải tự nhớ nó là phím đen hay phím trắng. Bắt đầu
+            bằng giọng Đô trưởng (không dấu nào), rồi khi trong bài đang tập gặp giọng nào thì chọn
+            đúng giọng đó. Công tắc &quot;thêm nốt hoá bất thường&quot; là chuyện khác: nó thêm những
+            nốt nằm <i>ngoài</i> hoá biểu, có dấu thăng, giáng hay bình viết ngay cạnh nốt — bản nhạc
+            thật cũng làm thế khi cần một nốt lạ.
           </Text>
           <Text size="sm">
             <b>&quot;Cả hai tay&quot; là mức khó nhất.</b> Bản nhạc hiện đủ hai khuông như bản nhạc piano

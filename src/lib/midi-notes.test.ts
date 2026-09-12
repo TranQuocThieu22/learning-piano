@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   answerQuestion, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, DrillOptions,
-  DrillQuestion, isBlackKey, MAX_PER_STAFF, noteAt,
+  DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES, MAX_PER_STAFF, noteAt,
   notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionAbc,
 } from './midi-notes';
 
@@ -37,6 +37,82 @@ describe('noteAt — dựng nốt từ số MIDI', () => {
     const black = [];
     for (let midi = 60; midi < 72; midi++) if (isBlackKey(midi)) black.push(midi);
     expect(black).toEqual([61, 63, 66, 68, 70]);
+  });
+});
+
+describe('hoá biểu', () => {
+  const G = findKey('G');
+  const F = findKey('F');
+
+  it('bảy giọng, từ không dấu tới ba dấu mỗi bên', () => {
+    expect(KEY_SIGNATURES.map((k) => k.id)).toEqual(['C', 'G', 'D', 'A', 'F', 'Bb', 'Eb']);
+    expect(Object.keys(findKey('A').alter)).toHaveLength(3);
+    expect(Object.keys(findKey('Eb').alter)).toHaveLength(3);
+  });
+
+  it('giọng lạ thì lùi về Đô trưởng chứ không vỡ', () => {
+    expect(findKey('khong-co-that').id).toBe('C');
+  });
+
+  /*
+   * Đây là cả điểm của hoá biểu, và là ca test quan trọng nhất của nhóm này:
+   * nốt đã nằm trong hoá biểu thì viết TRƠN, không dấu nào bên cạnh.
+   */
+  it('nốt nằm trong hoá biểu viết trơn, không dấu cạnh nốt', () => {
+    expect(noteAt(66, G).abc).toBe('F');
+    expect(noteAt(66, G).name).toBe('Pha thăng');
+    expect(noteAt(58, F).abc).toBe('B,');
+    expect(noteAt(58, F).name).toBe('Si giáng');
+  });
+
+  it('nốt trắng mà hoá biểu có hoá chữ cái đó thì phải ghi dấu bình', () => {
+    expect(noteAt(65, G).abc).toBe('=F');
+    expect(noteAt(65, G).name).toBe('Pha');
+    expect(noteAt(59, F).abc).toBe('=B,');
+  });
+
+  it('nốt hoá bất thường viết theo thói quen của giọng', () => {
+    // Giọng thăng viết dấu thăng, giọng giáng viết dấu giáng.
+    expect(noteAt(61, G).abc).toBe('^C');
+    expect(noteAt(61, F).abc).toBe('_D');
+  });
+
+  it('giọng Đô trưởng giữ nguyên cách gọi quen của giáo trình', () => {
+    expect(noteAt(61).name).toBe('Đô thăng');
+    expect(noteAt(63).name).toBe('Mi giáng');
+    expect(noteAt(66).name).toBe('Pha thăng');
+    expect(noteAt(68).name).toBe('Sol thăng');
+    expect(noteAt(70).name).toBe('Si giáng');
+  });
+
+  it('dấu quãng tám vẫn bám theo chữ cái', () => {
+    expect(noteAt(54, G).abc).toBe('F,');   // Pha thăng quãng 3, nằm trong hoá biểu
+    expect(noteAt(46, F).abc).toBe('B,,');  // Si giáng quãng 2
+  });
+
+  it('kho nốt theo giọng: Pha thăng có mặt, Pha thường thì không', () => {
+    const pool = notePoolForOptions(opts({ keyId: 'G', octaves: [4], fiveFinger: false }));
+    const midis = pool.map((p) => p.note.midi);
+    expect(midis).toContain(66); // Pha thăng — nốt của giọng
+    expect(midis).not.toContain(65); // Pha thường — nốt hoá bất thường
+    expect(pool.every((p) => !/[\^_=]/.test(p.note.abc))).toBe(true);
+  });
+
+  it('bật nốt hoá bất thường thì đủ mười hai phím, có cả dấu bình', () => {
+    const pool = notePoolForOptions(opts({
+      keyId: 'G', octaves: [4], fiveFinger: false, accidentals: true,
+    }));
+    expect(pool).toHaveLength(12);
+    expect(pool.find((p) => p.note.midi === 65)!.note.abc).toBe('=F');
+  });
+
+  it('bản nhạc ghi đúng hoá biểu ở đầu khuông', () => {
+    const cau: DrillQuestion = { parts: [{ note: noteAt(66, G), clef: 'treble' }] };
+    expect(questionAbc(cau, false, G)).toContain('K:G clef=treble');
+    expect(questionAbc(cau, true, G)).toContain('K:G');
+    expect(questionAbc(cau, false, findKey('Eb'))).toContain('K:Eb');
+    // Không truyền giọng thì vẫn là Đô trưởng như cũ.
+    expect(questionAbc(cau)).toContain('K:C clef=treble');
   });
 });
 
@@ -103,12 +179,24 @@ describe('notePoolForOptions — kho nốt', () => {
 
 describe('octavesFor — quãng nào chọn được với tay nào', () => {
   it('tay phải không có quãng trầm, tay trái không có quãng cao', () => {
-    expect(octavesFor('right')).toEqual([4, 5, 6, 7]);
-    expect(octavesFor('left')).toEqual([1, 2, 3, 4]);
+    expect(octavesFor('right')).toEqual([4, 5, 6]);
+    expect(octavesFor('left')).toEqual([2, 3, 4]);
   });
 
   it('cả hai tay thì gộp lại, không trùng lặp và xếp thấp tới cao', () => {
-    expect(octavesFor('both')).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(octavesFor('both')).toEqual([2, 3, 4, 5, 6]);
+  });
+
+  /*
+   * Hai quãng rìa đàn bỏ hẳn: Si quãng 7 phải kẻ chín dòng kẻ phụ, vẽ ra cao gấp
+   * rưỡi khuông nhạc nên hoặc bị cắt hoặc phải thu nhỏ — mà thu nhỏ thì kích
+   * thước chữ nhạc lại nhảy mỗi câu một kiểu.
+   */
+  it('hai quãng rìa đàn không chọn được ở khóa nào cả', () => {
+    for (const hands of ['right', 'left', 'both'] as const) {
+      expect(octavesFor(hands)).not.toContain(1);
+      expect(octavesFor(hands)).not.toContain(7);
+    }
   });
 
   it('quãng Đô giữa thuộc về cả hai khóa', () => {
