@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import {
   answerQuestion, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart, DrillQuestion, Hands,
-  notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
+  MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
   pickNextQuestion, questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
@@ -58,12 +58,16 @@ function loadOptions(): DrillOptions {
     const count: NotesPerQuestion = saved.notesPerQuestion === 'both' || saved.notesPerQuestion === 'mixed'
       ? saved.notesPerQuestion
       : 'one';
+    const maxPerStaff = typeof saved.maxPerStaff === 'number'
+      ? Math.max(1, Math.min(MAX_PER_STAFF, Math.round(saved.maxPerStaff)))
+      : 1;
     return {
       hands,
       octaves: octaves.length > 0 ? octaves : DEFAULT_OPTIONS.octaves,
       fiveFinger: saved.fiveFinger !== false,
       accidentals: saved.accidentals === true,
       notesPerQuestion: count,
+      maxPerStaff,
     };
   } catch {
     // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
@@ -271,8 +275,8 @@ export function NoteRecognitionDrill() {
     {
       hint: current ? current.parts.map((p) => p.note.midi) : [],
       range: micRange,
-      // Câu hai nốt cần nghe được hai nốt thật cộng chỗ cho một nốt lạ.
-      maxNotes: current && current.parts.length > 1 ? 3 : 2,
+      // Đủ chỗ cho mọi nốt của câu, cộng một nốt lạ để còn báo được bấm sai.
+      maxNotes: Math.min(6, (current?.parts.length ?? 1) + 1),
     },
   );
 
@@ -426,6 +430,28 @@ export function NoteRecognitionDrill() {
           </>
         )}
 
+        <Text size="sm" fw={500} mt="md" mb={6}>
+          Tối đa mấy nốt mỗi khuông
+        </Text>
+        <SegmentedControl
+          className="drill-hands-picker"
+          fullWidth
+          value={String(options.maxPerStaff)}
+          onChange={(value) => applyOptions({ ...options, maxPerStaff: Number(value) })}
+          data={Array.from({ length: MAX_PER_STAFF }, (_, i) => ({
+            value: String(i + 1),
+            label: `${i + 1} nốt`,
+          }))}
+          data-testid="stack-picker"
+        />
+        <Text size="xs" c="dimmed" mt={6}>
+          {options.maxPerStaff === 1
+            ? 'Mỗi khuông đúng một nốt.'
+            : `Mỗi khuông bốc từ 1 tới ${options.maxPerStaff} nốt chồng lên nhau như hợp âm — câu nào cũng đủ chồng thì không giống bản nhạc thật. Chồng nốt luôn nằm trong tầm một bàn tay.`}
+          {options.maxPerStaff > 1 && input.mode === 'mic'
+            && ' Micro nghe chồng nốt khó hơn nghe một nốt; dây MIDI thì chính xác tuyệt đối.'}
+        </Text>
+
         <Switch
           mt="md"
           checked={options.fiveFinger}
@@ -483,7 +509,7 @@ export function NoteRecognitionDrill() {
             <>
               <Text size="sm" c="dimmed">
                 {current.parts.length > 1
-                  ? 'Hai nốt này là nốt gì? Bấm cả hai trên đàn — không cần cùng lúc, nốt nào trước cũng được.'
+                  ? `${current.parts.length} nốt này là nốt gì? Bấm đủ cả ${current.parts.length} trên đàn — không cần cùng lúc, nốt nào trước cũng được.`
                   : 'Nốt này là nốt gì? Hãy bấm phím tương ứng trên đàn.'}
                 {/* Khuông đôi đã tự nói nốt nằm ở tay nào, nên không nhắc thêm —
                     nhắc ra là trả lời hộ nửa câu hỏi. */}
@@ -511,11 +537,11 @@ export function NoteRecognitionDrill() {
 
               <Box mih={78} w="100%">
                 {feedback.kind === 'partial' && (
-                  <Alert color="teal" variant="light" title="Đúng một nốt rồi" data-testid="feedback-partial">
-                    <b>{feedback.done.note.name} ({feedback.done.note.scientific})</b> ở{' '}
-                    {feedback.done.clef === 'treble' ? 'khuông trên' : 'khuông dưới'} đúng rồi. Giữ
-                    nguyên tay đó và bấm nốt còn lại ở{' '}
-                    {feedback.done.clef === 'treble' ? 'khuông dưới' : 'khuông trên'}.
+                  <Alert color="teal" variant="light" title="Đúng rồi, còn nữa" data-testid="feedback-partial">
+                    <b>{feedback.done.note.name} ({feedback.done.note.scientific})</b>
+                    {grandStaff && ` ở ${feedback.done.clef === 'treble' ? 'khuông trên' : 'khuông dưới'}`}
+                    {' '}đúng rồi. Giữ nguyên ngón đó và bấm{' '}
+                    <b>{current.parts.length - collected.length} nốt</b> còn lại.
                   </Alert>
                 )}
                 {feedback.kind === 'correct' && (

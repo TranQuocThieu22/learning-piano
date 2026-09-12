@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   answerQuestion, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, DrillOptions,
-  DrillQuestion, isBlackKey, noteAt,
+  DrillQuestion, isBlackKey, MAX_PER_STAFF, noteAt,
   notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionAbc,
 } from './midi-notes';
 
@@ -192,6 +192,74 @@ describe('pickNextQuestion — câu hai nốt', () => {
   });
 });
 
+describe('pickNextQuestion — chồng nốt như hợp âm', () => {
+  const chord = (extra: Partial<DrillOptions> = {}) => opts({
+    octaves: [4], fiveFinger: false, maxPerStaff: 3, ...extra,
+  });
+
+  /** Bốc nhiều câu bằng nhiều giá trị random khác nhau, để không rơi vào một ca may mắn. */
+  const nhieuCau = (o: DrillOptions, lan = 30) => {
+    const pool = notePoolForOptions(o);
+    return Array.from({ length: lan }, (_, i) => pickNextQuestion(pool, null, o, () => (i * 7 % 29) / 29)!);
+  };
+
+  it('không câu nào vượt quá số nốt tối đa mỗi khuông', () => {
+    for (const q of nhieuCau(chord())) {
+      expect(q.parts.length).toBeGreaterThanOrEqual(1);
+      expect(q.parts.length).toBeLessThanOrEqual(3);
+    }
+  });
+
+  it('có câu nhiều hơn một nốt, và cũng có câu ít hơn mức tối đa', () => {
+    const soNot = new Set(nhieuCau(chord()).map((q) => q.parts.length));
+    expect(Math.max(...soNot)).toBeGreaterThan(1);
+    expect(soNot.size).toBeGreaterThan(1);
+  });
+
+  it('câu một khuông thì mọi nốt nằm cùng một khuông', () => {
+    for (const q of nhieuCau(chord({ hands: 'both', notesPerQuestion: 'one' }))) {
+      expect(new Set(q.parts.map((p) => p.clef)).size).toBe(1);
+    }
+  });
+
+  /*
+   * Hai luật của chồng nốt đều là chuyện bàn tay: không quá một quãng tám thì mới
+   * với tới, và không có hai nốt cách nhau nửa cung thì mới giống bản nhạc thật.
+   */
+  it('chồng nốt nằm trong tầm một bàn tay và không có hai nốt sát nhau nửa cung', () => {
+    for (const q of nhieuCau(chord({ maxPerStaff: 4, accidentals: true }))) {
+      for (const clef of ['treble', 'bass'] as const) {
+        const midis = q.parts.filter((p) => p.clef === clef).map((p) => p.note.midi).sort((a, b) => a - b);
+        if (midis.length < 2) continue;
+        expect(midis.at(-1)! - midis[0]).toBeLessThanOrEqual(12);
+        for (let i = 1; i < midis.length; i++) expect(midis[i] - midis[i - 1]).toBeGreaterThanOrEqual(2);
+        expect(new Set(midis).size).toBe(midis.length);
+      }
+    }
+  });
+
+  it('hai tay thì mỗi khuông có chồng riêng', () => {
+    const haiTay = chord({ hands: 'both', notesPerQuestion: 'both', maxPerStaff: 2 });
+    const coCaHai = nhieuCau(haiTay).some((q) => (
+      q.parts.filter((p) => p.clef === 'treble').length >= 1
+      && q.parts.filter((p) => p.clef === 'bass').length >= 1
+    ));
+    expect(coCaHai).toBe(true);
+  });
+
+  it('kho ít nốt quá thì ra chồng ngắn hơn, không ném lỗi', () => {
+    // Thế tay Đô chỉ có năm nốt trắng, mà luật cách nhau nửa cung còn loại bớt.
+    const hep = opts({ maxPerStaff: 4 });
+    for (const q of nhieuCau(hep, 10)) expect(q.parts.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it('trần số nốt mỗi khuông là 4', () => {
+    expect(MAX_PER_STAFF).toBe(4);
+    const quaTran = opts({ octaves: [4], fiveFinger: false, maxPerStaff: 99 });
+    for (const q of nhieuCau(quaTran, 10)) expect(q.parts.length).toBeLessThanOrEqual(MAX_PER_STAFF);
+  });
+});
+
 describe('questionAbc', () => {
   const mot = (midi: number, clef: 'treble' | 'bass'): DrillQuestion => ({ parts: [{ note: noteAt(midi), clef }] });
 
@@ -216,6 +284,17 @@ describe('questionAbc', () => {
     const bass = questionAbc(mot(48, 'bass'), true);
     expect(bass).toContain('V:1 clef=treble\nx');
     expect(bass).toContain('V:2 clef=bass\nC,');
+  });
+
+  it('nhiều nốt cùng khuông gom vào một cặp ngoặc, xếp từ thấp lên cao', () => {
+    const abc = questionAbc({
+      parts: [
+        { note: noteAt(67), clef: 'treble' },
+        { note: noteAt(60), clef: 'treble' },
+        { note: noteAt(64), clef: 'treble' },
+      ],
+    });
+    expect(abc.trim().endsWith('[CEG]')).toBe(true);
   });
 
   it('câu hai nốt thì mỗi khuông một nốt, không khuông nào để lặng', () => {

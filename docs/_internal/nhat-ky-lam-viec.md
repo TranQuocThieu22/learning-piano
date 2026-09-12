@@ -55,6 +55,11 @@
   báo "đúng một nốt rồi, còn khuông kia". Kiểu ngẫu nhiên sát bản nhạc thật nhất: bản nhạc
   cũng có chỗ một tay đánh, chỗ hai tay cùng đánh. Ô chọn này chỉ hiện khi đang tập cả hai
   tay, vì một khuông thì "hai nốt hai khóa" không tồn tại.
+- **Chồng nốt như hợp âm, cấu hình tối đa bốn nốt mỗi khuông.** Hai luật giữ cho chồng nốt
+  bấm được thật: **không quá một quãng tám** (rộng hơn thì một bàn tay không với tới) và
+  **không có hai nốt cách nhau nửa cung** (chồng kiểu đó nghe như đặt nhầm tay, nhìn cũng
+  không giống bản nhạc). Mỗi câu bốc ngẫu nhiên từ một tới mức đã chọn — câu nào cũng đủ
+  chồng thì không giống bản nhạc thật.
 - **Nói rõ vì sao số nốt hụt so với số quãng đã chọn.** Chọn bốn quãng với cả hai tay không
   ra 4×2 phần bài, vì quãng quá trầm thì khóa Sol không đọc được và ngược lại. Trước đây app
   im lặng, người dùng đếm thấy hụt và tưởng app nuốt mất nốt. Nay có dòng tách rõ: khóa Sol

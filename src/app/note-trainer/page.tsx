@@ -52,6 +52,13 @@ export default async function NoteRecognitionPage() {
             nào trước, rồi mới đọc nốt. Đây đúng là việc phải làm khi đọc bản nhạc thật.
           </Text>
           <Text size="sm">
+            <b>Chồng nốt như hợp âm.</b> Ô &quot;tối đa mấy nốt mỗi khuông&quot; cho phép mỗi khuông
+            hiện tới bốn nốt chồng lên nhau, đúng kiểu bản nhạc thật viết hợp âm. Chồng nốt luôn nằm
+            trong tầm một bàn tay và không có hai nốt sát nhau nửa cung, nên bấm được thật chứ không
+            phải chồng cho có. Mỗi câu bốc ngẫu nhiên từ một tới mức bạn chọn — câu nào cũng đủ chồng
+            thì không giống bản nhạc thật.
+          </Text>
+          <Text size="sm">
             <b>Chọn được mỗi câu một hay hai nốt.</b> Hai nốt là hai tay bấm cùng lúc, mỗi khuông một
             nốt — bấm nốt nào trước cũng được, app đợi đủ cả hai. Chọn &quot;lúc 1 lúc 2&quot; thì không
             đoán trước được, sát bản nhạc thật nhất: có chỗ chỉ một tay đánh, có chỗ hai tay cùng đánh.

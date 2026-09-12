@@ -136,9 +136,20 @@ export interface DrillOptions {
    *   thật nhất: có chỗ chỉ một tay đánh, có chỗ hai tay cùng đánh.
    */
   notesPerQuestion: NotesPerQuestion;
+  /**
+   * Mỗi khuông tối đa mấy nốt — bấm chồng lên nhau như hợp âm.
+   *
+   * 1 là mỗi khuông một nốt như cũ. Từ 2 trở lên thì mỗi câu bốc ngẫu nhiên từ
+   * một tới chừng này nốt cho mỗi khuông, nên bài có lúc dễ lúc khó chứ không
+   * phải câu nào cũng đủ chồng — đọc bản nhạc thật cũng thế.
+   */
+  maxPerStaff: number;
 }
 
 export type NotesPerQuestion = 'one' | 'both' | 'mixed';
+
+/** Trần số nốt mỗi khuông. Bốn nốt là chồng tối đa một bàn tay với tới được. */
+export const MAX_PER_STAFF = 4;
 
 /** Nốt cao nhất của thế tay 5 ngón, tính từ nốt Đô của quãng: Đô-Rê-Mi-Pha-Sol. */
 const FIVE_FINGER_SEMITONES = 7;
@@ -149,6 +160,7 @@ export const DEFAULT_OPTIONS: DrillOptions = {
   fiveFinger: true,
   accidentals: false,
   notesPerQuestion: 'one',
+  maxPerStaff: 1,
 };
 
 export function clefsFor(hands: Hands): ClefName[] {
@@ -218,11 +230,23 @@ export function notePoolForOptions(options: DrillOptions): DrillPart[] {
  */
 export function questionAbc(question: DrillQuestion, grandStaff = false): string {
   const head = ['X:1', 'L:1/1', 'M:none'];
-  const noteOn = (clef: ClefName) => question.parts.find((p) => p.clef === clef)?.note.abc ?? 'x';
+
+  /*
+   * Nhiều nốt cùng khuông gom vào một cặp ngoặc vuông — cú pháp hợp âm của ABC.
+   * Xếp từ thấp lên cao cho giống cách bản nhạc thật viết chồng nốt.
+   */
+  const noteOn = (clef: ClefName) => {
+    const cua = question.parts
+      .filter((p) => p.clef === clef)
+      .sort((a, b) => a.note.midi - b.note.midi);
+    if (cua.length === 0) return 'x';
+    if (cua.length === 1) return cua[0].note.abc;
+    return `[${cua.map((p) => p.note.abc).join('')}]`;
+  };
 
   if (!grandStaff) {
-    const only = question.parts[0];
-    return [...head, `K:C clef=${only.clef}`, only.note.abc].join('\n');
+    const clef = question.parts[0].clef;
+    return [...head, `K:C clef=${clef}`, noteOn(clef)].join('\n');
   }
 
   return [
@@ -248,6 +272,51 @@ function pickPart(list: DrillPart[], avoid: Set<string>, random: () => number): 
   return usable[Math.floor(random() * usable.length) % usable.length];
 }
 
+/** Khoảng với tới của một bàn tay, tính bằng nửa cung: đúng một quãng tám. */
+const HAND_SPAN = 12;
+/** Hai nốt trong cùng một chồng phải cách nhau ít nhất chừng này nửa cung. */
+const MIN_GAP = 2;
+
+/**
+ * Bốc một chồng nốt cho **một khuông**, tối đa `limit` nốt.
+ *
+ * Hai luật, và cả hai đều là chuyện bàn tay chứ không phải chuyện hoà thanh:
+ *
+ * - **Không quá một quãng tám** từ nốt thấp nhất tới nốt cao nhất. Rộng hơn thì
+ *   một bàn tay không với tới, mà bài này là để bấm chứ không phải để ngắm.
+ * - **Không có hai nốt cách nhau một nửa cung.** Chồng kiểu đó nghe như đặt nhầm
+ *   tay và nhìn cũng không giống bản nhạc thật; tránh đi thì cái còn lại đều là
+ *   những chồng gặp được trong bài thật.
+ *
+ * Không đủ nốt hợp lệ thì trả về ít hơn `limit` — thà chồng hai nốt còn hơn
+ * không ra câu nào.
+ */
+function pickStack(
+  list: DrillPart[],
+  limit: number,
+  avoid: Set<string>,
+  random: () => number,
+): DrillPart[] {
+  const first = pickPart(list, avoid, random);
+  if (limit <= 1) return [first];
+
+  const stack = [first];
+  const muon = 1 + Math.floor(random() * limit) % limit;
+
+  while (stack.length < muon) {
+    const hopLe = list.filter((p) => {
+      if (stack.some((c) => c.note.midi === p.note.midi)) return false;
+      if (stack.some((c) => Math.abs(c.note.midi - p.note.midi) < MIN_GAP)) return false;
+      const lows = [...stack.map((c) => c.note.midi), p.note.midi];
+      return Math.max(...lows) - Math.min(...lows) <= HAND_SPAN;
+    });
+    if (hopLe.length === 0) break;
+    stack.push(hopLe[Math.floor(random() * hopLe.length) % hopLe.length]);
+  }
+
+  return stack.sort((a, b) => a.note.midi - b.note.midi);
+}
+
 /**
  * Chọn câu hỏi kế tiếp từ kho nốt, tránh lặp lại ngay câu vừa rồi.
  *
@@ -265,6 +334,7 @@ export function pickNextQuestion(
 ): DrillQuestion | null {
   if (pool.length === 0) return null;
   const avoid = new Set((previous?.parts ?? []).map(partKey));
+  const limit = Math.max(1, Math.min(MAX_PER_STAFF, options.maxPerStaff));
 
   const muonHai = options.notesPerQuestion === 'both'
     || (options.notesPerQuestion === 'mixed' && random() < 0.5);
@@ -273,22 +343,24 @@ export function pickNextQuestion(
     const treble = pool.filter((p) => p.clef === 'treble');
     const bass = pool.filter((p) => p.clef === 'bass');
     if (treble.length > 0 && bass.length > 0) {
-      return { parts: [pickPart(treble, avoid, random), pickPart(bass, avoid, random)] };
+      return {
+        parts: [
+          ...pickStack(treble, limit, avoid, random),
+          ...pickStack(bass, limit, avoid, random),
+        ],
+      };
     }
   }
 
-  return { parts: [pickPart(pool, avoid, random)] };
+  /*
+   * Một khuông thôi: chồng nốt phải nằm trong CÙNG một khuông, không thì nó
+   * thành câu hai khuông trá hình. Bốc khuông trước rồi mới bốc nốt trong đó.
+   */
+  const first = pickPart(pool, avoid, random);
+  const cungKhuong = pool.filter((p) => p.clef === first.clef);
+  return { parts: pickStack(cungKhuong, limit, avoid, random) };
 }
 
-/**
- * Kết quả của một lần bấm phím vào câu hỏi đang chờ.
- *
- * Trả về luôn danh sách nốt đã đúng sau lần bấm này, thay vì bắt chỗ gọi tự cộng
- * dồn. Lý do rất cụ thể: **micro nghe cả hai nốt trong cùng một lần**, nên chỗ
- * gọi xử lý hai phím liền nhau trong một nhịp. Nếu nó phải đọc state React để
- * biết đã đúng nốt nào thì lần thứ hai vẫn đọc ra giá trị cũ — cả hai lần đều
- * thấy "còn thiếu nốt kia" và câu không bao giờ xong.
- */
 export type AnswerOutcome =
   | { kind: 'partial'; done: DrillPart; collected: number[] }
   | { kind: 'correct'; collected: number[] }
