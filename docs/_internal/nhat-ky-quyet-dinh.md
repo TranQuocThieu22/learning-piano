@@ -42,6 +42,7 @@ cũng ra.
 | Thiết kế cho máy tính hay cho điện thoại? | **Điện thoại và tablet là chính**, máy tính là phụ. Vẫn là web, không làm app trên store | Người học đặt máy lên giá nhạc của đàn; laptop không có chỗ đặt trên đàn nên không ai mở nó lúc tập. Đợt dựng lại điều hướng 10-11/09 đã đi theo hướng này nhưng chưa ghi thành nguyên tắc, nên chữ cũ sót lại: app và bài tuyển beta vẫn ghi Web MIDI "chỉ chạy trên máy tính", trong khi chủ sản phẩm dùng nó trên điện thoại Android hằng ngày. Chốt thành văn 11/09/2026, bốn hệ quả ghi ở `AGENTS.md`. Không mâu thuẫn với dòng đầu bảng: "di động" ở đây là cỡ màn hình, không phải kênh phân phối |
 | Người học dùng iPhone thì app nghe đàn bằng gì? | **Micro, ngay trên web.** Là cách mặc định; dây MIDI đứng thứ hai | iPhone/iPad không có Web MIDI. Micro chạy trên mọi máy, cả đàn cơ không có cổng cắm, không cần mua cáp — khớp với việc người học đặt điện thoại trên giá nhạc. Đã cân nhắc và xếp sau: app bọc web lên App Store (vướng thanh toán qua store, rủi ro bị từ chối) và bảo người học cài trình duyệt riêng (thêm một chỗ để bỏ cuộc) — xem mục 8 của `lo-trinh-phat-trien.md`. Buổi sáng 11/09 mới ghi là hướng cần thử; cùng ngày chủ sản phẩm chốt làm luôn và làm đầy đủ. Hai giới hạn đã chấp nhận và nói rõ với người học: phòng ồn thì nghe nhầm nhiều hơn, hai tay cách nhau đúng một quãng tám thì không tách được |
 | Bài luyện nhận nốt: cho chọn giọng rồi giữ nguyên, hay đổi mỗi câu? | **Đổi ngẫu nhiên mỗi câu**, không có ô chọn giọng cố định. Tắt công tắc thì câu nào cũng Đô trưởng | Bản đầu làm đúng kiểu ô chọn: bảy giọng, chọn một rồi giữ nguyên cả buổi. Chủ sản phẩm bác ngay trong vòng vài phút — *"hoá biểu phải ngẫu nhiên mỗi lần qua nốt chứ không phải cho chọn cố định"* — và lý do đứng vững: **chọn cố định thì sau vài câu người học thuộc lòng "đang Sol trưởng" rồi thôi không nhìn đầu khuông nữa**, mà nhìn hoá biểu rồi nhớ nó mới đúng là kỹ năng cần rèn; mở một bản nhạc lạ thì giọng gì cũng phải tự đọc ra. Kéo theo về mã: hoá biểu đi theo TỪNG CÂU (`DrillQuestion.key`) chứ không theo buổi tập, nên chỗ vẽ và chỗ chấm không thể lệch giọng nhau; kho nốt phải dựng lại theo từng giọng lúc bốc câu vì cách viết mỗi nốt phụ thuộc giọng (trong Sol trưởng, Pha thăng là nốt trơn của giọng còn Pha thường mới là nốt phải ghi dấu bình). Tên giọng chỉ hiện SAU khi trả lời đúng — hiện lúc đang hỏi là làm hộ đúng phần cần rèn |
+| Bài luyện nhận nốt: hỏi một nốt hay cả một ô nhịp? | **Cho chọn cả hai.** Thêm ô *Mỗi câu dài bao nhiêu*: `1 nhịp` (như cũ) hoặc `Khuông nhạc 4/4` — bốn **nốt đen đều nhau**, đọc lần lượt trái sang phải | Đọc được một nốt lẻ và đọc được một câu nhạc là hai kỹ năng khác nhau: mở bản nhạc thật ra thì mắt phải **đi tới**, và phải nhớ hoá biểu suốt cả ô chứ không chỉ cho một nốt. **Vì sao bốn nốt đen đều nhau chứ không trộn trắng/đen/móc:** bài này cố ý KHÔNG đo thời gian (luật chống áp lực ở `AGENTS.md`), nên hình nốt vẽ ra đẹp nhưng app không kiểm được người học có giữ đúng trường độ không — nó ngầm hứa một thứ không có thật, mà học tiết tấu thì đã có máy đánh nhịp và bài trong giáo trình. **Ranh giới phải giữ:** trong MỘT phách là bấm cùng lúc (nốt nào trước cũng được), giữa các phách là lần lượt — trộn hai tầng là thành nhảy cóc. Con trỏ chỉ nhích khi bấm đúng phách đang chờ; bấm trúng một nốt có thật ở phách sau vẫn là trượt. Kéo theo về mã: `DrillQuestion.parts` thành `beats: DrillPart[][]`, và `answerQuestion` thành `answerBeat` nhận thẳng một phách — nhận cả câu thì không có cách nào chặn nhảy cóc |
 | Có nên làm nhánh `dev`/`preview`? | **Có đường sẵn nhưng tạm chưa dùng.** Beta vẫn test local rồi đẩy thẳng `main` | Một người làm; mỗi thay đổi nhỏ mà phải qua preview thì chậm hơn phần lợi thu được. Quy trình nhánh đã viết sẵn ở `quy-trinh-lam-viec.md` để bật lên khi có khách thật |
 
 ---
@@ -234,6 +235,25 @@ trên là bằng chứng vì sao: nhìn một ảnh chụp riêng lẻ thì cả
 
 ---
 
+### 12/09 — thêm chế độ đọc cả ô nhịp 4/4
+
+Cùng ngày, sau đợt sáu vòng sửa ở trên. Chủ sản phẩm xin thêm *"option 1 nhịp hoặc khuông
+nhạc 4/4"*, và câu hỏi thật sự phải chốt là **tiết tấu**: vẽ bốn nốt đen đều nhau, hay trộn
+nốt trắng với nốt móc cho giống bản nhạc thật? Chốt bốn nốt đen — lý do đầy đủ ở mục 1.
+
+Ba thứ kéo theo mà lúc bắt đầu chưa thấy:
+
+- **Khuông nhạc phải thu nhỏ lại.** Một nốt lẻ thì ảnh cố ý vẽ rộng hơn khung, hai mép bị
+  cắt toàn khoảng trắng, đổi lại nốt to. Ô nhịp thì cắt mép là **mất nốt thứ tư**, mà mất
+  nốt thì không có lỗi nào báo ra. Nên `anchorTransform` nay ép được cả bề ngang, và
+  `staff-anchor.ts` giữ luôn tỉ lệ lẫn khung cho từng chế độ để hai thứ không lệch nhau.
+- **abcjs ghi đè `width` lên chính thẻ chứa.** Đo `clientWidth` sau khi vẽ là đo lại chính
+  cái ảnh, nên phép ép bề ngang luôn ra tỉ lệ 1 và ô nhịp vẫn tràn — im lặng, không lỗi.
+  Phải xoá `style.width` trước khi đo. Cùng họ với cái bẫy `overflow: hidden` đã ghi trước đó.
+- **Con trỏ tô màu đi bằng `noteTimings` của abcjs**, không tự đếm thẻ trong DOM: khuông đôi
+  vẽ xong bè trên mới tới bè dưới nên thứ tự DOM không phải thứ tự phách. Số sự kiện không
+  khớp số phách thì không tô gì cả — thà không tô còn hơn tô nhầm sang nốt chưa ai đánh tới.
+
 ## 3. Còn treo
 
 Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. Danh sách việc thì nằm ở
@@ -288,6 +308,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Mục 1 thêm dòng về chế độ ô nhịp 4/4, chốt luôn câu dễ bị lật lại nhất là **tiết tấu**: bốn nốt đen đều nhau chứ không trộn trường độ, vì app cố ý không đo thời gian nên hình nốt khác nhau chỉ là lời hứa suông. Mục 2 thêm khối 12/09 ghi ba thứ kéo theo mà lúc bắt đầu chưa thấy — phải ép bề ngang khuông nhạc, abcjs ghi đè `width` lên thẻ chứa làm phép đo tự so với chính nó, và con trỏ phải đi bằng `noteTimings` chứ không đếm thẻ trong DOM |
 | 12/09/2026 | `docs(internal): Ghi nhật ký phiên 12/09 và chốt hoá biểu ngẫu nhiên` | Thêm dòng quyết định vào mục 1 (hoá biểu đổi ngẫu nhiên mỗi câu thay vì cho chọn một giọng cố định, kèm lý do: chọn cố định thì vài câu là người học thuộc lòng rồi thôi không nhìn đầu khuông nữa), thêm mốc 12/09 vào dòng thời gian với sáu vòng sửa và hai lỗi vẽ lọt qua năm lệnh kiểm, và hai việc còn treo mới ở mục 3 |
 | 11/09/2026 | `feat: Thêm Góc bài hát để thử những bài quen tai` | Thêm dòng quyết định vào mục 1: có chỗ thử bài hát, nhưng chỉ nhạc hết hạn bảo hộ, kèm lý do pháp lý và đường đi nếu muốn nhạc còn bản quyền |
 | 11/09/2026 | `feat: Gom lý thuyết, bài tập và tick vào một đường đi theo chương` | Thêm dòng quyết định vào mục 1: gộp Bài tập và Nhật ký thành Đường đi theo chương, lý thuyết thành bước tick được, và ghi rõ quyết định cũ nào bị lật cùng lý do lật |

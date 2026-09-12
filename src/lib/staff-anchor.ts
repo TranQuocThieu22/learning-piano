@@ -50,9 +50,50 @@ export const SINGLE_STAFF_BOX: StaffBox = { height: 240, anchor: 100 };
  */
 export const GRAND_STAFF_BOX: StaffBox = { height: 275, anchor: 72 };
 
+/**
+ * Ô nhịp 4/4 vẽ nhỏ hơn một phách bao nhiêu lần.
+ *
+ * Một nốt lẻ thì ảnh cố ý rộng hơn khung: hai mép bị cắt toàn khoảng trắng, đổi
+ * lại nốt to. **Ô nhịp thì cắt mép là mất nốt thứ tư**, nên phải thu cả ảnh lại.
+ *
+ * 1.6 là số đo thật trên khung 320px: bốn nốt đen cộng số chỉ nhịp vừa lọt, mà
+ * nốt vẫn to hơn cỡ chữ bản nhạc in.
+ */
+export const BAR_SHRINK = 1.6;
+
+/** Tỉ lệ vẽ cho một câu: khuông đơn hay đôi, một phách hay cả ô nhịp. */
+export function staffScale(grandStaff: boolean, bar: boolean): number {
+  return (grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE) / (bar ? BAR_SHRINK : 1);
+}
+
+/**
+ * Khung cho một câu.
+ *
+ * Ô nhịp thu **cả khung** theo đúng tỉ lệ đã thu ảnh, nên chỗ dư quanh khuông
+ * nhạc giữ nguyên như cũ. Giữ nguyên khung cũ thì khuông nhạc bé tí nằm giữa
+ * một khoảng trống cao 240px — mà chiều cao là thứ khan hiếm nhất trên điện
+ * thoại đặt ở giá nhạc.
+ */
+export function staffBox(grandStaff: boolean, bar: boolean): StaffBox {
+  const box = grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX;
+  if (!bar) return box;
+  return {
+    height: Math.round(box.height / BAR_SHRINK),
+    anchor: Math.round(box.anchor / BAR_SHRINK),
+  };
+}
+
 export interface StaffTransform {
   scale: number;
   translateY: number;
+  /** Dịch ngang để ảnh đã thu nhỏ vẫn nằm giữa khung. 0 khi không ép bề ngang. */
+  translateX: number;
+}
+
+/** Bề ngang ảnh và bề ngang khung, đều bằng px đã nhân tỉ lệ. */
+export interface WidthFit {
+  ink: number;
+  box: number;
 }
 
 /**
@@ -68,6 +109,7 @@ export function anchorTransform(
   topLineY: number,
   inkTop: number,
   inkBottom: number,
+  width?: WidthFit,
 ): StaffTransform {
   const canTren = Math.max(0, topLineY - inkTop);
   const canDuoi = Math.max(0, inkBottom - topLineY);
@@ -83,7 +125,22 @@ export function anchorTransform(
     1,
     canTren > 0 ? choTren / canTren : 1,
     canDuoi > 0 ? choDuoi / canDuoi : 1,
+    /*
+     * Ép cả BỀ NGANG, nhưng chỉ khi chỗ gọi yêu cầu.
+     *
+     * Một nốt lẻ thì cố ý KHÔNG ép: ảnh vẽ ra rộng hơn khung, hai mép bị cắt
+     * toàn khoảng trắng, đổi lại nốt to hơn. Ô nhịp 4/4 thì ngược hẳn — cắt mép
+     * là mất nốt thứ tư, mà mất nốt thì không có lỗi nào báo ra, người học chỉ
+     * thấy một ô nhịp thiếu.
+     */
+    width && width.ink > 0 ? width.box / width.ink : 1,
   );
 
-  return { scale, translateY: box.anchor - topLineY * scale };
+  /*
+   * Thu nhỏ quanh gốc toạ độ ở mép TRÁI, nên ảnh co về bên trái và lệch khỏi
+   * giữa khung. Đẩy lại đúng nửa chỗ vừa dư ra.
+   */
+  const translateX = width ? Math.max(0, (width.box - width.ink * scale) / 2) : 0;
+
+  return { scale, translateX, translateY: box.anchor - topLineY * scale };
 }

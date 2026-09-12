@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
-  answerQuestion, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote, DrillOptions,
-  DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES, MAX_PER_STAFF, noteAt,
-  notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, questionAbc,
+  allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
+  DrillOptions, DrillPart, DrillQuestion, findKey, isBlackKey, KEY_SIGNATURES, MAX_PER_STAFF,
+  noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion,
+  questionAbc,
 } from './midi-notes';
 
 /** Lựa chọn dựng nhanh cho test, khỏi phải khai đủ năm trường mỗi lần. */
@@ -105,12 +106,12 @@ describe('hoá biểu', () => {
   });
 
   it('bản nhạc ghi đúng hoá biểu ở đầu khuông', () => {
-    const cau: DrillQuestion = { key: G, parts: [{ note: noteAt(66, G), clef: 'treble' }] };
+    const cau: DrillQuestion = { key: G, beats: [[{ note: noteAt(66, G), clef: 'treble' }]] };
     expect(questionAbc(cau)).toContain('K:G clef=treble');
     expect(questionAbc(cau, true)).toContain('K:G');
 
     const eb = findKey('Eb');
-    expect(questionAbc({ key: eb, parts: [{ note: noteAt(63, eb), clef: 'treble' }] })).toContain('K:Eb');
+    expect(questionAbc({ key: eb, beats: [[{ note: noteAt(63, eb), clef: 'treble' }]] })).toContain('K:Eb');
   });
 
   /*
@@ -145,7 +146,7 @@ describe('hoá biểu', () => {
     const o = opts({ randomKeys: true, octaves: [4], fiveFinger: false, accidentals: true });
     for (let i = 0; i < 30; i++) {
       const cau = pickNextQuestion(o, null, () => (i * 17 % 41) / 41)!;
-      for (const part of cau.parts) {
+      for (const part of cau.beats[0]) {
         expect(part.note.abc).toBe(noteAt(part.note.midi, cau.key).abc);
       }
     }
@@ -271,11 +272,11 @@ describe('pickNextQuestion — câu một nốt', () => {
   const pool = notePoolForOptions(DEFAULT_OPTIONS);
 
   it('không hỏi lại ngay câu vừa rồi', () => {
-    const first: DrillQuestion = { key: KEY_SIGNATURES[0], parts: [pool[0]] };
+    const first: DrillQuestion = { key: KEY_SIGNATURES[0], beats: [[pool[0]]] };
     for (let i = 0; i < 20; i++) {
       const next = pickNextQuestion(DEFAULT_OPTIONS, first, () => i / 20)!;
-      expect(next.parts).toHaveLength(1);
-      expect(next.parts[0].note.midi).not.toBe(pool[0].note.midi);
+      expect(next.beats[0]).toHaveLength(1);
+      expect(next.beats[0][0].note.midi).not.toBe(pool[0].note.midi);
     }
   });
 
@@ -286,10 +287,10 @@ describe('pickNextQuestion — câu một nốt', () => {
   it('né hết kho thì đành hỏi lại nốt cũ chứ không bỏ trống', () => {
     const hep = opts({ octaves: [6], fiveFinger: true });
     const kho = notePoolForOptions(hep);
-    const truoc: DrillQuestion = { key: KEY_SIGNATURES[0], parts: kho };
+    const truoc: DrillQuestion = { key: KEY_SIGNATURES[0], beats: [kho] };
     const next = pickNextQuestion(hep, truoc)!;
-    expect(next.parts).toHaveLength(1);
-    expect(kho.map((p) => p.note.midi)).toContain(next.parts[0].note.midi);
+    expect(next.beats[0]).toHaveLength(1);
+    expect(kho.map((p) => p.note.midi)).toContain(next.beats[0][0].note.midi);
   });
 
   it('kho rỗng thì trả về null chứ không ném lỗi', () => {
@@ -303,8 +304,8 @@ describe('pickNextQuestion — câu hai nốt', () => {
   it('ra hai nốt, mỗi khuông một nốt', () => {
     for (let i = 0; i < 10; i++) {
       const q = pickNextQuestion(haiTay, null, () => i / 10)!;
-      expect(q.parts).toHaveLength(2);
-      expect(q.parts.map((p) => p.clef).sort()).toEqual(['bass', 'treble']);
+      expect(q.beats[0]).toHaveLength(2);
+      expect(q.beats[0].map((p) => p.clef).sort()).toEqual(['bass', 'treble']);
     }
   });
 
@@ -316,23 +317,23 @@ describe('pickNextQuestion — câu hai nốt', () => {
   it('kho chỉ có một khóa thì lùi về câu một nốt', () => {
     const motTay = opts({ notesPerQuestion: 'both' });
     const q = pickNextQuestion(motTay, null)!;
-    expect(q.parts).toHaveLength(1);
-    expect(q.parts[0].clef).toBe('treble');
+    expect(q.beats[0]).toHaveLength(1);
+    expect(q.beats[0][0].clef).toBe('treble');
   });
 
   it('quãng chỉ đọc được ở một khóa cũng lùi về một nốt', () => {
     // Quãng 6 không đọc được ở khóa Pha, nên dù chọn cả hai tay vẫn chỉ có bè trên.
     const chiCao = opts({ hands: 'both', octaves: [6], notesPerQuestion: 'both' });
     const q = pickNextQuestion(chiCao, null)!;
-    expect(q.parts).toHaveLength(1);
+    expect(q.beats[0]).toHaveLength(1);
   });
 
   it('ngẫu nhiên thì khi một nốt khi hai nốt', () => {
     const nganNhien = opts({ hands: 'both', octaves: [4], notesPerQuestion: 'mixed' });
     const nho = pickNextQuestion(nganNhien, null, () => 0.2)!;
     const lon = pickNextQuestion(nganNhien, null, () => 0.9)!;
-    expect(nho.parts).toHaveLength(2);
-    expect(lon.parts).toHaveLength(1);
+    expect(nho.beats[0]).toHaveLength(2);
+    expect(lon.beats[0]).toHaveLength(1);
   });
 });
 
@@ -349,20 +350,20 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
 
   it('không câu nào vượt quá số nốt tối đa mỗi khuông', () => {
     for (const q of nhieuCau(chord())) {
-      expect(q.parts.length).toBeGreaterThanOrEqual(1);
-      expect(q.parts.length).toBeLessThanOrEqual(3);
+      expect(q.beats[0].length).toBeGreaterThanOrEqual(1);
+      expect(q.beats[0].length).toBeLessThanOrEqual(3);
     }
   });
 
   it('có câu nhiều hơn một nốt, và cũng có câu ít hơn mức tối đa', () => {
-    const soNot = new Set(nhieuCau(chord()).map((q) => q.parts.length));
+    const soNot = new Set(nhieuCau(chord()).map((q) => q.beats[0].length));
     expect(Math.max(...soNot)).toBeGreaterThan(1);
     expect(soNot.size).toBeGreaterThan(1);
   });
 
   it('câu một khuông thì mọi nốt nằm cùng một khuông', () => {
     for (const q of nhieuCau(chord({ hands: 'both', notesPerQuestion: 'one' }))) {
-      expect(new Set(q.parts.map((p) => p.clef)).size).toBe(1);
+      expect(new Set(q.beats[0].map((p) => p.clef)).size).toBe(1);
     }
   });
 
@@ -373,7 +374,7 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
   it('chồng nốt nằm trong tầm một bàn tay và không có hai nốt sát nhau nửa cung', () => {
     for (const q of nhieuCau(chord({ maxPerStaff: 4, accidentals: true }))) {
       for (const clef of ['treble', 'bass'] as const) {
-        const midis = q.parts.filter((p) => p.clef === clef).map((p) => p.note.midi).sort((a, b) => a - b);
+        const midis = q.beats[0].filter((p) => p.clef === clef).map((p) => p.note.midi).sort((a, b) => a - b);
         if (midis.length < 2) continue;
         expect(midis.at(-1)! - midis[0]).toBeLessThanOrEqual(12);
         for (let i = 1; i < midis.length; i++) expect(midis[i] - midis[i - 1]).toBeGreaterThanOrEqual(2);
@@ -385,8 +386,8 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
   it('hai tay thì mỗi khuông có chồng riêng', () => {
     const haiTay = chord({ hands: 'both', notesPerQuestion: 'both', maxPerStaff: 2 });
     const coCaHai = nhieuCau(haiTay).some((q) => (
-      q.parts.filter((p) => p.clef === 'treble').length >= 1
-      && q.parts.filter((p) => p.clef === 'bass').length >= 1
+      q.beats[0].filter((p) => p.clef === 'treble').length >= 1
+      && q.beats[0].filter((p) => p.clef === 'bass').length >= 1
     ));
     expect(coCaHai).toBe(true);
   });
@@ -394,20 +395,20 @@ describe('pickNextQuestion — chồng nốt như hợp âm', () => {
   it('kho ít nốt quá thì ra chồng ngắn hơn, không ném lỗi', () => {
     // Thế tay Đô chỉ có năm nốt trắng, mà luật cách nhau nửa cung còn loại bớt.
     const hep = opts({ maxPerStaff: 4 });
-    for (const q of nhieuCau(hep, 10)) expect(q.parts.length).toBeGreaterThanOrEqual(1);
+    for (const q of nhieuCau(hep, 10)) expect(q.beats[0].length).toBeGreaterThanOrEqual(1);
   });
 
   it('trần số nốt mỗi khuông là 4', () => {
     expect(MAX_PER_STAFF).toBe(4);
     const quaTran = opts({ octaves: [4], fiveFinger: false, maxPerStaff: 99 });
-    for (const q of nhieuCau(quaTran, 10)) expect(q.parts.length).toBeLessThanOrEqual(MAX_PER_STAFF);
+    for (const q of nhieuCau(quaTran, 10)) expect(q.beats[0].length).toBeLessThanOrEqual(MAX_PER_STAFF);
   });
 });
 
 describe('questionAbc', () => {
   const mot = (midi: number, clef: 'treble' | 'bass'): DrillQuestion => ({
     key: KEY_SIGNATURES[0],
-    parts: [{ note: noteAt(midi), clef }],
+    beats: [[{ note: noteAt(midi), clef }]],
   });
 
   it('vẽ đúng một nốt, đúng khóa, không có số chỉ nhịp', () => {
@@ -436,11 +437,11 @@ describe('questionAbc', () => {
   it('nhiều nốt cùng khuông gom vào một cặp ngoặc, xếp từ thấp lên cao', () => {
     const abc = questionAbc({
       key: KEY_SIGNATURES[0],
-      parts: [
+      beats: [[
         { note: noteAt(67), clef: 'treble' },
         { note: noteAt(60), clef: 'treble' },
         { note: noteAt(64), clef: 'treble' },
-      ],
+      ]],
     });
     expect(abc.trim().endsWith('[CEG]')).toBe(true);
   });
@@ -448,7 +449,7 @@ describe('questionAbc', () => {
   it('câu hai nốt thì mỗi khuông một nốt, không khuông nào để lặng', () => {
     const abc = questionAbc({
       key: KEY_SIGNATURES[0],
-      parts: [{ note: noteAt(67), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }],
+      beats: [[{ note: noteAt(67), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }]],
     }, true);
     expect(abc).toContain('V:1 clef=treble\nG');
     expect(abc).toContain('V:2 clef=bass\nC,');
@@ -456,24 +457,161 @@ describe('questionAbc', () => {
   });
 });
 
-describe('answerQuestion — so phím với câu đang chờ', () => {
-  const mot: DrillQuestion = { key: KEY_SIGNATURES[0], parts: [{ note: noteAt(60), clef: 'treble' }] };
-  const hai: DrillQuestion = {
+/*
+ * Ô nhịp 4/4 — bước từ "đọc một nốt" sang "đọc một câu nhạc".
+ *
+ * Ranh giới quan trọng nhất ở đây là hai tầng **cùng lúc** và **lần lượt**:
+ * trong một phách thì bấm nốt nào trước cũng được, còn giữa các phách thì bắt
+ * buộc trái sang phải. Trộn hai tầng là thành nhảy cóc, đúng thứ `AGENTS.md` cấm.
+ */
+describe('pickNextQuestion — ô nhịp 4/4', () => {
+  const oNhip = (extra: Partial<DrillOptions> = {}) => opts({
+    questionLength: 'bar', octaves: [4], fiveFinger: false, ...extra,
+  });
+
+  const nhieuCau = (o: DrillOptions, lan = 30) => Array.from(
+    { length: lan },
+    (_, i) => pickNextQuestion(o, null, () => (i * 11 % 37) / 37)!,
+  );
+
+  it('mặc định vẫn là một phách, không ai bị đổi chế độ ngoài ý muốn', () => {
+    expect(DEFAULT_OPTIONS.questionLength).toBe('one');
+    expect(pickNextQuestion(DEFAULT_OPTIONS, null, () => 0)!.beats).toHaveLength(1);
+  });
+
+  it('bật lên thì mỗi câu đúng bốn phách, phách nào cũng có nốt', () => {
+    for (const q of nhieuCau(oNhip())) {
+      expect(q.beats).toHaveLength(BEATS_PER_BAR);
+      for (const beat of q.beats) expect(beat.length).toBeGreaterThanOrEqual(1);
+    }
+  });
+
+  /*
+   * Cả ô nhịp phải cùng MỘT hoá biểu. Mỗi phách một giọng thì hoá biểu ở đầu
+   * khuông không còn nói lên điều gì — mà đọc được nó mới là việc đang tập.
+   */
+  it('cả ô nhịp dùng chung một hoá biểu, và mọi nốt viết theo đúng giọng đó', () => {
+    for (const q of nhieuCau(oNhip({ randomKeys: true, accidentals: true }))) {
+      for (const part of allParts(q)) {
+        expect(part.note.abc).toBe(noteAt(part.note.midi, q.key).abc);
+      }
+    }
+  });
+
+  it('hai phách liền nhau không lặp lại đúng nốt vừa rồi', () => {
+    for (const q of nhieuCau(oNhip())) {
+      for (let i = 1; i < q.beats.length; i++) {
+        const truoc = new Set(q.beats[i - 1].map((p) => `${p.clef}:${p.note.midi}`));
+        const sau = q.beats[i].map((p) => `${p.clef}:${p.note.midi}`);
+        expect(sau.some((k) => truoc.has(k))).toBe(false);
+      }
+    }
+  });
+
+  /*
+   * Né liền kề thôi, KHÔNG né cả ô: cấm hết thì ô nhịp nào cũng là bốn nốt khác
+   * nhau, nghe ra ngay là máy sinh chứ không giống bản nhạc thật.
+   */
+  it('nốt vẫn được phép quay lại ở phách xa hơn', () => {
+    const hep = oNhip({ fiveFinger: true });
+    const coLap = nhieuCau(hep, 40).some((q) => {
+      const midis = q.beats.map((b) => b.map((p) => p.note.midi).join(','));
+      return new Set(midis).size < midis.length;
+    });
+    expect(coLap).toBe(true);
+  });
+
+  it('một tay thì cả ô nhịp nằm trên cùng một khóa', () => {
+    for (const q of nhieuCau(oNhip({ hands: 'right' }))) {
+      expect(new Set(allParts(q).map((p) => p.clef))).toEqual(new Set(['treble']));
+    }
+  });
+
+  it('kho chỉ có một nốt vẫn dựng đủ bốn phách chứ không trả về câu rỗng', () => {
+    // Đô giữa là nốt trắng duy nhất còn lại khi chỉ chọn một quãng, năm ngón,
+    // mà `pickPart` phải né nốt vừa rồi — không có đường lùi là kẹt vô tận.
+    const q = pickNextQuestion(oNhip({ fiveFinger: true, maxPerStaff: 1 }), null, () => 0)!;
+    expect(q.beats).toHaveLength(BEATS_PER_BAR);
+  });
+});
+
+describe('questionAbc — ô nhịp 4/4', () => {
+  const bar = (midis: number[], clef: 'treble' | 'bass' = 'treble'): DrillQuestion => ({
     key: KEY_SIGNATURES[0],
-    parts: [{ note: noteAt(67), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }],
-  };
+    beats: midis.map((m) => [{ note: noteAt(m), clef }]),
+  });
+
+  /*
+   * Số chỉ nhịp là MỘT PHẦN của thứ đang tập đọc ở chế độ này, nên nó phải hiện.
+   * Chế độ một phách thì ngược lại: `M:none`, vì thêm ký hiệu nào cũng là thêm
+   * thứ phải đọc mà không mang nghĩa gì.
+   */
+  it('có số chỉ nhịp 4/4, nốt đen, và vạch nhịp đóng ô', () => {
+    const abc = questionAbc(bar([60, 62, 64, 65]));
+    expect(abc).toContain('M:4/4');
+    expect(abc).toContain('L:1/4');
+    expect(abc.trim().endsWith('|')).toBe(true);
+    expect(abc).toContain('C D E F|');
+  });
+
+  it('một phách thì vẫn không có số chỉ nhịp lẫn vạch nhịp', () => {
+    const abc = questionAbc(bar([60]));
+    expect(abc).toContain('M:none');
+    expect(abc).not.toContain('|');
+  });
+
+  /*
+   * Khuông đôi: phách nào khuông kia không có nốt thì phải là lặng ẩn `x`, và
+   * hai bè phải có **cùng số phách** — lệch một cái là abcjs vẽ hai ô nhịp dài
+   * khác nhau, nốt không còn thẳng hàng với nốt.
+   */
+  it('khuông đôi giữ hai bè thẳng hàng, chỗ trống là lặng ẩn', () => {
+    const q: DrillQuestion = {
+      key: KEY_SIGNATURES[0],
+      beats: [
+        [{ note: noteAt(60), clef: 'treble' }],
+        [{ note: noteAt(48), clef: 'bass' }],
+        [{ note: noteAt(64), clef: 'treble' }, { note: noteAt(48), clef: 'bass' }],
+        [{ note: noteAt(65), clef: 'treble' }],
+      ],
+    };
+    const abc = questionAbc(q, true);
+    expect(abc).toContain('V:1 clef=treble\nC x E F|');
+    expect(abc).toContain('V:2 clef=bass\nx C, C, x|');
+  });
+
+  it('chồng nốt trong một phách vẫn gom vào ngoặc vuông', () => {
+    const q: DrillQuestion = {
+      key: KEY_SIGNATURES[0],
+      beats: [
+        [{ note: noteAt(64), clef: 'treble' }, { note: noteAt(60), clef: 'treble' }],
+        [{ note: noteAt(65), clef: 'treble' }],
+        [{ note: noteAt(67), clef: 'treble' }],
+        [{ note: noteAt(69), clef: 'treble' }],
+      ],
+    };
+    expect(questionAbc(q)).toContain('[CE] F G A|');
+  });
+});
+
+describe('answerBeat — so phím với phách đang chờ', () => {
+  const mot: DrillPart[] = [{ note: noteAt(60), clef: 'treble' }];
+  const hai: DrillPart[] = [
+    { note: noteAt(67), clef: 'treble' },
+    { note: noteAt(48), clef: 'bass' },
+  ];
 
   it('câu một nốt: bấm đúng là xong', () => {
-    expect(answerQuestion(mot, [], 60)).toEqual({ kind: 'correct', collected: [60] });
+    expect(answerBeat(mot, [], 60)).toEqual({ kind: 'correct', collected: [60] });
   });
 
   it('câu một nốt: cùng tên khác quãng tám được tách riêng', () => {
-    expect(answerQuestion(mot, [], 72).kind).toBe('wrong-octave');
-    expect(answerQuestion(mot, [], 61).kind).toBe('wrong');
+    expect(answerBeat(mot, [], 72).kind).toBe('wrong-octave');
+    expect(answerBeat(mot, [], 61).kind).toBe('wrong');
   });
 
   it('câu hai nốt: bấm một nốt thì báo còn thiếu, chưa xong', () => {
-    const out = answerQuestion(hai, [], 67);
+    const out = answerBeat(hai, [], 67);
     expect(out.kind).toBe('partial');
     if (out.kind === 'partial') {
       expect(out.done.clef).toBe('treble');
@@ -482,10 +620,10 @@ describe('answerQuestion — so phím với câu đang chờ', () => {
   });
 
   it('câu hai nốt: bấm nốt nào trước cũng được', () => {
-    const bassTruoc = answerQuestion(hai, [], 48);
+    const bassTruoc = answerBeat(hai, [], 48);
     expect(bassTruoc.kind).toBe('partial');
     if (bassTruoc.kind === 'partial') {
-      expect(answerQuestion(hai, bassTruoc.collected, 67)).toEqual({ kind: 'correct', collected: [48, 67] });
+      expect(answerBeat(hai, bassTruoc.collected, 67)).toEqual({ kind: 'correct', collected: [48, 67] });
     }
   });
 
@@ -495,16 +633,16 @@ describe('answerQuestion — so phím với câu đang chờ', () => {
    * lần sau — như mã trong component làm bằng ref — thì câu mới xong được.
    */
   it('hai phím trong cùng một nhịp: nối collected là xong câu', () => {
-    const lan1 = answerQuestion(hai, [], 67);
+    const lan1 = answerBeat(hai, [], 67);
     const daCo = lan1.kind === 'partial' ? lan1.collected : [];
-    expect(answerQuestion(hai, daCo, 48).kind).toBe('correct');
+    expect(answerBeat(hai, daCo, 48).kind).toBe('correct');
     // Còn đọc lại danh sách cũ (state chưa kịp cập nhật) thì kẹt ở 'partial'.
-    expect(answerQuestion(hai, [], 48).kind).toBe('partial');
+    expect(answerBeat(hai, [], 48).kind).toBe('partial');
   });
 
   it('câu hai nốt: bấm sai vẫn giữ nguyên nốt đã đúng', () => {
-    expect(answerQuestion(hai, [67], 50).kind).toBe('wrong');
-    expect(answerQuestion(hai, [67], 60).kind).toBe('wrong-octave');
+    expect(answerBeat(hai, [67], 50).kind).toBe('wrong');
+    expect(answerBeat(hai, [67], 60).kind).toBe('wrong-octave');
   });
 
   /*
@@ -513,8 +651,8 @@ describe('answerQuestion — so phím với câu đang chờ', () => {
    * micro cũng nghe lại nốt đó.
    */
   it('nốt đã đúng mà nghe lại thì bỏ qua, không tính là sai', () => {
-    expect(answerQuestion(hai, [67], 67).kind).toBe('again');
-    expect(answerQuestion(hai, [48, 67], 67).kind).toBe('correct');
+    expect(answerBeat(hai, [67], 67).kind).toBe('again');
+    expect(answerBeat(hai, [48, 67], 67).kind).toBe('correct');
   });
 });
 

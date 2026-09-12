@@ -808,6 +808,16 @@ body {
   stroke: #2f9e44 !important;
 }
 
+/* Nốt đang chờ trong một ô nhịp ở bài luyện nhận nốt — CON TRỎ, không phải điểm.
+   Nó chỉ trả lời "đang đọc tới chỗ nào", và chỉ nhích khi người học bấm đúng;
+   không có đồng hồ nào đẩy nó đi. Màu tím của app chứ không phải đỏ hay cam:
+   hai màu đó đã mang nghĩa "sai" ở ngay khuông nhạc này. */
+.drill-beat-waiting,
+.drill-beat-waiting * {
+  fill: #7048e8 !important;
+  stroke: #7048e8 !important;
+}
+
 /* Nốt đang chờ, nháy đỏ và rung nhẹ khi người học bấm trượt.
    Nháy rồi tắt hẳn, không để lại vết — báo "chỗ này này", không phải ghi sổ lỗi.
 

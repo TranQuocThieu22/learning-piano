@@ -33,14 +33,17 @@ export interface DrillPart {
 }
 
 /**
- * Một câu hỏi: **một hoặc hai nốt**.
+ * Một câu hỏi: **một hay nhiều phách**, mỗi phách một hay nhiều nốt.
  *
- * Hai nốt thì mỗi nốt một khóa — một cho tay phải, một cho tay trái, bấm cùng
- * lúc. Đây là bước gần bản nhạc thật nhất mà bài luyện này làm được: đọc bản
- * nhạc piano là đọc hai khuông một lúc, không phải đọc lần lượt.
+ * Hai tầng, và trộn hai tầng này là chỗ dễ sai nhất:
+ *
+ * - **Trong một phách** là những nốt bấm **CÙNG LÚC** — hai khuông cho hai tay,
+ *   và chồng nốt như hợp âm. Bấm nốt nào trước cũng được, đủ hết là xong phách.
+ * - **Giữa các phách** là **LẦN LƯỢT** trái sang phải, đúng như đọc bản nhạc.
+ *   Chế độ "1 nhịp" có đúng một phách; chế độ ô nhịp 4/4 có bốn.
  */
 export interface DrillQuestion {
-  parts: DrillPart[];
+  beats: DrillPart[][];
   /**
    * Hoá biểu của riêng câu này.
    *
@@ -49,6 +52,11 @@ export interface DrillQuestion {
    * viết của từng nốt đã tính theo đúng giọng này ngay lúc bốc câu.
    */
   key: KeySignature;
+}
+
+/** Mọi nốt của cả câu, gộp hết các phách — để đếm và để dựng tầm nghe cho micro. */
+export function allParts(question: DrillQuestion): DrillPart[] {
+  return question.beats.flat();
 }
 
 /** Khoá nhận dạng một phần câu hỏi, để so xem hai câu có trùng nhau không. */
@@ -259,9 +267,34 @@ export interface DrillOptions {
    * phải câu nào cũng đủ chồng — đọc bản nhạc thật cũng thế.
    */
   maxPerStaff: number;
+  /**
+   * Một câu là **một phách** hay **cả một ô nhịp 4/4**.
+   *
+   * - `one` — như cũ: một chỗ trên khuông, không có số chỉ nhịp, không vạch nhịp.
+   * - `bar` — một ô nhịp 4/4 đủ bốn phách, đọc lần lượt trái sang phải. Đây là
+   *   bước từ *đọc một nốt* sang *đọc một câu nhạc*: mắt phải đi tới, và phải
+   *   nhớ hoá biểu suốt cả ô chứ không chỉ cho một nốt.
+   *
+   * **Bốn nốt đen đều nhau, không trộn trường độ.** Không phải vì khó vẽ, mà vì
+   * bài này cố ý KHÔNG đo thời gian (xem luật chống áp lực ở `AGENTS.md`): hình
+   * nốt trắng hay nốt móc vẽ ra thì đẹp, nhưng app không kiểm được người học có
+   * giữ đúng trường độ không, nên nó chỉ còn là trang trí — mà trang trí trên
+   * một bài tập đọc nốt thì gây hiểu nhầm là đang được chấm cả tiết tấu.
+   */
+  questionLength: QuestionLength;
 }
 
 export type NotesPerQuestion = 'one' | 'both' | 'mixed';
+
+export type QuestionLength = 'one' | 'bar';
+
+/** Số phách trong một ô nhịp 4/4. */
+export const BEATS_PER_BAR = 4;
+
+/** Câu này có mấy phách. */
+export function beatsPerQuestion(options: DrillOptions): number {
+  return options.questionLength === 'bar' ? BEATS_PER_BAR : 1;
+}
 
 /** Trần số nốt mỗi khuông. Bốn nốt là chồng tối đa một bàn tay với tới được. */
 export const MAX_PER_STAFF = 4;
@@ -277,6 +310,7 @@ export const DEFAULT_OPTIONS: DrillOptions = {
   notesPerQuestion: 'one',
   maxPerStaff: 1,
   randomKeys: false,
+  questionLength: 'one',
 };
 
 export function clefsFor(hands: Hands): ClefName[] {
@@ -364,15 +398,28 @@ export function notePoolForOptions(options: DrillOptions, key?: KeySignature): D
  * trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa gì.
  */
 export function questionAbc(question: DrillQuestion, grandStaff = false): string {
-  const head = ['X:1', 'L:1/1', 'M:none'];
+  const bar = question.beats.length > 1;
+  /*
+   * Câu một phách vẽ trơn, không số chỉ nhịp không vạch nhịp: hỏi đúng một nốt
+   * thì thêm ký hiệu nào cũng là thêm thứ phải đọc mà không mang nghĩa gì.
+   *
+   * Ô nhịp thì ngược lại — **phải** có `M:4/4` ở đầu khuông, vì số chỉ nhịp là
+   * một phần của thứ đang tập đọc. `L:1/4` cho nốt viết trơn thành nốt đen, đủ
+   * bốn phách lấp kín ô.
+   */
+  const head = bar ? ['X:1', 'L:1/4', 'M:4/4'] : ['X:1', 'L:1/1', 'M:none'];
   const key = question.key;
 
   /*
    * Nhiều nốt cùng khuông gom vào một cặp ngoặc vuông — cú pháp hợp âm của ABC.
    * Xếp từ thấp lên cao cho giống cách bản nhạc thật viết chồng nốt.
+   *
+   * Khuông không có nốt nào ở phách này dùng `x` (lặng ẩn) chứ không dùng `z`:
+   * dấu lặng vẽ ra trông như một ký hiệu phải đọc, mà ở đây nó không mang nghĩa
+   * gì — nó chỉ là chỗ trống để hai khuông thẳng hàng nhau.
    */
-  const noteOn = (clef: ClefName) => {
-    const cua = question.parts
+  const noteOn = (parts: DrillPart[], clef: ClefName) => {
+    const cua = parts
       .filter((p) => p.clef === clef)
       .sort((a, b) => a.note.midi - b.note.midi);
     if (cua.length === 0) return 'x';
@@ -380,9 +427,20 @@ export function questionAbc(question: DrillQuestion, grandStaff = false): string
     return `[${cua.map((p) => p.note.abc).join('')}]`;
   };
 
+  /** Cả dòng nhạc của một khuông: từng phách nối nhau, ô nhịp thì đóng vạch cuối. */
+  const lineFor = (clef: ClefName) => {
+    const body = question.beats.map((beat) => noteOn(beat, clef)).join(' ');
+    return bar ? `${body}|` : body;
+  };
+
   if (!grandStaff) {
-    const clef = question.parts[0].clef;
-    return [...head, `K:${key.abc} clef=${clef}`, noteOn(clef)].join('\n');
+    /*
+     * Một khuông thì cả câu phải nằm trên CÙNG một khóa, không thì phách này vẽ
+     * khóa Sol phách kia vẽ khóa Pha. `pickNextQuestion` đã lo điều đó, ở đây chỉ
+     * lấy khóa của phách đầu.
+     */
+    const clef = question.beats[0][0].clef;
+    return [...head, `K:${key.abc} clef=${clef}`, lineFor(clef)].join('\n');
   }
 
   return [
@@ -390,9 +448,9 @@ export function questionAbc(question: DrillQuestion, grandStaff = false): string
     '%%staves {1 2}',
     `K:${key.abc}`,
     'V:1 clef=treble',
-    noteOn('treble'),
+    lineFor('treble'),
     'V:2 clef=bass',
-    noteOn('bass'),
+    lineFor('bass'),
   ].join('\n');
 }
 
@@ -478,7 +536,21 @@ export function pickNextQuestion(
   for (const key of thuTuGiong(options, previous, random)) {
     const pool = notePoolForOptions(options, key);
     if (pool.length === 0) continue;
-    return { key, parts: bocNot(pool, previous, options, random) };
+
+    /*
+     * Từng phách một, mỗi phách né nốt của phách **liền trước** — kể cả phách
+     * đầu, nó né phách cuối của câu vừa rồi. Chỉ né liền kề chứ không né cả ô:
+     * một nốt quay lại ở phách sau nữa là chuyện bản nhạc thật vẫn làm, cấm hết
+     * thì ô nhịp nào cũng là bốn nốt khác nhau, nghe ra ngay là máy sinh.
+     */
+    const beats: DrillPart[][] = [];
+    let truoc: DrillPart[] = previous?.beats.at(-1) ?? [];
+    for (let i = 0; i < beatsPerQuestion(options); i++) {
+      const beat = bocNot(pool, truoc, options, random);
+      beats.push(beat);
+      truoc = beat;
+    }
+    return { key, beats };
   }
   return null;
 }
@@ -503,14 +575,14 @@ function thuTuGiong(
   return [chon, ...all.filter((k) => k !== chon)];
 }
 
-/** Bốc phần nốt của câu hỏi trong kho của MỘT giọng. */
+/** Bốc nốt cho **một phách**, trong kho của MỘT giọng, né nốt của phách liền trước. */
 function bocNot(
   pool: DrillPart[],
-  previous: DrillQuestion | null,
+  truoc: DrillPart[],
   options: DrillOptions,
   random: () => number,
 ): DrillPart[] {
-  const avoid = new Set((previous?.parts ?? []).map(partKey));
+  const avoid = new Set(truoc.map(partKey));
   const limit = Math.max(1, Math.min(MAX_PER_STAFF, options.maxPerStaff));
 
   const muonHai = options.notesPerQuestion === 'both'
@@ -545,17 +617,22 @@ export type AnswerOutcome =
   | { kind: 'wrong' };
 
 /**
- * So phím vừa bấm với câu hỏi đang chờ.
+ * So phím vừa bấm với **phách đang chờ**.
  *
- * Câu hai nốt **không bắt bấm đúng thứ tự**: hai tay đặt xuống bàn phím không
- * bao giờ chạm cùng một mili giây, mà ai chạm trước là tuỳ người.
+ * Nhận thẳng danh sách nốt của một phách chứ không nhận cả câu: ô nhịp 4/4 đi
+ * lần lượt từng phách, và chỗ gọi là nơi biết đang đứng ở phách nào. Nhận cả câu
+ * thì bấm trúng một nốt của phách sau cũng được tính đúng — thành nhảy cóc, đúng
+ * thứ `AGENTS.md` cấm.
+ *
+ * Trong **một phách** thì **không bắt bấm đúng thứ tự**: hai tay đặt xuống bàn
+ * phím không bao giờ chạm cùng một mili giây, mà ai chạm trước là tuỳ người.
  */
-export function answerQuestion(
-  question: DrillQuestion,
+export function answerBeat(
+  beat: DrillPart[],
   collected: number[],
   played: number,
 ): AnswerOutcome {
-  const conThieu = question.parts.filter((p) => !collected.includes(p.note.midi));
+  const conThieu = beat.filter((p) => !collected.includes(p.note.midi));
   if (conThieu.length === 0) return { kind: 'correct', collected };
 
   /*

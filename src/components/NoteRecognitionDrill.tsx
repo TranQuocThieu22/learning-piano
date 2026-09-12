@@ -2,26 +2,35 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import ABCJS from 'abcjs';
+import type { NoteTimingEvent, TuneObject } from 'abcjs';
 import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
 import {
-  answerQuestion, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart, DrillQuestion, Hands,
-  MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
-  pickNextQuestion, questionAbc,
+  answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote, DrillOptions, DrillPart,
+  DrillQuestion, Hands, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion, octaveLabel,
+  octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, QuestionLength, questionAbc,
 } from '@/lib/midi-notes';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { answersFromHeard } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
-import {
-  anchorTransform, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX, SINGLE_STAFF_SCALE,
-} from '@/lib/staff-anchor';
+import { anchorTransform, staffBox, staffScale } from '@/lib/staff-anchor';
 
 /** Thời gian dừng lại sau khi bấm đúng, đủ để nhìn thấy phản hồi rồi mới sang nốt mới. */
 const ADVANCE_DELAY_MS = 900;
 
 const STORAGE_KEY = 'note-trainer-options';
+
+/**
+ * Bề ngang thật của ô nhịp trên màn hình, tính bằng px.
+ *
+ * Khung chứa rộng tối đa 320px, trừ 1rem padding mỗi bên còn 288px. Lấy 280 để
+ * còn dư hai mép. `staffwidth` của abcjs tính TRƯỚC khi nhân tỉ lệ, nên phải
+ * chia ngược lại — không thì khuông đôi (tỉ lệ nhỏ hơn) vẽ ra bé tí giữa một
+ * khung trống hoác.
+ */
+const BAR_STAFF_PX = 280;
 
 const HAND_LABELS: { value: Hands; label: string }[] = [
   { value: 'right', label: 'Tay phải' },
@@ -34,6 +43,44 @@ const COUNT_LABELS: { value: NotesPerQuestion; label: string }[] = [
   { value: 'both', label: '2 nốt' },
   { value: 'mixed', label: 'Lúc 1 lúc 2' },
 ];
+
+const LENGTH_LABELS: { value: QuestionLength; label: string }[] = [
+  { value: 'one', label: '1 nhịp' },
+  { value: 'bar', label: 'Khuông nhạc 4/4' },
+];
+
+/** abcjs gắn noteTimings lên tune sau khi gọi setTiming, nhưng chưa khai báo trong .d.ts. */
+type TuneWithTimings = TuneObject & { noteTimings?: NoteTimingEvent[] };
+
+/**
+ * Phần tử SVG của **từng phách**, để tô được phách đang chờ và phách đã xong.
+ *
+ * Lấy qua `noteTimings` của abcjs chứ không tự đếm thẻ trong DOM: khuông đôi vẽ
+ * xong bè trên mới tới bè dưới, nên thứ tự trong DOM không phải thứ tự phách.
+ * `noteTimings` thì gom đúng những gì vang lên CÙNG một lúc vào một sự kiện —
+ * đúng bằng định nghĩa một phách ở đây.
+ *
+ * Số sự kiện không khớp số phách thì trả về rỗng: thà không tô gì còn hơn tô
+ * nhầm sang nốt người học chưa đánh tới.
+ */
+function beatElements(tune: TuneObject, beats: number): HTMLElement[][] {
+  try {
+    // Bắt buộc gọi setUpAudio trước setTiming, không thì noteTimings rỗng.
+    tune.setUpAudio({});
+    tune.setTiming();
+    const out = ((tune as TuneWithTimings).noteTimings ?? [])
+      .filter((ev) => ev.type === 'event')
+      .map((ev) => (ev.elements ?? []).flat());
+    return out.length === beats ? out : [];
+  } catch {
+    return [];
+  }
+}
+
+/** Nốt đang chờ — con trỏ, không phải điểm số. Chỉ nhích khi người học bấm đúng. */
+const WAITING_CLASS = 'drill-beat-waiting';
+/** Nốt đã bấm đúng, dùng chung lớp với phần tập theo bản nhạc. */
+const DONE_CLASS = 'practice-correct';
 
 /**
  * Kho nhớ lựa chọn giữa hai buổi tập.
@@ -72,6 +119,7 @@ function loadOptions(): DrillOptions {
       notesPerQuestion: count,
       maxPerStaff,
       randomKeys: saved.randomKeys === true,
+      questionLength: saved.questionLength === 'bar' ? 'bar' : 'one',
     };
   } catch {
     // Chế độ riêng tư chặn localStorage, hoặc dữ liệu cũ sai dạng sau khi đổi mã.
@@ -151,6 +199,16 @@ export function NoteRecognitionDrill() {
    */
   const [collected, setCollected] = useState<number[]>([]);
   /**
+   * Phách đang chờ trong câu. Chế độ "1 nhịp" luôn là 0.
+   *
+   * **Chỉ nhích khi người học bấm đúng phách đang chờ** — không đếm giờ, không
+   * tự chạy, dừng bao lâu cũng được. Đây là luật số 1 trong bốn luật chống áp
+   * lực ở `AGENTS.md`, và là thứ phân biệt bài này với một bản nhạc tự trôi.
+   */
+  const [beatIndex, setBeatIndex] = useState(0);
+  /** Bản gốc của `beatIndex`, cùng lý do với `collectedRef`. */
+  const beatIndexRef = useRef(0);
+  /**
    * Bản gốc của `collected`, giữ trong ref.
    *
    * Micro đưa cả hai nốt của một câu trong cùng một nhịp, nên `handleNoteOn` chạy
@@ -170,6 +228,8 @@ export function NoteRecognitionDrill() {
   const missedCurrentRef = useRef(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const paperRef = useRef<HTMLDivElement>(null);
+  /** Phần tử SVG của từng phách, dựng lại sau mỗi lần vẽ khuông nhạc. */
+  const beatElementsRef = useRef<HTMLElement[][]>([]);
 
   /*
    * **Đổi lựa chọn thì bốc nốt mới và xoá thống kê, ngay trong lúc vẽ.**
@@ -194,6 +254,7 @@ export function NoteRecognitionDrill() {
     setShownFor(options);
     setCurrent(pickNextQuestion(options, null));
     setCollected([]);
+    setBeatIndex(0);
     setFeedback({ kind: 'none' });
     setAnswered(0);
     setFirstTryCorrect(0);
@@ -204,9 +265,27 @@ export function NoteRecognitionDrill() {
     lockedRef.current = false;
     missedCurrentRef.current = false;
     collectedRef.current = [];
+    beatIndexRef.current = 0;
     setFeedback({ kind: 'none' });
     setCollected([]);
+    setBeatIndex(0);
     setCurrent(pickNextQuestion(forOptions, previous));
+  }, []);
+
+  /**
+   * Sang phách kế trong cùng một ô nhịp — khuông nhạc GIỮ NGUYÊN, chỉ con trỏ đi.
+   *
+   * Không vẽ lại bản nhạc ở đây là có chủ ý: vẽ lại thì cả ô nhịp nháy một cái
+   * mỗi lần bấm đúng một nốt, mà mắt người học đang bám vào đúng chỗ đó.
+   */
+  const nextBeat = useCallback(() => {
+    lockedRef.current = false;
+    missedCurrentRef.current = false;
+    collectedRef.current = [];
+    beatIndexRef.current += 1;
+    setFeedback({ kind: 'none' });
+    setCollected([]);
+    setBeatIndex(beatIndexRef.current);
   }, []);
 
   /**
@@ -217,9 +296,15 @@ export function NoteRecognitionDrill() {
    */
   const handleNoteOn = (played: number) => {
     if (lockedRef.current || !current) return;
-    const outcome = answerQuestion(current, collectedRef.current, played);
+    /*
+     * So với **phách đang chờ**, không so với cả câu. Đây là chỗ giữ luật "đi
+     * tuần tự, tuyệt đối không nhảy cóc": bấm trúng một nốt của phách sau thì
+     * vẫn là bấm sai, dù nốt đó có thật ở phía trước mặt.
+     */
+    const beat = current.beats[beatIndexRef.current] ?? [];
+    const outcome = answerBeat(beat, collectedRef.current, played);
 
-    // Nốt đã đúng, nghe lại lần nữa: không làm gì cả. Xem `answerQuestion`.
+    // Nốt đã đúng, nghe lại lần nữa: không làm gì cả. Xem `answerBeat`.
     if (outcome.kind === 'again') return;
 
     if (outcome.kind === 'partial') {
@@ -234,16 +319,26 @@ export function NoteRecognitionDrill() {
       collectedRef.current = outcome.collected;
       setCollected(outcome.collected);
       setFeedback({ kind: 'correct' });
+      /*
+       * Đếm theo PHÁCH, không theo câu: nhãn dưới kia ghi "nốt đã trả lời", mà
+       * một ô nhịp bốn phách là bốn lần đọc nốt thật sự. Đếm theo câu thì tập ô
+       * nhịp một lúc mà con số vẫn bò như tập một nốt.
+       */
       setAnswered((n) => n + 1);
       if (!missedCurrentRef.current) setFirstTryCorrect((n) => n + 1);
-      timerRef.current = setTimeout(() => advance(current, options), ADVANCE_DELAY_MS);
+
+      const conPhach = beatIndexRef.current + 1 < current.beats.length;
+      timerRef.current = setTimeout(
+        () => (conPhach ? nextBeat() : advance(current, options)),
+        ADVANCE_DELAY_MS,
+      );
       return;
     }
 
-    // Sai: tính một lần cho cả câu, và ghi vào sổ nhầm những nốt còn đang chờ.
+    // Sai: tính một lần cho cả phách, và ghi vào sổ nhầm những nốt còn đang chờ.
     if (!missedCurrentRef.current) {
       missedCurrentRef.current = true;
-      const conThieu = current.parts.filter((p) => !collectedRef.current.includes(p.note.midi));
+      const conThieu = beat.filter((p) => !collectedRef.current.includes(p.note.midi));
       setMistakes((m) => {
         const next = { ...m };
         for (const p of conThieu) next[p.note.midi] = (next[p.note.midi] ?? 0) + 1;
@@ -252,6 +347,9 @@ export function NoteRecognitionDrill() {
     }
     setFeedback({ kind: outcome.kind, played });
   };
+
+  /** Phách đang chờ. Chế độ "1 nhịp" thì đây là cả câu. */
+  const currentBeat = current?.beats[beatIndex] ?? [];
 
   // Micro chỉ nghe trong tầm đang tập, nới mỗi bên một quãng tám để vẫn bắt được
   // khi người học đặt nhầm tay sang quãng khác (thành câu "sai quãng tám").
@@ -266,9 +364,14 @@ export function NoteRecognitionDrill() {
       onMidiNote: handleNoteOn,
       onMicHeard: (event) => {
         if (!current) return;
-        // Câu hai nốt thì micro nghe cả hai trong cùng một lần — đưa hết vào, mỗi
-        // nốt tự tìm chỗ của nó. Không khớp gì thì chỉ báo sai MỘT lần.
-        const conThieu = current.parts.filter((p) => !collectedRef.current.includes(p.note.midi));
+        // Phách hai nốt thì micro nghe cả hai trong cùng một lần — đưa hết vào,
+        // mỗi nốt tự tìm chỗ của nó. Không khớp gì thì chỉ báo sai MỘT lần.
+        //
+        // Đọc phách từ REF chứ không từ state: micro có thể đưa liền hai nhịp
+        // nghe trước khi React kịp vẽ lại, mà phách đã đổi rồi thì so với phách
+        // cũ là báo sai oan.
+        const beat = current.beats[beatIndexRef.current] ?? [];
+        const conThieu = beat.filter((p) => !collectedRef.current.includes(p.note.midi));
         for (const midi of answersFromHeard(event.notes, conThieu.map((p) => p.note.midi))) {
           handleNoteOn(midi);
         }
@@ -277,10 +380,12 @@ export function NoteRecognitionDrill() {
     // Báo trước nốt đang hỏi: đã kiểm trên hàng chục lần trả lời sai rằng gợi ý này
     // không bao giờ biến một lần đánh sai thành "Chính xác" (mic-accuracy.test.ts).
     {
-      hint: current ? current.parts.map((p) => p.note.midi) : [],
+      // Chỉ báo trước nốt của PHÁCH ĐANG CHỜ. Báo cả ô nhịp là mách micro nghe
+      // ra nốt của phách sau, mà bấm nốt đó lúc này vốn phải bị tính là sai.
+      hint: currentBeat.map((p) => p.note.midi),
       range: micRange,
-      // Đủ chỗ cho mọi nốt của câu, cộng một nốt lạ để còn báo được bấm sai.
-      maxNotes: Math.min(6, (current?.parts.length ?? 1) + 1),
+      // Đủ chỗ cho mọi nốt của phách, cộng một nốt lạ để còn báo được bấm sai.
+      maxNotes: Math.min(6, currentBeat.length + 1),
     },
   );
 
@@ -298,8 +403,15 @@ export function NoteRecognitionDrill() {
       paper.innerHTML = '';
       return;
     }
-    const abcScale = grandStaff ? GRAND_STAFF_SCALE : SINGLE_STAFF_SCALE;
-    ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
+    /*
+     * Cả ô nhịp vẽ nhỏ hơn một phách — tỉ lệ lấy từ `staff-anchor.ts`, cùng chỗ
+     * với khung, để hai thứ không bao giờ lệch nhau. Chia theo một hằng số chứ
+     * không theo số phách: mọi câu trong cùng một chế độ phải cùng cỡ chữ, không
+     * thì mắt phải làm quen lại mỗi câu.
+     */
+    const bar = current.beats.length > 1;
+    const abcScale = staffScale(grandStaff, bar);
+    const [tune] = ABCJS.renderAbc(paper, questionAbc(current, grandStaff), {
       /*
        * Khuông đôi cao gấp đôi khuông đơn nên phải thu nhỏ lại — không thì trên
        * điện thoại nó đẩy hết phần phản hồi và hai cái nút xuống dưới màn hình.
@@ -307,13 +419,17 @@ export function NoteRecognitionDrill() {
        * nằm trọn trong khung, khác khuông đơn chỉ có mỗi nốt ở giữa nên hai mép
        * trống bị cắt cũng không mất gì.
        */
-      staffwidth: grandStaff ? 190 : 220,
+      staffwidth: bar ? Math.round(BAR_STAFF_PX / abcScale) : grandStaff ? 190 : 220,
       scale: abcScale,
       paddingtop: 8,
       paddingbottom: 8,
       paddingleft: 0,
       paddingright: 0,
     });
+
+    // Nhặt phần tử của từng phách NGAY sau khi vẽ, trước khi hiệu ứng tô màu
+    // chạy — hiệu ứng đó chỉ gắn lớp, không đụng tới DOM của abcjs.
+    beatElementsRef.current = beatElements(tune, current.beats.length);
 
     const svg = paper.querySelector('svg');
     const topLine = paper.querySelector('.abcjs-top-line');
@@ -330,6 +446,14 @@ export function NoteRecognitionDrill() {
     paper.style.overflow = 'visible';
 
     /*
+     * abcjs cũng ghi `width` lên chính thẻ này, đúng bằng bề ngang ẢNH. Đo
+     * `clientWidth` sau khi vẽ mà không xoá đi thì phép ép bề ngang ở dưới đem
+     * ảnh so với chính nó, tỉ lệ luôn ra 1 và ô nhịp vẫn tràn ra ngoài khung —
+     * không có lỗi nào báo, chỉ mất nốt ở hai mép.
+     */
+    paper.style.width = '';
+
+    /*
      * Đo **trong hệ toạ độ của chính ảnh SVG** bằng `getBBox`, không dùng
      * `getBoundingClientRect`: toạ độ màn hình phụ thuộc vào chỗ ảnh nằm trong
      * trang, mà lúc effect chạy thì trang chưa xếp xong chỗ cho nó — đã thử và
@@ -340,11 +464,23 @@ export function NoteRecognitionDrill() {
      */
     const ink = svg.getBBox();
     const topLineY = (topLine as SVGGraphicsElement).getBBox().y * abcScale;
-    const { scale, translateY } = anchorTransform(
-      grandStaff ? GRAND_STAFF_BOX : SINGLE_STAFF_BOX,
+    const { scale, translateX, translateY } = anchorTransform(
+      staffBox(grandStaff, bar),
       topLineY,
       ink.y * abcScale,
       (ink.y + ink.height) * abcScale,
+      /*
+       * Chỉ ô nhịp mới ép bề ngang — xem lý do ở `anchorTransform`. Đo bằng
+       * thuộc tính `width` của chính thẻ SVG chứ không bằng `getBBox`: abcjs
+       * chừa thêm lề quanh nhạc (khuông đôi còn có dấu ngoặc ôm hai khuông), mà
+       * phần lề đó cũng chiếm chỗ thật trong khung.
+       */
+      bar
+        ? {
+          ink: Number(svg.getAttribute('width') ?? 0) * abcScale,
+          box: paper.clientWidth,
+        }
+        : undefined,
     );
 
     /*
@@ -354,8 +490,43 @@ export function NoteRecognitionDrill() {
      * khớp với abcjs, không thì ảnh còn xê ngang.
      */
     svg.style.transformOrigin = '0 0';
-    svg.style.transform = `translateY(${translateY}px) scale(${abcScale * scale})`;
+    svg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${abcScale * scale})`;
   }, [current, grandStaff]);
+
+  /*
+   * Tô con trỏ lên khuông nhạc: phách đã xong màu xanh, phách đang chờ có dấu.
+   *
+   * Hiệu ứng RIÊNG, không gộp vào chỗ vẽ: gộp thì mỗi lần bấm đúng một nốt là
+   * vẽ lại cả ô nhịp, mà mắt người học đang bám vào đúng chỗ đó. Ở đây chỉ thêm
+   * bớt lớp CSS trên phần tử abcjs đã vẽ sẵn.
+   *
+   * Chạy cả ở chế độ "1 nhịp" — lúc đó chỉ có một phách và nó luôn là phách đang
+   * chờ, nên chỉ thấy dấu con trỏ, không thấy màu xanh nào trước khi trả lời.
+   */
+  useEffect(() => {
+    const groups = beatElementsRef.current;
+    if (groups.length === 0) return;
+
+    for (const [i, group] of groups.entries()) {
+      for (const el of group) {
+        el.classList?.remove(DONE_CLASS, WAITING_CLASS);
+        if (i < beatIndex) el.classList?.add(DONE_CLASS);
+        else if (i === beatIndex) el.classList?.add(WAITING_CLASS);
+      }
+    }
+
+    /*
+     * Phách vừa trả lời xong cũng tô xanh ngay, đừng đợi con trỏ nhích: có 900ms
+     * giữa lúc đúng và lúc sang phách mới, không tô thì đúng khoảng đó khuông
+     * nhạc không phản hồi gì.
+     */
+    if (feedback.kind === 'correct') {
+      for (const el of groups[beatIndex] ?? []) {
+        el.classList?.remove(WAITING_CLASS);
+        el.classList?.add(DONE_CLASS);
+      }
+    }
+  }, [current, beatIndex, feedback]);
 
   useEffect(() => () => { if (timerRef.current) clearTimeout(timerRef.current); }, []);
 
@@ -368,6 +539,7 @@ export function NoteRecognitionDrill() {
     lockedRef.current = false;
     missedCurrentRef.current = false;
     collectedRef.current = [];
+    beatIndexRef.current = 0;
     storeOptions(next);
   };
 
@@ -384,8 +556,20 @@ export function NoteRecognitionDrill() {
     applyOptions({ ...options, hands, octaves: kept.length > 0 ? kept : [fallback] });
   };
 
+  /**
+   * Bỏ qua **phách đang chờ**, không bỏ cả ô nhịp.
+   *
+   * Kẹt ở một nốt thì người học chỉ cần đi qua nốt đó, ba phách còn lại vẫn là
+   * ba lần đọc nốt. Bỏ cả ô là máy quyết hộ nhiều hơn mức người học xin.
+   *
+   * Không tính vào thống kê: bỏ qua không phải là trả lời sai.
+   */
   const skip = () => {
     if (timerRef.current) clearTimeout(timerRef.current);
+    if (current && beatIndexRef.current + 1 < current.beats.length) {
+      nextBeat();
+      return;
+    }
     advance(current, options);
   };
 
@@ -483,6 +667,27 @@ export function NoteRecognitionDrill() {
           </>
         )}
 
+        {/*
+          Độ dài câu đứng trên "mấy nốt mỗi khuông" vì nó là lựa chọn to hơn:
+          nó đổi hẳn việc đang tập từ *đọc một nốt* sang *đọc một câu nhạc*.
+        */}
+        <Text size="sm" fw={500} mt="md" mb={6}>
+          Mỗi câu dài bao nhiêu
+        </Text>
+        <SegmentedControl
+          className="drill-hands-picker"
+          fullWidth
+          value={options.questionLength}
+          onChange={(value) => applyOptions({ ...options, questionLength: value as QuestionLength })}
+          data={LENGTH_LABELS}
+          data-testid="length-picker"
+        />
+        <Text size="xs" c="dimmed" mt={6}>
+          {options.questionLength === 'one'
+            ? 'Mỗi câu một chỗ trên khuông nhạc, không có số chỉ nhịp.'
+            : `Mỗi câu một ô nhịp 4/4 đủ ${BEATS_PER_BAR} nốt đen, đọc lần lượt từ trái sang phải. Nốt đang chờ có dấu, nốt đã đúng tô xanh — con trỏ chỉ nhích khi bạn bấm đúng, không có đồng hồ nào chạy. Bốn nốt đều nhau vì bài này chấm cao độ chứ không chấm trường độ.`}
+        </Text>
+
         <Text size="sm" fw={500} mt="md" mb={6}>
           Tối đa mấy nốt mỗi khuông
         </Text>
@@ -575,12 +780,18 @@ export function NoteRecognitionDrill() {
           {current ? (
             <>
               <Text size="sm" c="dimmed">
-                {current.parts.length > 1
-                  ? `${current.parts.length} nốt này là nốt gì? Bấm đủ cả ${current.parts.length} trên đàn — không cần cùng lúc, nốt nào trước cũng được.`
+                {/* Ô nhịp thì nói rõ đang đứng ở phách nào: người học ngẩng lên
+                    sau khi nhìn xuống bàn phím phải tìm lại được chỗ mình đang
+                    đọc, mà dấu trên khuông nhạc có khi bị ngón tay che. */}
+                {current.beats.length > 1 && (
+                  <>Ô nhịp 4/4 — <b>nốt thứ {beatIndex + 1} trên {current.beats.length}</b>. </>
+                )}
+                {currentBeat.length > 1
+                  ? `${currentBeat.length} nốt này là nốt gì? Bấm đủ cả ${currentBeat.length} trên đàn — không cần cùng lúc, nốt nào trước cũng được.`
                   : 'Nốt này là nốt gì? Hãy bấm phím tương ứng trên đàn.'}
                 {/* Khuông đôi đã tự nói nốt nằm ở tay nào, nên không nhắc thêm —
                     nhắc ra là trả lời hộ nửa câu hỏi. */}
-                {grandStaff && current.parts.length === 1 && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
+                {grandStaff && currentBeat.length === 1 && ' Để ý nốt nằm ở khuông trên hay khuông dưới.'}
                 {/* Nhắc nhìn hoá biểu chứ KHÔNG nói giọng gì — nói ra là trả lời hộ. */}
                 {options.randomKeys && ' Hoá biểu đầu khuông mỗi câu một khác, nhìn nó trước đã.'}
               </Text>
@@ -600,7 +811,7 @@ export function NoteRecognitionDrill() {
                   border: '1px solid #d0d0d0',
                   borderRadius: 16,
                   padding: '0.5rem 1rem',
-                  height: grandStaff ? GRAND_STAFF_BOX.height : SINGLE_STAFF_BOX.height,
+                  height: staffBox(grandStaff, current.beats.length > 1).height,
                   width: '100%',
                   maxWidth: 320,
                   overflow: 'hidden',
@@ -615,13 +826,13 @@ export function NoteRecognitionDrill() {
                     <b>{feedback.done.note.name} ({feedback.done.note.scientific})</b>
                     {grandStaff && ` ở ${feedback.done.clef === 'treble' ? 'khuông trên' : 'khuông dưới'}`}
                     {' '}đúng rồi. Giữ nguyên ngón đó và bấm{' '}
-                    <b>{current.parts.length - collected.length} nốt</b> còn lại.
+                    <b>{currentBeat.length - collected.length} nốt</b> còn lại.
                   </Alert>
                 )}
                 {feedback.kind === 'correct' && (
                   <Alert color="teal" title="Chính xác" data-testid="feedback-correct">
                     Đó là{' '}
-                    {current.parts.map((p, i) => (
+                    {currentBeat.map((p, i) => (
                       <span key={p.note.midi}>
                         {i > 0 && ' và '}
                         <b>{p.note.name} ({p.note.scientific})</b>
@@ -638,7 +849,7 @@ export function NoteRecognitionDrill() {
                   <Alert color="yellow" title="Đúng tên nốt, nhưng sai quãng tám" data-testid="feedback-octave">
                     Bạn đọc đúng tên nốt rồi. Chỉ là tay đang đặt ở quãng khác — nốt đang chờ nằm ở{' '}
                     <b>
-                      {current.parts
+                      {currentBeat
                         .filter((p) => !collected.includes(p.note.midi))
                         .map((p) => `${p.note.scientific} (${p.clef === 'treble' ? 'khuông trên' : 'khuông dưới'})`)
                         .join(' và ')}
@@ -658,7 +869,7 @@ export function NoteRecognitionDrill() {
 
               <Group justify="center">
                 <Button variant="default" size="md" onClick={skip}>
-                  {current.parts.length > 1 ? 'Bỏ qua câu này' : 'Bỏ qua nốt này'}
+                  {currentBeat.length > 1 ? 'Bỏ qua chỗ này' : 'Bỏ qua nốt này'}
                 </Button>
                 <Button variant="subtle" color="gray" size="md" onClick={restart}>Làm lại từ đầu</Button>
               </Group>

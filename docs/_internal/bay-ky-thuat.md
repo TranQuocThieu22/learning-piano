@@ -1049,6 +1049,34 @@ về cả ba.
 
 ---
 
+## 30. abcjs ghi cả `width` lên thẻ chứa, nên đo khung là đo lại chính cái ảnh
+
+**Triệu chứng.** Ô nhịp 4/4 ở bài luyện nhận nốt **tràn ra ngoài khung và mất nốt ở hai
+mép** — khuông đôi vẽ ra rộng 358px trong một khung chỉ 288px. Đã có sẵn đoạn thu nhỏ cho
+vừa khung, và nó **chạy** (thấy rõ `transform` mới trên thẻ SVG), nhưng tỉ lệ nó tính ra
+luôn bằng 1. Không lỗi, không cảnh báo; chỉ mất nốt.
+
+**Nguyên nhân.** Đoạn thu nhỏ đo bề ngang khung bằng `paper.clientWidth`, với `paper` là
+thẻ đưa cho `renderAbc`. Nhưng **abcjs ghi inline `width` lên chính thẻ ấy**, đúng bằng bề
+ngang ảnh nó vừa vẽ. Nên sau lần vẽ đầu tiên, `clientWidth` không còn là bề ngang khung nữa
+mà là bề ngang ảnh — phép tính thành `ảnh / ảnh = 1`, và kết luận "vừa rồi, khỏi thu".
+
+**Cách sửa.** Xoá bề ngang abcjs vừa ghi, ngay trước khi đo:
+
+```ts
+paper.style.width = '';
+```
+
+**Dấu hiệu nhận ra sớm.** Một phép tính tỉ lệ *"nội dung so với khung"* mà **kết quả luôn
+đúng bằng 1** thì gần như chắc chắn là đang so một thứ với chính nó. In cả tử lẫn mẫu ra
+trước khi đi tìm chỗ khác.
+
+**Cùng họ với bẫy 28 và 29** — thư viện vẽ đồ hoạ để lại inline style trên thẻ mình đưa cho
+nó. Tới đây đã đủ ba thuộc tính bị ghi đè: `transform` (bẫy 28), `overflow` + `height`
+(bẫy 29), và `width` (bẫy này). Lần sau đụng tới kích thước của thứ do thư viện vẽ thì
+**giả định mặc định là mọi thuộc tính hình học trên thẻ đó đều đã bị nó ghi**, và dọn trước
+khi đo.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1057,6 +1085,7 @@ về cả ba.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Luyện nhận nốt đọc được cả ô nhịp 4/4, không chỉ một nốt` | Thêm bẫy 30: abcjs ghi cả `width` lên thẻ chứa, nên phép thu nhỏ cho vừa khung đem ảnh so với chính nó và luôn ra tỉ lệ 1 — ô nhịp tràn ra ngoài, mất nốt ở hai mép, không lỗi nào báo. Ghi kèm dấu hiệu nhận ra sớm (tỉ lệ *nội dung trên khung* mà luôn đúng bằng 1) và chốt bài học chung của cả ba bẫy 28-29-30: giả định mọi thuộc tính hình học trên thẻ đưa cho thư viện vẽ đều đã bị nó ghi đè |
 | 12/09/2026 | `feat: Dấu hoá đứng ở hoá biểu đầu khuông, và bản nhạc to lại như cũ` | Thêm bẫy 28 và 29 — abcjs cài tuỳ chọn `scale` bằng chính `style.transform` của thẻ SVG, lại còn bọc ảnh trong một `div` `overflow: hidden` cao đúng bằng ảnh chưa dịch nên khuông Pha mất ba dòng kẻ dưới cùng, nên bản sửa neo khuông ở bẫy 27 đã âm thầm xoá tỉ lệ và cho production chạy bản nhạc bé một nửa mấy ngày; ghi kèm chuyện `getBBox` trả về đơn vị trước khi nhân tỉ lệ, và ba số phải đo lại mỗi lần đụng vào chỗ vẽ bản nhạc |
 | 12/09/2026 | `fix: Neo khuông nhạc đứng yên, không nhảy theo cao độ nốt` | Thêm bẫy 27 — abcjs vẽ ảnh cao vừa nội dung nên khuông nhạc trôi mỗi câu một chỗ; kèm chuyện đo bằng `getBoundingClientRect` lệch 7px vì lúc effect chạy trang chưa xếp xong chỗ, phải đo bằng `getBBox` trong hệ toạ độ của chính ảnh SVG |
 | 12/09/2026 | `fix: Chọn quãng bằng nút bấm, hình đàn chỉ bôi vùng đang tập` | Thêm bẫy 26 — chạm vào hình SVG có chữ trên Android làm kính lúp chọn chữ nhảy ra che nửa màn hình, và `pointer-events: none` trên thẻ `text` không cứu được; ghi kèm bài học lớn hơn là đừng bắt người học chạm thẳng vào hình vẽ để chọn |

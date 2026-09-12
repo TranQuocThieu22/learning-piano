@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  anchorTransform, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX, SINGLE_STAFF_SCALE,
-  type StaffBox,
+  anchorTransform, BAR_SHRINK, GRAND_STAFF_BOX, GRAND_STAFF_SCALE, SINGLE_STAFF_BOX,
+  SINGLE_STAFF_SCALE, staffBox, staffScale, type StaffBox,
 } from './staff-anchor';
 
 /** Vị trí dòng kẻ trên cùng sau khi áp phép biến hình — phải luôn bằng chỗ neo. */
@@ -9,6 +9,81 @@ const sauKhiDich = (box: StaffBox, topLineY: number, inkTop: number, inkBottom: 
   const t = anchorTransform(box, topLineY, inkTop, inkBottom);
   return { ...t, viTri: topLineY * t.scale + t.translateY };
 };
+
+/*
+ * Ép bề ngang chỉ dành cho ô nhịp 4/4. Một nốt lẻ cố ý để ảnh tràn ra ngoài
+ * khung — hai mép bị cắt toàn khoảng trắng, đổi lại nốt to hơn.
+ */
+describe('khung và tỉ lệ cho ô nhịp', () => {
+  it('một phách giữ nguyên khung và tỉ lệ cũ', () => {
+    expect(staffBox(false, false)).toEqual(SINGLE_STAFF_BOX);
+    expect(staffBox(true, false)).toEqual(GRAND_STAFF_BOX);
+    expect(staffScale(false, false)).toBe(SINGLE_STAFF_SCALE);
+    expect(staffScale(true, false)).toBe(GRAND_STAFF_SCALE);
+  });
+
+  /*
+   * Khung và ảnh phải thu cùng một tỉ lệ. Thu mỗi ảnh thì khuông nhạc bé tí nằm
+   * giữa khoảng trống cao 240px; thu mỗi khung thì ảnh bị cắt.
+   */
+  it('ô nhịp thu cả khung lẫn tỉ lệ theo cùng một hằng số', () => {
+    for (const grand of [false, true]) {
+      const thuong = staffBox(grand, false);
+      const oNhip = staffBox(grand, true);
+      expect(oNhip.height).toBe(Math.round(thuong.height / BAR_SHRINK));
+      expect(oNhip.anchor).toBe(Math.round(thuong.anchor / BAR_SHRINK));
+      expect(staffScale(grand, true)).toBeCloseTo(staffScale(grand, false) / BAR_SHRINK, 5);
+    }
+  });
+
+  /*
+   * Thu cùng tỉ lệ nên chỗ dư quanh khuông nhạc phải giữ nguyên: nốt cao nhất
+   * vừa khung ở chế độ một phách thì cũng phải vừa khung ở chế độ ô nhịp.
+   */
+  it('nốt rìa đàn vừa khung ở chế độ nào cũng không phải thu nhỏ thêm', () => {
+    const siQuang6 = [51, 24, 138] as const;
+    expect(anchorTransform(staffBox(false, false), ...siQuang6).scale).toBe(1);
+    const nho = siQuang6.map((v) => v / BAR_SHRINK) as unknown as [number, number, number];
+    expect(anchorTransform(staffBox(false, true), ...nho).scale).toBe(1);
+  });
+});
+
+describe('anchorTransform — ép bề ngang cho ô nhịp', () => {
+  it('không truyền bề ngang thì không thu nhỏ và không dịch ngang', () => {
+    const t = anchorTransform(SINGLE_STAFF_BOX, 51, 24, 138);
+    expect(t.scale).toBe(1);
+    expect(t.translateX).toBe(0);
+  });
+
+  it('ảnh rộng hơn khung thì thu vừa khung', () => {
+    const t = anchorTransform(GRAND_STAFF_BOX, 51, 24, 138, { ink: 358, box: 288 });
+    expect(t.scale).toBeCloseTo(288 / 358, 5);
+    // Vừa khít khung thì không còn chỗ dư nào để dịch.
+    expect(t.translateX).toBeCloseTo(0, 5);
+  });
+
+  it('ảnh hẹp hơn khung thì giữ nguyên cỡ và đẩy vào giữa', () => {
+    const t = anchorTransform(GRAND_STAFF_BOX, 51, 24, 138, { ink: 200, box: 288 });
+    expect(t.scale).toBe(1);
+    expect(t.translateX).toBeCloseTo(44, 5);
+  });
+
+  /*
+   * Chiều cao vẫn phải thắng khi nó chật hơn: thà hẹp hơn mức cần còn hơn cắt
+   * mất dòng kẻ phụ của một nốt quá cao.
+   */
+  it('phía nào chật hơn thì phía đó quyết, không phải lúc nào cũng bề ngang', () => {
+    const t = anchorTransform(SINGLE_STAFF_BOX, 162, 23, 249, { ink: 200, box: 288 });
+    expect(t.scale).toBeLessThan(1);
+    expect(t.scale).toBeCloseTo(anchorTransform(SINGLE_STAFF_BOX, 162, 23, 249).scale, 5);
+  });
+
+  it('bề ngang bằng 0 (chưa đo được) thì bỏ qua, không chia cho 0', () => {
+    const t = anchorTransform(SINGLE_STAFF_BOX, 51, 24, 138, { ink: 0, box: 288 });
+    expect(t.scale).toBe(1);
+    expect(Number.isFinite(t.translateX)).toBe(true);
+  });
+});
 
 describe('anchorTransform — neo dòng kẻ trên cùng', () => {
   /*
