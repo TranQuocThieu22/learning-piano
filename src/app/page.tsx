@@ -8,6 +8,7 @@ import { flattenPath, getLearningPath, nextStep, shortTitle } from '@/lib/learni
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { canReadLesson } from '@/lib/access';
 import { viewerHasFullAccess } from '@/lib/access-server';
+import { latestUpdate } from '@/lib/updates';
 
 const EXTRA_CATEGORY = '07-doc-them';
 
@@ -35,6 +36,9 @@ export default async function Home() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
   const hasFullAccess = await viewerHasFullAccess(session);
+
+  // Bài cập nhật mới nhất, để màn hình chủ nói được web vừa đổi gì.
+  const baiMoiNhat = latestUpdate();
 
   const completedCount = allSteps.filter((s) => completedSlugs.has(s.slug)).length;
   const continueLesson = nextStep(allSteps, completedSlugs);
@@ -90,6 +94,15 @@ export default async function Home() {
               : null
           }
           extraHref={firstOf(allFiles, EXTRA_CATEGORY)}
+          latestUpdate={
+            baiMoiNhat
+              ? {
+                  title: baiMoiNhat.title,
+                  dateLabel: baiMoiNhat.dateLabel,
+                  nhan: baiMoiNhat.nhan,
+                }
+              : null
+          }
         />
       </Container>
     </AppLayout>

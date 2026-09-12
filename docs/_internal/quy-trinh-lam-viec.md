@@ -128,6 +128,25 @@ flowchart TD
     K --> L
 ```
 
+## 5b. Việc người học nhìn thấy thì kể cho người học
+
+Thay đổi nào **người học nhìn thấy được** thì viết thêm một bài vào `docs/09-cap-nhat/`,
+cùng lúc với commit chứ không để dành. Bài đó hiện ở `/updates`, ở màn hình chủ và cuối
+trang `/library`.
+
+Vì sao đây là một bước của quy trình chứ không phải việc làm thêm khi rảnh: trong beta,
+câu hỏi im lặng của mọi người lạ ghé qua là *"chỗ này còn ai làm không"*. `git log` trả lời
+được câu đó nhưng không ai ngoài mình đọc nó. Để dành viết sau thì tới lúc viết chỉ còn nhớ
+*đã đổi cái gì*, mất luôn phần *vì sao* — mà phần vì sao mới là thứ đáng đọc.
+
+- **Không phải commit nào cũng có bài.** Dọn mã, sửa chú thích, đổi cấu trúc bảng — người
+  học không thấy gì thì không có gì để kể.
+- **Một bài một chuyện.** Gom bốn thứ vào một bài thì không thứ nào đọng lại, mà lại hết
+  bài để đăng hôm sau.
+- **Bài sửa sai đáng đăng ngang bài thêm tính năng.** Nó là bằng chứng có người soi.
+- Khuôn bài, tên file và văn phong: mục `docs/09-cap-nhat/` trong `AGENTS.md`. Rút thành
+  bài Facebook: [`bai-dang-facebook.md`](bai-dang-facebook.md).
+
 ## 6. Khi production hỏng
 
 1. **Vercel → Deployments → promote bản deploy tốt gần nhất.** Vài giây, không cần git.
@@ -326,6 +345,7 @@ archive mạnh tay khi việc đã xong.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 12/09/2026 | `feat: Thêm mục Có gì mới để người học thấy web đang được làm tiếp` | Thêm mục 5b: viết bài cập nhật cho người học là một BƯỚC của vòng đời thay đổi, không phải việc làm thêm khi rảnh — để dành viết sau thì chỉ còn nhớ đã đổi cái gì và mất phần vì sao, mà trong beta thì câu người lạ thật sự hỏi là "chỗ này còn ai làm không" chứ không phải "có tính năng gì" |
 | 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Mục 3 lên năm lệnh: một lần bốn lệnh xanh hết mà deploy vẫn đỏ vì test chạy quá hạn giờ trên máy dựng bản chậm hơn, nên `next build` phải nằm trong cổng — nó là thứ Vercel thật sự chạy. Ghi rõ CI cũng không chạy build (thiếu biến môi trường), nên build chỉ được kiểm ở máy mình trước khi commit, hoặc ở Vercel khi đã muộn |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì; bảng "thứ cần giữ" nhận thêm `nhat-ky-lam-viec.md` cho việc xảy ra ngoài repo |
 | 01/09/2026 | `chore: Cho phép Claude tự commit khi được nói "commit luôn"` | Mở ngoại lệ cho quy tắc không tự commit, kèm bốn ràng buộc bắt buộc; ghi rõ đánh đổi là mất lần đọc diff của người làm, và CI chỉ báo sau khi commit đã vào lịch sử |

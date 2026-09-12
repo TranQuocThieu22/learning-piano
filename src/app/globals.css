@@ -106,6 +106,12 @@ body {
   --section-ink: light-dark(var(--mantine-color-blue-7), var(--mantine-color-blue-3));
 }
 
+[data-section='updates'] {
+  --section-from: var(--mantine-color-grape-6);
+  --section-to: var(--mantine-color-brand-4);
+  --section-ink: light-dark(var(--mantine-color-grape-7), var(--mantine-color-grape-3));
+}
+
 [data-section='extra'] {
   --section-from: var(--mantine-color-orange-6);
   --section-to: var(--mantine-color-pink-5);
@@ -256,6 +262,33 @@ body {
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
   transition: transform 120ms ease;
+}
+
+/* Khối *Có gì mới* ở màn hình chủ. Cao 60px trở lên, cả khối là một link —
+   cùng luật với `.link-row`, vì ngón cái chạm vào đâu trong khối cũng phải đi. */
+.home-news {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 60px;
+  padding: 12px;
+  border-radius: var(--mantine-radius-lg);
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  box-shadow: var(--mantine-shadow-xs);
+  color: var(--mantine-color-text);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 120ms ease;
+}
+
+.home-news:active {
+  transform: scale(0.985);
+}
+
+.home-news__text {
+  flex: 1;
+  min-width: 0;
 }
 
 .home-tile:active {
@@ -1366,4 +1399,43 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
 
 .song-card:active {
   transform: scale(0.995);
+}
+
+/*
+ * Thẻ một bài cập nhật ở `/updates`. KHÔNG phải link: cả nội dung đã hiện ngay
+ * trong thẻ nên không có chỗ nào để bấm sang.
+ */
+.update-card {
+  padding: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: var(--mantine-radius-md);
+  background: var(--mantine-color-body);
+}
+
+/*
+ * Thân bài dựng bằng `MarkdownViewer`, mà `.markdown-body` từ 48em trở lên tự
+ * thành một thẻ trắng có viền và padding riêng. Nằm trong `.update-card` thì đó
+ * là thẻ trong thẻ, nên dẹp phẳng nó lại. Hai lớp chọn (0-2-0) thắng được cả
+ * luật trong media query của `.markdown-body` (0-1-0).
+ */
+.update-card .markdown-body {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  font-size: 1rem;
+}
+
+.update-card :where(.markdown-body) > :first-child {
+  margin-top: 0;
+}
+
+/* Tiêu đề mục trong một bài cập nhật nhỏ hơn trong bài học: cả bài chỉ dài vài
+   đoạn, để nguyên cỡ của bài học thì mục con to gần bằng tiêu đề bài. */
+.update-card :where(.markdown-body) h2 {
+  font-size: 1.1rem;
+  margin: 1.5rem 0 0.5rem;
 }

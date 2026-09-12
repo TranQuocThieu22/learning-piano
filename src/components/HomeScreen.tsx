@@ -8,6 +8,7 @@ import {
   IconMusicSearch,
   IconPlayerPlayFilled,
   IconRoute,
+  IconSparkles,
   type IconProps,
 } from '@tabler/icons-react';
 import Link from 'next/link';
@@ -54,6 +55,8 @@ export interface HomeScreenProps {
   /** Trang lộ trình và bài đọc thêm đầu tiên, tính ở server. */
   roadmapHref: string | null;
   extraHref: string | null;
+  /** Bài cập nhật mới nhất. `null` khi chưa có bài nào. */
+  latestUpdate: { title: string; dateLabel: string; nhan: string | null } | null;
 }
 
 /** Hàng phím đàn trang trí góc khối *Học tiếp*. Chỉ để nhìn, trình đọc màn hình bỏ qua. */
@@ -89,6 +92,7 @@ export function HomeScreen({
   currentChapter,
   roadmapHref,
   extraHref,
+  latestUpdate,
 }: HomeScreenProps) {
   const daHocXongHet = totalCount > 0 && completedCount === totalCount;
   const chuaHocBai = completedCount === 0;
@@ -211,6 +215,35 @@ export function HomeScreen({
             </Button>
           }
         />
+      )}
+
+      {/*
+        *Có gì mới* đứng ngay dưới chương đang học, KHÔNG đứng trên nút Học tiếp:
+        người mở app ra là để tập, tin cập nhật không được chen ngang việc đó.
+        Nhưng cũng không đẩy xuống cuối trang, vì nó trả lời một câu người học
+        thật sự thắc mắc trong lúc beta — "trang này còn ai làm không". Hiện
+        tiêu đề bài mới nhất kèm ngày, chứ không phải một chữ "Cập nhật" chung
+        chung: có ngày tháng thì mới là bằng chứng.
+      */}
+      {latestUpdate && (
+        <div>
+          <SectionLabel>Có gì mới</SectionLabel>
+          <Link href="/updates" className="home-news">
+            <span className="section-icon section-icon--sm" data-section="updates" aria-hidden>
+              <IconSparkles size={24} />
+            </span>
+            <span className="home-news__text">
+              <Text size="xs" c="dimmed" lh={1.3}>
+                {latestUpdate.dateLabel}
+                {latestUpdate.nhan && ` · ${latestUpdate.nhan}`}
+              </Text>
+              <Text fw={700} size="sm" lh={1.3} lineClamp={2}>
+                {latestUpdate.title}
+              </Text>
+            </span>
+            <IconChevronRight size={18} aria-hidden style={{ flexShrink: 0, opacity: 0.5 }} />
+          </Link>
+        </div>
       )}
 
       <div>

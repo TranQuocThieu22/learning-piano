@@ -1,5 +1,13 @@
 import { Badge, Container, Stack, Text, Title } from '@mantine/core';
-import { IconBook, IconBook2, IconBulb, IconLock, IconMusic, IconRoute } from '@tabler/icons-react';
+import {
+  IconBook,
+  IconBook2,
+  IconBulb,
+  IconLock,
+  IconMusic,
+  IconRoute,
+  IconSparkles,
+} from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { LinkRow } from '@/components/LinkRow';
 import { PageHeader } from '@/components/PageHeader';
@@ -7,6 +15,7 @@ import { auth } from '@/auth';
 import { getAllMarkdownFiles, type MarkdownFile } from '@/lib/markdown';
 import { canReadLesson } from '@/lib/access';
 import { viewerHasFullAccess } from '@/lib/access-server';
+import { listUpdates } from '@/lib/updates';
 
 /**
  * Mục lục của phần chữ: lý thuyết, lộ trình và đọc thêm.
@@ -55,6 +64,15 @@ const SECTIONS = [
   },
 ];
 
+/**
+ * Bao nhiêu bài cập nhật hiện ở đây.
+ *
+ * Cắt ngắn vì Mục lục là mục lục của giáo trình, không phải trang tin: liệt kê
+ * hết thì sau vài tháng phần cập nhật dài hơn cả phần lý thuyết. Cả danh sách
+ * nằm ở `/updates`.
+ */
+const SO_BAI_CAP_NHAT = 4;
+
 /** Số chương lấy từ slug `chuong-03` → `3`, để in lên ô màu đầu dòng. */
 function chapterNumberOf(slug: string): number | null {
   const match = /^chuong-(\d+)$/.exec(slug);
@@ -65,6 +83,7 @@ export default async function LibraryPage() {
   const session = await auth();
   const allFiles = getAllMarkdownFiles();
   const hasFullAccess = await viewerHasFullAccess(session);
+  const updates = listUpdates();
 
   const byCategory = (category: string): MarkdownFile[] =>
     allFiles
@@ -136,6 +155,50 @@ export default async function LibraryPage() {
               </div>
             );
           })}
+
+          {/*
+            *Có gì mới* đứng CUỐI: người mở Mục lục là để tìm một bài đọc, không
+            phải để đọc tin. Nhưng vẫn có mặt ở đây, vì đây là trang người học
+            lướt qua nhiều nhất sau màn hình chủ — thấy vài dòng có ngày tháng là
+            thấy trang này đang được làm tiếp.
+          */}
+          {updates.length > 0 && (
+            <div>
+              <Title order={2} size="h4">
+                Có gì mới
+              </Title>
+              <Text size="sm" c="dimmed" mb="sm">
+                Web vừa đổi những gì
+              </Text>
+
+              <Stack gap="xs">
+                {updates.slice(0, SO_BAI_CAP_NHAT).map((post) => (
+                  <LinkRow
+                    key={post.slug}
+                    href={`/updates#${post.slug}`}
+                    title={post.title}
+                    meta={post.nhan ? `${post.dateLabel} · ${post.nhan}` : post.dateLabel}
+                    leading={
+                      <span className="section-icon section-icon--xs" data-section="updates" aria-hidden>
+                        <IconSparkles size={20} />
+                      </span>
+                    }
+                  />
+                ))}
+                {updates.length > SO_BAI_CAP_NHAT && (
+                  <LinkRow
+                    href="/updates"
+                    title="Xem tất cả bài cập nhật"
+                    leading={
+                      <span className="section-icon section-icon--xs" data-section="updates" aria-hidden>
+                        <IconSparkles size={20} />
+                      </span>
+                    }
+                  />
+                )}
+              </Stack>
+            </div>
+          )}
         </Stack>
       </Container>
     </AppLayout>

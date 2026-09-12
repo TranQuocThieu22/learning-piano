@@ -12,6 +12,21 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 **Trước khi đề xuất đổi hướng gì lớn, đọc `docs/_internal/nhat-ky-quyet-dinh.md`** — nó ghi các câu đã hỏi và đã chốt kèm *lý do*, dựng lại từ lịch sử phiên làm việc. Mục 1 là bảng "đừng hỏi lại": app mobile, backend riêng, thuê bao tháng, bỏ beta, chuyển hết sang video — đều đã có kết luận và lý do.
 
+**Thư mục `docs/09-cap-nhat/` là mục "Có gì mới"** — các bài kể cho người học biết web vừa
+đổi gì, hiện ở `/updates`, ở màn hình chủ và cuối trang `/library`. Ba điều phải giữ:
+
+- **Tên file mở đầu bằng ngày**: `2026-09-12-luyen-nhan-not-tu-chon.md`. Ngày lấy từ chính
+  tên file, sai mẫu thì bài **im lặng biến mất** khỏi trang chứ không báo lỗi.
+- **Viết cho người học, kể bằng việc họ làm được** — không nhắc tên file, không nhắc commit,
+  không "phiên bản 2.0". Cùng văn phong với `07-doc-them/`.
+- **Đọc tách khỏi `markdown.ts`** (qua `src/lib/updates.ts`, cùng lối với `internal-docs.ts`).
+  Đừng thêm `09-cap-nhat` vào `contentDirs`: bài cập nhật không phải bài học, slug của chúng
+  mở đầu bằng ngày nên mọi chỗ đang suy số chương từ slug sẽ hiểu sai.
+
+Viết xong một bài ở đây thì rút thành bài Facebook theo mẫu ở
+`docs/_internal/bai-dang-facebook.md` — bản trên web là bản gốc, Facebook là bản rút gọn
+dẫn về nó.
+
 Đọc `docs/07-doc-them/` trước khi đề xuất tính năng mới. Thư mục này **hiển thị trên web** (mục "Đọc thêm" trong trang `/library`) nên hãy viết cho người học đọc, không viết theo văn phong tài liệu kỹ thuật nội bộ. Đây cũng là chỗ chứa các bài bên lề không nằm trong lộ trình tập — ví dụ lịch sử piano (`lich-su-piano.md`) đã được tách khỏi Chương 0. Các quyết định đã chốt:
 
 - **Không làm piano ảo bấm chuột/chạm màn hình** — xem `docs/07-doc-them/khong-lam-piano-ao.md`. Lý do ngắn gọn: giáo trình dạy kỹ thuật vật lý (form tay, độc lập ngón, lực đánh) mà bàn phím ảo không rèn được, lại tạo cảm giác sai về tiến bộ và cạnh tranh thời gian với cây đàn thật người học đang có. Thứ thay thế được chấp nhận là **app nghe chính cây đàn thật** — qua **micro** (mặc định, chạy trên mọi máy) hoặc **dây MIDI** — trong bài luyện nhận nốt và phần *Tập bài này với đàn*. Mã nghe qua micro nằm ở `src/lib/mic-*.ts`; chỉnh con số nào ở đó thì phải chạy lại `mic-accuracy.test.ts`, vì nó là thứ duy nhất đo độ chính xác trên nhiều câu nhạc chứ không phải vài ca chọn sẵn.
@@ -99,5 +114,6 @@ Mỗi lần sửa một trong các file dưới đây, **thêm một dòng lên 
 - `docs/_internal/quy-trinh-lam-viec.md`
 - `docs/_internal/lam-viec-hang-ngay.md`
 - `docs/_internal/nhat-ky-quyet-dinh.md`
+- `docs/_internal/bai-dang-facebook.md`
 
 Ghi **tiêu đề commit** chứ không ghi mã commit, vì tiêu đề đã biết ngay lúc soạn thay đổi (mã thì chỉ có sau khi commit, dẫn tới phải quay lại điền sau và thường bị quên). Tìm lại commit bằng `git log --grep="<tiêu đề>"` hoặc gõ thẳng tiêu đề vào ô tìm kiếm của Fork. Đổi tiêu đề commit lúc commit thì phải sửa lại dòng vừa ghi cho khớp.
