@@ -95,12 +95,16 @@ export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void
       });
   }, [refreshDevices]);
 
-  /** Đọc lại danh sách từ quyền đã xin; chưa xin thì xin luôn. */
-  const refresh = useCallback(() => {
-    const access = accessRef.current;
-    if (access) refreshDevices(access);
-    else connect();
-  }, [connect, refreshDevices]);
+  /**
+   * Xin lại quyền MIDI để **liệt kê lại từ đầu**, chứ không chỉ đọc lại danh sách cũ.
+   *
+   * Vì sao phải xin lại: bản đầu chỉ đọc lại `access.inputs` của lần xin trước, và
+   * gặp đúng cảnh không ra gì — đàn Bluetooth đã nối xong qua app của hãng mà trang
+   * vẫn trống. Theo chuẩn thì `inputs` là danh sách sống và `onstatechange` phải
+   * báo, nhưng trên Android thực tế không phải vậy. Gọi lại `requestMIDIAccess` thì
+   * trình duyệt dựng lại danh sách; quyền đã cấp rồi nên không hỏi lại người học.
+   */
+  const refresh = connect;
 
   // Chỉ lắng nghe đúng thiết bị đang chọn, và luôn gỡ trình xử lý cũ trước.
   useEffect(() => {

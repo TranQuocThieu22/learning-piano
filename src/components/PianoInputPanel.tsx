@@ -220,6 +220,10 @@ function MidiStatus({ input, switchButton, children }: { input: PianoInput; swit
           chỉ ra tiếng, không ra MIDI. Phải mở kết nối từ <b>app của hãng đàn</b> (đàn Roland thì
           dùng Roland Piano App), để app đó chạy nền, rồi quay lại đây bấm <i>Tìm lại đàn</i>.
         </Text>
+        <Text size="xs" c="dimmed" mb="xs">
+          App của hãng đàn đã báo <i>Connected</i> mà đây vẫn trống? Tải lại trang một lần —
+          trình duyệt trên Android có khi chỉ điểm danh thiết bị MIDI đúng lúc trang mở.
+        </Text>
         <Group gap="xs">
           <Button size="xs" variant="light" onClick={input.midi.refresh} data-testid="midi-refresh">
             Tìm lại đàn
