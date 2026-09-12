@@ -18,6 +18,11 @@ Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn c
 - **Mi → Pha (E → F)**
 - **Si → Đô (B → C)**
 
+```keys
+E4 F4 B4 C5
+Hai cặp đặc biệt: Mi-Pha và Si-Đô dính sát nhau, không có phím đen chen giữa.
+```
+
 Đây chính là lý do các phím đen được xếp thành cụm 2 và cụm 3 chứ không rải đều.
 
 ## 2. Dấu Thăng (#) và Dấu Giáng (b)
@@ -35,6 +40,11 @@ Ví dụ cụ thể trên đàn:
 - **Mi giáng (Eb)** = phím đen nằm ngay bên trái nốt Mi.
 
 ![Vị trí Pha thăng và Mi giáng trên bàn phím](/images/chuong-04/black-keys-accidentals.svg)
+
+```keys
+D#4
+Đúng một phím đen này: gọi là Rê thăng cũng đúng, gọi là Mi giáng cũng đúng.
+```
 
 **👉 Một phím đen, hai cái tên:** Phím đen giữa Rê và Mi có thể gọi là **Rê thăng (D#)** hoặc **Mi giáng (Eb)** — cùng một phím, chỉ khác cách gọi tùy ngữ cảnh bản nhạc. Bạn không cần hiểu sâu vì sao ngay lúc này, chỉ cần biết là bình thường.
 

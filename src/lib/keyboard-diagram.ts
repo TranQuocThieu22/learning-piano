@@ -1,4 +1,5 @@
-import { isBlackPitch, octaveOf } from './pitch';
+import { shortNoteName } from './midi-notes';
+import { isBlackPitch, octaveOf, pitchClass } from './pitch';
 import { BLACK_HEIGHT, BLACK_WIDTH, WHITE_HEIGHT, WHITE_WIDTH } from './piano-keyboard';
 
 
@@ -19,8 +20,15 @@ import { BLACK_HEIGHT, BLACK_WIDTH, WHITE_HEIGHT, WHITE_WIDTH } from './piano-ke
  * nhạc. Hình học thì dùng chung `piano-keyboard.ts`, không dựng lại tỉ lệ.
  */
 
-/** Số quãng tám tối đa được vẽ. Rộng hơn nữa thì trên điện thoại phím bé như que tăm. */
-const MAX_OCTAVES = 2;
+/**
+ * Bề rộng tối đa, tính bằng quãng tám. Rộng hơn nữa thì trên điện thoại phím bé
+ * như que tăm và tên nốt chồng lên nhau.
+ *
+ * Vượt quá thì **ném lỗi**, tuyệt đối không cắt bớt cho vừa: cắt là có nốt người
+ * soạn đã ghi mà hình không vẽ, và không ai phát hiện ra. Cần rộng hơn thì tách
+ * thành hai hình — hai hình nhỏ đọc được vẫn hơn một hình to không đọc nổi.
+ */
+const MAX_OCTAVE_SPAN = 3;
 
 /**
  * Phím vẽ ngắn hơn phím thật.
@@ -45,10 +53,10 @@ export const DIAGRAM_LABEL_HEIGHT = 1.1;
  * Cỡ chữ tên nốt, tính theo bề rộng một phím trắng.
  *
  * Đặt theo bề rộng PHÍM chứ không theo chiều cao dải chữ: chữ bị cắt là do nó
- * rộng quá phím chứ không phải cao quá dải. Ở 0,55 thì "Sol" và "Đô♯" vẫn nằm
- * gọn dưới phím của nó.
+ * rộng quá phím chứ không phải cao quá dải. Con số này đo trên hình chật nhất —
+ * tám phím liền nhau, phím nào cũng có nhãn — chứ không đo trên hình ba nốt.
  */
-export const DIAGRAM_LABEL_SIZE = 0.55;
+export const DIAGRAM_LABEL_SIZE = 0.42;
 
 
 export class KeyboardDiagramError extends Error {}
@@ -93,6 +101,8 @@ export interface DiagramKey {
   height: number;
   /** Tâm phím, để đặt tên nốt thẳng hàng bên dưới. */
   centerX: number;
+  /** Chữ ghi dưới phím. `null` ở phím không bấm. */
+  label: string | null;
 }
 
 export interface KeyboardDiagram {
@@ -113,26 +123,54 @@ export interface KeyboardDiagram {
 export function diagramRange(midis: number[]): [number, number] {
   const low = Math.min(...midis);
   const high = Math.max(...midis);
-  const firstOctave = octaveOf(low);
-  const lastOctave = Math.min(octaveOf(high), firstOctave + MAX_OCTAVES - 1);
-  const from = (firstOctave + 1) * 12;
+  const from = (octaveOf(low) + 1) * 12;
+
+  if (high - from >= MAX_OCTAVE_SPAN * 12) {
+    throw new KeyboardDiagramError(
+      `khoảng nốt rộng quá ${MAX_OCTAVE_SPAN} quãng tám — tách thành nhiều hình cho dễ nhìn`,
+    );
+  }
+
   /*
    * Cắt bỏ phần đuôi không ai bấm tới — nhưng không bao giờ ngắn hơn một quãng
    * tám. Thế tay Đô–Đô cao chỉ vượt sang quãng sau đúng một phím; vẽ trọn quãng
    * đó là mười một phím thừa, phím nào cũng bé lại vì phải chia bề ngang.
    */
-  return [from, Math.min((lastOctave + 1) * 12 + 11, Math.max(high, from + 11))];
+  return [from, Math.max(high, from + 11)];
+}
+
+/**
+ * Những tên nốt bị lặp trong cùng một hình — chỉ riêng chúng mới cần số quãng.
+ *
+ * Gắn số cho mọi nốt thì chữ dài ra, và hình tám phím có tám nhãn là chúng chồng
+ * lên nhau (đã thử, đã hỏng). Gắn đúng chỗ có hai phím cùng tên thì vừa đủ để
+ * phân biệt mà không làm rối phần còn lại.
+ */
+function pitchClassesCanSo(midis: number[]): Set<number> {
+  const dem = new Map<number, number>();
+  for (const midi of midis) {
+    const pc = pitchClass(midi);
+    dem.set(pc, (dem.get(pc) ?? 0) + 1);
+  }
+  return new Set([...dem].filter(([, n]) => n > 1).map(([pc]) => pc));
+}
+
+function keyLabel(midi: number, canSo: Set<number>): string {
+  const ten = shortNoteName(midi);
+  return canSo.has(pitchClass(midi)) ? `${ten}${octaveOf(midi)}` : ten;
 }
 
 /** Dựng hình: phím nào, ở đâu, phím nào đang bấm. */
 export function keyboardDiagram(midis: number[]): KeyboardDiagram {
   const [from, to] = diagramRange(midis);
+  const canSo = pitchClassesCanSo(midis);
   const pressed = new Set(midis);
   const keys: DiagramKey[] = [];
   let whiteCount = 0;
 
   for (let midi = from; midi <= to; midi++) {
     const black = isBlackPitch(midi);
+    const isPressed = pressed.has(midi);
     // Cùng luật với `pianoLayout`: phím đen cưỡi lên chỗ giáp ranh giữa hai phím
     // trắng, nên lấy vị trí phím trắng kế tiếp rồi lùi nửa bề rộng phím đen.
     const x = black
@@ -142,11 +180,12 @@ export function keyboardDiagram(midis: number[]): KeyboardDiagram {
     keys.push({
       midi,
       black,
-      pressed: pressed.has(midi),
+      pressed: isPressed,
       x,
       width,
       height: (black ? BLACK_HEIGHT : WHITE_HEIGHT) * KEY_LENGTH_FACTOR,
       centerX: x + width / 2,
+      label: isPressed ? keyLabel(midi, canSo) : null,
     });
     if (!black) whiteCount += 1;
   }

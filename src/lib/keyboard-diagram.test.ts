@@ -49,10 +49,20 @@ describe('diagramRange', () => {
     expect(diagramRange([60, 62])).toEqual([60, 71]);
   });
 
-  it('không bao giờ vẽ quá hai quãng tám', () => {
-    // Rộng hơn nữa thì trên điện thoại phím bé như que tăm.
-    const [from, to] = diagramRange([48, 96]);
-    expect(to - from).toBeLessThanOrEqual(23);
+  it('rộng quá thì ném lỗi chứ không cắt bớt', () => {
+    // Cắt cho vừa là có nốt người soạn đã ghi mà hình không vẽ — không ai thấy.
+    expect(() => diagramRange([48, 96])).toThrow(KeyboardDiagramError);
+    expect(() => diagramRange([48, 96])).toThrow(/rộng quá/);
+  });
+
+  it('mọi nốt được ghi đều nằm trong khoảng vẽ', () => {
+    for (const notes of [[60, 64, 67], [53, 65], [48, 72], [60, 62], [65, 69, 72]]) {
+      const [from, to] = diagramRange(notes);
+      for (const midi of notes) {
+        expect(midi).toBeGreaterThanOrEqual(from);
+        expect(midi).toBeLessThanOrEqual(to);
+      }
+    }
   });
 });
 
@@ -88,6 +98,31 @@ describe('keyboardDiagram', () => {
     const mi = hop.keys.find((k) => k.midi === 64)!;
     const pha = hop.keys.find((k) => k.midi === 65)!;
     expect(pha.x).toBeCloseTo(mi.x + mi.width, 5);
+  });
+});
+
+describe('chữ ghi dưới phím', () => {
+  it('hình một quãng tám thì chỉ ghi tên nốt', () => {
+    const d = keyboardDiagram([60, 64, 67]);
+    expect(d.keys.filter((k) => k.pressed).map((k) => k.label)).toEqual(['Đô', 'Mi', 'Sol']);
+  });
+
+  it('hai phím cùng tên thì ghi kèm số quãng để phân biệt', () => {
+    // Đây đúng là hình dùng để nói "cùng tên Pha, khác cao thấp".
+    const d = keyboardDiagram([53, 65]);
+    expect(d.keys.filter((k) => k.pressed).map((k) => k.label)).toEqual(['Pha3', 'Pha4']);
+  });
+
+  it('chỉ nốt bị trùng tên mới có số, phần còn lại để nguyên', () => {
+    // Tám phím mà nhãn nào cũng dài ra là chúng chồng lên nhau.
+    const d = keyboardDiagram([60, 62, 64, 65, 67, 69, 71, 72]);
+    expect(d.keys.filter((k) => k.pressed).map((k) => k.label))
+      .toEqual(['Đô4', 'Rê', 'Mi', 'Pha', 'Sol', 'La', 'Si', 'Đô5']);
+  });
+
+  it('phím không bấm thì không ghi gì', () => {
+    const d = keyboardDiagram([60]);
+    expect(d.keys.filter((k) => !k.pressed).every((k) => k.label === null)).toBe(true);
   });
 });
 

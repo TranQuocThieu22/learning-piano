@@ -75,6 +75,13 @@ Lý do: trên đàn piano chỉ có **bảy chữ cái A-B-C-D-E-F-G**, và chú
 | Khóa Sol, **khe hở thứ 1** | Cao hơn Đô giữa một chút |
 | Khóa Sol, **dòng kẻ thứ 5** (trên cùng) | Cao hơn nhiều |
 
+Trên bàn phím, hai trong ba nốt Pha đó nằm như thế này — cùng một chữ, cách nhau đúng một quãng tám:
+
+```keys
+F3 F4
+Cùng tên Pha, cách nhau một quãng tám. Hình dạng phím đen quanh chúng lặp lại y hệt.
+```
+
 Hãy nghe thử ba nốt Pha đó vang lên lần lượt từ thấp đến cao:
 
 ```abc

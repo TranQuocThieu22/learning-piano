@@ -1,7 +1,6 @@
 'use client';
 
 import { Box, Text } from '@mantine/core';
-import { shortNoteName } from '@/lib/midi-notes';
 import {
   DIAGRAM_KEY_BOTTOM, DIAGRAM_LABEL_HEIGHT, DIAGRAM_LABEL_SIZE, KeyboardDiagramError,
   keyboardDiagram, parseKeysBlock,
@@ -42,7 +41,7 @@ export function KeyboardDiagram({ spec }: { spec: string }) {
 
   const diagram = keyboardDiagram(block.midis);
   const pressed = diagram.keys.filter((k) => k.pressed);
-  const tenNot = pressed.map((k) => shortNoteName(k.midi));
+  const tenNot = pressed.map((k) => k.label);
 
   return (
     <Box mb="md">
@@ -104,7 +103,7 @@ export function KeyboardDiagram({ spec }: { spec: string }) {
               fontWeight={700}
               fill="#2b2733"
             >
-              {shortNoteName(key.midi)}
+              {key.label}
             </text>
           ))}
         </svg>
