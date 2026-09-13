@@ -54,7 +54,10 @@ Bài trên web là bản gốc. Facebook là bản rút gọn dẫn về nó —
 
 ---
 
-## 4. Bài đăng số 2 — soạn 12/09/2026, chưa đăng
+## 4. Bài đăng số 2 — soạn 12/09/2026, đã đăng 13/09/2026
+
+> **Đã đăng kèm ảnh đồ hoạ khổ 4:5 (1080×1350):** tiêu đề "App nghe đàn thật qua micro điện
+> thoại", khung giữa là ba điều app cố ý *không* làm, chân ảnh dẫn về `/songs`.
 
 > **Chọn chủ đề này vì:** bài số 1 (09/09) mới chỉ giới thiệu *có một giáo trình*. Bài số 2
 > phải trả lời câu hỏi tiếp theo của người còn phân vân — *nó khác gì những thứ tôi đã thử
@@ -106,7 +109,11 @@ tiền: https://pianojourney.rehover.io/07-doc-them/chon-dan-dau-tien
 
 ---
 
-## 4b. Bài đăng số 3 — soạn 12/09/2026, chưa đăng
+## 4b. Bài đăng số 3 — soạn 12/09/2026, đã đăng 13/09/2026
+
+> **Đã đăng kèm ảnh đồ hoạ khổ 4:5 (1080×1350):** tiêu đề "Đàn có Bluetooth nối thẳng vào
+> web", bốn bước nối với chữ trên nút chép đúng từ web, chân ảnh ghi rõ chỉ chạy trên Android
+> và máy tính — iPhone, iPad tập bằng micro.
 
 > **Chọn chủ đề này vì:** đây là thứ gỡ đúng một cái cớ có thật để không tập — "nối đàn vào
 > máy lằng nhằng lắm". Và nó kể được một chuyện thật: mất một buổi tối mới tìm ra vì sao
@@ -222,6 +229,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi đã đăng bài Facebook số 2 và số 3` | Đánh dấu hai bài đã lên Trang và ghi ảnh đi kèm — không ghi thì lần soạn bài sau không biết bài nào còn trong hàng chờ, dễ đăng lại hoặc bỏ sót. Bài số 4 vẫn chưa đăng |
 | 13/09/2026 | `feat: Công cụ Đặt tay ở đâu cho lúc bản nhạc đi ra ngoài năm nốt` | Thêm bài đăng số 4 rút từ bài cập nhật cùng ngày — góc kể là cái vướng không sách nào nói ra thành lời, nên đoạn "vì sao làm" của khuôn bài có sẵn chứ không phải nghĩ ra |
 | 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Soạn bài đăng số 3 về chuyện nối đàn qua Bluetooth — chọn chủ đề này vì nó gỡ đúng một cái cớ có thật để không tập, và có chuyện thật để kể (mất một buổi tối mới tìm ra vì sao đàn không nối được) chứ không chỉ có tên tính năng |
 | 12/09/2026 | `docs(internal): Soạn bài đăng Facebook số 2 và mẫu bài cập nhật hệ thống` | Tạo file — trước đó bài đăng trên Trang không có chỗ chứa nào, nên mỗi lần lại soạn từ đầu và mỗi lần một giọng. Chốt luôn vai trò của Trang (chỗ người lạ kiểm tra mình là ai, không phải kênh tuyển), thứ tự viết bài web trước rồi rút thành bài Facebook để khỏi viết hai lần, và ba bài dự trữ rút sẵn từ `docs/09-cap-nhat/` để tuần sau không rơi vào cảnh không có gì đăng |

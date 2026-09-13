@@ -40,6 +40,38 @@
 
 ---
 
+## 13/09/2026 (khuya) — Đăng bài Facebook số 2 và số 3
+
+**Đã làm**
+
+- **Đăng bài số 2 lên Trang** — app nghe đàn thật qua micro mà không bắt chơi theo nhạc chạy,
+  kèm Góc bài hát. Việc này treo từ 12/09.
+- **Đăng bài số 3 lên Trang** — nối đàn Bluetooth thẳng vào web, kể chuyện mất một buổi tối
+  mới tìm ra vì sao Chrome trên Android không thấy đàn.
+- **Mỗi bài kèm một ảnh đồ hoạ khổ 4:5 (1080×1350)**, dựng bằng HTML theo màu thương hiệu
+  rồi chụp ra PNG bằng Chrome chạy ngầm. Hai ảnh cùng một khuôn để các bài trên Trang nhìn ra
+  là một bộ.
+
+**Quan sát**
+
+- **Ảnh đồ hoạ vẽ màn hình app cũng phải giữ đúng ràng buộc của app.** Bản đầu của ảnh
+  Bluetooth vẽ dòng "3 / 4 nốt đúng" trên màn hình điện thoại — tức một bảng tỉ số chạy lúc
+  đang đánh, trái đúng điều bài số 2 hứa. Bắt được trước khi đăng, đổi thành nút *Bỏ qua nốt
+  này* có thật. Vẽ minh hoạ cho đẹp rất dễ trượt sang vẽ thứ app cố ý không làm.
+- **Chữ trên nút trong ảnh phải chép từ mã, không chép từ trí nhớ** — người đọc sẽ đi tìm
+  đúng chữ đó trên màn hình.
+- **Ảnh Bluetooth ghi thẳng giới hạn iPhone ngay trên ảnh**, không để tới lúc có người hỏi
+  mới trả lời: người lướt Facebook xem ảnh chứ ít đọc hết chữ.
+
+**Tiếp theo**
+
+- **Bài số 4 (*Đặt tay ở đâu*) vẫn chưa đăng** — để cách vài ngày, hôm nay đã lên hai bài.
+- Ảnh chụp thật — điện thoại trên giá nhạc, bản nhạc có nốt tô xanh — vẫn chưa có. Bài sau
+  nên có một tấm, đăng trước ảnh đồ hoạ.
+- Ba bài dự trữ ở mục 5 của `bai-dang-facebook.md` vẫn còn nguyên.
+
+---
+
 ## 13/09/2026 (tối) — Báo cho người được cấp quyền, hai lỗi nhạc nền, và công cụ Đặt tay ở đâu
 
 > Từ commit `588f1a5` tới `7d26981`. Bối cảnh: đã có vài người điền form đăng ký beta nhưng
