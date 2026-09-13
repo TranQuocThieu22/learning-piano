@@ -40,6 +40,57 @@
 
 ---
 
+## 13/09/2026 — Khoá mức luyện tập theo gói, và soi lại giáo trình trước khi mở cửa
+
+> Từ commit `bfb20fd` tới `81124f4`. Bối cảnh: chủ sản phẩm sắp mở cho khoảng **10 người
+> dùng mới** vào trong ngày.
+
+**Đã làm**
+
+- **Bài luyện nhận nốt mở mức Dễ cho mọi người, ba mức sau và bảng *Tuỳ chọn* theo gói.**
+  Ranh giới này trùng đúng ranh giới nội dung chứ không phải hàng rào mới — thang khó của
+  bài luyện vốn bám theo lộ trình giáo trình, nên người chưa mở gói tập đúng phần họ đã
+  được học. Luật đặt ở `canUseDrillPreset` trong `access.ts`, cùng chỗ đang giữ ranh giới
+  "miễn phí tới hết Chương 1", để cả hai chỉ có một chỗ sửa.
+- **Soi lại toàn bộ 8 chương và 25 bài tập** trước khi mở cửa. Ra **9 chỗ có vấn đề**, sửa
+  hết. Nặng nhất là **bốn ô nhịp Chương 4 phát ra nốt khác với nốt đã vẽ** (bẫy 25 tái
+  phát), trong đó hai bài tên là *"So sánh Pha và Pha thăng"* và *"So sánh Mi và Mi
+  giáng"*. Năm chỗ còn lại là chữ lệch với giao diện hoặc tự mâu thuẫn — đáng kể nhất là
+  Chương 0 chỉ người mới tới "mục Đọc thêm ở cuối thanh điều hướng bên trái", trong khi
+  thanh bên đã bỏ từ 10/09.
+- **Thêm lớp gác `accidentalBleeds()` vào `check-lessons.mjs`**: báo đỏ mọi nốt viết trơn
+  có dấu hoá cùng tên đứng trước nó trong cùng ô nhịp. Chỉ tính dấu ghi tay cạnh nốt,
+  không tính hoá biểu.
+
+**Quan sát**
+
+- **Bài tập dạy dấu hoá lại là bài sai dấu hoá.** Bốn ô nhịp hỏng đều nằm ở Chương 4, và
+  người soạn rõ ràng *biết* luật — ô nhịp 3 của chính bài 1B đã ghi `=F`, chỉ quên ô nhịp
+  1 cũng cần. Bài học: biết luật không đủ, vì lỗi này **không nhìn thấy được** — ô vẫn đủ
+  phách, nốt vẫn trong tầm, bản nhạc vẫn vẽ đẹp. Chỉ nghe hoặc đọc cao độ vang ra mới thấy.
+- **Một lớp gác đúng chỗ đáng giá hơn một lần soi kỹ.** Cả bốn ô này đã sống sót qua mọi
+  lần đọc lại từ trước tới nay; thứ tìm ra chúng trong ba phút là một vòng lặp mười dòng.
+  Cùng bài học với ca test cao độ vang ra của bộ sinh bài tập hôm trước — **thứ gì dính
+  tới nhạc thì phải soi bằng tiếng vang ra, đừng soi bằng chữ**.
+- **Chữ trong giáo trình mục rữa theo giao diện.** Ba trong năm chỗ lệch là do giao diện
+  đổi mà chữ ở lại: thanh bên bị bỏ (10/09), nhật ký nhập vào Đường đi (11/09). Không có
+  lệnh kiểm nào bắt được loại này, vì nó đúng cú pháp và đúng chính tả — chỉ sai **sự
+  thật**. Mỗi lần bỏ hay dời một chỗ trong giao diện thì phải `grep` giáo trình xem có ai
+  đang chỉ tới đó không.
+- **Khoá tính năng thì phải kẹp ở chỗ ĐỌC, không chỉ chặn ở chỗ bấm.** Lựa chọn của bài
+  luyện nằm trong `localStorage` của máy người học, nên bản đã lưu có thể là mức trả phí
+  từ trước. Đã thử bằng trình duyệt thật: đặt sẵn mức Rất khó rồi tải lại, phải rơi về Dễ.
+
+**Tiếp theo**
+
+- **Ba chương cuối Giai đoạn 2 (8, 9, 10) vẫn chưa soạn**, mà Chương 1 và Chương 7 đều đã
+  hứa tới chúng. Không ai chạm tới trong ngày đầu, nhưng người học nhanh sẽ tới vách. Đã
+  hỏi chủ sản phẩm có muốn làm mềm câu chữ ở hai chỗ đó không, **chưa có trả lời**.
+- **Nghe phản hồi của 10 người mới**, nhất là hai chỗ chưa ai đo trên máy thật: nghe qua
+  micro, và màn hình khi đặt máy lên giá nhạc.
+- Kho ôn luyện sinh bằng luật vẫn chưa có trang nào gọi — việc còn tồn lớn nhất, ghi ở mục
+  3 của `nhat-ky-quyet-dinh.md`.
+
 ## 13/09/2026 — Gom mã về một cửa, nối Bluetooth, và bộ sinh bài tập
 
 > Khối này gộp một phiên dài từ trưa 12/09 tới khuya 13/09, từ commit `d964d40` tới

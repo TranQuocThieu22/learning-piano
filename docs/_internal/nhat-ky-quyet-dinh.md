@@ -303,6 +303,13 @@ Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. 
   phục vụ `/songs` và kho ôn luyện từ Chương 6 trở lên, không phục vụ Chương 1-5.
 - **`/updates` chưa có RSS.** Đã đề xuất, chưa làm. Lý do đáng làm: đó là cách duy nhất để
   người theo dõi biết có bài mới mà không phải nhờ Facebook.
+- **Chương 1 và Chương 7 đã hứa tới Chương 8, 9, 10 — ba chương chưa soạn một chữ nào.**
+  Chương 1 ghi *"Chương 9 là cả một chương về pedal"* (trong khối nói về cây đàn cần có
+  cổng cắm pedal), Chương 7 liệt kê cả ba chương ở mục *"Chương này dẫn tới đâu"*. Đây là
+  lộ trình thật đã ghi ở Giai đoạn B của `lo-trinh-phat-trien.md`, không phải lời hứa bịa,
+  nên 13/09/2026 đã để nguyên. Nhưng người học nhanh sẽ tới vách, và mục 4 của
+  `dinh-huong-kinh-doanh.md` cấm quảng bá nội dung chưa làm xong. **Đã hỏi chủ sản phẩm có
+  muốn làm mềm câu chữ ở hai chỗ đó không, chưa có trả lời.**
 - **Chưa có người học thật nào đi hết Chương 1.** Đây vẫn là khoảng trống lớn nhất của cả
   dự án; mọi con số trong `du-phong-7-nam.md` đều treo trên giả định này.
 - **Nhánh `preview` và `preview.rehover.io`** đã có quy trình viết sẵn nhưng chưa bật.
@@ -352,6 +359,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi nhật ký đợt khoá mức luyện tập và soi lại giáo trình` | Thêm vào mục 3 một việc còn treo: Chương 1 và Chương 7 đã hứa tới Chương 8, 9, 10 trong khi ba chương đó chưa soạn. Để nguyên vì đó là lộ trình thật, nhưng ghi lại vì người học nhanh sẽ tới vách và mục 4 của định hướng kinh doanh cấm quảng bá nội dung chưa làm xong |
 | 13/09/2026 | `feat: Bài luyện nhận nốt mở mức Dễ cho mọi người, ba mức sau theo gói` | Thêm một dòng vào mục 1: bài luyện nhận nốt mở mức Dễ cho mọi người, ba mức sau theo gói. Ghi kèm ba chỗ dễ làm sai đã tránh — bảng Tuỳ chọn phải khoá cùng lúc, phải kẹp lựa chọn ở chỗ đọc chứ không chỉ chặn ở chỗ bấm (lựa chọn nằm trong localStorage nên sửa tay được), và mức khoá vẫn hiện kèm ổ khoá chứ không ẩn đi |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm hai dòng vào mục 1 (bài tập ôn luyện tự sinh bằng luật thay vì lấy từ kho nhạc hay nhờ AI sáng tác; giữ abcjs và ghim phiên bản thay vì đổi thư viện), một khối dòng thời gian cho phiên 12-13/09, và bốn việc còn tồn vào mục 3 — trong đó việc lớn nhất là bộ sinh bài tập đã xong mà chưa có trang nào cho người học dùng |
 | 12/09/2026 | `feat: Luyện tai — app phát một câu, người học mò trên đàn thật` | Mục 1 thêm dòng về bài luyện tai: chốt lý do làm (app chỉ dạy mắt → tay, thiếu hẳn chiều tai → tay mà người tự học không ai rèn cho), và ba quyết định dễ bị lật lại — không nói tên nốt lúc đang mò, không mách micro nốt đang hỏi, nghe lại không giới hạn |

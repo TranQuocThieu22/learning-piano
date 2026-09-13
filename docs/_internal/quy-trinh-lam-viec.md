@@ -147,6 +147,33 @@ câu hỏi im lặng của mọi người lạ ghé qua là *"chỗ này còn ai
 - Khuôn bài, tên file và văn phong: mục `docs/09-cap-nhat/` trong `AGENTS.md`. Rút thành
   bài Facebook: [`bai-dang-facebook.md`](bai-dang-facebook.md).
 
+## 5c. Bỏ hay dời một chỗ trong giao diện thì phải soi lại giáo trình
+
+Giao diện đổi mà chữ trong `docs/` ở lại là **cách hỏng im lặng nhất của dự án này**: không
+lệnh kiểm nào bắt được, vì câu văn vẫn đúng cú pháp và đúng chính tả — nó chỉ **sai sự
+thật**. Người duy nhất phát hiện ra là người học mới, đúng lúc họ đang đi tìm thứ không còn
+tồn tại, và họ sẽ kết luận là mình làm sai chứ không phải sách viết sai.
+
+Đợt soi 13/09/2026 tìm ra ba câu như vậy, cả ba đều sinh ra từ hai thay đổi giao diện của
+mấy ngày trước đó:
+
+| Giao diện đổi gì | Chữ còn sót lại |
+|---|---|
+| Bỏ thanh bên, 10/09 | Chương 0: *"mục Đọc thêm ở cuối thanh điều hướng bên trái"* |
+| Nhật ký nhập vào Đường đi, 11/09 | Hai bài cuối chương: *"vào Nhật ký học tập tick bài"* |
+
+Câu ở Chương 0 là nặng nhất vì Chương 0 **mở miễn phí** và là trang đầu tiên người mới đọc.
+
+**Việc phải làm:** mỗi lần bỏ, dời hay đổi tên một chỗ trong giao diện, `grep` cả `docs/`
+theo tên cũ *và* theo cách người học sẽ gọi nó, rồi sửa hết trong cùng commit đó:
+
+```bash
+grep -rniE "thanh bên|nhật ký|góc trên bên trái" docs/ --include=*.md
+```
+
+Soi cả **nhãn nút**: giáo trình có chỗ ghi thẳng chữ trên nút (*"Đánh dấu đã học xong"*),
+nên đổi nhãn nút cũng là đổi giáo trình.
+
 ## 6. Khi production hỏng
 
 1. **Vercel → Deployments → promote bản deploy tốt gần nhất.** Vài giây, không cần git.
@@ -345,6 +372,7 @@ archive mạnh tay khi việc đã xong.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi nhật ký đợt khoá mức luyện tập và soi lại giáo trình` | Thêm mục 5c — bỏ hay dời một chỗ trong giao diện thì phải grep lại `docs/`. Đợt soi giáo trình 13/09 tìm ra ba câu chỉ người học tới chỗ không còn tồn tại (thanh bên bỏ từ 10/09, nhật ký nhập vào Đường đi từ 11/09), nặng nhất là một câu nằm trong Chương 0 vốn mở miễn phí. Không lệnh kiểm nào bắt được loại này vì chữ vẫn đúng cú pháp, chỉ sai sự thật |
 | 12/09/2026 | `feat: Thêm mục Có gì mới để người học thấy web đang được làm tiếp` | Thêm mục 5b: viết bài cập nhật cho người học là một BƯỚC của vòng đời thay đổi, không phải việc làm thêm khi rảnh — để dành viết sau thì chỉ còn nhớ đã đổi cái gì và mất phần vì sao, mà trong beta thì câu người lạ thật sự hỏi là "chỗ này còn ai làm không" chứ không phải "có tính năng gì" |
 | 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Mục 3 lên năm lệnh: một lần bốn lệnh xanh hết mà deploy vẫn đỏ vì test chạy quá hạn giờ trên máy dựng bản chậm hơn, nên `next build` phải nằm trong cổng — nó là thứ Vercel thật sự chạy. Ghi rõ CI cũng không chạy build (thiếu biến môi trường), nên build chỉ được kiểm ở máy mình trước khi commit, hoặc ở Vercel khi đã muộn |
 | 09/09/2026 | `docs(internal): Chốt quy ước chia phiên và thêm nhật ký làm việc` | Thêm mục 9 sau khi archive 7 phiên cũ: chia phiên theo *việc* chứ không theo *thời gian*, vì lịch sử tháng 8 cho thấy chia theo thời gian dẫn tới hỏi lại cùng một câu ở ba phiên và một commit code nằm trong phiên tư vấn kinh doanh; chốt rằng repo mới là bộ nhớ chung nên mọi thứ đáng nhớ phải rơi xuống file trước khi đóng phiên; đặt tên phiên theo *việc* chứ không theo *loại việc*, vì một phiên cố định cho mỗi danh mục làm ngữ cảnh bị nén và cái tên không nói lên bên trong có gì; bảng "thứ cần giữ" nhận thêm `nhat-ky-lam-viec.md` cho việc xảy ra ngoài repo |
