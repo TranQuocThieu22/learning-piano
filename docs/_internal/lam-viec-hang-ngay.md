@@ -101,6 +101,22 @@ Lý do đầy đủ ở mục 9 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-vi
 
 Không gấp, xoá dòng nào đã xong:
 
+- [ ] **Cấp gói cho những người đã điền form, rồi NHẮN TAY cho từng người.** Vào `/admin`,
+      bấm *Cấp gói* → `Nền tảng`, ô *Lý do* gõ đúng `beta dot 1` (sai chữ đó là họ rơi khỏi
+      mẫu số của `beta-metrics.mjs`). Cấp xong phải nhắn lại — màn hình bài khoá đã hứa mở
+      trong 24 giờ, mà app chưa gửi được email. Thẻ báo ở màn hình chủ chỉ đón được người
+      tự mở app lại. Chi tiết ở mục 2 của [`ke-hoach-beta.md`](ke-hoach-beta.md).
+
+- [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
+      micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
+      nhận nốt và ở *Tập bài này với đàn* của bài học. Mở câu 2 (thế tay Sol), đánh trọn
+      câu, đếm xem máy nghe sai mấy lần và sai kiểu gì.
+
+- [ ] **Kiểm lại hai lỗi nhạc nền trên đúng chiếc máy tính đã gặp** (commit `c09dd4c` và
+      `baf899c`): gạt tắt nhạc nền rồi sang *Mục lục* và *Đường đi* xem có tự phát lại
+      không; bấm *Nghe thử* một bản nhạc xem còn tiếng nhạc nền chen vào không. Còn lỗi thì
+      mở DevTools chạy `localStorage.getItem('pj-ambient')` ngay lúc nhạc đang phát.
+
 - [ ] **Thử nghe qua micro trên máy thật, trước khi mời người beta dùng.** Mọi con số tới giờ
       đo trên tiếng đàn tổng hợp. Đặt điện thoại lên giá nhạc cây FP-30X, mở
       `/note-trainer` → *Nghe qua micro*, đánh 20 nốt và đếm máy nghe sai mấy lần; rồi mở
@@ -140,6 +156,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi nhật ký phiên tối 13/09 và ba việc còn treo` | Thêm ba việc vào mục 7: cấp gói kèm nhắn tay cho người đã điền form (việc chặn cả đợt beta mà chưa ai làm), thử phần nghe micro của trang Đặt tay ở đâu trên đàn thật, và kiểm lại hai lỗi nhạc nền trên đúng máy đã gặp |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm hai việc vào mục 7: quyết chỗ cho kho ôn luyện (bộ sinh bài tập đã xong mà chưa trang nào gọi nó) và đánh thử bài sinh ra trên đàn thật — test gác được cao độ và số phách, nhưng "bài tập có nghe được không" thì không ca test nào phát biểu nổi |
 | 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Cổng kiểm tra ở bước 1 lên năm lệnh sau một lần deploy đỏ dù bốn lệnh ở máy xanh hết; nói rõ ở bước 4 rằng CI không chạy build nên build chỉ được kiểm ở bước 1 |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào mục 7 việc thử micro trên máy thật — tính năng mới chỉ được đo trên tiếng đàn tổng hợp, mà đó là việc duy nhất Claude không làm hộ được vì cần một chiếc điện thoại đặt cạnh cây đàn thật; ghi luôn cách thử cụ thể để làm được ngay khi mở file ra |

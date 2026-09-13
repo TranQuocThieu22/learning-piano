@@ -40,6 +40,62 @@
 
 ---
 
+## 13/09/2026 (tối) — Báo cho người được cấp quyền, hai lỗi nhạc nền, và công cụ Đặt tay ở đâu
+
+> Từ commit `588f1a5` tới `7d26981`. Bối cảnh: đã có vài người điền form đăng ký beta nhưng
+> chưa ai được cấp quyền.
+
+**Đã làm**
+
+- **Thẻ báo "Đã mở khoá toàn bộ giáo trình" ở màn hình chủ** (`588f1a5`). Trước đó việc cấp
+  quyền không để lại dấu vết nào phía người học — ổ khoá lặng lẽ biến mất — trong khi màn
+  hình bài khoá đã hứa mở trong vòng 24 giờ. Người điền form ngồi đợi một tín hiệu không bao
+  giờ tới. Thẻ chỉ sống 30 ngày kể từ `entitlement.granted_at`, tắt một lần là thôi, và khoá
+  ghi nhớ chính là mốc cấp nên cấp lại thì báo lại.
+- **Hai lỗi nhạc nền, cùng một triệu chứng nhưng hai nguyên nhân khác hẳn nhau** (`c09dd4c`,
+  `baf899c`). Cái thứ nhất: `stop()` đọc `gain.value` của nốt chưa chạy automation, mà mặc
+  định Web Audio là **1** chứ không phải 0, nên mỗi lần nhạc nền được bảo im nó rú lên gần
+  gấp ba rồi mới tắt — đo bằng `OfflineAudioContext`: 0,98 so với đỉnh thật 0,34. Cái thứ
+  hai: listener chờ cú chạm đầu tiên cầm bản chụp `on: true` từ lúc gắn, nên cú bấm sang
+  trang khác bật lại nhạc người học vừa gạt tắt.
+- **Công cụ mới `/hand-position` — *Đặt tay ở đâu*** (`4320d6d`, `7d26981`). Trả lời câu
+  giáo trình bỏ trống giữa Chương 1 và Chương 6: bản nhạc ra ngoài năm nốt thì đặt tay chỗ
+  nào, dời tay ở đâu. Tám câu, đáp án trải ra năm thế tay, có nút *Tập câu này với đàn* dùng
+  lại `ScorePractice` (micro hoặc MIDI).
+- **Sửa bản nhạc mờ tịt ở nền tối** (`6de093a`) sau khi chủ sản phẩm gửi ảnh chụp màn hình
+  điện thoại thật.
+
+**Quan sát**
+
+- **Test xanh hết vẫn phải đọc kết quả bằng mắt.** Bộ lập kế hoạch đặt tay có 28 ca test
+  xanh, nhưng in kế hoạch của từng câu ra đọc thì lộ ngay hai lời khuyên vô nghĩa: một "lần
+  dời tay" từ thế Pha sang **chính thế Pha**, và một đoạn Sol–La–Si bị xếp vào thế tay Pha
+  trong khi nốt Pha không hề được đánh. Cả hai đều đúng phép đếm, chỉ sai ở chỗ nó khuyên
+  người học đặt tay thế nào — mà đó mới là thứ công cụ sinh ra để làm.
+- **Bộ giả trong test phải giả đúng cả GIÁ TRỊ MẶC ĐỊNH, không chỉ hình dạng hàm.** Lỗi nhạc
+  nền rú lên sống sót qua mấy vòng sửa trước chỉ vì `AudioContext` giả cho mọi `AudioParam`
+  giá trị `value: 0`, trong khi Web Audio thật mặc định là 1. Con số vô hại đó giấu nguyên
+  một lỗi nghe thấy được bằng tai.
+- **Lỗi chỉ hiện ở nền tối thì ảnh chụp ở nền sáng không bao giờ thấy.** Bản nhạc gần như
+  biến mất trên giấy trắng ở nền tối, mà cả năm lệnh kiểm lẫn mọi ảnh tôi tự chụp đều xanh.
+  Người dùng thật bắt được bằng đúng một câu: *"sao nhìn mờ vậy"*. Từ nay chụp kiểm cả hai nền.
+- **Bảng dữ liệu soạn tay cũng cần một lớp gác về CHẤT.** Bản đầu của bài luyện có sáu câu
+  thì năm câu đáp án đều là thế tay Đô — bấm bừa một nút là đúng gần hết. Không ca test nào
+  kêu, vì mỗi câu đều hợp lệ; cái sai chỉ hiện ra khi nhìn cả bảng như người học nhìn.
+- **`next build` bắt được hai bẫy cũ ngay lần dựng đầu của trang mới**: bẫy 22 (truyền `Link`
+  qua ranh giới server/client) và bẫy 1 (`List.Item` của Mantine trong Server Component).
+  Bốn lệnh kiểm kia đều xanh ở cả hai ca.
+
+**Tiếp theo**
+
+- Cấp gói cho những người đã điền form (`/admin`, ghi chú `beta dot 1`) rồi **nhắn tay cho
+  từng người** — thẻ mới chỉ đón được người tự mở app lại, không thay được tin nhắn.
+- Thử *Tập câu này với đàn* ở trang Đặt tay ở đâu trên đàn thật; phần nghe qua micro của
+  trang này chưa ai đo lần nào.
+- Kiểm lại hai lỗi nhạc nền trên đúng chiếc máy tính đã gặp.
+
+---
+
 ## 13/09/2026 — Khoá mức luyện tập theo gói, và soi lại giáo trình trước khi mở cửa
 
 > Từ commit `bfb20fd` tới `81124f4`. Bối cảnh: chủ sản phẩm sắp mở cho khoảng **10 người
