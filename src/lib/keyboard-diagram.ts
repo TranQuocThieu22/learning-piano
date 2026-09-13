@@ -46,6 +46,16 @@ export const DIAGRAM_KEY_BOTTOM = WHITE_HEIGHT * KEY_LENGTH_FACTOR;
 
 const LETTER_SEMITONE: Record<string, number> = { C: 0, D: 2, E: 4, F: 5, G: 7, A: 9, B: 11 };
 
+/** Hình hẹp hơn ba phím trắng thì không nói được gì về vị trí trên đàn. */
+const MIN_WHITE_KEYS = 3;
+
+/** Đếm phím trắng trong một khoảng, hai đầu tính cả. */
+function soPhimTrang(from: number, to: number): number {
+  let n = 0;
+  for (let midi = from; midi <= to; midi += 1) if (!isBlackPitch(midi)) n += 1;
+  return n;
+}
+
 /** Chỗ chừa dưới phím để ghi tên nốt đang bấm. */
 export const DIAGRAM_LABEL_HEIGHT = 1.1;
 
@@ -114,16 +124,32 @@ export interface KeyboardDiagram {
 }
 
 /**
- * Chọn khoảng phím sẽ vẽ: **luôn trọn quãng tám**, từ Đô tới Si.
+ * Chọn khoảng phím sẽ vẽ: **hết ở đúng chỗ bàn tay hết**, cả hai đầu.
  *
- * Cắt đúng vừa các nốt đang bấm thì mỗi hình một hình dạng khác nhau, người học
- * mất luôn cái mốc để so. Trọn quãng tám thì cụm hai phím đen và cụm ba phím đen
- * luôn nằm đúng chỗ quen thuộc — mà đó chính là thứ họ dùng để mò trên đàn thật.
+ * Bản đầu luôn kéo cho trọn quãng tám từ Đô tới Si, và mọi hình đều thừa phím
+ * trắng không ai bấm — hợp âm Đô trưởng vẽ bảy phím mà chỉ ba phím có nốt, hợp
+ * âm La thứ vẽ mười phím với năm phím trống ở đầu. Lý do lúc đó là giữ cụm phím
+ * đen làm mốc, nhưng cái giá quá đắt: phần thừa ăn chỗ của phần có nghĩa, mà
+ * trên điện thoại thì bề ngang là thứ hiếm nhất.
+ *
+ * Cắt sát hai đầu còn được thêm một thứ không ngờ: ba hợp âm trụ cột ở Chương 7
+ * (Đô, Pha, Sol) nay **rộng bằng nhau đúng năm phím trắng**, nên đặt cạnh nhau
+ * là thấy ngay chúng cùng một hình dạng trượt dọc bàn phím — đúng điều bài đó
+ * muốn nói.
+ *
+ * Hai chỗ vẫn phải chừa thêm, nếu không hình trông cụt:
+ *
+ * - **Đầu nào kết thúc bằng phím đen** thì lấy thêm phím trắng liền kề, không
+ *   thì phím đen treo lơ lửng ngoài mép và mất chỗ dựa để biết nó nằm giữa hai
+ *   phím trắng nào.
+ * - **Ít hơn ba phím trắng** thì nới thêm về bên phải. Một hình rộng đúng một
+ *   phím không nói được gì về vị trí trên đàn.
  */
 export function diagramRange(midis: number[]): [number, number] {
   const low = Math.min(...midis);
   const high = Math.max(...midis);
-  const from = (octaveOf(low) + 1) * 12;
+  // Phím đen ở mép trái thì lấy thêm phím trắng ngay dưới nó.
+  const from = isBlackPitch(low) ? low - 1 : low;
 
   if (high - from >= MAX_OCTAVE_SPAN * 12) {
     throw new KeyboardDiagramError(
@@ -131,12 +157,11 @@ export function diagramRange(midis: number[]): [number, number] {
     );
   }
 
-  /*
-   * Cắt bỏ phần đuôi không ai bấm tới — nhưng không bao giờ ngắn hơn một quãng
-   * tám. Thế tay Đô–Đô cao chỉ vượt sang quãng sau đúng một phím; vẽ trọn quãng
-   * đó là mười một phím thừa, phím nào cũng bé lại vì phải chia bề ngang.
-   */
-  return [from, Math.max(high, from + 11)];
+  // Phím đen ở mép phải thì lấy thêm phím trắng ngay trên nó.
+  let to = isBlackPitch(high) ? high + 1 : high;
+  // Rồi nới cho đủ ba phím trắng.
+  while (soPhimTrang(from, to) < MIN_WHITE_KEYS) to += 1;
+  return [from, to];
 }
 
 /**

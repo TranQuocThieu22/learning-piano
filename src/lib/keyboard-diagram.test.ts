@@ -33,20 +33,34 @@ describe('parseNoteList', () => {
 });
 
 describe('diagramRange', () => {
-  it('luôn cắt trọn quãng tám, từ Đô tới Si', () => {
-    // Hợp âm Đô trưởng nằm gọn trong quãng 4.
-    expect(diagramRange([60, 64, 67])).toEqual([60, 71]);
+  it('bắt đầu từ Đô và kết thúc ở nốt cao nhất, không thừa đuôi', () => {
+    // Hợp âm Đô trưởng: Đô4 tới Sol4. Bản đầu kéo tới Si4 và thừa hai phím
+    // trắng không ai bấm ở cuối — người dùng nhìn ra ngay là sai.
+    expect(diagramRange([60, 64, 67])).toEqual([60, 67]);
   });
 
-  it('nốt tràn sang quãng sau thì vẽ tới đúng nốt đó, không vẽ thừa cả quãng', () => {
-    // Hợp âm Pha: Pha4 - La4 - Đô5. Vẽ trọn quãng 5 là thừa mười một phím,
-    // mà phím nào cũng bé lại vì phải chia bề ngang.
-    expect(diagramRange([65, 69, 72])).toEqual([60, 72]);
+  it('phím đen ở mép thì lấy thêm phím trắng liền kề, cả hai đầu', () => {
+    // Rê thăng một mình: vẽ Rê - (phím đen) - Mi, đúng cái người học cần thấy để
+    // biết nó nằm giữa hai phím trắng nào. Treo ở mép là mất chỗ dựa đó.
+    expect(diagramRange([63])).toEqual([62, 65]);
   });
 
-  it('nốt cao nằm trong quãng đầu thì vẫn vẽ trọn một quãng tám', () => {
-    // Ngắn hơn một quãng là mất cụm hai/ba phím đen — mất luôn cái mốc để mò đàn.
-    expect(diagramRange([60, 62])).toEqual([60, 71]);
+  it('cắt sát hai đầu: hợp âm Pha chỉ vẽ từ Pha tới Đô', () => {
+    // Bản đầu kéo từ Đô4 nên thừa năm phím trắng trống ở đầu hình.
+    expect(diagramRange([65, 69, 72])).toEqual([65, 72]);
+  });
+
+  it('ba hợp âm trụ cột rộng bằng nhau, cùng năm phím trắng', () => {
+    // Đây là điều Chương 7 muốn nói: cùng một hình dạng trượt dọc bàn phím.
+    for (const hop of [[48, 52, 55], [53, 57, 60], [55, 59, 62]]) {
+      expect(keyboardDiagram(hop).width).toBe(5);
+    }
+  });
+
+  it('hẹp quá thì nới cho đủ ba phím trắng', () => {
+    // Một hình rộng đúng một phím không nói được gì về vị trí trên đàn.
+    expect(diagramRange([60])).toEqual([60, 64]);
+    expect(diagramRange([60, 62])).toEqual([60, 64]);
   });
 
   it('rộng quá thì ném lỗi chứ không cắt bớt', () => {
@@ -69,10 +83,11 @@ describe('diagramRange', () => {
 describe('keyboardDiagram', () => {
   const hop = keyboardDiagram([60, 64, 67]);
 
-  it('một quãng tám có 12 phím, 7 trắng 5 đen', () => {
-    expect(hop.keys).toHaveLength(12);
-    expect(hop.keys.filter((k) => !k.black)).toHaveLength(7);
-    expect(hop.keys.filter((k) => k.black)).toHaveLength(5);
+  it('hợp âm Đô trưởng vẽ đúng Đô tới Sol, không thừa phím nào ở cuối', () => {
+    expect(hop.keys.filter((k) => !k.black).map((k) => k.midi)).toEqual([60, 62, 64, 65, 67]);
+    expect(hop.keys.filter((k) => k.black)).toHaveLength(3);
+    // Phím cuối cùng của hình phải là phím có nốt.
+    expect(hop.keys.at(-1)!.pressed).toBe(true);
   });
 
   it('đánh dấu đúng những phím đang bấm', () => {
@@ -84,7 +99,7 @@ describe('keyboardDiagram', () => {
   });
 
   it('bề ngang bằng đúng số phím trắng', () => {
-    expect(hop.width).toBe(7);
+    expect(hop.width).toBe(5);
   });
 
   it('phím đen cưỡi lên chỗ giáp ranh giữa hai phím trắng', () => {
