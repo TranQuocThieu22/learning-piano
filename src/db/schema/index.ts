@@ -13,7 +13,10 @@
  *               với thư viện ngoài, nâng cấp adapter là sửa cả bốn cùng lúc.
  * - `payment` — ba bảng có vòng đời khác nhau, và chính sự khác nhau đó mới là
  *               thứ cần giải thích. Lời giải thích ấy nằm ở đầu payment.ts.
+ * - `sheets`  — hai bảng của Kho nhạc của tôi. Luật sản phẩm (riêng tư, không
+ *               chia sẻ, gỡ được ngay) nằm ở `src/lib/user-sheets.ts`.
  */
 export * from './auth';
 export * from './progress';
 export * from './payment';
+export * from './sheets';

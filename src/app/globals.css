@@ -1671,3 +1671,97 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   align-items: center;
   gap: 4px;
 }
+
+/*
+ * Khung đọc bản nhạc CHỤP ẢNH (`PhotoSheetViewer`).
+ *
+ * Không dùng chung luật với `.sheet-music-wrapper`: khung kia bám vào cách abcjs
+ * dựng SVG (bẫy 28-33), còn ở đây chỉ là một thẻ <img>. Gộp hai thứ chỉ vì chúng
+ * trông giống nhau là đúng điều `.claude/skills/code-standards/SKILL.md` dặn đừng
+ * làm — một ngày nào đó sửa cho ảnh sẽ làm vỡ bản nhạc vẽ bằng nốt.
+ */
+.photo-sheet {
+  margin: 1rem 0;
+}
+
+.photo-sheet-paper {
+  position: relative;
+  background: var(--mantine-color-body);
+  border: 1px solid var(--mantine-color-default-border);
+  border-radius: 16px;
+  overflow: hidden;
+  /* Nền trắng sau ảnh: trang giấy chụp thiếu sáng viền ra thành xám, để nền tối
+     phía sau thì mép ảnh lẫn vào nền và trông như ảnh bị cắt. */
+  background-color: #fff;
+}
+
+.photo-sheet-paper img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /*
+   * Chặn chiều cao theo màn hình THẬT (`dvh`), không theo `vh`: trên điện thoại,
+   * `vh` tính cả dải địa chỉ lúc nó đang ẩn, nên trang giấy tràn quá đáy đúng lúc
+   * người học đặt máy lên giá nhạc và không còn tay để cuộn.
+   */
+  max-height: calc(100dvh - 16rem);
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/*
+ * Hai nửa trong suốt để lật trang bằng một chạm.
+ *
+ * Là <button> thật chứ không phải <div> có onClick: bàn phím và trình đọc màn
+ * hình đi tới được, và trạng thái `disabled` ở trang đầu/trang cuối là thật chứ
+ * không phải vẽ ra cho giống.
+ */
+.photo-sheet-half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.photo-sheet-half:disabled {
+  cursor: default;
+}
+
+.photo-sheet-half.is-left {
+  left: 0;
+}
+
+.photo-sheet-half.is-right {
+  right: 0;
+}
+
+/*
+ * Toàn màn hình: cùng z-index 350 với chế độ tập trung của bản nhạc, tức là nằm
+ * trên cả thanh tab (200) lẫn thanh mời cài đặt (300).
+ */
+.photo-sheet.is-focused {
+  position: fixed;
+  inset: 0;
+  z-index: 350;
+  margin: 0;
+  padding: 0.5rem;
+  background: var(--mantine-color-body);
+  display: flex;
+  flex-direction: column;
+}
+
+.photo-sheet.is-focused .photo-sheet-paper {
+  flex: 1 1 auto;
+  min-height: 0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.photo-sheet.is-focused .photo-sheet-paper img {
+  max-height: 100%;
+}

@@ -180,7 +180,40 @@ sinh bằng luật** (`src/lib/exercise-gen.ts`) — xem mục 1 của `nhat-ky-
 bảng trên vẫn là nguồn đúng cho **bài hát** ở `/songs` và cho bài ôn luyện từ Chương 6 trở lên,
 khi tầm nốt đã mở ra cả quãng tám.
 
-## 7. Hai chuyện đã bàn và đã chốt, đừng bàn lại
+## 7. Người học tự đưa bản nhạc lên — câu chuyện đổi chiều
+
+13/09/2026 dựng **Kho nhạc của tôi** (`/my-sheets`): người học tự nhập file `.mid`,
+`.musicxml`, hoặc chụp ảnh bản nhạc giấy của mình. Mục này ghi vì sao việc đó được
+phép trong khi mục 1-5 ở trên nói rằng đăng bản nhạc còn bảo hộ là vi phạm — hai
+chuyện khác nhau, và chỗ khác nhau nằm ở **ai là người phát hành**.
+
+- **Mục 1-5 nói về app đăng bản nhạc.** Mình soạn, mình đưa lên, mình bán → mình là
+  người sao chép tác phẩm. Cần giấy phép.
+- **Mục này nói về người học đưa bản nhạc của họ lên tài khoản của họ.** App thành
+  **nơi chứa**, không phải người phát hành. Nghị định 17/2023 (hướng dẫn Luật Sở hữu
+  trí tuệ về quyền tác giả) có cơ chế **miễn trừ trách nhiệm cho doanh nghiệp cung
+  cấp dịch vụ trung gian** — đây là chỗ mình đứng.
+
+**Vị trí đó KHÔNG tự nhiên mà có. Nó là kết quả của bốn điều dưới đây, và phá một
+điều là mất cả bốn:**
+
+| Điều | Ở đâu trong mã | Phá nó thì sao |
+|---|---|---|
+| Riêng tư mặc định, không có đường chia sẻ | Mọi truy vấn ở `src/lib/user-sheets-server.ts` đều kẹp `userId`; `/api/sheet-pages/[id]` trả 404 cho trang của người khác | Có kho chung là app thành nơi phát tán bản nhạc lậu — tệ hơn hẳn tự soạn, vì quy mô lớn hơn và không kiểm soát nổi |
+| App không chọn, không biên tập, không gợi ý | Không có danh sách gợi ý, không có tìm kiếm chéo, không xếp hạng | Chọn hộ là "khởi xướng", mất vị trí trung gian |
+| Gỡ được ngay, và có đầu mối nhận khiếu nại | Nút *Xoá khỏi kho* trong `SheetTools.tsx`; mục 4 và mục 8 của `docs/legal/terms.md` | Người giữ quyền không có cửa nào để báo là mình mất thế đứng |
+| Không quảng bá kiểu "tha hồ sheet, bài nào cũng có" | Câu chữ ở `/my-sheets` nói về *bản nhạc của bạn*, không nói về kho nhạc | Quảng bá như vậy là mời người ta vi phạm — cùng loại rủi ro với mục 0 của `dinh-huong-kinh-doanh.md` |
+
+**Chuyện này KHÔNG thay thế việc đi xin phép.** Người học tự đưa lên chỉ giải được
+"bài tôi thích", không giải được "app có bài hay để tập". Muốn có bài trong Góc bài
+hát thì vẫn phải đi đúng đường ở mục 2.
+
+**Điều chưa chắc, ghi lại để đừng quên:** chưa ai đọc kỹ từng điều của Nghị định
+17/2023 để đối chiếu điều kiện miễn trừ (thời hạn gỡ bỏ, hình thức tiếp nhận yêu
+cầu). Trước khi **mở bán** cho người ngoài đợt beta thì nên đọc lại — lúc đó số
+người dùng lớn hơn và mình có doanh thu, hai thứ đều làm rủi ro thật lên.
+
+## 8. Hai chuyện đã bàn và đã chốt, đừng bàn lại
 
 - **"Soạn bằng AI rồi ghi nguồn là được."** Không. Bản quyền bảo hộ **bản thân tác phẩm âm
   nhạc**, không bảo hộ cái file bản nhạc — ai chép ra, người hay máy, hoàn toàn không liên
@@ -199,6 +232,7 @@ khi tầm nốt đã mở ra cả quãng tám.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `feat: Kho nhạc của tôi — nhập file nhạc và chụp bản nhạc giấy` | Thêm mục 7 — người học tự đưa bản nhạc lên thì app đổi vai từ **người phát hành** sang **nơi chứa**, và vị trí đó chỉ giữ được nhờ bốn điều (riêng tư mặc định, không chọn hộ, gỡ được ngay, không quảng bá sai). Ghi kèm chỗ từng điều nằm trong mã, để lần sau ai sửa `/my-sheets` thì biết mình đang đụng vào cái gì; và ghi rõ chuyện này KHÔNG thay thế việc đi xin phép ở mục 2 |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Ghi vào mục 6 kết quả khảo kho Mutopia cho BÀI TẬP Chương 1-5: chỉ 38/158 bản dễ là vừa hết hạn bảo hộ vừa khai bản khắc gốc, và bản dễ nhất (Czerny op. 821) đã chạy Đô3-La6 với nốt móc kép. Nguyên nhân gốc là thế tay 5 ngón một vị trí vốn là phát minh của sách phương pháp hiện đại nên kho nhạc công cộng không có — ghi lại để đừng mất công khảo lại, và để nhớ ba kho kia vẫn đúng cho bài hát và cho Chương 6 trở lên |
 | 11/09/2026 | `fix: Chép lại Für Elise, Minuet và Jingle Bells theo bản nhạc gốc thay vì trí nhớ` | Thêm mục 6 — ba kho bản nhạc công cộng thật sự lấy được từ máy dựng bản (Mutopia qua GitHub, hai kho của bbloomf, musetrainer), luật đọc `\relative` của LilyPond, và ba lớp kiểm sau khi chép; ghi luôn chuyện IMSLP với abcnotation bị chặn ở cổng ra nên đừng mất công thử lại |
 | 11/09/2026 | `docs(internal): Hướng dẫn xin phép bản quyền bài hát` | Tạo file — chủ sản phẩm hỏi cách hỏi VCPMC và chi phí. Ghi rõ chỗ dễ hỏi nhầm cửa nhất (quyền in ấn thường không nằm ở tổ chức quản lý tập thể), thư hỏi mẫu dán là gửi được, và nói thẳng là **chưa biết chi phí** kèm ba con số cần chốt — thà để trống còn hơn điền một con số đoán rồi ai đó lập ngân sách theo nó |

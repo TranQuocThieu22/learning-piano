@@ -1,5 +1,5 @@
 import { Container, Stack, Text, Title } from '@mantine/core';
-import { IconBook2, IconBulb, IconMusic, IconRoute, IconSparkles } from '@tabler/icons-react';
+import { IconBook2, IconBulb, IconFolders, IconMusic, IconRoute, IconSparkles } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { LinkRow } from '@/components/LinkRow';
 import { PageHeader } from '@/components/PageHeader';
@@ -110,6 +110,34 @@ export default function LibraryPage() {
               </div>
             );
           })}
+
+          {/*
+            Kho nhạc của tôi đứng ngay sau các mục bài đọc: nó là một mục lục nữa
+            — mục lục của chính người học — chứ không phải một công cụ như máy
+            đánh nhịp. Không hiện số bản nhạc ở đây vì trang này dựng sẵn (tĩnh)
+            cho mọi người, mà con số đó thì mỗi người một khác.
+          */}
+          <div>
+            <Title order={2} size="h4">
+              Kho nhạc của tôi
+            </Title>
+            <Text size="sm" c="dimmed" mb="sm">
+              Bản nhạc bạn tự đưa lên — chỉ mình bạn xem được
+            </Text>
+
+            <Stack gap="xs">
+              <LinkRow
+                href="/my-sheets"
+                title="Mở kho nhạc của tôi"
+                meta="Nhập file .mid, .musicxml hoặc chụp ảnh bản nhạc giấy"
+                leading={
+                  <span className="section-icon section-icon--xs" data-section="extra" aria-hidden>
+                    <IconFolders size={20} />
+                  </span>
+                }
+              />
+            </Stack>
+          </div>
 
           {/*
             *Có gì mới* đứng CUỐI: người mở Mục lục là để tìm một bài đọc, không

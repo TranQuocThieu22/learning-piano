@@ -46,7 +46,25 @@ Riêng các bản nhạc kinh điển (Ode to Joy, Jingle Bells...) vốn đã h
 bản quyền từ lâu — phần soạn lại cho người mới là của chúng tôi, còn giai điệu thì
 thuộc về tất cả mọi người.
 
-## 4. Riêng trong giai đoạn beta
+## 4. Bản nhạc bạn tự đưa lên
+
+Trang có mục **Kho nhạc của tôi**: bạn đưa lên file nhạc (`.mid`, `.musicxml`) hoặc
+ảnh chụp bản nhạc giấy để tập trên chính máy của mình.
+
+**Chúng cứ nằm yên ở tài khoản bạn.** Không hiện ra cho người học khác, không có
+đường chia sẻ công khai, không ai đem đi đâu. Chúng tôi không xem, không sửa, không
+chọn hộ bạn đưa lên cái gì. Bạn xoá lúc nào cũng được, và xoá là mất hẳn.
+
+**Đổi lại, thứ bạn đưa lên là trách nhiệm của bạn.** Chỉ nên đưa lên bản nhạc bạn có
+quyền dùng: bản tự chép, bản đã mua, hoặc nhạc đã hết hạn bảo hộ bản quyền. Đưa lên
+rồi tập một mình thì khác hẳn với đem đi phát cho người khác — điều thứ hai bạn
+không làm được ở đây, và cũng đừng tìm cách làm.
+
+**Nếu bạn là tác giả hoặc người giữ quyền** và cho rằng có nội dung trên trang xâm
+phạm quyền của mình, nhắn cho chúng tôi theo địa chỉ ở mục 8, kèm tên tác phẩm và
+chỗ bạn thấy nó. Chúng tôi kiểm tra và gỡ nếu đúng, rồi báo lại cho bạn.
+
+## 5. Riêng trong giai đoạn beta
 
 - **Giai đoạn 2 sẽ hoàn thiện trong đợt beta này.** Giai đoạn 1 đã đủ và Chương 7
   đã xong; ba chương còn lại — mẫu đệm tay trái, pedal, và đệm trọn một bài — sẽ
@@ -59,7 +77,7 @@ thuộc về tất cả mọi người.
   chúng tôi bắt đầu bán và kể cả với những chương viết xong sau khi bạn tham gia.
   Không phải trả thêm gì.
 
-## 5. Dữ liệu của bạn
+## 6. Dữ liệu của bạn
 
 Chúng tôi lưu đúng những thứ cần để trang hoạt động:
 
@@ -67,6 +85,7 @@ Chúng tôi lưu đúng những thứ cần để trang hoạt động:
 |---|---|
 | Tên, email, ảnh đại diện từ Google | Để biết bạn là ai khi đăng nhập |
 | Danh sách bài bạn đã tick, kèm thời điểm | Để hiện tiến độ và biết chỗ nào người học hay dừng lại |
+| Bản nhạc bạn tự đưa lên (file nhạc đã đọc thành nốt, ảnh đã thu nhỏ) | Để bạn mở lại trên máy khác mà không phải đưa lên lần nữa |
 
 **Không** lưu mật khẩu, **không** lưu thông tin thẻ, **không** bán dữ liệu cho ai.
 Dữ liệu nằm trên máy chủ của bên cung cấp hạ tầng mà chúng tôi thuê.
@@ -74,7 +93,7 @@ Dữ liệu nằm trên máy chủ của bên cung cấp hạ tầng mà chúng 
 Muốn xem lại hoặc **xoá toàn bộ dữ liệu của mình**, nhắn cho chúng tôi. Chúng tôi
 xoá và xác nhận lại với bạn.
 
-## 6. Khi nào tài khoản bị dừng
+## 7. Khi nào tài khoản bị dừng
 
 Hiếm, nhưng nói trước cho rõ: nếu một tài khoản được dùng để phát tán lại nội dung
 ở quy mô lớn, hoặc phá hoại hệ thống, chúng tôi sẽ dừng tài khoản đó. Chúng tôi sẽ
@@ -83,7 +102,7 @@ báo cho bạn trước, trừ trường hợp phải xử lý gấp.
 Bạn muốn dừng lúc nào cũng được — chỉ cần thôi đăng nhập, hoặc nhắn để chúng tôi
 xoá tài khoản.
 
-## 7. Liên hệ
+## 8. Liên hệ
 
 Có gì cần hỏi, báo lỗi, hay muốn xoá dữ liệu:
 

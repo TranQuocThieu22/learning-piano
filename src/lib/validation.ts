@@ -47,3 +47,35 @@ export const noteSchema = z.string().trim().max(500).catch('');
 export const feedbackVerdictSchema = z.enum(['ok', 'stuck']);
 
 export type FeedbackVerdict = z.infer<typeof feedbackVerdictSchema>;
+
+/**
+ * Tên bản nhạc người học tự đặt trong *Kho nhạc của tôi*.
+ *
+ * Cắt ở 120 ký tự chứ không để tự do: tên hiện trên một dòng của danh sách trên
+ * màn hình điện thoại, mà cột `title` thì không có gì chặn nếu ai đó gọi thẳng
+ * Server Action. Để rỗng thì lấy tên mặc định ở chỗ gọi, không báo lỗi — người
+ * học vừa mất công chọn file, bắt họ làm lại vì cái tên là mất công vô ích.
+ */
+export const sheetTitleSchema = z.string().trim().min(1).max(120);
+
+/**
+ * Chuỗi ABC gửi lên từ trình duyệt.
+ *
+ * Việc đọc file diễn ra ở MÁY CỦA NGƯỜI HỌC (xem `import-sheet.ts`), nên thứ tới
+ * máy chủ chỉ là chữ. Vẫn phải chặn trên: Server Action gọi được mà không qua
+ * giao diện, và không có giới hạn nào thì một lệnh curl nhét được vài megabyte
+ * vào một dòng database.
+ */
+export const sheetAbcSchema = z.string().trim().min(1).max(60_000);
+
+/** Hai định dạng file app đọc được nốt. Ảnh chụp đi đường riêng. */
+export const sheetNoteSourceSchema = z.enum(['midi', 'musicxml']);
+
+/**
+ * Một trang ảnh, dạng `data:image/jpeg;base64,...`.
+ *
+ * Chỉ kiểm ĐỘ DÀI ở đây; hình dạng thật do `parseImageDataUrl` kiểm, vì ở đó mới
+ * biết kiểu ảnh nào được nhận. Chặn dài hơn mức ảnh một chút để thông báo lỗi nói
+ * đúng chuyện ("ảnh quá nặng") thay vì một lỗi Zod chung chung.
+ */
+export const sheetPageDataSchema = z.string().min(1).max(1_200_000);

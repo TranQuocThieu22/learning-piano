@@ -6,7 +6,7 @@ import { findPackage } from '@/lib/packages';
 import { formatVnd } from '@/lib/payment/vietqr';
 import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
 
-/** Trang Facebook ở mục 7 của docs/legal/terms.md — nơi duy nhất nhận tin nhắn. */
+/** Trang Facebook ở mục 8 của docs/legal/terms.md — nơi duy nhất nhận tin nhắn. */
 const TRANG_FACEBOOK = 'https://www.facebook.com/profile.php?id=61593938880341';
 
 /**
