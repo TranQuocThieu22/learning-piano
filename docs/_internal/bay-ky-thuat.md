@@ -428,6 +428,7 @@ Bản nhạc nằm sâu trong hai lớp đều dính:
 
 | Tổ tiên | Thuộc tính | Bật lúc nào |
 |---|---|---|
+| 13/09/2026 | `feat: Sinh bài tập ôn luyện cho Chương 1-5 bằng luật, không bằng kho nhạc` | Thêm bẫy 36 — một phím đàn có hai cách viết trên giấy (phím 63 được `noteAt` viết `_E` chứ không phải `^D`), nên lớp gác chống bẫy 25 tự suy chữ cái từ số MIDI đã gác sai và bài tập Chương 4 vang ra Mi giáng ở chỗ bản nhạc vẽ nốt Mi trắng; ghi kèm cách đọc cao độ VANG RA bằng `getMidiFile` kiểu `binary` và luật mới: thứ gì sinh ra nhạc thì phải có một ca so cao độ vang ra với cao độ bộ sinh tự khai |
 | 12/09/2026 | `feat: Nói trước về hộp xin quyền Bluetooth, và viết bài Có gì mới` | Bổ sung vào bẫy 35 hai mảnh cuối tìm ra khi người dùng thử trên máy thật: quyền Bluetooth của trình duyệt (không bấm Cho phép thì hộp thoại trống, trông y như không có đàn) và bộ lọc theo service làm đàn không hiện; kèm bài học là bước nào do trình duyệt hỏi thì app phải nói trước |
 | 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Viết lại bẫy 35 sau khi thử tới cùng: Chrome trên Android KHÔNG liệt kê thiết bị BLE MIDI cho Web MIDI, kể cả khi app của hãng đàn đã nối và trang đã xin lại quyền — nên cách sửa thật là bỏ Web MIDI, nối thẳng bằng Web Bluetooth; ghi kèm ba chỗ dễ sai khi tự đọc gói BLE-MIDI |
 | `.markdown-body` | `backdrop-filter: blur(12px)` | luôn luôn |
@@ -1265,6 +1266,54 @@ tưởng vừa đánh thêm một nốt.
 **Bài học chung.** Một API trả về danh sách rỗng không có nghĩa là "không có thiết bị" — có thể
 là "thiết bị có đó nhưng chưa ai mở cửa cho nó". Trước khi viết hướng dẫn kết nối cho người
 dùng, **thử trên máy thật**; ở đây chỉ có một dòng chữ sai mà người dùng mất cả buổi tối.
+
+## 36. Một phím có hai cách viết: tự suy chữ cái từ số MIDI thì gác sai bẫy 25
+
+**Triệu chứng.** Bộ sinh bài tập Chương 4 (`src/lib/exercise-gen.ts`) chen một phím đen vào
+câu, có hẳn một lớp gác chống bẫy 25 — "đừng đặt dấu hoá ở chỗ còn nốt cùng tên đứng sau nó
+trong ô nhịp" — mà bài vẫn vang ra sai. Bản nhạc vẽ `D _E F _E` nhìn không có gì lạ, nhưng
+nốt thứ ba, viết là nốt **Pha trắng**, lại kêu đúng nốt thứ hai. Năm lệnh kiểm xanh hết, test
+đếm phách xanh hết, chỉ ca so cao độ vang ra mới đỏ.
+
+**Nguyên nhân.** Lớp gác tự suy chữ cái của nốt từ số MIDI bằng một bảng riêng trong file:
+phím 63 ra chữ **D** (Rê thăng). Nhưng thứ đem đi VẼ là `noteAt(63).abc`, và hàm đó chọn cách
+viết theo hoá biểu nên ra **`_E`** (Mi giáng). Vậy lớp gác đi so nốt Rê với các nốt đứng sau,
+thấy không đụng ai, trong khi dấu giáng thực tế dán lên chữ **E** và ăn tới hết ô nhịp đúng
+như bẫy 25 đã ghi — mọi nốt Mi sau nó tụt nửa cung.
+
+Nói gọn: **một phím đàn có hai cách viết trên giấy, mà luật dấu hoá bám vào CÁCH VIẾT chứ
+không bám vào phím.** Lớp gác hỏi sai câu: nó hỏi "phím này tên gì" trong khi phải hỏi "nốt
+này sẽ được viết bằng chữ nào".
+
+**Cách sửa.** Đừng suy lại chữ cái, **hỏi chính hàm sắp viết ra nó** — lấy `noteAt(midi).abc`
+rồi cắt dấu hoá ở đầu đi:
+
+```ts
+const chuViet = (midi: number) => noteAt(midi).abc.replace(/^[\^_=]+/, '');
+```
+
+Và so bằng chữ của nốt **sau khi đã nâng** (`chuViet(midi + 1)`), không phải chữ của nốt gốc.
+
+**Cách gác cho chắc.** `parseOnly` của abcjs chỉ cho biết nốt được **viết** thế nào; muốn biết
+nó **vang ra** cao độ nào thì phải đi qua `abcjs.synth.getMidiFile(abc, { midiOutputType:
+'binary' })` rồi đọc các lệnh `note on` trong file MIDI — đó là chỗ duy nhất abcjs áp luật dấu
+hoá ăn tới hết ô nhịp, luật hoá biểu và luật khóa nhạc. Ca test ấy nằm ở
+`src/lib/exercise-gen.test.ts` (`caoDoVangRa`), và nó tìm ra lỗi này ngay lượt chạy đầu tiên,
+sau khi ba ca test khác cùng soi một bài mà không thấy gì.
+
+**Một lớp gác nữa, không phải lỗi mà là quyết định dạy học.** Sửa xong bẫy trên thì bộ sinh
+ra ô nhịp `E _E F E`: đủ phách, nốt nào cũng trong tầm, tiếng vang ra đúng y luật dấu hoá — và
+vẫn không dùng được, vì nó bày cho người mới **hai nốt nhìn giống nhau hệt mà một nốt bấm phím
+trắng, một nốt bấm phím đen** (nốt Mi đầu ô không bị dấu giáng phía sau ảnh hưởng). Người học
+Chương 4 chưa được dạy dấu bình nên không có gì để gỡ chỗ đó ra. Luật thành: *trong một ô nhịp,
+một cách viết chỉ được ứng với một phím* — so cả nốt đứng TRƯỚC chỗ đặt dấu, không chỉ nốt đứng
+sau. Ca test tên đúng như vậy trong `exercise-gen.test.ts`, và nó là loại ca mà ba ca khác cùng
+soi một bài đều báo xanh.
+
+**Luật chung cho file này:** thứ gì sinh ra nhạc thì phải có **một ca so cao độ vang ra với cao
+độ bộ sinh tự khai**. Test đọc lại chuỗi ABC bằng biểu thức chính quy chỉ chứng minh mình viết
+ra đúng thứ mình định viết — nó không trả lời được câu duy nhất người học quan tâm, là "bấm
+theo bản nhạc này thì có ra đúng tiếng không".
 
 ## Lịch sử cập nhật
 
