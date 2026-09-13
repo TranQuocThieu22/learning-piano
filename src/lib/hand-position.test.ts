@@ -240,6 +240,24 @@ describe('bảng câu luyện', () => {
     }
   });
 
+  /*
+   * Người dùng thử bản đầu và hỏi ngay: "sao đáp án câu nào cũng là thế tay Đô?"
+   * — bảng lúc đó có sáu câu thì năm câu đáp án giống nhau, nên bấm bừa một nút
+   * là đúng gần hết. Bài luyện mất sạch ý nghĩa mà không ca test nào kêu.
+   */
+  it('đáp án phải trải ra nhiều thế tay, không để bấm bừa một nút là đúng', () => {
+    const dapAn = POSITION_DRILLS.map(
+      // Tính theo tên nốt: thế tay Đô ở quãng tám nào cũng đọc là "Đô".
+      (drill) => planHandMoves(drill.notes, drill.hand).segments[0].position.anchor % 12,
+    );
+    expect(new Set(dapAn).size).toBeGreaterThanOrEqual(4);
+
+    const nhieuNhat = Math.max(
+      ...[...new Set(dapAn)].map((a) => dapAn.filter((x) => x === a).length),
+    );
+    expect(nhieuNhat).toBeLessThanOrEqual(POSITION_DRILLS.length / 2);
+  });
+
   it('câu tay trái đánh số ngón ngược với tay phải', () => {
     const drill = drillById('tay-trai-doi-the');
     const plan = planHandMoves(drill.notes, 'left');
@@ -278,7 +296,7 @@ describe('chuỗi ABC của câu luyện', () => {
   });
 
   it('dấu lặng vẫn còn trong bản nhạc chứ không bị nuốt mất', () => {
-    const drill = drillById('doi-o-cho-nghi');
+    const drill = drillById('doi-xuong-o-cho-nghi');
     expect(drillAbc(drill)).toMatch(/z/);
   });
 });

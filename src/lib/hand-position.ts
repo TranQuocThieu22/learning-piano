@@ -509,12 +509,14 @@ const SOL4 = 67;
 const LA4 = 69;
 const SI4 = 71;
 const DO5 = 72;
+const RE5 = 74;
 const DO3 = 48;
 const MI3 = 52;
 const FA3 = 53;
 const SOL3 = 55;
 const LA3 = 57;
 const SI3 = 59;
+const DO4_BASS = 60;
 
 export const POSITION_DRILLS: PositionDrill[] = [
   {
@@ -531,9 +533,22 @@ export const POSITION_DRILLS: PositionDrill[] = [
     ],
   },
   {
+    id: 'gon-the-sol',
+    title: 'Năm nốt quen, nhưng không phải Đô–Sol',
+    point: 'Thế tay không phải lúc nào cũng bắt đầu từ Đô. Cả câu này nằm trong Sol–Rê, nên đặt ngón cái lên nốt Sol là xong — vẫn là năm ngón năm phím, chỉ đứng ở chỗ khác.',
+    hand: 'right',
+    afterChapter: 5,
+    notes: [
+      d(SOL4), d(SI4), d(RE5), d(SI4),
+      t(SOL4), d(LA4), d(SI4),
+      d(DO5), d(LA4), d(SOL4), d(LA4),
+      tron(SI4),
+    ],
+  },
+  {
     id: 'lo-mot-not',
     title: 'Lố đúng một nốt',
-    point: 'Chỉ nốt La nằm ngoài thế tay Đô. Một nốt thì với thêm ngón 5, đừng nhấc cả bàn tay — nhấc tay vì một nốt là mất mốc, và nốt sau đó sai theo.',
+    point: 'Chỉ một nốt nằm ngoài thế tay. Một nốt thì với thêm ngón, đừng nhấc cả bàn tay — nhấc tay vì một nốt là mất mốc, và nốt sau đó sai theo.',
     hand: 'right',
     afterChapter: 3,
     notes: [
@@ -544,16 +559,29 @@ export const POSITION_DRILLS: PositionDrill[] = [
     ],
   },
   {
-    id: 'doi-o-cho-nghi',
-    title: 'Dời tay ở chỗ có dấu lặng',
-    point: 'Nửa đầu ở thế tay Đô, nửa sau đi hẳn lên vùng Sol–Rê. Giữa hai nửa có một dấu lặng — đó chính là lúc tay rảnh để nhấc sang. Luôn tìm chỗ nghỉ trước khi nghĩ tới luồn ngón.',
+    id: 'lo-mot-not-cao',
+    title: 'Lố một nốt, ở vùng cao',
+    point: 'Cùng một luật với câu trước, nhưng thế tay đứng ở chỗ khác — đừng quen tay bấm Đô. Nốt lố ra vẫn chỉ cần một ngón với tới.',
     hand: 'right',
     afterChapter: 5,
     notes: [
-      d(DO4), d(MI4), d(SOL4), d(MI4),
-      t(DO4), d(null), d(null),
-      d(SOL4), d(SI4), d(DO5), d(SI4),
-      tron(SOL4),
+      d(FA4), d(LA4), d(DO5), d(RE5),
+      d(DO5), d(LA4), d(SOL4), d(LA4),
+      d(SI4), d(DO5), d(RE5), d(DO5),
+      tron(LA4),
+    ],
+  },
+  {
+    id: 'doi-xuong-o-cho-nghi',
+    title: 'Dời tay xuống ở chỗ có dấu lặng',
+    point: 'Nửa đầu ở vùng cao, nửa sau đi hẳn xuống. Giữa hai nửa có một dấu lặng — đó chính là lúc tay rảnh để nhấc sang. Luôn tìm chỗ nghỉ trước khi nghĩ tới luồn ngón.',
+    hand: 'right',
+    afterChapter: 5,
+    notes: [
+      d(SOL4), d(SI4), d(RE5), d(SI4),
+      t(SOL4), d(null), d(null),
+      d(MI4), d(DO4), d(MI4), d(FA4),
+      tron(MI4),
     ],
   },
   {
@@ -563,23 +591,23 @@ export const POSITION_DRILLS: PositionDrill[] = [
     hand: 'right',
     afterChapter: 5,
     notes: [
-      d(MI4), d(RE4), d(DO4), d(RE4),
+      d(RE4), d(FA4), d(LA4), d(FA4),
       t(MI4), t(SOL4),
-      d(LA4), d(SI4), d(DO5), d(LA4),
-      tron(SOL4),
+      d(SI4), d(DO5), d(SI4), d(SOL4),
+      tron(LA4),
     ],
   },
   {
     id: 'tay-trai-doi-the',
     title: 'Tay trái cũng phải dời',
-    point: 'Tay trái xếp ngược: ngón cái ở nốt CAO nhất, ngón 5 ở nốt thấp nhất. Câu này dời một lần ở nốt trắng. Đọc số ngón cho kỹ, đừng đọc theo thói quen tay phải.',
+    point: 'Tay trái xếp ngược: ngón cái ở nốt CAO nhất, ngón 5 ở nốt thấp nhất. Đọc số ngón cho kỹ, đừng đọc theo thói quen tay phải.',
     hand: 'left',
     afterChapter: 6,
     notes: [
+      d(FA3), d(LA3), d(DO4_BASS), d(LA3),
+      d(SOL3), t(FA3), d(null),
       d(DO3), d(MI3), d(SOL3), d(MI3),
-      t(DO3), t(SOL3),
-      d(LA3), d(SI3), d(LA3), d(SOL3),
-      tron(FA3),
+      tron(DO3),
     ],
   },
   {

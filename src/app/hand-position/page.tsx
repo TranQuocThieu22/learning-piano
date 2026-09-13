@@ -101,9 +101,11 @@ export default function HandPositionPage() {
               cả — ở đây không có điểm.
             </Text>
             <Text size="sm">
-              <b>Không cần ngồi ở đàn.</b> Đây là bài tập cho mắt, làm được lúc rảnh tay.
-              Nhưng nếu đang ngồi ở đàn thì hãy đặt tay thật theo hình bàn phím trong đáp án
-              rồi đánh thử câu đó — hiểu bằng mắt và nhớ bằng tay là hai việc khác nhau.
+              <b>Không cần ngồi ở đàn — nhưng ngồi ở đàn thì tập được luôn.</b> Trả lời xong,
+              bấm <b>Tập câu này với đàn</b> rồi đánh chính câu vừa đọc: app nghe qua micro
+              hoặc qua dây MIDI, tô xanh nốt bạn bấm đúng ngay trong lúc đánh. Không đếm giờ,
+              không có bản nhạc tự trôi — bạn dừng lúc nào cũng được. Hiểu bằng mắt và nhớ
+              bằng tay là hai việc khác nhau, và đây là chỗ nối hai việc đó lại.
             </Text>
             <Text size="sm">
               <b>Mang thói quen này sang bài đang tập.</b> Mở một bài bất kỳ trong giáo

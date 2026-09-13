@@ -2,7 +2,8 @@
 
 import { useMemo, useRef, useState } from 'react';
 import { Alert, Badge, Box, Button, Card, Group, Stack, Text } from '@mantine/core';
-import { IconArrowRight, IconCheck, IconHandFinger } from '@tabler/icons-react';
+import { IconArrowRight, IconCheck, IconDeviceGamepad2, IconHandFinger } from '@tabler/icons-react';
+import { ScorePractice } from './ScorePractice';
 import { useSheetRender } from '@/hooks/useSheetRender';
 import { noteAt } from '@/lib/midi-notes';
 import {
@@ -71,6 +72,7 @@ function FingerRow({ pos, hand }: { pos: HandPosition; hand: HandName }) {
 export function HandPositionDrill() {
   const [index, setIndex] = useState(0);
   const [chosen, setChosen] = useState<number | null>(null);
+  const [practiceOpen, setPracticeOpen] = useState(false);
   const paperRef = useRef<HTMLDivElement>(null);
 
   const drill = POSITION_DRILLS[index % POSITION_DRILLS.length];
@@ -86,7 +88,7 @@ export function HandPositionDrill() {
     () => drillAbc(drill, chosen === null ? undefined : plan.fingers),
     [drill, chosen, plan],
   );
-  useSheetRender(paperRef, abc);
+  const sheet = useSheetRender(paperRef, abc);
 
   const dungRoi = chosen === dapAn.anchor;
   /** Ô nhịp của từng nốt, để nói được "dời tay ở ô nhịp thứ mấy". */
@@ -95,6 +97,9 @@ export function HandPositionDrill() {
   const cauTiep = () => {
     setIndex((i) => i + 1);
     setChosen(null);
+    // Đóng phần tập với đàn khi sang câu khác: để mở thì micro còn nghe theo bản
+    // nhạc cũ, mà con trỏ đã nhảy sang bản nhạc mới.
+    setPracticeOpen(false);
   };
 
   return (
@@ -210,6 +215,35 @@ export function HandPositionDrill() {
               Cả câu chỉ cần một thế tay. Đặt tay một lần rồi để yên — đó là điều tốt nhất
               có thể xảy ra với một câu nhạc.
             </Text>
+          )}
+
+          {/*
+            **Tập luôn với đàn thật.** Hiểu bằng mắt và nhớ bằng tay là hai việc
+            khác nhau: người học vừa quyết đặt tay ở đâu thì việc tiếp theo phải
+            là đặt tay xuống phím thật và đánh thử, chứ không phải đọc tiếp một
+            câu nữa.
+
+            Dùng lại đúng `ScorePractice` của bài học, nên mọi ràng buộc ở
+            `AGENTS.md` giữ nguyên: nghe qua micro hoặc MIDI (cả hai đường),
+            con trỏ chỉ nhích khi người học bấm phím, bấm sai chỉ nháy đỏ rồi
+            tắt, và không có bảng tỉ số nào chạy trong lúc đánh.
+          */}
+          {practiceOpen ? (
+            <ScorePractice
+              expected={sheet.events}
+              onResults={sheet.paintResults}
+              onLiveMatch={sheet.paintLiveMatches}
+              onWrongNote={sheet.flashWrongNote}
+            />
+          ) : (
+            <Button
+              size="md"
+              variant="light"
+              leftSection={<IconDeviceGamepad2 size={18} />}
+              onClick={() => setPracticeOpen(true)}
+            >
+              Tập câu này với đàn
+            </Button>
           )}
 
           <Button size="md" onClick={cauTiep} rightSection={<IconArrowRight size={18} />}>

@@ -41,11 +41,16 @@ khoảng một giây — và gần như không ai nói ra thành lời:
 Câu chạy liền một mạch không có chỗ nghỉ nào thì mới cần tới luồn ngón cái và vắt ngón —
 hai kỹ thuật của Chương 6, và chúng đã có bài dạy riêng ở đó.
 
-## Dùng lúc nào
+## Trả lời xong thì tập luôn với đàn
 
-Không cần ngồi ở đàn, cũng không cần cho app nghe đàn — đây là bài tập cho **mắt**, làm được
-lúc đang rảnh tay. Nhưng nếu đang ngồi ở đàn thì tốt nhất là đặt tay thật theo đáp án rồi
-đánh thử câu đó: hiểu bằng mắt và nhớ bằng tay là hai việc khác nhau.
+Dưới đáp án có nút **Tập câu này với đàn**. Bấm vào, đặt tay theo đúng thế tay vừa xem rồi
+đánh chính câu đó trên đàn thật — app nghe qua micro của điện thoại hoặc qua dây MIDI, và tô
+xanh từng nốt bạn bấm đúng ngay trong lúc đánh. Bấm trượt thì nháy đỏ chỗ đang chờ rồi thôi,
+không trừ gì cả. Không đếm giờ, không có bản nhạc tự trôi: con trỏ chỉ nhích khi bạn bấm
+phím, nên dừng lại bao lâu cũng được.
+
+Không có đàn bên cạnh thì vẫn làm được bài này — nó vốn là bài tập cho **mắt**. Nhưng hiểu
+bằng mắt và nhớ bằng tay là hai việc khác nhau, nên có đàn thì đừng bỏ bước đánh thử.
 
 Và đích đến thật sự nằm ngoài công cụ này: mở một bài bất kỳ bạn đang tập, liếc câu đầu rồi
 tự trả lời ba câu hỏi trên **trước khi** đặt tay xuống phím. Làm được vậy thành nếp thì bạn

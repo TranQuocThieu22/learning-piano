@@ -146,7 +146,9 @@ cho đúng câu hỏi đó trên web.
 
 Màn hình hiện một câu nhạc chưa có số ngón. Bạn nhìn, tự quyết đặt tay chỗ nào, rồi bấm
 chọn. Đáp án hiện ra kèm số ngón trên từng nốt, và nói rõ chỗ nào phải dời tay — dời ở đâu
-và vì sao lại là chỗ đó. Không đếm giờ, không chấm điểm, chọn sai cũng không mất gì.
+và vì sao lại là chỗ đó. Rồi bấm một nút nữa là tập luôn câu đó trên đàn thật: app nghe qua
+micro điện thoại, tô xanh nốt bạn bấm đúng. Không đếm giờ, không chấm điểm, chọn sai cũng
+không mất gì.
 
 Vì sao tôi làm cái này: sách vỡ lòng nào cũng dạy năm nốt một thế tay, tay để yên một chỗ.
 Rồi vài trang sau bản nhạc có nốt La, nốt Si — và không sách nào dừng lại nói cho bạn biết
