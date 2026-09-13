@@ -1336,6 +1336,41 @@ soi một bài đều báo xanh.
 ra đúng thứ mình định viết — nó không trả lời được câu duy nhất người học quan tâm, là "bấm
 theo bản nhạc này thì có ra đúng tiếng không".
 
+## 37. `gain.value` mặc định là 1, nên dừng nhạc nền lại làm nó to gấp ba
+
+**Triệu chứng.** Bấm *Nghe thử* một bản nhạc thì nhạc nền vẫn rú lên một nhịp đè lên bản nhạc
+mẫu, dù trong mã đã có đủ cờ `wantPlaying` (bẫy 18) và sổ giữ chỗ `ambient-hold.ts`. Nghe ra
+đúng bằng "nhạc nền chưa chịu tắt", nên đi tìm ở phần *bật* — mà lỗi nằm ở phần *tắt*.
+
+**Nguyên nhân.** `AmbientEngine.stop()` hạ tiếng dần bằng ba bước: `cancelScheduledValues(now)`,
+`setValueAtTime(Math.max(gain.value, 0.0001), now)`, rồi hạ dần về 0. Bước một xoá sạch đường
+bao đã hẹn của nốt; bước hai đọc `gain.value` để biết nốt **đang** ở mức nào.
+
+Chỗ sập: lịch phát hẹn trước bốn giây (`SCHEDULE_AHEAD_SECONDS`), nên lúc `stop()` chạy thì phần
+lớn nốt trong danh sách **chưa chạy automation nào**, mà `gain.value` của một nút gain như vậy
+đọc ra **1** — mặc định của Web Audio, không phải 0. Thế là nốt được đặt ở mức 1 rồi mới hạ dần,
+tức kêu to hơn đỉnh thật của chính nó gần ba lần, đúng vào giây phải im.
+
+Đo bằng `OfflineAudioContext` trên Chromium, một nốt gảy lẽ ra đỉnh 0,34:
+
+| Nốt hẹn ở | Không dừng | `stop()` cũ | `stop()` mới |
+|---|---|---|---|
+| ngay lúc dừng | 0,33 | **0,98** | 0,0001 |
+| sau 0,05s | 0,33 | **0,62** | 0 |
+| sau 0,5s | 0,33 | 0,01 | 0 |
+
+**Cách sửa.** Mỗi nốt nhớ luôn mốc bắt đầu (`voices[].at`), rồi `stop()` chia hai đường: nốt
+**chưa kêu** thì đặt gain 0 và `osc.stop(now)` — hẹn dừng trước giờ bắt đầu thì theo chuẩn Web
+Audio nó không bao giờ cất tiếng; nốt **đang kêu** thì `cancelAndHoldAtTime(now)` giữ đúng mức
+hiện có rồi mới hạ (Firefox chưa có hàm này nên giữ đường lùi đọc `gain.value`, và ở đó giá trị
+đọc ra là đúng vì automation đã chạy).
+
+**Vì sao không ca test nào thấy.** Bộ `AudioContext` giả trong `ambient-engine.test.ts` cho mọi
+`AudioParam` giá trị `value: 0` — trông vô hại, nhưng chính con số đó giấu lỗi: với 0 thì
+`Math.max(0, 0.0001)` ra 0,0001 và mọi thứ có vẻ đúng. Bộ giả đã sửa thành `value: 1` cho khớp
+thật, kèm hai ca mới. **Luật rút ra: bộ giả phải giả đúng cả GIÁ TRỊ MẶC ĐỊNH, không chỉ giả
+đúng hình dạng hàm.**
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1344,6 +1379,7 @@ theo bản nhạc này thì có ra đúng tiếng không".
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `fix: Nhạc nền không rú lên một nhịp mỗi lần bị bảo im` | Thêm bẫy 37 — `stop()` đọc `gain.value` của nốt chưa chạy automation, mà mặc định Web Audio là 1 chứ không phải 0, nên nhạc nền kêu to gần gấp ba đúng giây phải im; ghi kèm số đo và lý do bộ giả `value: 0` giấu được lỗi này qua mấy vòng sửa |
 | 13/09/2026 | `fix: Sửa bốn ô nhịp Chương 4 phát ra nốt khác với nốt đã vẽ` | Ghi vào bẫy 25 lần tái phát thứ hai: bốn ô nhịp trong Chương 4 (đúng chương dạy dấu hoá) phát ra nốt hoá ở chỗ bản nhạc vẽ phím trắng, trong đó hai bài tên là "So sánh Pha và Pha thăng" và "So sánh Mi và Mi giáng" — cả giá trị của bài nằm ở chỗ nghe hai nốt khác nhau mà app phát ba nốt giống nhau liền. Kèm lớp gác mới `accidentalBleeds()` trong check-lessons.mjs để lần sau không phải soi bằng mắt |
 | 12/09/2026 | `fix: Sửa hướng dẫn nối Bluetooth — ghép đôi ở Cài đặt chỉ ra tiếng, không ra MIDI` | Thêm bẫy 35 — trên Android, BLE MIDI chỉ hiện ra sau khi một app gọi `MidiManager.openBluetoothDevice()`, nên ghép đôi ở Cài đặt xong vẫn "chưa thấy đàn nào"; ghi kèm chuyện hướng dẫn sai đã lên production một lần vì viết mà chưa thử trên máy thật |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Ghi vào bẫy 28 lý do `abcjs` bị ghim đúng `6.7.0` không có `^`: bẫy 28-33 đều bám vào chi tiết bên trong thư viện, mà chi tiết đó đổi thì cả năm lệnh kiểm vẫn xanh và chỉ bản nhạc trên màn hình là sai. Sửa tên file cho khớp: `AbcjsViewer.tsx` nay là `SheetViewer.tsx`, phần vá `SynthControllerInternals` dời sang `src/hooks/useSheetAudio.ts` |

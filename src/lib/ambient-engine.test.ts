@@ -18,8 +18,14 @@ import { PIECES } from './ambient';
 
 /** Nút âm thanh giả: nhận mọi lệnh, không làm gì, nối được vào nhau. */
 function fakeNode() {
+  /*
+   * `value: 1` chứ không phải 0, vì **Web Audio thật mặc định là 1** — và đúng
+   * con số đó là chỗ đã sinh ra lỗi: `stop()` đọc `gain.value` của một nốt chưa
+   * chạy automation nào rồi hạ dần từ đó, tức nốt kêu ở mức gần gấp ba đỉnh
+   * thật. Bộ giả để 0 thì lỗi ấy không ca test nào nhìn thấy.
+   */
   const param = () => ({
-    value: 0,
+    value: 1,
     setValueAtTime: vi.fn(),
     linearRampToValueAtTime: vi.fn(),
     exponentialRampToValueAtTime: vi.fn(),
@@ -47,12 +53,18 @@ function fakeNode() {
 interface FakeCtx {
   ket: () => void;
   soLanHenLich: () => number;
+  /** Mọi bộ dao động đã tạo, để soi xem lệnh dừng gửi tới chúng ra sao. */
+  boDaoDong: () => ReturnType<typeof fakeNode>[];
+  /** Mọi nút âm lượng đã tạo — nơi `stop()` thật sự ghi giá trị vào. */
+  nutGain: () => ReturnType<typeof fakeNode>[];
 }
 
 /** Bối cảnh âm thanh giả; `resume()` chỉ xong khi ta gọi `ket()`. */
 function dungBoiCanhGia(): { Ctor: unknown; dieuKhien: FakeCtx } {
   let ketThuc: () => void = () => {};
   let daHenLich = 0;
+  const daTao: ReturnType<typeof fakeNode>[] = [];
+  const gainDaTao: ReturnType<typeof fakeNode>[] = [];
 
   class Gia {
     state = 'suspended';
@@ -70,7 +82,9 @@ function dungBoiCanhGia(): { Ctor: unknown; dieuKhien: FakeCtx } {
       return Promise.resolve();
     }
     createGain() {
-      return fakeNode();
+      const node = fakeNode();
+      gainDaTao.push(node);
+      return node;
     }
     createBiquadFilter() {
       return fakeNode();
@@ -83,13 +97,20 @@ function dungBoiCanhGia(): { Ctor: unknown; dieuKhien: FakeCtx } {
     }
     createOscillator() {
       daHenLich += 1;
-      return fakeNode();
+      const node = fakeNode();
+      daTao.push(node);
+      return node;
     }
   }
 
   return {
     Ctor: Gia,
-    dieuKhien: { ket: () => ketThuc(), soLanHenLich: () => daHenLich },
+    dieuKhien: {
+      ket: () => ketThuc(),
+      soLanHenLich: () => daHenLich,
+      boDaoDong: () => daTao,
+      nutGain: () => gainDaTao,
+    },
   };
 }
 
@@ -165,5 +186,60 @@ describe('AmbientEngine — đua giữa start và stop', () => {
     engine.dispose();
     expect(await engine.start()).toBe(false);
     expect(engine.running).toBe(false);
+  });
+});
+
+/*
+ * Lịch phát hẹn trước tới bốn giây, nên lúc `stop()` chạy thì phần lớn nốt trong
+ * danh sách CHƯA kêu tiếng nào. Nhóm này gác đúng chuyện đó.
+ *
+ * Lỗi đã có thật: `stop()` xoá đường bao của nốt rồi hạ dần từ `gain.value`, mà
+ * giá trị đó với nốt chưa chạy automation là **1** — mặc định của Web Audio. Đo
+ * bằng `OfflineAudioContext` trên Chromium: nốt lẽ ra đỉnh 0,34 kêu ra 0,98.
+ * Người học nghe thấy nhạc nền rú lên một nhịp đúng giây bấm *Nghe thử*.
+ */
+describe('AmbientEngine — dừng lúc lịch phát còn hẹn trước', () => {
+  async function dungBoPhatDangKeu() {
+    vi.useFakeTimers();
+    const { Ctor, dieuKhien } = dungBoiCanhGia();
+    gan(Ctor);
+    const engine = new AmbientEngine(0.5, PIECES[0]);
+    const chay = engine.start();
+    dieuKhien.ket();
+    await chay;
+    return { engine, dieuKhien };
+  }
+
+  it('nốt chưa kịp kêu thì bị dập ngay, không hạ dần', async () => {
+    const { engine, dieuKhien } = await dungBoPhatDangKeu();
+    engine.stop();
+
+    const tuongLai = dieuKhien
+      .boDaoDong()
+      .filter((osc) => (osc.start.mock.calls[0]?.[0] ?? 0) > 0);
+    expect(tuongLai.length).toBeGreaterThan(0);
+
+    for (const osc of tuongLai) {
+      // Hẹn dừng TRƯỚC giờ bắt đầu: theo chuẩn Web Audio thì nốt không cất tiếng.
+      const gioDung = osc.stop.mock.calls.at(-1)?.[0];
+      const gioBatDau = osc.start.mock.calls[0]?.[0];
+      expect(gioDung).toBeLessThanOrEqual(gioBatDau);
+    }
+  });
+
+  it('không nốt nào bị kéo lên mức mặc định 1 rồi mới hạ', async () => {
+    const { engine, dieuKhien } = await dungBoPhatDangKeu();
+    engine.stop();
+
+    /*
+     * Dấu vân tay của lỗi cũ: `setValueAtTime(1, now)` — hạ dần từ mức mặc định
+     * thay vì từ mức nốt đang có. Đỉnh to nhất engine dùng là 0,55 (nốt trầm),
+     * nên một lệnh đặt 1 chỉ có thể tới từ `gain.value` chưa ai đặt.
+     */
+    for (const gain of dieuKhien.nutGain()) {
+      for (const goi of gain.gain.setValueAtTime.mock.calls) {
+        expect(goi[0]).toBeLessThan(1);
+      }
+    }
   });
 });

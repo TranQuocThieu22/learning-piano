@@ -117,8 +117,15 @@ export class AmbientEngine {
    * mọi thứ trông vẫn y như lúc bắt đầu.
    */
   private wantPlaying = false;
-  /** Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt. */
-  private voices: { osc: OscillatorNode[]; gain: GainNode }[] = [];
+  /**
+   * Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt.
+   *
+   * `at` là mốc nốt bắt đầu kêu, và nó bắt buộc phải có: lịch phát hẹn trước tới
+   * `SCHEDULE_AHEAD_SECONDS` giây, nên lúc `stop()` chạy thì trong danh sách có
+   * cả nốt ĐANG kêu lẫn nốt CHƯA kêu tiếng nào, mà hai loại phải dừng theo hai
+   * cách khác hẳn nhau — xem `stop()`.
+   */
+  private voices: { osc: OscillatorNode[]; gain: GainNode; at: number }[] = [];
 
   constructor(volume: number, piece: AmbientPiece) {
     this.volume = volume;
@@ -247,9 +254,50 @@ export class AmbientEngine {
 
     const now = ctx.currentTime;
     for (const voice of this.voices) {
-      voice.gain.gain.cancelScheduledValues(now);
-      voice.gain.gain.setValueAtTime(Math.max(voice.gain.gain.value, 0.0001), now);
-      voice.gain.gain.exponentialRampToValueAtTime(0.0001, now + 1);
+      const gain = voice.gain.gain;
+
+      /*
+       * Nốt CHƯA kêu tiếng nào thì dập hẳn, tuyệt đối đừng hạ dần.
+       *
+       * Đây là chỗ đã kêu chồng lên bản nhạc mẫu: `cancelScheduledValues` xoá
+       * sạch đường bao đã hẹn của nốt, mà `gain.value` của một nút gain chưa
+       * chạy automation nào lại đọc ra **1** — mặc định của Web Audio, không
+       * phải 0. Hạ dần từ 1 nghĩa là nốt ấy kêu ở mức gần gấp ba đỉnh thật của
+       * nó (đo được 0,98 so với 0,34) đúng vào giây người học vừa bấm *Nghe
+       * thử*. Đặt thẳng 0 rồi `osc.stop(now)`: hẹn dừng trước cả giờ bắt đầu thì
+       * theo chuẩn Web Audio nốt không bao giờ cất tiếng.
+       */
+      if (voice.at > now) {
+        gain.cancelScheduledValues(now);
+        gain.setValueAtTime(0, now);
+        for (const osc of voice.osc) {
+          try {
+            osc.stop(now);
+          } catch {
+            // Nốt đã hẹn stop từ trước rồi; gọi lại là vô hại.
+          }
+        }
+        continue;
+      }
+
+      /*
+       * Nốt ĐANG kêu thì giữ đúng mức nó đang có rồi mới hạ trong một giây.
+       *
+       * `cancelAndHoldAtTime` giữ hộ mức hiện tại nên không cần đọc `value`;
+       * Firefox chưa có hàm này nên vẫn phải giữ đường lùi, và ở nhánh lùi thì
+       * `gain.value` đọc đúng, vì nốt đang kêu thì automation của nó đã chạy.
+       */
+      const giuMuc = (gain as AudioParam & {
+        cancelAndHoldAtTime?: (t: number) => void;
+      }).cancelAndHoldAtTime;
+      if (typeof giuMuc === 'function') {
+        giuMuc.call(gain, now);
+      } else {
+        const dangO = Math.max(gain.value, 0.0001);
+        gain.cancelScheduledValues(now);
+        gain.setValueAtTime(dangO, now);
+      }
+      gain.exponentialRampToValueAtTime(0.0001, now + 1);
       for (const osc of voice.osc) {
         try {
           osc.stop(now + 1.05);
@@ -386,7 +434,7 @@ export class AmbientEngine {
       osc.stop(at + 0.7);
       oscs.push(osc);
     }
-    this.voices.push({ osc: oscs, gain });
+    this.voices.push({ osc: oscs, gain, at });
   }
 
   /** Nốt trầm, tròn và ngắn. */
@@ -408,7 +456,7 @@ export class AmbientEngine {
     osc.start(at);
     osc.stop(at + 1);
 
-    this.voices.push({ osc: [osc], gain });
+    this.voices.push({ osc: [osc], gain, at });
   }
 
   /** Nền mỏng: cả hợp âm ngân khẽ suốt hai ô nhịp, vào và ra đều mềm. */
@@ -438,7 +486,7 @@ export class AmbientEngine {
       osc.start(at);
       osc.stop(at + keoDai + 0.1);
 
-      this.voices.push({ osc: [osc], gain });
+      this.voices.push({ osc: [osc], gain, at });
     }
   }
 }
