@@ -1371,6 +1371,34 @@ hiện có rồi mới hạ (Firefox chưa có hàm này nên giữ đường l�
 thật, kèm hai ca mới. **Luật rút ra: bộ giả phải giả đúng cả GIÁ TRỊ MẶC ĐỊNH, không chỉ giả
 đúng hình dạng hàm.**
 
+## 38. Listener chờ cú chạm cầm bản chụp trạng thái cũ, nên bật lại thứ đã tắt
+
+**Triệu chứng.** Gạt tắt nhạc nền ở màn hình chủ, bấm sang *Mục lục* hoặc *Đường đi*, vài giây
+sau nhạc nền tự kêu. Gạt tắt rõ ràng có tác dụng (công tắc xám, `localStorage` ghi
+`{"on":false}`), nên chỗ đầu tiên nghĩ tới — kho nhớ không lưu được — là chỗ sai.
+
+**Nguyên nhân.** Trình duyệt chỉ cho phát tiếng trong một cử chỉ thật, nên `AmbientMusic.tsx`
+gắn một listener `pointerdown`/`keydown` để thử lại ở cú chạm đầu tiên. Listener ấy **cầm bản
+chụp trạng thái từ lúc được gắn** và chỉ được gỡ khi effect chạy lại.
+
+Đường sập: có gì đó khiến effect KHÔNG chạy lại sau khi người học gạt tắt — kho nhớ bị nạp
+thành hai bản sao ở hai nhánh client khác nhau là đường đã sập hai lần trong repo này (xem
+`ambient-hold.ts`) — thì listener cũ vẫn nằm đó với bản chụp `on: true`. Cú chạm kế tiếp chính
+là **cú bấm sang trang khác**, và nó bật nhạc lên cho một trạng thái không còn tồn tại.
+
+Dựng lại được bằng Playwright: mở trang với tiếng bị chặn (ghi đè `AudioContext.resume` để nó
+trả về ngay mà không resume), ghi thẳng `{"on":false}` vào `localStorage` để effect không chạy
+lại, rồi bấm sang *Mục lục*. Mã chưa vá: **31 nốt được hẹn phát**. Mã đã vá: 0.
+
+**Cách sửa.** Hỏi lại sự thật ngay tại lúc chạm, đừng tin bản chụp: thêm
+`readAmbientSettings().on` và `ambientAllowedOn(window.location.pathname)` vào cùng chỗ đã hỏi
+lại `ambientHeld()`. Ba câu hỏi ấy là toàn bộ đầu vào quyết định "có nên kêu không", nên hỏi đủ
+cả ba thì effect có lỡ nhịp cũng không bật nhầm được.
+
+**Luật rút ra:** bất cứ listener nào sống LÂU HƠN lần vẽ sinh ra nó thì phải **đọc lại trạng
+thái lúc chạy**, không được đóng gói trạng thái vào closure. Closure đúng tại thời điểm gắn,
+mà thời điểm nó chạy có thể cách đó vài phút và vài trang.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1379,6 +1407,7 @@ thật, kèm hai ca mới. **Luật rút ra: bộ giả phải giả đúng cả
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `fix: Cú chạm cũ không bật lại được nhạc nền người học đã gạt tắt` | Thêm bẫy 38 — listener chờ cú chạm đầu tiên cầm bản chụp `on: true` từ lúc gắn, nên cú bấm sang trang khác bật lại nhạc người học vừa tắt; ghi kèm cách dựng lại bằng Playwright và luật chung cho mọi listener sống lâu hơn lần vẽ sinh ra nó |
 | 13/09/2026 | `fix: Nhạc nền không rú lên một nhịp mỗi lần bị bảo im` | Thêm bẫy 37 — `stop()` đọc `gain.value` của nốt chưa chạy automation, mà mặc định Web Audio là 1 chứ không phải 0, nên nhạc nền kêu to gần gấp ba đúng giây phải im; ghi kèm số đo và lý do bộ giả `value: 0` giấu được lỗi này qua mấy vòng sửa |
 | 13/09/2026 | `fix: Sửa bốn ô nhịp Chương 4 phát ra nốt khác với nốt đã vẽ` | Ghi vào bẫy 25 lần tái phát thứ hai: bốn ô nhịp trong Chương 4 (đúng chương dạy dấu hoá) phát ra nốt hoá ở chỗ bản nhạc vẽ phím trắng, trong đó hai bài tên là "So sánh Pha và Pha thăng" và "So sánh Mi và Mi giáng" — cả giá trị của bài nằm ở chỗ nghe hai nốt khác nhau mà app phát ba nốt giống nhau liền. Kèm lớp gác mới `accidentalBleeds()` trong check-lessons.mjs để lần sau không phải soi bằng mắt |
 | 12/09/2026 | `fix: Sửa hướng dẫn nối Bluetooth — ghép đôi ở Cài đặt chỉ ra tiếng, không ra MIDI` | Thêm bẫy 35 — trên Android, BLE MIDI chỉ hiện ra sau khi một app gọi `MidiManager.openBluetoothDevice()`, nên ghép đôi ở Cài đặt xong vẫn "chưa thấy đàn nào"; ghi kèm chuyện hướng dẫn sai đã lên production một lần vì viết mà chưa thử trên máy thật |

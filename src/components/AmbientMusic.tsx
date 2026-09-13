@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { ambientAllowedOn, pieceById } from '@/lib/ambient';
 import { AMBIENT_HOLD_EVENT, ambientHeld } from '@/lib/ambient-hold';
 import { AmbientEngine } from '@/lib/ambient-engine';
-import { useAmbientSettings } from '@/hooks/useAmbientSettings';
+import { readAmbientSettings, useAmbientSettings } from '@/hooks/useAmbientSettings';
 
 /**
  * Bộ phát nhạc nền. Không vẽ gì lên màn hình — nút bật tắt nằm ở
@@ -101,6 +101,14 @@ export function AmbientMusic() {
      *   chưa ai kịp giữ chỗ — nhưng nếu một nguồn tiếng khác đã giữ từ trước
      *   (người học đang mở phần tập với đàn rồi chạm ra ngoài) thì tuyệt đối không
      *   được bật.
+     * - `readAmbientSettings()` và đường dẫn hiện tại: **hỏi lại cả hai ngay tại
+     *   lúc chạm**, cùng lý do với `ambientHeld()`. Listener này cầm một bản chụp
+     *   từ lúc được gắn, và nó chỉ được gỡ khi effect chạy lại. Mọi đường khiến
+     *   effect KHÔNG chạy lại — kho nhớ bị nạp thành hai bản sao ở hai nhánh
+     *   client khác nhau là đường đã sập hai lần trong repo này, xem
+     *   `ambient-hold.ts` — đều biến bản chụp ấy thành lệnh bật nhạc cho một
+     *   trạng thái không còn tồn tại. Hỏi lại thì dù effect có lỡ nhịp, cú chạm
+     *   cũng không bật được nhạc mà người học đã gạt tắt.
      * - `goBoNgheCham()` gọi NGAY ĐẦU `thu`: `{ once: true }` chỉ tự gỡ đúng cái
      *   vừa bắn, cái kia còn nguyên. Chạm màn hình thì listener `keydown` vẫn nằm
      *   đó, và vì lần này `start()` thành công nên effect không chạy lại, hàm dọn
@@ -117,6 +125,8 @@ export function AmbientMusic() {
         if (huy) return;
         if (engineRef.current !== engine) return;
         if (ambientHeld()) return;
+        if (!readAmbientSettings().on) return;
+        if (!ambientAllowedOn(window.location.pathname)) return;
         void engine.start();
       };
       window.addEventListener('pointerdown', thu, { once: true });

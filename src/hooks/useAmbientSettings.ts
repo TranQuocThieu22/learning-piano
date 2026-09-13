@@ -29,6 +29,18 @@ export function useAmbientSettings(): AmbientSettings {
   return useLocalStore(store);
 }
 
+/**
+ * Đọc cài đặt đang lưu NGAY LÚC GỌI, ngoài vòng vẽ của React.
+ *
+ * Dành cho chỗ chạy trễ hơn lần vẽ sinh ra nó — listener chờ cú chạm đầu tiên
+ * trong `AmbientMusic.tsx`. Chỗ đó cầm một bản chụp cài đặt từ lúc gắn listener,
+ * mà giữa hai thời điểm ấy người học kịp gạt tắt; hỏi lại kho là hỏi đúng thứ
+ * đang có thật. Vẫn chỉ một cửa: kho nằm nguyên trong file này.
+ */
+export function readAmbientSettings(): AmbientSettings {
+  return store.getSnapshot();
+}
+
 /** Ghi cài đặt mới rồi báo cho mọi nơi đang đọc. */
 export function saveAmbientSettings(next: AmbientSettings): void {
   store.save(next);
