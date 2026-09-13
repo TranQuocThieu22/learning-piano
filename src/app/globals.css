@@ -1658,3 +1658,16 @@ body.sheet-focus-lock .markdown-pre-wrapper:hover {
   font-size: 1.1rem;
   margin: 1.5rem 0 0.5rem;
 }
+
+/*
+ * Nhãn chip mức độ đang khoá: ổ khoá đứng sát chữ.
+ *
+ * Cần một lớp riêng vì ổ khoá nằm TRONG nhãn của chip (thuộc tính `icon` của
+ * Mantine chỉ hiện khi chip đang được chọn, mà chip khoá thì không bao giờ được
+ * chọn) — xem `PresetChip` trong NoteRecognitionDrill.tsx.
+ */
+.chip-locked-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

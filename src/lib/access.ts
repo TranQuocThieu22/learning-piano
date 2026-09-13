@@ -64,3 +64,33 @@ export function canReadLesson(params: {
 }): boolean {
   return params.hasFullAccess || isFreeContent(params.category, params.slug);
 }
+
+/**
+ * Mức duy nhất của bài luyện nhận nốt mở cho mọi người.
+ *
+ * **Vì sao đúng mức Dễ, và vì sao chặn ở đây mà không phải trong bảng mức độ:**
+ * thang khó của bài luyện bám theo lộ trình giáo trình — Dễ là tầm Chương 1,
+ * Trung bình là Chương 2-3, Khó là Chương 4-6, Rất khó là sau Chương 7. Nên ranh
+ * giới trả phí của bài luyện trùng đúng `FREE_THROUGH_CHAPTER` ở trên: người chưa
+ * mở gói thì tập đúng phần họ đã được học. Chặn ở file này để cả hai ranh giới
+ * (nội dung và công cụ) chỉ có MỘT chỗ sửa; `midi-notes.ts` vẫn là thư viện nhạc
+ * thuần, không biết gì về chuyện tiền.
+ */
+export const FREE_DRILL_PRESET_ID = 'de';
+
+/**
+ * Người đang xem có được dùng mức này của bài luyện nhận nốt không?
+ *
+ * `presetId` là `null` khi lựa chọn không khớp mức nào — tức người học đã tự
+ * chỉnh trong bảng *Tuỳ chọn*. Ca đó phải **từ chối**: cho tự chỉnh tức là cho
+ * dựng lại đúng mức Rất khó bằng tay, khoá mấy mức kia thành khoá trang trí.
+ * Đây là chỗ duy nhất trong file mặc định TỪ CHỐI thay vì cho qua (ngược với
+ * `isFreeContent`), vì nhầm ở đây chỉ là mời mua sai lúc, còn nhầm chiều kia là
+ * cho không cả công cụ.
+ */
+export function canUseDrillPreset(params: {
+  presetId: string | null;
+  hasFullAccess: boolean;
+}): boolean {
+  return params.hasFullAccess || params.presetId === FREE_DRILL_PRESET_ID;
+}

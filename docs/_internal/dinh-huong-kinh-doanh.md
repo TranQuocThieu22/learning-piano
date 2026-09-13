@@ -113,6 +113,13 @@ Ta **không cạnh tranh trực tiếp** với nhóm có giáo viên thật (kh�
 
 Không khóa sau Bài 1 — người học mới bỏ ra 15 phút, chưa đủ đầu tư để tiếc, và chưa kịp thấy sản phẩm hay ở đâu. Không mở tới hết Chương 2 — cho đi quá nhiều. Hết Chương 1 là điểm cân bằng: người học đã tập 3-5 ngày, tay đã quen phím, đã tick được vài bài, và Chương 2 (ghép hai tay) đúng là chỗ giá trị bắt đầu rõ.
 
+**Công cụ luyện tập đi theo cùng một ranh giới đó.** Bài luyện nhận nốt (`/note-trainer`) mở **mức Dễ** cho tất cả mọi người, ba mức sau (Trung bình, Khó, Rất khó) và bảng *Tuỳ chọn* nằm trong gói — cùng gói mở từ Chương 2 trở đi, không bán riêng.
+
+Lý do ranh giới trùng nhau chứ không đặt riêng một chỗ khác: thang khó của bài luyện vốn bám theo lộ trình giáo trình — Dễ là tầm Chương 1, Trung bình là Chương 2-3, Khó là Chương 4-6, Rất khó là sau Chương 7. Nên "mở mức Dễ" chính là "mở đúng phần người học đã được học", không phải một hàng rào mới. Hai hệ quả phải giữ:
+
+- **Mức Dễ vẫn là công cụ dùng được thật, không phải bản demo cụt.** Nó là đường thu hút người chưa mua (Giai đoạn C của `lo-trinh-phat-trien.md` tính đưa bài luyện ra làm trang tìm thấy được), nên cắt nó thành thứ nửa vời là tự phá nguồn khách.
+- **Bảng *Tuỳ chọn* phải khoá cùng lúc.** Nó cho tự chỉnh đủ tám thứ, tức là dựng lại đúng mức Rất khó bằng tay — mở nó ra thì ba ổ khoá kia chỉ còn là trang trí. Luật nằm ở `canUseDrillPreset` trong `src/lib/access.ts`.
+
 ## 4. Cấu trúc gói và giá
 
 **Nguyên tắc: mỗi gói phải tự nó trọn vẹn.** Ranh giới giữa "bán rời hợp lý" và "moi tiền lắt nhắt" nằm ở đây. Giai đoạn 1-2 phải kết thúc ở một đích đến thật — người học **tự đệm được một bài hát hoàn chỉnh** — chứ không cắt ngang kiểu "muốn biết tiếp thì mua gói sau".
@@ -205,6 +212,7 @@ Chỉ nên bắt đầu thu tiền sau bước 1 và 2.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `feat: Bài luyện nhận nốt mở mức Dễ cho mọi người, ba mức sau theo gói` | Ghi vào mục 3 rằng công cụ luyện tập đi theo cùng ranh giới trả phí với nội dung: bài luyện nhận nốt mở mức Dễ cho mọi người, ba mức sau và bảng Tuỳ chọn nằm trong gói. Kèm lý do ranh giới trùng nhau (thang khó của bài luyện vốn bám theo lộ trình giáo trình) và hai hệ quả phải giữ — mức Dễ vẫn phải là công cụ dùng được thật vì nó là đường thu hút người chưa mua, và bảng Tuỳ chọn phải khoá cùng lúc vì nó dựng lại được mức khó nhất bằng tay |
 | 11/09/2026 | `docs(internal): Hướng dẫn xin phép bản quyền bài hát` | Thêm nghĩa vụ bản quyền bài hát vào mục 7 và trỏ sang tài liệu hướng dẫn xin phép — trước đó ràng buộc này chỉ nằm rải rác trong mã và nhật ký quyết định, không ai đọc tài liệu kinh doanh mà thấy |
 | 10/09/2026 | `docs(internal): Thêm nhánh quốc tế vào dự phóng 7 năm` | Trỏ sang mục 6 mới của `du-phong-7-nam.md`, đặt ngay ở đầu file thay vì để người đọc bảng giá mục 4 tự đoán — vì mục 4 hiện chỉ có giá VND và đó chính là chỗ chặn khách ở nước ngoài |
 | 27/08/2026 | `docs: Thêm dự phóng 7 năm và chuyển sang ghi lịch sử cập nhật cộng dồn` | Trỏ sang `du-phong-7-nam.md`; đánh dấu bất đồng **chưa chốt** về thứ tự ưu tiên video quay tay ở mục 9 |

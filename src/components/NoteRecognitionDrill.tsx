@@ -4,13 +4,16 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Alert, Badge, Box, Button, Card, Chip, Group, Progress, SegmentedControl, Stack, Switch, Text,
 } from '@mantine/core';
-import { IconArrowsMaximize, IconArrowsMinimize } from '@tabler/icons-react';
+import { IconArrowsMaximize, IconArrowsMinimize, IconLock } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import {
-  answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote, DRILL_PRESETS, DrillOptions,
-  DrillPart, DrillQuestion, Hands, MAX_PER_STAFF, notePoolForOptions, NotesPerQuestion,
-  octaveLabel, octavesFor, OCTAVES_BY_CLEF, pickNextQuestion, presetOf, QuestionLength,
+  allowedDrillOptions, answerBeat, BEATS_PER_BAR, DEFAULT_OPTIONS, describeMidiNote,
+  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, Hands, MAX_PER_STAFF,
+  notePoolForOptions, NotesPerQuestion, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
+  pickNextQuestion, presetOf, QuestionLength,
 } from '@/lib/midi-notes';
+import { canUseDrillPreset } from '@/lib/access';
+import { DrillLevelLocked } from './DrillLevelLocked';
 import { OctaveKeyboard } from './OctaveKeyboard';
 import { usePianoInput } from '@/hooks/usePianoInput';
 import { createLocalStore } from '@/lib/local-store';
@@ -97,8 +100,51 @@ type Feedback =
   | { kind: 'wrong-octave'; played: number }
   | { kind: 'wrong'; played: number };
 
-export function NoteRecognitionDrill() {
-  const options = useLocalStore(optionsStore);
+/**
+ * Một chip mức độ, có thể đang khoá.
+ *
+ * Ổ khoá vẽ **trong nhãn** chứ không truyền qua thuộc tính `icon` của `Chip`:
+ * `icon` chỉ thay cái dấu tích hiện khi chip ĐANG ĐƯỢC CHỌN, mà chip khoá thì
+ * không bao giờ được chọn — nên ổ khoá sẽ không bao giờ hiện ra. Đã làm sai đúng
+ * kiểu đó một lần, và cả `tsc` lẫn lint đều xanh.
+ */
+function PresetChip({ value, label, locked }: { value: string; label: string; locked: boolean }) {
+  return (
+    <Chip
+      value={value}
+      size="sm"
+      data-testid={`preset-${value}`}
+      data-locked={locked ? 'true' : undefined}
+      variant={locked ? 'light' : undefined}
+    >
+      {locked ? (
+        <span className="chip-locked-label">
+          <IconLock size={12} />
+          {label}
+        </span>
+      ) : label}
+    </Chip>
+  );
+}
+
+export function NoteRecognitionDrill({
+  hasFullAccess,
+  sellingEnabled,
+}: {
+  /** Người đang xem đã mở gói (hoặc là quản trị viên) chưa. */
+  hasFullAccess: boolean;
+  /** Chưa mở bán thì lời mời mở khoá không được nhắc tới giá hay đường mua. */
+  sellingEnabled: boolean;
+}) {
+  /*
+   * Kẹp lựa chọn đã lưu theo quyền truy cập NGAY Ở CHỖ ĐỌC.
+   *
+   * Chặn cú bấm là không đủ: lựa chọn nằm trong `localStorage` của máy người học,
+   * nên bản đã lưu có thể là mức trả phí từ trước — hết đợt thử nghiệm, đăng xuất
+   * rồi mở bằng tài khoản khác, hoặc sửa tay trong bảng điều khiển trình duyệt.
+   * Kẹp ở đây thì mọi đường đó cùng rơi về mức Dễ.
+   */
+  const options = allowedDrillOptions(useLocalStore(optionsStore), hasFullAccess);
   const pool = useMemo(() => notePoolForOptions(options), [options]);
   const selectableOctaves = useMemo(() => octavesFor(options.hands), [options.hands]);
   const activeMidis = useMemo(() => new Set(pool.map((p) => p.note.midi)), [pool]);
@@ -191,6 +237,13 @@ export function NoteRecognitionDrill() {
    * sau mở app phải thấy lại đúng chỗ họ đang chỉnh dở.
    */
   const [hienChiTiet, setHienChiTiet] = useState(() => presetOf(DEFAULT_OPTIONS) === null);
+  /**
+   * Người học vừa chạm vào một mức chưa mở khoá.
+   *
+   * Hiện lời mời thay vì để cú chạm rơi vào hư không: chip khoá mà bấm không ra
+   * gì thì người học tưởng app hỏng, chứ không hiểu là mức đó cần mở gói.
+   */
+  const [doiMoKhoa, setDoiMoKhoa] = useState(false);
   /** Điện thoại dựng đứng — nơi bề ngang chặn cứng, xoay ngang mới là lời giải. */
   const dungDungTrenDienThoai = useMediaQuery('(max-width: 48em) and (orientation: portrait)');
 
@@ -537,6 +590,20 @@ export function NoteRecognitionDrill() {
           multiple={false}
           value={hienChiTiet ? 'tuy-chon' : (presetOf(options)?.id ?? 'tuy-chon')}
           onChange={(value) => {
+            /*
+             * *Tuỳ chọn* cũng là cửa trả phí, không chỉ ba mức kia.
+             *
+             * Bảng chi tiết cho tự chỉnh đủ tám thứ, nên mở nó cho người chưa mua
+             * là cho dựng lại đúng mức Rất khó bằng tay — ba ổ khoá kia thành
+             * khoá trang trí. `presetId: null` ở `canUseDrillPreset` nói đúng ca
+             * này.
+             */
+            const presetId = value === 'tuy-chon' ? null : value;
+            if (!canUseDrillPreset({ presetId, hasFullAccess })) {
+              setDoiMoKhoa(true);
+              return;
+            }
+            setDoiMoKhoa(false);
             if (value === 'tuy-chon') {
               setHienChiTiet(true);
               return;
@@ -548,14 +615,26 @@ export function NoteRecognitionDrill() {
           }}
         >
           <Group gap={6}>
+            {/*
+              Mức chưa mở khoá vẫn HIỆN RA, kèm ổ khoá, chứ không bị ẩn đi: ẩn thì
+              người học không biết có gì ở sau, mà đó lại đúng là thứ cần biết để
+              quyết định mở gói. Cùng lối với ổ khoá ở `/path` và bản đồ bài tập.
+              Không dùng `disabled`: chip bị vô hiệu hoá thì cú chạm không phát ra
+              sự kiện nào, nên không có cách nào nói cho người học vì sao nó khoá.
+            */}
             {DRILL_PRESETS.map((preset) => (
-              <Chip key={preset.id} value={preset.id} size="sm" data-testid={`preset-${preset.id}`}>
-                {preset.label}
-              </Chip>
+              <PresetChip
+                key={preset.id}
+                value={preset.id}
+                label={preset.label}
+                locked={!canUseDrillPreset({ presetId: preset.id, hasFullAccess })}
+              />
             ))}
-            <Chip value="tuy-chon" size="sm" data-testid="preset-tuy-chon">
-              Tuỳ chọn
-            </Chip>
+            <PresetChip
+              value="tuy-chon"
+              label="Tuỳ chọn"
+              locked={!canUseDrillPreset({ presetId: null, hasFullAccess })}
+            />
           </Group>
         </Chip.Group>
         <Text size="xs" c="dimmed" mt={6} data-testid="preset-hint">
@@ -563,6 +642,13 @@ export function NoteRecognitionDrill() {
             ? 'Tự chỉnh từng thứ bên dưới. Chọn lại một mức ở trên là quay về bộ dựng sẵn.'
             : (presetOf(options)?.hint ?? '')}
         </Text>
+
+        {doiMoKhoa && (
+          <DrillLevelLocked
+            sellingEnabled={sellingEnabled}
+            onClose={() => setDoiMoKhoa(false)}
+          />
+        )}
 
         {/* Hình đàn hiện cả lúc dùng mức dựng sẵn: nó không phải ô chọn, nó là
             câu trả lời cho "mức này tập những phím nào trên đàn". */}

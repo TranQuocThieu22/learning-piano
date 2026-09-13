@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   canReadLesson,
+  canUseDrillPreset,
   chapterOf,
+  FREE_DRILL_PRESET_ID,
   FREE_THROUGH_CHAPTER,
   isFreeContent,
 } from './access';
@@ -70,5 +72,34 @@ describe('canReadLesson', () => {
     expect(
       canReadLesson({ category: '01-roadmap', slug: 'roadmap', hasFullAccess: false })
     ).toBe(true);
+  });
+});
+
+describe('canUseDrillPreset', () => {
+  it('chưa mua thì chỉ dùng được mức Dễ', () => {
+    expect(canUseDrillPreset({ presetId: FREE_DRILL_PRESET_ID, hasFullAccess: false })).toBe(true);
+    expect(canUseDrillPreset({ presetId: 'trung-binh', hasFullAccess: false })).toBe(false);
+    expect(canUseDrillPreset({ presetId: 'kho', hasFullAccess: false })).toBe(false);
+    expect(canUseDrillPreset({ presetId: 'rat-kho', hasFullAccess: false })).toBe(false);
+  });
+
+  it('mua rồi thì dùng được mọi mức', () => {
+    for (const id of [FREE_DRILL_PRESET_ID, 'trung-binh', 'kho', 'rat-kho']) {
+      expect(canUseDrillPreset({ presetId: id, hasFullAccess: true }), id).toBe(true);
+    }
+  });
+
+  /*
+   * Ca quan trọng nhất của cả nhóm này. Bảng *Tuỳ chọn* cho tự chỉnh đủ tám thứ,
+   * nên nếu `null` được cho qua thì người chưa mua dựng lại đúng mức Rất khó bằng
+   * tay và ba ổ khoá kia thành khoá trang trí.
+   */
+  it('lựa chọn tự chỉnh (không khớp mức nào) là phần trả phí', () => {
+    expect(canUseDrillPreset({ presetId: null, hasFullAccess: false })).toBe(false);
+    expect(canUseDrillPreset({ presetId: null, hasFullAccess: true })).toBe(true);
+  });
+
+  it('mã mức lạ cũng bị từ chối, không mặc định cho qua', () => {
+    expect(canUseDrillPreset({ presetId: 'sieu-de', hasFullAccess: false })).toBe(false);
   });
 });

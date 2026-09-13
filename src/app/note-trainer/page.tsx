@@ -3,12 +3,27 @@ import { IconMusicSearch } from '@tabler/icons-react';
 import { AppLayout } from '@/components/AppLayout';
 import { NoteRecognitionDrill } from '@/components/NoteRecognitionDrill';
 import { PageHeader } from '@/components/PageHeader';
+import { auth } from '@/auth';
+import { viewerHasFullAccess } from '@/lib/access-server';
+import { dangBan } from '@/lib/env-schema';
+import { env } from '@/lib/env';
+import { FREE_THROUGH_CHAPTER } from '@/lib/access';
 
 export const metadata = {
   title: 'Luyện nhận nốt',
 };
 
 export default async function NoteRecognitionPage() {
+  /*
+   * Quyền truy cập tính ở máy chủ rồi truyền xuống, như mọi trang khác có khoá.
+   *
+   * Mức Dễ mở cho mọi người, ba mức còn lại theo gói — xem `canUseDrillPreset`.
+   * Tính ở đây chứ không để component tự hỏi: component là client component, mà
+   * thứ client tự khai thì người học sửa được bằng bảng điều khiển trình duyệt.
+   */
+  const session = await auth();
+  const hasFullAccess = await viewerHasFullAccess(session);
+
   return (
     <AppLayout>
       <Container size="sm" px={0}>
@@ -19,7 +34,10 @@ export default async function NoteRecognitionPage() {
           description="Màn hình hiện một nốt, bạn bấm phím tương ứng trên đàn thật — app nghe qua micro của điện thoại. Không đếm giờ, không chấm điểm khi đang chơi — cứ chậm bao nhiêu tùy bạn."
         />
 
-        <NoteRecognitionDrill />
+        <NoteRecognitionDrill
+          hasFullAccess={hasFullAccess}
+          sellingEnabled={dangBan(env.SELLING_ENABLED)}
+        />
 
         <Card withBorder padding="lg" mt="xl">
         <Stack gap="sm">
@@ -34,6 +52,15 @@ export default async function NoteRecognitionPage() {
             không sao, không mất điểm, không có tiếng báo lỗi. Mục tiêu là bạn <b>đọc được nốt</b>,
             không phải bạn phản xạ nhanh.
           </Text>
+
+          {!hasFullAccess && (
+            <Text size="sm" data-testid="drill-help-free">
+              <b>Bạn đang dùng mức Dễ.</b> Phần hướng dẫn dưới đây nói cả những ô chọn của ba
+              mức sau — hai khuông nhạc, hoá biểu đổi mỗi câu, chồng nốt như hợp âm. Chúng mở
+              cùng lúc với giáo trình từ Chương {FREE_THROUGH_CHAPTER + 1} trở đi, nên đọc
+              trước cũng được, chưa thấy ô nào thì không phải app hỏng.
+            </Text>
+          )}
 
           <Title order={4} mt="md">Dùng sao cho hiệu quả</Title>
           <Text size="sm">

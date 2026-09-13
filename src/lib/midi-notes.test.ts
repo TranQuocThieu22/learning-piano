@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest';
 import {
+  allowedDrillOptions, FREE_DRILL_PRESET,
   allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
   DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, KEY_SIGNATURES,
   MAX_PER_STAFF, noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
   pickNextQuestion, presetOf, questionAbc,
 } from './midi-notes';
+import { FREE_DRILL_PRESET_ID } from './access';
 import { isBlackPitch } from './pitch';
 
 /** Lựa chọn dựng nhanh cho test, khỏi phải khai đủ năm trường mỗi lần. */
@@ -764,5 +766,49 @@ describe('describeMidiNote', () => {
     expect(describeMidiNote(60)).toBe('Đô (C4)');
     expect(describeMidiNote(61)).toBe('Đô♯/Rê♭ (C♯/D♭4)');
     expect(describeMidiNote(21)).toContain('La');
+  });
+});
+
+/*
+ * Ranh giới trả phí của bài luyện nằm ở `access.ts`, còn bảng mức nằm ở đây —
+ * hai file, nên hai file lệch nhau được. Lệch kiểu nào cũng im lặng: đổi mã mức
+ * Dễ thì `FREE_DRILL_PRESET` âm thầm lùi về `DRILL_PRESETS[0]`, mà nếu thứ tự
+ * bảng cũng đổi thì người chưa mua được mở đúng mức khó nhất.
+ */
+describe('mức mở cho mọi người', () => {
+  it('mã mức miễn phí ở access.ts trỏ đúng một mức có thật trong bảng', () => {
+    expect(DRILL_PRESETS.map((p) => p.id)).toContain(FREE_DRILL_PRESET_ID);
+    expect(FREE_DRILL_PRESET.id).toBe(FREE_DRILL_PRESET_ID);
+  });
+
+  it('mức miễn phí đúng là mức dễ nhất, không phải một mức giữa bảng', () => {
+    // Thang khó bám theo lộ trình giáo trình, nên mức mở cho mọi người phải là
+    // mức đầu bảng — cũng là mức `DEFAULT_OPTIONS` trỏ vào.
+    expect(FREE_DRILL_PRESET).toBe(DRILL_PRESETS[0]);
+    expect(FREE_DRILL_PRESET.options).toBe(DEFAULT_OPTIONS);
+  });
+
+  it('chưa mua thì mọi mức trả phí đã lưu đều bị kéo về mức Dễ', () => {
+    for (const p of DRILL_PRESETS.slice(1)) {
+      expect(allowedDrillOptions(p.options, false), p.id).toBe(FREE_DRILL_PRESET.options);
+    }
+  });
+
+  it('chưa mua thì lựa chọn tự chỉnh cũng bị kéo về mức Dễ', () => {
+    const tuChinh: DrillOptions = { ...DRILL_PRESETS[0].options, accidentals: true };
+    expect(presetOf(tuChinh)).toBeNull();
+    expect(allowedDrillOptions(tuChinh, false)).toBe(FREE_DRILL_PRESET.options);
+  });
+
+  it('mua rồi thì không kéo gì cả, kể cả lựa chọn tự chỉnh', () => {
+    const tuChinh: DrillOptions = { ...DRILL_PRESETS[0].options, accidentals: true };
+    expect(allowedDrillOptions(tuChinh, true)).toBe(tuChinh);
+    for (const p of DRILL_PRESETS) {
+      expect(allowedDrillOptions(p.options, true), p.id).toBe(p.options);
+    }
+  });
+
+  it('mức Dễ thì ai cũng dùng được, kể cả chưa đăng nhập', () => {
+    expect(allowedDrillOptions(FREE_DRILL_PRESET.options, false)).toBe(FREE_DRILL_PRESET.options);
   });
 });

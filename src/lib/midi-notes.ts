@@ -12,6 +12,7 @@
  * Mấy thứ đó nhân với nhau ra kho câu hỏi; chọn kiểu gì cũng không cần thêm mã.
  */
 
+import { canUseDrillPreset, FREE_DRILL_PRESET_ID } from './access';
 import { octaveOf, pitchClass } from './pitch';
 
 export interface DrillNote {
@@ -408,6 +409,36 @@ export const DEFAULT_OPTIONS: DrillOptions = DRILL_PRESETS[0].options;
  */
 export function presetOf(options: DrillOptions): DrillPreset | null {
   return DRILL_PRESETS.find((p) => sameOptions(p.options, options)) ?? null;
+}
+
+/**
+ * Mức mở cho mọi người, lấy thẳng từ bảng trên theo mã ở `access.ts`.
+ *
+ * Lùi về `DRILL_PRESETS[0]` nếu mã kia không còn khớp mức nào — chỗ này không
+ * được phép ném lỗi, vì nó chạy ngay lúc nạp module và đổ cả trang luyện tập.
+ * Có ca test gác rằng hai bên vẫn khớp, để cái lùi-về đó không âm thầm trở thành
+ * đường chạy thật.
+ */
+export const FREE_DRILL_PRESET: DrillPreset =
+  DRILL_PRESETS.find((p) => p.id === FREE_DRILL_PRESET_ID) ?? DRILL_PRESETS[0];
+
+/**
+ * Lựa chọn người học **được phép dùng thật**, đã kẹp theo quyền truy cập.
+ *
+ * Phải kẹp ở chỗ ĐỌC, không chỉ chặn ở chỗ bấm. Lựa chọn nằm trong
+ * `localStorage` của máy người học, nên bản đã lưu có thể là mức trả phí từ
+ * trước: hết đợt thử nghiệm, đăng xuất rồi xem bằng tài khoản khác, hay đơn giản
+ * là sửa bằng tay trong bảng điều khiển trình duyệt. Chặn mỗi cú bấm thì những
+ * đường đó đi vòng qua hết.
+ */
+export function allowedDrillOptions(
+  options: DrillOptions,
+  hasFullAccess: boolean,
+): DrillOptions {
+  const presetId = presetOf(options)?.id ?? null;
+  return canUseDrillPreset({ presetId, hasFullAccess })
+    ? options
+    : FREE_DRILL_PRESET.options;
 }
 
 function sameOptions(a: DrillOptions, b: DrillOptions): boolean {
