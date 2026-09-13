@@ -6,6 +6,7 @@ import {
   IconChevronRight,
   IconMusic,
   IconEar,
+  IconHandFinger,
   IconMusicSearch,
   IconPlayerPlayFilled,
   IconRoute,
@@ -130,6 +131,15 @@ export function HomeScreen({
       label: 'Luyện nhận nốt',
       hint: 'Vài phút mỗi ngày',
       Icon: IconMusicSearch,
+      section: 'trainer',
+    },
+    {
+      // Đứng ngay sau *Luyện nhận nốt*: đọc được nốt rồi thì câu hỏi kế tiếp là
+      // đặt tay ở đâu — đúng thứ tự người học vấp phải.
+      href: '/hand-position',
+      label: 'Đặt tay ở đâu',
+      hint: 'Khi nhạc ra ngoài 5 nốt',
+      Icon: IconHandFinger,
       section: 'trainer',
     },
     {

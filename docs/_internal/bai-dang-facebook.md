@@ -133,6 +133,36 @@ iOS, và trên máy đó micro vẫn đủ để tập mọi bài.
 
 ---
 
+## 4c. Bài đăng số 4 — soạn 13/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** đây là một cái vướng ai tự học cũng gặp mà gần như không sách nào
+> nói ra thành lời — sách dạy năm nốt một thế tay, rồi trang sau đã có nốt ngoài năm nốt đó
+> mà không giải thích đặt tay thế nào. Người đọc nhận ra ngay vướng mắc của chính mình, nên
+> đoạn 3 của khuôn bài tự có sẵn, không phải nghĩ ra.
+
+```text
+Bản nhạc đi ra ngoài năm nốt Đô-Rê-Mi-Pha-Sol thì đặt tay ở đâu? Giờ có một bài luyện riêng
+cho đúng câu hỏi đó trên web.
+
+Màn hình hiện một câu nhạc chưa có số ngón. Bạn nhìn, tự quyết đặt tay chỗ nào, rồi bấm
+chọn. Đáp án hiện ra kèm số ngón trên từng nốt, và nói rõ chỗ nào phải dời tay — dời ở đâu
+và vì sao lại là chỗ đó. Không đếm giờ, không chấm điểm, chọn sai cũng không mất gì.
+
+Vì sao tôi làm cái này: sách vỡ lòng nào cũng dạy năm nốt một thế tay, tay để yên một chỗ.
+Rồi vài trang sau bản nhạc có nốt La, nốt Si — và không sách nào dừng lại nói cho bạn biết
+giờ đặt tay ở đâu. Người chơi lâu năm liếc một cái là biết, nên họ quên mất rằng đó cũng là
+một thứ phải học. Ai đang tập một mình mà tới đoạn nhạc ra khỏi năm nốt quen là thấy rối
+tay thì chỗ này đúng là dành cho bạn.
+
+https://pianojourney.rehover.io/hand-position
+```
+
+**Lưu ý khi đăng:** bài luyện cố ý không ra câu chạy thang âm, nên nếu có ai hỏi về luồn
+ngón cái thì trả lời thẳng — thang âm có bài dạy riêng ở Chương 6, còn công cụ này lo phần
+trước đó: nhìn cả câu rồi quyết đặt tay ở đâu.
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -190,5 +220,6 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `feat: Công cụ Đặt tay ở đâu cho lúc bản nhạc đi ra ngoài năm nốt` | Thêm bài đăng số 4 rút từ bài cập nhật cùng ngày — góc kể là cái vướng không sách nào nói ra thành lời, nên đoạn "vì sao làm" của khuôn bài có sẵn chứ không phải nghĩ ra |
 | 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Soạn bài đăng số 3 về chuyện nối đàn qua Bluetooth — chọn chủ đề này vì nó gỡ đúng một cái cớ có thật để không tập, và có chuyện thật để kể (mất một buổi tối mới tìm ra vì sao đàn không nối được) chứ không chỉ có tên tính năng |
 | 12/09/2026 | `docs(internal): Soạn bài đăng Facebook số 2 và mẫu bài cập nhật hệ thống` | Tạo file — trước đó bài đăng trên Trang không có chỗ chứa nào, nên mỗi lần lại soạn từ đầu và mỗi lần một giọng. Chốt luôn vai trò của Trang (chỗ người lạ kiểm tra mình là ai, không phải kênh tuyển), thứ tự viết bài web trước rồi rút thành bài Facebook để khỏi viết hai lần, và ba bài dự trữ rút sẵn từ `docs/09-cap-nhat/` để tuần sau không rơi vào cảnh không có gì đăng |
