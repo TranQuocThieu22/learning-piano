@@ -117,6 +117,18 @@ export function useSheetRender(
     const visualObj = ABCJS.renderAbc(paperRef.current, abcNotation, {
       responsive: 'resize',
       add_classes: true,
+      /*
+       * Tắt chuyện chạm vào nốt là chọn nốt.
+       *
+       * Mặc định của abcjs là cho chọn, và nốt được chọn bị tô ĐỎ rồi nằm đỏ mãi
+       * tới khi chạm chỗ khác. Trên điện thoại thì chỉ cần vuốt trúng bản nhạc
+       * lúc cuộn trang là dính, và người học thấy một nốt đỏ giữa bài mà không
+       * hiểu mình vừa làm sai gì — đúng thứ màu app dùng để báo đánh sai.
+       *
+       * Không chỗ nào trong app dùng tới việc chọn nốt: tua bài đi bằng thanh
+       * tiến trình, tô màu chấm bài đi bằng lớp CSS riêng.
+       */
+      selectTypes: false,
     });
 
     const score = extractScore(visualObj[0]);

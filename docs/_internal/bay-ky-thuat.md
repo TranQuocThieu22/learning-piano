@@ -1399,6 +1399,35 @@ cả ba thì effect có lỡ nhịp cũng không bật nhầm được.
 thái lúc chạy**, không được đóng gói trạng thái vào closure. Closure đúng tại thời điểm gắn,
 mà thời điểm nó chạy có thể cách đó vài phút và vài trang.
 
+## 39. abcjs vẽ bằng `currentColor`, nên quên `color` là mất bản nhạc ở nền tối
+
+**Triệu chứng.** Người dùng gửi ảnh chụp màn hình điện thoại: bản nhạc "nhìn mờ quá", các nốt
+xám nhạt gần như biến mất trên khung giấy trắng. Ở máy người soạn thì bình thường.
+
+**Nguyên nhân.** abcjs vẽ nốt và khuông bằng `currentColor`, tức màu chữ nó thừa hưởng từ thẻ
+cha. Khung giấy nhạc đặt `background: '#fff'` mà **quên `color: '#000'`** thì ở nền tối nó
+nhận màu chữ gần trắng của giao diện — trắng trên trắng.
+
+Đo được ngay: `getComputedStyle` của nốt trả `rgb(221, 219, 235)` trên nền `#fff`.
+
+**Vì sao không ai thấy trước.** Nền sáng vẫn đẹp, mà ảnh chụp kiểm tra thường chụp ở nền
+sáng. Cả năm lệnh kiểm đều xanh — đây là loại lỗi chỉ có mắt người dùng thật bắt được, và họ
+bắt bằng đúng một câu: *"sao nhìn mờ vậy"*.
+
+**Cách sửa.** Khung nào đặt nền trắng cho bản nhạc thì **ép cứng cả hai màu**:
+`style={{ background: '#fff', color: '#000' }}`. Khung bản nhạc bài học và bài luyện nhận nốt
+đã làm vậy từ trước; trang *Đặt tay ở đâu* là chỗ đầu tiên quên.
+
+**Cùng ảnh chụp đó còn lộ một lỗi thứ hai: một nốt bị tô đỏ.** Mặc định abcjs cho **chạm vào
+nốt là chọn nốt**, và nốt được chọn tô đỏ rồi nằm đỏ mãi. Trên điện thoại chỉ cần vuốt trúng
+bản nhạc lúc cuộn trang là dính, mà đỏ lại đúng là màu app dùng để báo đánh sai. Không chỗ
+nào trong app dùng tới việc chọn nốt, nên đã tắt bằng `selectTypes: false` trong
+`useSheetRender`.
+
+**Luật rút ra:** thư viện vẽ nào thừa hưởng màu từ CSS thì phải **ép màu tại chỗ đặt nền**,
+đừng tin vào màu mặc định — và mọi thứ vẽ trên nền trắng cố định phải được nhìn thử ở **cả
+hai nền sáng tối**, vì nền tối là chỗ duy nhất lỗi này hiện ra.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1407,6 +1436,7 @@ mà thời điểm nó chạy có thể cách đó vài phút và vài trang.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `fix: Bản nhạc ở nền tối không còn mờ tịt, và chạm vào nốt không làm nó đỏ` | Thêm bẫy 39 — abcjs vẽ bằng `currentColor` nên khung giấy trắng quên `color: '#000'` là mất bản nhạc ở nền tối, kèm lỗi thứ hai lộ ra từ cùng ảnh chụp: chạm vào nốt là abcjs chọn nốt và tô đỏ vĩnh viễn |
 | 13/09/2026 | `fix: Cú chạm cũ không bật lại được nhạc nền người học đã gạt tắt` | Thêm bẫy 38 — listener chờ cú chạm đầu tiên cầm bản chụp `on: true` từ lúc gắn, nên cú bấm sang trang khác bật lại nhạc người học vừa tắt; ghi kèm cách dựng lại bằng Playwright và luật chung cho mọi listener sống lâu hơn lần vẽ sinh ra nó |
 | 13/09/2026 | `fix: Nhạc nền không rú lên một nhịp mỗi lần bị bảo im` | Thêm bẫy 37 — `stop()` đọc `gain.value` của nốt chưa chạy automation, mà mặc định Web Audio là 1 chứ không phải 0, nên nhạc nền kêu to gần gấp ba đúng giây phải im; ghi kèm số đo và lý do bộ giả `value: 0` giấu được lỗi này qua mấy vòng sửa |
 | 13/09/2026 | `fix: Sửa bốn ô nhịp Chương 4 phát ra nốt khác với nốt đã vẽ` | Ghi vào bẫy 25 lần tái phát thứ hai: bốn ô nhịp trong Chương 4 (đúng chương dạy dấu hoá) phát ra nốt hoá ở chỗ bản nhạc vẽ phím trắng, trong đó hai bài tên là "So sánh Pha và Pha thăng" và "So sánh Mi và Mi giáng" — cả giá trị của bài nằm ở chỗ nghe hai nốt khác nhau mà app phát ba nốt giống nhau liền. Kèm lớp gác mới `accidentalBleeds()` trong check-lessons.mjs để lần sau không phải soi bằng mắt |

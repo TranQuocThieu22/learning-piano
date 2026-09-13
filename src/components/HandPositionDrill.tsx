@@ -109,8 +109,18 @@ export function HandPositionDrill() {
       </Group>
 
       <Card withBorder padding="sm" radius="md">
-        {/* Nền trắng như giấy nhạc, cùng kiểu với khung bản nhạc trong bài học. */}
-        <Box ref={paperRef} style={{ background: '#fff', borderRadius: 8, padding: 4 }} />
+        {/*
+          `color: '#000'` KHÔNG phải cho đẹp, nó là thứ bắt buộc: abcjs vẽ nốt
+          bằng `currentColor`. Thiếu nó thì ở nền tối, khung giấy trắng thừa
+          hưởng màu chữ gần trắng và cả bản nhạc mờ tịt trên nền trắng — nhìn
+          như hỏng màn hình. Nền sáng vẫn đẹp nên chụp màn hình ở nền sáng không
+          bao giờ thấy. Khung bản nhạc bài học và bài luyện nhận nốt đều ép cứng
+          hai màu này, đây là chỗ duy nhất từng quên.
+        */}
+        <Box
+          ref={paperRef}
+          style={{ background: '#fff', color: '#000', borderRadius: 8, padding: 4 }}
+        />
       </Card>
 
       {chosen === null ? (
