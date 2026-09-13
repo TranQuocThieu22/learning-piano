@@ -96,6 +96,28 @@ export async function getOwnedPackageIds(userId: string): Promise<Set<string>> {
 }
 
 /**
+ * Thời điểm người học được cấp một gói, `null` nếu chưa có.
+ *
+ * Tách khỏi `getOwnedPackageIds` chứ không nhét thêm cột vào đó: câu hỏi "có
+ * quyền không" được hỏi ở mọi trang có nội dung khoá, còn "được cấp lúc nào"
+ * chỉ màn hình chủ hỏi để biết có nên báo tin mở khoá hay không. Bắt mọi trang
+ * kia mang theo một cột chúng không dùng thì tốn hơn là ở đây thêm một lượt
+ * tra — mà lượt tra đó rơi đúng vào chỉ mục `entitlement_user_package_idx`.
+ */
+export async function getEntitlementGrantedAt(
+  userId: string,
+  packageId: string
+): Promise<Date | null> {
+  const [row] = await db
+    .select({ grantedAt: entitlements.grantedAt })
+    .from(entitlements)
+    .where(and(eq(entitlements.userId, userId), eq(entitlements.packageId, packageId)))
+    .limit(1);
+
+  return row?.grantedAt ?? null;
+}
+
+/**
  * Cấp quyền truy cập. Dùng chung cho cả đường tự động (webhook) lẫn đường tay
  * (scripts/grant-access.mjs), nên chỗ nào cũng chỉ có một định nghĩa "sở hữu".
  *

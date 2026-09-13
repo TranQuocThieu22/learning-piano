@@ -67,6 +67,22 @@ Ba lý do chọn cách này:
 - Họ **giữ quyền truy cập vĩnh viễn**. Cố ý. Người bỏ thời gian dò lỗi cho bạn thì
   xứng đáng, và điều đó cũng khiến họ trả lời thẳng thay vì lịch sự cho qua.
 
+**Cấp xong phải báo lại — và phải báo bằng tay.** Màn hình bài khoá hứa với người
+điền form rằng *"trong vòng 24 giờ mình mở toàn bộ giáo trình cho tài khoản của
+bạn"*, nên sau khi bấm *Cấp gói* thì **nhắn lại cho họ ngay** (trả lời vào email họ
+điền trong form, hoặc Messenger của Trang). App **không gửi được email**: chuyển
+tiếp ở `rehover.io` mới có chiều nhận, chiều gửi thuộc đợt nâng Vercel Pro ở mục 8.
+Bỏ qua bước nhắn tay là để họ ngồi đợi một tín hiệu không bao giờ tới — và người
+đang đợi thì không tập, đúng quãng hai tuần mà mục 4 lấy làm ngưỡng "coi như đã rơi".
+
+Phía app có **một tấm thẻ ở màn hình chủ** báo *"Đã mở khoá toàn bộ giáo trình"*
+(`src/components/AccessGrantedNotice.tsx`). Nó chỉ lo phần người **tự mở app lại**,
+nên không thay được tin nhắn của bạn. Ba điều đã đóng vào đó, sửa gì thì đừng phá:
+thẻ chỉ hiện trong `ACCESS_NOTICE_DAYS` ngày kể từ `entitlement.granted_at` (nói
+"vừa mở" với người học ba tháng là nói sai); tắt một lần là thôi, khoá ghi nhớ chính
+là mốc cấp nên **cấp lại thì báo lại**; và admin không thấy gì, vì họ đi thẳng bằng
+`ADMIN_EMAILS` chứ không có dòng nào trong `entitlement`.
+
 ---
 
 ## 3. Tuyển ai, bao nhiêu
@@ -356,6 +372,7 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `feat: Báo cho người học biết tài khoản vừa được mở khoá` | Mục 2: thêm bước nhắn lại sau khi cấp quyền, kèm tấm thẻ ở màn hình chủ — màn hình bài khoá đã hứa mở trong 24 giờ, nhưng trước đó việc cấp quyền không để lại dấu vết nào phía người học nên họ ngồi đợi một tín hiệu không bao giờ tới; ghi rõ thẻ không thay được tin nhắn tay vì app chưa gửi được email |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Sửa địa chỉ trang điều khoản ở mục 8 sang tên miền mới — ô đó tick kèm bằng chứng "trả 200", mà bằng chứng ghi sai địa chỉ thì lần sau kiểm lại sẽ kiểm nhầm chỗ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Mục 2: ghi rõ đường thanh toán bị ẩn bằng `SELLING_ENABLED` và chốt thứ tự tuyển → đăng nhập → cấp quyền trước, kèm lý do không đặt cổng xin quyền ở cuối Chương 1 vì nó tạo điểm rơi giả làm bẩn chính con số cần đo |
 | 01/09/2026 | `docs(internal): Tick xong danh sách trước beta` | Điều khoản đã lên production ở tên miền mới piano.rehover.io — danh sách việc phải xong trước khi mở cổng đã đủ 7/7 |

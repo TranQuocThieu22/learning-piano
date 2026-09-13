@@ -94,3 +94,30 @@ export function canUseDrillPreset(params: {
 }): boolean {
   return params.hasFullAccess || params.presetId === FREE_DRILL_PRESET_ID;
 }
+
+/**
+ * Bao lâu thì tin "vừa được mở khoá" thôi còn là tin mới, tính bằng ngày.
+ *
+ * Có hai thứ phải cùng đúng nên mới cần con số này, không chỉ cần nút tắt:
+ * người beta được cấp quyền lúc họ không mở máy, nên phải còn đó khi họ quay
+ * lại sau vài tuần; nhưng "vừa được mở" mà nói với người đã học ba tháng thì
+ * sai sự thật. Ba mươi ngày đủ rộng cho người ghi danh rồi biến mất một thời
+ * gian, vẫn đủ hẹp để câu chữ còn đúng.
+ */
+export const ACCESS_NOTICE_DAYS = 30;
+
+/**
+ * Lần cấp quyền này có còn đáng báo cho người học không?
+ *
+ * `grantedAt` trong tương lai vẫn tính là mới: máy chủ và database chạy hai
+ * đồng hồ khác nhau, lệch vài giây là chuyện thường, và lệch kiểu đó mà giấu
+ * lời báo đi thì đúng người vừa được cấp lại là người không thấy gì.
+ *
+ * Tính ở máy chủ chứ không ở trình duyệt: lấy `Date.now()` lúc vẽ trong một
+ * client component là hai lần vẽ ra hai kết quả, React kêu lệch hydration.
+ */
+export function isFreshGrant(params: { grantedAt: Date | null; now: Date }): boolean {
+  const { grantedAt, now } = params;
+  if (grantedAt === null) return false;
+  return now.getTime() - grantedAt.getTime() < ACCESS_NOTICE_DAYS * 86_400_000;
+}

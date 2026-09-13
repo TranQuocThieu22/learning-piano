@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons-react';
 import Link from 'next/link';
 import type { ComponentType } from 'react';
+import { AccessGrantedNotice } from './AccessGrantedNotice';
 import { AccountCard } from './AccountCard';
 import { AmbientControl } from './AmbientControl';
 import type { AppSessionUser } from './AppLayout';
@@ -58,6 +59,11 @@ export interface HomeScreenProps {
   extraHref: string | null;
   /** Bài cập nhật mới nhất. `null` khi chưa có bài nào. */
   latestUpdate: { title: string; dateLabel: string; nhan: string | null } | null;
+  /**
+   * Mốc cấp quyền (mili giây) khi người này VỪA được mở khoá, `null` nếu không.
+   * Máy chủ lọc sẵn phần "còn mới" ở `viewerFreshGrantAt`.
+   */
+  freshGrantAt: number | null;
 }
 
 /** Hàng phím đàn trang trí góc khối *Học tiếp*. Chỉ để nhìn, trình đọc màn hình bỏ qua. */
@@ -94,6 +100,7 @@ export function HomeScreen({
   roadmapHref,
   extraHref,
   latestUpdate,
+  freshGrantAt,
 }: HomeScreenProps) {
   const daHocXongHet = totalCount > 0 && completedCount === totalCount;
   const chuaHocBai = completedCount === 0;
@@ -208,6 +215,15 @@ export function HomeScreen({
           )}
         </div>
       </section>
+
+      {/*
+        Đứng DƯỚI khối *Học tiếp*, không đứng trên: luật ở khối *Có gì mới* phía
+        dưới cũng áp cho thẻ này — không thứ gì được đẩy nút Học tiếp xuống. Nhưng
+        đứng ngay trên chương đang học chứ không lẫn xuống cuối trang, vì người vừa
+        được cấp quyền đang đợi đúng tin này và trên điện thoại thì cuối trang là
+        chỗ không ai cuộn tới.
+      */}
+      {freshGrantAt !== null && <AccessGrantedNotice grantedAt={freshGrantAt} />}
 
       {currentChapter && (
         <ChapterCard

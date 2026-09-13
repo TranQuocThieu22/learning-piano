@@ -1,9 +1,9 @@
 import 'server-only';
 import type { Session } from 'next-auth';
-import { getOwnedPackageIds } from './payment/orders';
+import { getEntitlementGrantedAt, getOwnedPackageIds } from './payment/orders';
 import { isAdminEmail } from './admin-allowlist';
 import { env } from './env';
-import { REQUIRED_PACKAGE_ID } from './access';
+import { isFreshGrant, REQUIRED_PACKAGE_ID } from './access';
 
 /**
  * Người đang xem có mở được toàn bộ giáo trình không.
@@ -24,4 +24,23 @@ export async function viewerHasFullAccess(session: Session | null): Promise<bool
 
   const owned = await getOwnedPackageIds(userId);
   return owned.has(REQUIRED_PACKAGE_ID);
+}
+
+/**
+ * Người đang xem có vừa được mở khoá không — dùng để báo cho họ biết.
+ *
+ * Trả về **mốc thời gian** chứ không phải một chữ có/không: màn hình chủ cần nó
+ * làm khoá ghi nhớ "lời báo này đã tắt rồi", để lần cấp sau (đổi gói, cấp lại
+ * sau khi thu hồi) vẫn báo được thay vì im luôn mãi mãi.
+ *
+ * Admin không lọt vào đây: `viewerHasFullAccess` cho họ đi thẳng bằng
+ * `ADMIN_EMAILS` mà không có dòng nào trong `entitlement`, nên chủ sản phẩm
+ * không phải xem lời chúc mừng chính mình mỗi lần mở app.
+ */
+export async function viewerFreshGrantAt(session: Session | null): Promise<Date | null> {
+  const userId = session?.user?.id;
+  if (!userId) return null;
+
+  const grantedAt = await getEntitlementGrantedAt(userId, REQUIRED_PACKAGE_ID);
+  return isFreshGrant({ grantedAt, now: new Date() }) ? grantedAt : null;
 }

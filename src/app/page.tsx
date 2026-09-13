@@ -7,7 +7,7 @@ import { getAllMarkdownFiles } from '@/lib/markdown';
 import { flattenPath, getLearningPath, nextStep, shortTitle } from '@/lib/learning-path';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { canReadLesson } from '@/lib/access';
-import { viewerHasFullAccess } from '@/lib/access-server';
+import { viewerFreshGrantAt, viewerHasFullAccess } from '@/lib/access-server';
 import { latestUpdate } from '@/lib/updates';
 
 const EXTRA_CATEGORY = '07-doc-them';
@@ -36,6 +36,14 @@ export default async function Home() {
     ? await getCompletedLessonSlugs(session.user.id)
     : new Set<string>();
   const hasFullAccess = await viewerHasFullAccess(session);
+
+  /*
+   * Người vừa được cấp quyền thì màn hình chủ phải nói ra. Trước đây việc cấp
+   * quyền không để lại dấu vết nào phía người học — ổ khoá lặng lẽ biến mất —
+   * trong khi màn hình bài khoá đã hứa "trong vòng 24 giờ mình mở toàn bộ giáo
+   * trình cho tài khoản của bạn", nên họ ngồi đợi một tín hiệu không bao giờ tới.
+   */
+  const freshGrantAt = await viewerFreshGrantAt(session);
 
   // Bài cập nhật mới nhất, để màn hình chủ nói được web vừa đổi gì.
   const baiMoiNhat = latestUpdate();
@@ -94,6 +102,7 @@ export default async function Home() {
               : null
           }
           extraHref={firstOf(allFiles, EXTRA_CATEGORY)}
+          freshGrantAt={freshGrantAt?.getTime() ?? null}
           latestUpdate={
             baiMoiNhat
               ? {

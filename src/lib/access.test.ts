@@ -6,6 +6,8 @@ import {
   FREE_DRILL_PRESET_ID,
   FREE_THROUGH_CHAPTER,
   isFreeContent,
+  isFreshGrant,
+  ACCESS_NOTICE_DAYS,
 } from './access';
 
 describe('chapterOf', () => {
@@ -101,5 +103,35 @@ describe('canUseDrillPreset', () => {
 
   it('mã mức lạ cũng bị từ chối, không mặc định cho qua', () => {
     expect(canUseDrillPreset({ presetId: 'sieu-de', hasFullAccess: false })).toBe(false);
+  });
+});
+
+describe('isFreshGrant', () => {
+  const now = new Date('2026-09-13T10:00:00Z');
+  const ngayTruoc = (n: number) => new Date(now.getTime() - n * 86_400_000);
+
+  it('chưa được cấp gói thì không báo gì', () => {
+    expect(isFreshGrant({ grantedAt: null, now })).toBe(false);
+  });
+
+  it('vừa được cấp xong thì báo', () => {
+    expect(isFreshGrant({ grantedAt: now, now })).toBe(true);
+  });
+
+  /*
+   * Ca người beta thật: điền form rồi bỏ đó, được cấp quyền lúc không mở máy,
+   * hai tuần sau mới quay lại. Lời báo phải còn đó, nếu không thì đúng người
+   * cần biết lại là người không được biết.
+   */
+  it('cấp từ hai tuần trước mà giờ mới mở app thì vẫn báo', () => {
+    expect(isFreshGrant({ grantedAt: ngayTruoc(14), now })).toBe(true);
+  });
+
+  it('quá hạn thì thôi, vì "vừa được mở" lúc đó là nói sai', () => {
+    expect(isFreshGrant({ grantedAt: ngayTruoc(ACCESS_NOTICE_DAYS + 1), now })).toBe(false);
+  });
+
+  it('đồng hồ database chạy nhanh hơn máy chủ vài giây vẫn báo', () => {
+    expect(isFreshGrant({ grantedAt: new Date(now.getTime() + 5_000), now })).toBe(true);
   });
 });
