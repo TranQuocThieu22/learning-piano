@@ -7,6 +7,7 @@ import { type DrillQuestion, questionAbc } from '@/lib/midi-notes';
 import {
   anchorTransform, BAR_MIN_UNITS, FOCUS_MAX_FACTOR, scaleBox, staffBox, staffScale,
 } from '@/lib/staff-anchor';
+import { useNoteFlash } from './useNoteFlash';
 
 /**
  * **Cửa vẽ khuông nhạc của bài luyện nhận nốt.**
@@ -63,9 +64,15 @@ function beatElements(tune: TuneObject, beats: number): HTMLElement[][] {
   }
 }
 
-/** Nốt đang chờ — con trỏ, không phải điểm số. Chỉ nhích khi người học bấm đúng. */
-const WAITING_CLASS = 'drill-beat-waiting';
-/** Nốt đã bấm đúng, dùng chung lớp với phần tập theo bản nhạc. */
+/**
+ * Nốt đã bấm đúng, dùng chung lớp với phần tập theo bản nhạc.
+ *
+ * Ba màu của bài này, và chỉ ba: **đen** là chưa trả lời, **xanh** là đã đúng,
+ * **đỏ nháy một cái** là vừa bấm trượt. Trước đây nốt đang chờ tô tím làm con
+ * trỏ; bỏ đi vì màu tím không mang nghĩa gì có sẵn với người học, mà ba màu kia
+ * thì ai cũng đọc được ngay. Trong ô nhịp, nốt đang chờ là **nốt đen đầu tiên
+ * sau những nốt xanh** — vị trí tự nói ra, không cần thêm màu thứ tư.
+ */
 const DONE_CLASS = 'practice-correct';
 
 export interface DrillStaffOptions {
@@ -90,14 +97,25 @@ export interface DrillStaffOptions {
 }
 
 export interface DrillStaff {
-  /** Tô con trỏ: phách đã xong màu xanh, phách đang chờ màu tím. */
+  /** Tô lại khuông: phách đã trả lời đúng màu xanh, phách chưa tới để nguyên đen. */
   paintCursor: (beat: number, done: boolean) => void;
+  /** Nháy đỏ một phách khi người học bấm trượt. Nháy rồi tắt hẳn. */
+  flashWrong: (beat: number) => void;
+  /**
+   * Tắt ngay hiệu ứng đỏ đang chạy.
+   *
+   * Gọi khi người học vừa bấm ĐÚNG: bấm trượt rồi bấm trúng trong vòng nửa giây
+   * thì hiệu ứng đỏ vẫn còn chạy, mà hiệu ứng CSS đứng trên cả `!important`, nên
+   * nốt vừa đánh trúng lại hiện màu đỏ một thoáng trước khi kịp xanh.
+   */
+  clearFlashes: () => void;
 }
 
 export function useDrillStaff({
   paperRef, boxRef, question, grandStaff, focused, boxSize, beatRef,
 }: DrillStaffOptions): DrillStaff {
   const beatElementsRef = useRef<HTMLElement[][]>([]);
+  const { flash, clearFlashes } = useNoteFlash();
 
   /**
    * Là **hàm**, không phải hiệu ứng riêng, và đây là chỗ đã sai hai lần theo cùng
@@ -114,9 +132,8 @@ export function useDrillStaff({
 
     for (const [i, group] of groups.entries()) {
       for (const el of group) {
-        el.classList?.remove(DONE_CLASS, WAITING_CLASS);
+        el.classList?.remove(DONE_CLASS);
         if (i < beat) el.classList?.add(DONE_CLASS);
-        else if (i === beat) el.classList?.add(WAITING_CLASS);
       }
     }
 
@@ -126,12 +143,14 @@ export function useDrillStaff({
      * nhạc không phản hồi gì.
      */
     if (done) {
-      for (const el of groups[beat] ?? []) {
-        el.classList?.remove(WAITING_CLASS);
-        el.classList?.add(DONE_CLASS);
-      }
+      for (const el of groups[beat] ?? []) el.classList?.add(DONE_CLASS);
     }
   }, []);
+
+  /** Nháy đỏ phách đang chờ. Không lùi con trỏ, không xoá màu xanh đã có. */
+  const flashWrong = useCallback((beat: number) => {
+    flash(beat, beatElementsRef.current[beat] ?? []);
+  }, [flash]);
 
   /*
    * Vẽ lại khuông nhạc mỗi khi đổi câu hỏi hoặc đổi số khuông — rồi **neo nó lại**.
@@ -225,6 +244,7 @@ export function useDrillStaff({
 
     // Nhặt phần tử của từng phách NGAY sau khi vẽ, trước khi hiệu ứng tô màu
     // chạy — hiệu ứng đó chỉ gắn lớp, không đụng tới DOM của abcjs.
+    clearFlashes();
     beatElementsRef.current = beatElements(tune, question.beats.length);
     // Tô lại NGAY, đừng đợi hiệu ứng khác: phần tử vừa thay mới toàn bộ.
     paintCursor(beatRef.current, false);
@@ -284,7 +304,7 @@ export function useDrillStaff({
      */
     svg.style.transformOrigin = '0 0';
     svg.style.transform = `translate(${translateX}px, ${translateY}px) scale(${abcScale * scale})`;
-  }, [paperRef, boxRef, beatRef, question, grandStaff, focused, boxSize, paintCursor]);
+  }, [paperRef, boxRef, beatRef, question, grandStaff, focused, boxSize, paintCursor, clearFlashes]);
 
-  return { paintCursor };
+  return { paintCursor, flashWrong, clearFlashes };
 }

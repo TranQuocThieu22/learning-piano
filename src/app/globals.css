@@ -799,23 +799,16 @@ body {
   stroke: #ff4757 !important;
 }
 
-/* Nốt vừa đánh đúng, tô ngay trong lúc người học đang tập.
-   Đây là lời xác nhận "đúng rồi", KHÔNG phải chấm điểm: không có lớp màu nào
-   bật lên khi đánh sai, khuông nhạc chỉ đứng yên chờ. Xem src/lib/score-follow.ts. */
+/* Ba màu, và chỉ ba, ở cả bài luyện nhận nốt lẫn phần tập theo bản nhạc:
+   ĐEN là chưa trả lời, XANH là đã đúng, ĐỎ nháy một cái là vừa bấm trượt.
+
+   Xanh là lời xác nhận "đúng rồi", không phải chấm điểm — nó không bao giờ bị
+   xoá đi vì một lần bấm sai sau đó. Đỏ thì nháy rồi tắt hẳn, không để lại vết.
+   Xem src/lib/score-follow.ts và bốn luật chống áp lực trong AGENTS.md. */
 .practice-correct,
 .practice-correct * {
   fill: #2f9e44 !important;
   stroke: #2f9e44 !important;
-}
-
-/* Nốt đang chờ trong một ô nhịp ở bài luyện nhận nốt — CON TRỎ, không phải điểm.
-   Nó chỉ trả lời "đang đọc tới chỗ nào", và chỉ nhích khi người học bấm đúng;
-   không có đồng hồ nào đẩy nó đi. Màu tím của app chứ không phải đỏ hay cam:
-   hai màu đó đã mang nghĩa "sai" ở ngay khuông nhạc này. */
-.drill-beat-waiting,
-.drill-beat-waiting * {
-  fill: #7048e8 !important;
-  stroke: #7048e8 !important;
 }
 
 /* Nốt đang chờ, nháy đỏ và rung nhẹ khi người học bấm trượt.

@@ -329,6 +329,9 @@ export function NoteRecognitionDrill() {
     }
 
     if (outcome.kind === 'correct') {
+      // Tắt vệt đỏ còn sót của lần bấm trượt ngay trước đó, không thì nốt vừa
+      // đánh trúng hiện đỏ một thoáng rồi mới xanh.
+      clearFlashes();
       lockedRef.current = true;
       collectedRef.current = outcome.collected;
       setCollected(outcome.collected);
@@ -360,6 +363,8 @@ export function NoteRecognitionDrill() {
       });
     }
     setFeedback({ kind: outcome.kind, played });
+    // Nháy đỏ ngay trên khuông, đúng chỗ đang chờ — nhanh hơn đọc dòng chữ bên dưới.
+    flashWrong(beatIndexRef.current);
   };
 
   /** Phách đang chờ. Chế độ "1 nhịp" thì đây là cả câu. */
@@ -408,7 +413,7 @@ export function NoteRecognitionDrill() {
    * các bẫy hình học — nằm trong `useDrillStaff`; ở đây chỉ còn việc bảo nó vẽ
    * gì và tô con trỏ tới đâu.
    */
-  const { paintCursor } = useDrillStaff({
+  const { paintCursor, flashWrong, clearFlashes } = useDrillStaff({
     paperRef,
     boxRef: staffBoxRef,
     question: current,
