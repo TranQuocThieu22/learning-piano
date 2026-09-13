@@ -61,21 +61,39 @@ interface FakeCtx {
 
 /** Bối cảnh âm thanh giả; `resume()` chỉ xong khi ta gọi `ket()`. */
 function dungBoiCanhGia(): { Ctor: unknown; dieuKhien: FakeCtx } {
-  let ketThuc: () => void = () => {};
+  /*
+   * Giữ MỌI lời hứa `resume()` đang chờ, không chỉ cái mới nhất.
+   *
+   * Bản đầu chỉ nhớ một cái, nên ca "gọi start() hai lần" treo 5 giây rồi trượt
+   * vì hết giờ — trông y như đã bắt được lỗi, trong khi thứ hỏng là bộ giả. Máy
+   * đo sai kiểu đó nguy hơn không đo: nó báo đỏ đúng lúc mình đang mong nó đỏ.
+   */
+  const dangCho: (() => void)[] = [];
   let daHenLich = 0;
   const daTao: ReturnType<typeof fakeNode>[] = [];
   const gainDaTao: ReturnType<typeof fakeNode>[] = [];
 
   class Gia {
     state = 'suspended';
-    currentTime = 0;
+    /**
+     * Đồng hồ PHẢI chạy, không được đứng yên ở 0.
+     *
+     * Bộ phát hẹn trước bốn giây rồi mới ngó lại, nên với đồng hồ đứng yên thì
+     * một bộ phát bị bỏ quên hẹn được vài ô nhịp là tự im — và ca test "còn bộ
+     * nào hẹn nốt sau khi stop()" báo xanh dù bộ ấy vẫn sống. `vi.useFakeTimers`
+     * làm `Date.now()` nhích theo `advanceTimersByTime`, nên bám vào đó là có
+     * một đồng hồ chạy đúng nhịp với lịch hẹn.
+     */
+    get currentTime() {
+      return Date.now() / 1000;
+    }
     destination = fakeNode();
     resume() {
       return new Promise<void>((resolve) => {
-        ketThuc = () => {
+        dangCho.push(() => {
           this.state = 'running';
           resolve();
-        };
+        });
       });
     }
     close() {
@@ -106,7 +124,11 @@ function dungBoiCanhGia(): { Ctor: unknown; dieuKhien: FakeCtx } {
   return {
     Ctor: Gia,
     dieuKhien: {
-      ket: () => ketThuc(),
+      ket: () => {
+        // Giải phóng theo bản sao: hàm giải phóng có thể làm sinh thêm lời hứa mới.
+        const danh = dangCho.splice(0);
+        for (const xong of danh) xong();
+      },
       soLanHenLich: () => daHenLich,
       boDaoDong: () => daTao,
       nutGain: () => gainDaTao,
@@ -241,5 +263,46 @@ describe('AmbientEngine — dừng lúc lịch phát còn hẹn trước', () =>
         expect(goi[0]).toBeLessThan(1);
       }
     }
+  });
+});
+
+/*
+ * **Hai lệnh bật chồng nhau sinh ra bộ phát mồ côi.**
+ *
+ * Người dùng báo: đang phát bản nhạc mẫu mà nhạc nền vẫn chạy, dù sổ giữ chỗ đã
+ * ghi đủ và hiệu ứng đã gọi `stop()`. Đường đi:
+ *
+ * 1. Trình duyệt chặn tiếng, nhạc nền gắn listener chờ cú chạm đầu tiên.
+ * 2. Người học chạm vào một đường dẫn. `pointerdown` gọi `start()` lần một, lệnh
+ *    này rơi vào `await ctx.resume()`.
+ * 3. Cùng cú chạm đó chuyển trang, hiệu ứng chạy lại. `running` vẫn `false` vì
+ *    lần một chưa đặt xong lịch, nên nó gọi `start()` lần hai.
+ * 4. Cả hai cùng vượt qua chốt `if (this.running)`, cùng đặt `this.timer`. Cái
+ *    đặt sau ĐÈ MẤT cái trước — và `stop()` từ đó về sau chỉ tắt được cái sau.
+ *
+ * Cái bị bỏ quên cứ thế hẹn nốt tiếp, không đường nào tắt, tới hết phiên. Đây là
+ * bẫy 18 quay lại từ một cửa khác.
+ */
+describe('AmbientEngine — hai lệnh bật chồng nhau', () => {
+  it('gọi start() hai lần rồi stop() thì phải im hẳn, không còn bộ nào hẹn nốt', async () => {
+    vi.useFakeTimers();
+    const { Ctor, dieuKhien } = dungBoiCanhGia();
+    gan(Ctor);
+
+    const engine = new AmbientEngine(0.5, PIECES[0]);
+    const lan1 = engine.start();
+    const lan2 = engine.start();
+    dieuKhien.ket();
+    await lan1;
+    await lan2;
+
+    engine.stop();
+    const truocKhiCho = dieuKhien.soLanHenLich();
+    // Để đồng hồ chạy tiếp: bộ phát nào còn sống sẽ tự lộ ra bằng nốt mới.
+    vi.advanceTimersByTime(3000);
+
+    expect(engine.running).toBe(false);
+    expect(dieuKhien.soLanHenLich(), 'có bộ phát mồ côi còn hẹn nốt sau khi đã stop()')
+      .toBe(truocKhiCho);
   });
 });

@@ -118,6 +118,13 @@ export class AmbientEngine {
    */
   private wantPlaying = false;
   /**
+   * Lệnh bật đang chờ `resume()`, nếu có.
+   *
+   * Giữ để mọi lời gọi `start()` trong lúc chờ đều nhận CHUNG một lệnh, thay vì
+   * mở thêm lệnh mới — xem chú thích dài ở `start()`.
+   */
+  private dangBat: Promise<boolean> | null = null;
+  /**
    * Mọi nốt đã hẹn nhưng chưa tắt, giữ để dừng cho êm khi người học bấm tắt.
    *
    * `at` là mốc nốt bắt đầu kêu, và nó bắt buộc phải có: lịch phát hẹn trước tới
@@ -163,6 +170,33 @@ export class AmbientEngine {
   async start(): Promise<boolean> {
     if (this.disposed) return false;
     if (this.running) return true;
+    /*
+     * **Đang có một lệnh bật chờ dở thì dùng chung lệnh đó, đừng mở lệnh thứ hai.**
+     *
+     * Đây là lỗi người dùng báo: đang phát bản nhạc mẫu mà nhạc nền vẫn chạy, dù
+     * sổ giữ chỗ đã ghi đủ và hiệu ứng đã gọi `stop()`. Đường đi: trình duyệt
+     * chặn tiếng nên nhạc nền chờ cú chạm đầu tiên; người học chạm vào một đường
+     * dẫn thì `pointerdown` gọi `start()` lần một (rơi vào `await ctx.resume()`),
+     * còn chính cú chạm ấy chuyển trang nên hiệu ứng chạy lại và gọi `start()`
+     * lần hai. `running` lúc đó vẫn `false` vì lần một chưa đặt xong lịch, nên cả
+     * hai cùng vượt chốt phía trên và cùng đặt `this.timer` — cái sau đè mất cái
+     * trước, `stop()` từ đó chỉ tắt được cái sau, cái trước hẹn nốt tới hết phiên.
+     *
+     * Đo được bằng ca test "hai lệnh bật chồng nhau": sau `stop()` số nốt được
+     * hẹn vẫn tăng từ 62 lên 79. Đây là bẫy 18 quay lại từ một cửa khác.
+     */
+    if (this.dangBat) return this.dangBat;
+
+    this.dangBat = this.batThat();
+    try {
+      return await this.dangBat;
+    } finally {
+      this.dangBat = null;
+    }
+  }
+
+  /** Phần bật thật, luôn chỉ có MỘT lệnh chạy cùng lúc — xem `start()`. */
+  private async batThat(): Promise<boolean> {
     this.wantPlaying = true;
 
     const Ctor: typeof AudioContext | undefined =
@@ -235,6 +269,10 @@ export class AmbientEngine {
     // Bắt đầu lại từ đầu vòng, để lần nào bật cũng vào đúng phách 1 của hợp âm C.
     this.barIndex = 0;
     this.nextBarTime = ctx.currentTime + 0.15;
+    // Lưới an toàn: còn lịch cũ thì dọn trước khi đặt lịch mới, kẻo bỏ quên một
+    // bộ đếm không ai tắt được. Chốt `dangBat` phía trên đã chặn đường vào đây,
+    // nhưng cái giá của một bộ phát mồ côi đắt tới mức đáng gác hai lớp.
+    if (this.timer) clearInterval(this.timer);
     this.timer = setInterval(() => this.schedule(), LOOKAHEAD_MS);
     this.schedule();
     return true;

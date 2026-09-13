@@ -583,6 +583,43 @@ thứ tạo ngoài React không tự chết theo component.
 
 ---
 
+### Tái phát lần hai (13/09/2026): hai lệnh `start()` đua nhau
+
+**Triệu chứng y hệt, nhưng đường vào khác:** người dùng báo *"đang phát nhạc mà nhạc nền vẫn
+chạy"* — lần này sổ giữ chỗ đã ghi đủ, hiệu ứng đã gọi `stop()`, và hai lần sửa trước (cờ
+`wantPlaying`, hỏi lại trạng thái lúc chạm) đều đã có trong mã.
+
+**Nguyên nhân.** Vẫn là hai bộ phát, nhưng sinh ra từ **hai lệnh `start()` cùng chờ**
+`ctx.resume()`:
+
+1. Trình duyệt chặn tiếng, nhạc nền gắn listener chờ cú chạm đầu tiên.
+2. Người học chạm vào một đường dẫn. `pointerdown` gọi `start()` lần một — lệnh này rơi vào
+   `await ctx.resume()`.
+3. **Chính cú chạm ấy chuyển trang**, hiệu ứng chạy lại. `running` vẫn `false` vì lần một
+   chưa đặt xong lịch, nên nó gọi `start()` lần hai.
+4. Cả hai cùng vượt chốt `if (this.running)`, cùng đặt `this.timer`. Cái sau **đè mất** cái
+   trước; `stop()` từ đó chỉ tắt được cái sau.
+
+**Cách sửa.** `start()` giữ lệnh đang chờ ở `dangBat` và trả CHUNG lệnh đó cho mọi lời gọi
+tới sau, thay vì mở lệnh mới. Thêm một lớp nữa: dọn `this.timer` cũ trước khi đặt cái mới.
+
+**Hai lần bộ giả nói dối, phải sửa cả hai mới đo được.** Ca test dựng lại cuộc đua này trượt
+hai lần vì chính máy đo, chứ không phải vì mã:
+
+1. `resume()` giả chỉ nhớ **một** lời hứa đang chờ, nên gọi `start()` hai lần là lời hứa thứ
+   nhất không bao giờ xong — ca test treo 5 giây rồi trượt vì hết giờ, trông y như đã bắt
+   được lỗi.
+2. `currentTime` giả **đứng yên ở 0**. Bộ phát hẹn trước bốn giây rồi mới ngó lại, nên với
+   đồng hồ đứng yên thì bộ bị bỏ quên hẹn vài ô nhịp là tự im — ca test báo xanh dù bộ ấy
+   vẫn sống nguyên.
+
+Sửa xong cả hai thì lỗi hiện ra bằng số: sau `stop()`, số nốt được hẹn vẫn tăng từ **62 lên
+79**. Đây là lần thứ hai trong một ngày bộ giả giấu mất lỗi — xem thêm bẫy 37.
+
+**Luật rút ra:** máy đo sai nguy hơn không đo, vì nó báo đỏ hoặc báo xanh đúng lúc mình đang
+mong. Ca test dựng lại một cuộc đua thì phải kiểm chính máy đo trước: nó có giữ được nhiều
+việc chờ cùng lúc không, và **đồng hồ của nó có chạy không**.
+
 ## 19. Build đỏ trên Vercel trong khi ở máy mình xanh hết
 
 **Triệu chứng.** Bốn lệnh kiểm ở máy đều xanh, `git push` xong thì deploy trên Vercel
@@ -1436,6 +1473,7 @@ hai nền sáng tối**, vì nền tối là chỗ duy nhất lỗi này hiện 
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `fix: Hai lệnh bật nhạc nền đua nhau sinh ra bộ phát không ai tắt được` | Ghi vào bẫy 18 lần tái phát thứ hai: hai lệnh `start()` cùng chờ `resume()` thì cùng đặt `this.timer`, cái sau đè cái trước và `stop()` chỉ tắt được một. Kèm chuyện bộ giả nói dối hai lần (chỉ nhớ một lời hứa `resume`, và đồng hồ đứng yên ở 0) khiến ca test trượt rồi lại xanh nhầm |
 | 13/09/2026 | `fix: Bản nhạc ở nền tối không còn mờ tịt, và chạm vào nốt không làm nó đỏ` | Thêm bẫy 39 — abcjs vẽ bằng `currentColor` nên khung giấy trắng quên `color: '#000'` là mất bản nhạc ở nền tối, kèm lỗi thứ hai lộ ra từ cùng ảnh chụp: chạm vào nốt là abcjs chọn nốt và tô đỏ vĩnh viễn |
 | 13/09/2026 | `fix: Cú chạm cũ không bật lại được nhạc nền người học đã gạt tắt` | Thêm bẫy 38 — listener chờ cú chạm đầu tiên cầm bản chụp `on: true` từ lúc gắn, nên cú bấm sang trang khác bật lại nhạc người học vừa tắt; ghi kèm cách dựng lại bằng Playwright và luật chung cho mọi listener sống lâu hơn lần vẽ sinh ra nó |
 | 13/09/2026 | `fix: Nhạc nền không rú lên một nhịp mỗi lần bị bảo im` | Thêm bẫy 37 — `stop()` đọc `gain.value` của nốt chưa chạy automation, mà mặc định Web Audio là 1 chứ không phải 0, nên nhạc nền kêu to gần gấp ba đúng giây phải im; ghi kèm số đo và lý do bộ giả `value: 0` giấu được lỗi này qua mấy vòng sửa |
