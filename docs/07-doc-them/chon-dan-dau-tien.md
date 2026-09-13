@@ -16,6 +16,12 @@ Chính cái tên của nhạc cụ này nói lên điều đó: **pianoforte** �
 
 > **Cách thử ngay tại chỗ, mất mười giây:** bấm một phím thật nhẹ như đang chạm, rồi bấm lại chính phím đó thật dứt khoát. Hai tiếng phải khác nhau rõ ràng. Giống hệt nhau là loại không cảm ứng lực — bỏ qua cây đó.
 
+> **Còn Bluetooth thì sao?** Không bắt buộc, và **đừng trả thêm tiền chỉ vì dòng chữ
+> "có Bluetooth"** trên hộp — phần lớn là Bluetooth *Audio* (phát nhạc ra loa đàn), khác hẳn
+> Bluetooth *MIDI* (gửi nốt bạn bấm sang app). App nghe được **mọi cây đàn** qua micro mà không
+> cần thứ gì trong hai thứ đó. Chi tiết ở bài
+> **[Nối cây đàn vào app](/07-doc-them/noi-dan-vao-app)**.
+
 ## Ba điều kiện còn lại
 
 **Phím cỡ chuẩn (full-size).** Đàn đồ chơi có phím nhỏ hơn phím thật. Tập trên phím nhỏ rồi chuyển sang đàn thật là phải học lại khoảng cách ngón tay từ đầu, vì mọi cảm giác về quãng đều sai. Đứng cạnh so bề ngang một phím trắng: khoảng 2,3 cm là chuẩn.

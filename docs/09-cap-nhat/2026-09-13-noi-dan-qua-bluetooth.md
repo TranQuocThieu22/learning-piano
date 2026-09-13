@@ -26,6 +26,9 @@ vào độ yên của phòng. Còn cách nối dây thì với điện thoại p
 mỗi buổi tập thì chẳng ai làm lâu. Cây đàn của bạn đã có sẵn Bluetooth — dùng nó là hết cả
 hai chuyện đó: mở web, bấm một nút, đánh.
 
+Có một bài hướng dẫn đầy đủ cả ba cách nối — micro, Bluetooth và dây USB — kèm bảng dò lỗi
+khi nối mãi không được: **[Nối cây đàn vào app: ba cách, chọn cách nào?](/07-doc-them/noi-dan-vao-app)**
+
 Một điều phải nói rõ: **iPhone và iPad chưa nối MIDI được bằng đường nào cả** — dây hay
 Bluetooth đều không. Đó là giới hạn của trình duyệt trên iOS chứ không phải của cây đàn. Trên
 iPhone và iPad thì micro là cách duy nhất, và nó vẫn đủ để tập mọi bài.
