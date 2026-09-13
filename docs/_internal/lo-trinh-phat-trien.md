@@ -224,17 +224,23 @@ doanh và thuế.
 *Vì sao thứ tự này:* mục 4 tài liệu định hướng yêu cầu mỗi gói phải **tự nó trọn vẹn**.
 Gói Nền tảng là Giai đoạn 1 + 2, nên chỉ trọn vẹn khi Chương 10 xong.
 
-#### Kho ôn luyện sinh bằng luật — bộ sinh đã xong, phần người học thấy thì chưa
+#### Kho ôn luyện sinh bằng luật — đã mở cho người học 13/09/2026
 
 > [!NOTE]
-> `src/lib/exercise-gen.ts` (13/09/2026) sinh bài tập Chương 1-5 bằng luật: bảy kiểu bài, cùng
-> `seed` thì cùng một bài trên mọi máy, 111 ca test gác cao độ vang ra thật, số phách và tầm nốt.
-> **Chưa có trang nào gọi nó**, nên người học chưa thấy gì.
+> `src/lib/exercise-gen.ts` sinh bài tập Chương 1-5 bằng luật: bảy kiểu bài, cùng `seed` thì
+> cùng một bài trên mọi máy, 111 ca test gác cao độ vang ra thật, số phách và tầm nốt. Từ
+> 13/09/2026 đã có cửa vào: **`/review/[chapter]`**.
 
-*Việc cần làm:* trang `/review/[chapter]` — `seed` nằm trong đường dẫn để người học quay lại
-đúng bài đã tập và gửi được link, dựng ở máy chủ bằng `SheetViewer` có sẵn, nút *Bài khác*, và
-*Tập bài này với đàn* qua micro. Đường vào đặt ở cuối mỗi chương trong `/path`, cạnh chỗ tick
-bài.
+*Đã làm:* trang `/review/[chapter]` — `seed` nằm trong đường dẫn nên người học quay lại đúng
+bài đã tập và gửi được link, dựng ở máy chủ bằng `SheetViewer` có sẵn (nên có luôn nghe mẫu và
+*Tập bài này với đàn*), nút *Bài khác* tính `seed` kế tiếp bằng `nextSeed` nên nó chỉ là một
+thẻ `<a>` không cần JavaScript, hàng chip chọn kiểu bài. Đường vào đặt cuối danh sách bước của
+mỗi chương trong `/path`. Ranh giới trả phí dùng lại `FREE_THROUGH_CHAPTER` qua
+`canReviewChapter`.
+
+*Việc còn lại:* đánh thử bằng tay vài chục `seed` trên đàn thật (test gác được cao độ và số
+phách, nhưng *bài có nghe được không* thì không ca test nào phát biểu nổi), và luật sinh cho
+Chương 6 trở lên.
 
 *Vì sao nó thuộc giai đoạn này chứ không phải việc trang trí:* khoảng trống lớn nhất của dự án
 là chưa ai đi hết Chương 1 (mục 1). Một người học xong Chương 2 hiện hết bài để tập, và lựa chọn
@@ -402,6 +408,7 @@ Ghi lại kèm lý do, để lần sau có người (kể cả chính mình) đ�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Đổi phần kho ôn luyện ở Giai đoạn B từ *chưa có trang nào gọi* sang **đã mở**, kèm những gì thật sự dựng ra và hai việc còn lại (đánh thử bằng tay, luật sinh cho Chương 6 trở lên) |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm vào Giai đoạn B phần kho ôn luyện sinh bằng luật: bộ sinh đã xong nhưng chưa có trang nào cho người học dùng, nên ghi rõ việc còn lại, vì sao nó đáng làm sớm (người học xong Chương 2 hết bài để tập, tập lại bài cũ tới mức thuộc lòng thì không còn rèn đọc nốt) và hai ràng buộc đừng phá (không tick như bài học, Chương 6 trở lên chưa có luật sinh) |
 | 12/09/2026 | `feat: Nút phản hồi một chạm ở cuối mỗi bài, và bảng đọc phản hồi ở khu quản trị` | Mục 2 thêm cách đo **vì sao** người học dừng, thứ bảy tầng phễu không đo được: bảng `lesson_feedback` và nút một chạm cuối bài. Ghi rõ vì sao không có ô nhập chữ — người bỏ cuộc không viết gì, và ô trống làm họ bỏ luôn cú chạm |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào Giai đoạn D mục nghe tiếng đàn qua micro — ban đầu ghi là hướng cần thử, cùng ngày chủ sản phẩm chốt làm luôn nên ghi thành đã làm, kèm số đo trên tiếng tổng hợp, giới hạn đã biết, và thứ tự đo trên máy thật vì chưa có con số nào từ điện thoại đặt cạnh đàn thật. Micro là đường duy nhất tìm được để iPhone/iPad và đàn cơ cũng tập với đàn được mà vẫn ở trên web. Thêm vào mục 8 hai lối đã cân nhắc cho iPhone (app bọc web, trình duyệt riêng) và vì sao xếp sau micro |

@@ -1465,6 +1465,50 @@ nào trong app dùng tới việc chọn nốt, nên đã tắt bằng `selectTy
 đừng tin vào màu mặc định — và mọi thứ vẽ trên nền trắng cố định phải được nhìn thử ở **cả
 hai nền sáng tối**, vì nền tối là chỗ duy nhất lỗi này hiện ra.
 
+## 40. File `'use server'` chỉ được xuất ra hàm async — một bảng hằng số là build đỏ
+
+**Triệu chứng.** `tsc`, `pnpm lint`, `pnpm test` đều xanh. `npx next build` đỏ với
+*"Only async functions are allowed to be exported in a 'use server' file"*, trỏ vào một hằng
+số hoàn toàn bình thường.
+
+**Nguyên nhân.** Mọi thứ xuất ra từ file `'use server'` đều trở thành một **endpoint HTTP**
+mà trình duyệt gọi được. Next vì vậy chỉ cho xuất ra hàm `async`; một `const` hay một hàm
+đồng bộ không có cách nào thành endpoint, nên nó từ chối thẳng. Bảng chữ báo lỗi trong
+`sheet-actions.ts` (`SHEET_ERRORS`) mắc đúng chỗ này lúc dựng Kho nhạc của tôi — để cạnh các
+Server Action vì nó nói về chính các lỗi đó, mà chính vì thế nó nằm sai file.
+
+**Ngoại lệ duy nhất:** `export interface` và `export type` vẫn được, vì chúng biến mất sau
+khi biên dịch, không còn gì để thành endpoint.
+
+**Cách sửa.** Chuyển hằng số và hàm đồng bộ sang một file thuần bên cạnh (ở đây là
+`src/lib/user-sheets.ts`) rồi để file `'use server'` import từ đó. Không đổi chỗ được thì gói
+nó trong một hàm `async`, nhưng thường đó là dấu hiệu nó vốn không thuộc về file này.
+
+**Luật rút ra:** file `'use server'` là **danh sách endpoint**, không phải một module thường.
+Trước khi thêm bất cứ thứ gì vào đó, hỏi: *cái này có phải một việc trình duyệt gọi lên máy
+chủ không?* Không phải thì nó thuộc file khác. Và đây lại thêm một lỗi chỉ `next build` bắt
+được — cùng họ với bẫy 19 và bẫy 22.
+
+## 41. Server Action chỉ nhận 1MB mỗi lời gọi, nên gửi cả tập ảnh là hỏng
+
+**Triệu chứng.** Gửi một ảnh chụp bản nhạc thì được; gửi hai ba ảnh cùng lúc là lời gọi hỏng
+với thông báo về body quá cỡ — mà ở máy bàn với mạng nhanh có khi vẫn trót lọt, nên dễ tưởng
+là lỗi mạng của người dùng.
+
+**Nguyên nhân.** Next đặt sẵn `serverActions.bodySizeLimit` là **1MB**. Một ảnh chụp bằng
+điện thoại 3-5MB, mã base64 lại còn cộng thêm khoảng một phần ba — nên chỉ cần gửi ảnh gốc là
+vượt, chưa nói tới gửi nhiều ảnh một lần.
+
+**Cách sửa — hai việc, làm cả hai.** Thu nhỏ ảnh **ở trình duyệt** trước khi gửi
+(`usePhotoUpload` dùng `createImageBitmap` + `canvas`, hạ chất lượng dần cho tới khi lọt
+ngưỡng), và **gửi lần lượt từng trang một** thay vì cả tập trong một lời gọi. Nới
+`bodySizeLimit` lên cũng được nhưng là chữa sai chỗ: ảnh 4MB gửi qua 4G vẫn chậm và vẫn tốn
+tiền của người học.
+
+**Đi kèm một bẫy nhỏ của chính việc thu nhỏ:** `canvas` **không** tự xoay ảnh theo thẻ EXIF,
+nên ảnh chụp bằng điện thoại cầm dọc sẽ nằm ngang sau khi thu. Phải gọi
+`createImageBitmap(file, { imageOrientation: 'from-image' })`.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1473,6 +1517,7 @@ hai nền sáng tối**, vì nền tối là chỗ duy nhất lỗi này hiện 
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bẫy 40 (file `'use server'` chỉ xuất được hàm async, một bảng hằng số là `next build` đỏ trong khi bốn lệnh kia xanh) và bẫy 41 (Server Action chặn 1MB mỗi lời gọi nên ảnh chụp phải thu nhỏ ở trình duyệt rồi gửi từng trang, kèm chuyện `canvas` không tự xoay theo EXIF) — cả hai gặp khi dựng Kho nhạc của tôi |
 | 13/09/2026 | `fix: Hai lệnh bật nhạc nền đua nhau sinh ra bộ phát không ai tắt được` | Ghi vào bẫy 18 lần tái phát thứ hai: hai lệnh `start()` cùng chờ `resume()` thì cùng đặt `this.timer`, cái sau đè cái trước và `stop()` chỉ tắt được một. Kèm chuyện bộ giả nói dối hai lần (chỉ nhớ một lời hứa `resume`, và đồng hồ đứng yên ở 0) khiến ca test trượt rồi lại xanh nhầm |
 | 13/09/2026 | `fix: Bản nhạc ở nền tối không còn mờ tịt, và chạm vào nốt không làm nó đỏ` | Thêm bẫy 39 — abcjs vẽ bằng `currentColor` nên khung giấy trắng quên `color: '#000'` là mất bản nhạc ở nền tối, kèm lỗi thứ hai lộ ra từ cùng ảnh chụp: chạm vào nốt là abcjs chọn nốt và tô đỏ vĩnh viễn |
 | 13/09/2026 | `fix: Cú chạm cũ không bật lại được nhạc nền người học đã gạt tắt` | Thêm bẫy 38 — listener chờ cú chạm đầu tiên cầm bản chụp `on: true` từ lúc gắn, nên cú bấm sang trang khác bật lại nhạc người học vừa tắt; ghi kèm cách dựng lại bằng Playwright và luật chung cho mọi listener sống lâu hơn lần vẽ sinh ra nó |

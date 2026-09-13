@@ -129,6 +129,8 @@ CMS, không có bảng bài học trong database.
 | `/exercises` | Chuyển hướng về `/path` (gộp 11/09/2026) |
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm), cuối bài có nút *Bài trước* / *Bài tiếp theo* |
 | `/journal` | Chuyển hướng về `/path` (gộp 11/09/2026) |
+| `/review/[chapter]` | Kho ôn luyện: bài tập sinh bằng luật cho Chương 1-5, *Bài khác* ra bài mới, không tick |
+| `/my-sheets`, `/my-sheets/[id]` | Kho nhạc của tôi: bản nhạc người học tự đưa lên (file `.mid`/`.musicxml` hoặc ảnh chụp). Riêng tư, không chia sẻ |
 | `/metronome` | Máy đánh nhịp, người học tự bật và tự chỉnh tốc độ |
 | `/note-trainer` | Bài luyện nhận nốt trên khuông nhạc, đánh trên đàn thật (micro hoặc dây MIDI) |
 | `/ear-trainer` | Bài luyện tai: app phát một câu, người học mò trên đàn thật; app chỉ nói cao hơn / thấp hơn |
@@ -191,6 +193,18 @@ effect điều khiển nó chỉ động vào khi trạng thái mong muốn đ�
     cần dây cũng không cần app của hãng. Chạy trên
     **điện thoại và tablet Android** (Chrome/Edge) và máy tính. **Không chạy trên iPhone/iPad**
     — mọi trình duyệt iOS đều dùng WebKit, mà WebKit không có Web MIDI.
+- **Kho ôn luyện (`/review/[chapter]`, 13/09/2026):** cửa vào cho bộ sinh bài tập
+  `src/lib/exercise-gen.ts` — bài mới mỗi lần bấm, đúng tầm nốt và hình nốt của từng chương,
+  không phải xin phép ai vì không chép của ai. Hạt giống nằm trong đường dẫn nên tải lại
+  không đổi bài và gửi được đường dẫn một bài cụ thể. Chương 1-5; Chương 6 trở lên chưa có
+  luật sinh.
+- **Kho nhạc của tôi (`/my-sheets`, 13/09/2026):** người học tự đưa bản nhạc vào, hai đường —
+  **file `.mid`/`.musicxml`** (đọc ngay tại máy người học bằng `src/lib/midi-file.ts` và
+  `src/lib/musicxml.ts`, ra chuỗi ABC nên dùng lại được trọn `SheetViewer` kể cả *Tập bài này
+  với đàn*), và **ảnh chụp bản nhạc giấy** (thu nhỏ ở trình duyệt rồi lưu trong Postgres; chỉ
+  để đọc trên giá nhạc, app **không** nhận nốt từ ảnh). Riêng tư tuyệt đối, không có đường
+  chia sẻ, xoá được ngay — bốn điều giữ app ở vị trí *nơi chứa* ghi ở mục 7 của
+  `_internal/ban-quyen-bai-hat.md`.
 - **Tiến độ:** một dòng trong bảng `lesson_completion` cho mỗi cặp (người học, bài).
 
 **Thanh toán:** đã có phần backend — bảng `payment_order` / `payment_received` /
@@ -328,6 +342,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Mục 4 thêm ba đường dẫn mới (`/review/[chapter]`, `/my-sheets`, `/my-sheets/[id]`) và hai tính năng: kho ôn luyện mở cửa cho bộ sinh bài tập vốn đã viết xong mà chưa ai gọi, và Kho nhạc của tôi cho người học tự đưa bản nhạc vào — hai lời giải cho cùng một vấn đề *hết bài để tập*, một bên không đụng bản quyền, một bên đổi vai app thành nơi chứa |
 | 12/09/2026 | `feat: Nối đàn qua Bluetooth MIDI, khỏi cần dây` | Nói rõ MIDI nối được bằng cả dây lẫn Bluetooth — chỗ này trước chỉ ghi "dây MIDI, cáp OTG", đọc vào tưởng bắt buộc phải có dây, trong khi đàn có Bluetooth thì ghép đôi là chạy |
 | 12/09/2026 | `refactor: Hai bài luyện cũng đi qua cửa abcjs, không component nào gọi thẳng nữa` | Sơ đồ thư mục thêm `hooks/` và nói rõ bốn cửa duy nhất gọi abcjs — để người sửa sau biết đụng vào thư viện vẽ nhạc là đụng vào đâu, thay vì lần theo import trong từng component |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Đổi tên `AbcjsViewer` thành `SheetViewer` trong sơ đồ thư mục: component không còn mang tên thư viện vẽ nhạc, vì abcjs nay nằm sau hai hook `useSheetRender` / `useSheetAudio` chứ không nằm trong component |

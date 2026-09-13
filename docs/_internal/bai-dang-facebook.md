@@ -172,6 +172,53 @@ trước đó: nhìn cả câu rồi quyết đặt tay ở đâu.
 
 ---
 
+## 4d. Bài đăng số 5 — soạn 13/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** hai việc vừa xong cùng trả lời đúng một câu hỏi mà người tự học
+> nào cũng tới — *hết bài rồi thì tập gì tiếp?* — nên gộp vào một bài chứ không tách hai.
+> Bài này cũng là chỗ nói thẳng chuyện bản quyền thay vì để người ta tự đoán vì sao kho bài
+> hát ít bài; nói ra thì nó thành lý do tin được, giấu đi thì nó thành điểm yếu.
+>
+> **Ảnh nên kèm:** ảnh chụp màn hình điện thoại đang mở một bản nhạc do chính người học chụp
+> từ sách, đặt trên giá nhạc của cây đàn. Chụp cả trang sách giấy nằm cạnh thì càng rõ ý.
+>
+> **Đừng viết thành "kho nhạc không giới hạn".** Đó là quảng bá sai và còn mời người ta đưa
+> lên thứ họ không có quyền — xem mục 7 của `ban-quyen-bai-hat.md`.
+
+```text
+Câu hỏi hay gặp nhất của người tự học: tập hết bài trong giáo trình rồi thì
+tập gì tiếp? Tuần này web có hai câu trả lời.
+
+Thứ nhất, mỗi chương từ 1 đến 5 có thêm nút "Ôn luyện thêm". Bấm một cái là
+có một bài tập mới, chưa từng thấy. Bấm nữa lại có bài khác. Máy tự đặt ra
+theo đúng luật của chương bạn đang học, nên không bao giờ gặp một nốt chưa
+được dạy — thứ hay xảy ra khi đi tìm bài tập ngoài mạng.
+
+Vì sao cần: một bài đánh ba lần là thuộc, mà thuộc rồi thì tay chạy theo trí
+nhớ chứ không theo mắt đọc nốt. Muốn đọc nốt quen thì phải gặp bài lạ.
+
+Thứ hai, giờ bạn mang được bản nhạc của chính mình vào app. Có file .mid hay
+.musicxml thì chọn file, web vẽ ra khuông nhạc, và bản nhạc đó nghe mẫu được,
+tập với đàn thật được, tô xanh từng nốt bạn bấm đúng như mọi bài khác. Có
+sách giấy thì chụp từng trang bằng điện thoại rồi lật trang bằng một cú chạm
+vào mép ảnh — khỏi buông tay khỏi phím đàn để lật giấy.
+
+Bản nhạc bạn đưa lên chỉ mình bạn thấy. Không ai khác xem được, không có nút
+chia sẻ, xoá lúc nào cũng được.
+
+Nói thẳng luôn chỗ này: kho bài hát trên web chỉ có nhạc đã hết hạn bảo hộ
+bản quyền, nên không có bài đang thịnh hành. Đó không phải vì làm biếng — soạn
+lại một bài còn bản quyền rồi đăng trong sản phẩm có bán là việc phải xin phép,
+và mình đang đi xin. Trong lúc chờ, bản nhạc bạn đã có sẵn thì mang vào mà tập.
+
+Danh sách đầy đủ những gì vừa đổi:
+https://pianojourney.rehover.io/updates
+
+Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn thật để tập.
+```
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -229,6 +276,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bài đăng số 5 — gộp kho ôn luyện và Kho nhạc của tôi vào một bài vì cả hai trả lời cùng một câu *hết bài rồi tập gì tiếp*, và nói thẳng chuyện bản quyền thay vì để người đọc tự đoán vì sao Góc bài hát ít bài. Ghi kèm lời nhắc đừng viết thành "kho nhạc không giới hạn" |
 | 13/09/2026 | `docs(internal): Ghi đã đăng bài Facebook số 2 và số 3` | Đánh dấu hai bài đã lên Trang và ghi ảnh đi kèm — không ghi thì lần soạn bài sau không biết bài nào còn trong hàng chờ, dễ đăng lại hoặc bỏ sót. Bài số 4 vẫn chưa đăng |
 | 13/09/2026 | `feat: Công cụ Đặt tay ở đâu cho lúc bản nhạc đi ra ngoài năm nốt` | Thêm bài đăng số 4 rút từ bài cập nhật cùng ngày — góc kể là cái vướng không sách nào nói ra thành lời, nên đoạn "vì sao làm" của khuôn bài có sẵn chứ không phải nghĩ ra |
 | 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Soạn bài đăng số 3 về chuyện nối đàn qua Bluetooth — chọn chủ đề này vì nó gỡ đúng một cái cớ có thật để không tập, và có chuyện thật để kể (mất một buổi tối mới tìm ra vì sao đàn không nối được) chứ không chỉ có tên tính năng |

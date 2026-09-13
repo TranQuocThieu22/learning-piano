@@ -125,10 +125,16 @@ Không gấp, xoá dòng nào đã xong:
       sai kiểu gì (nhầm quãng tám, nốt ma, sót nốt nhẹ) — thứ tự đo đầy đủ ở Giai đoạn D
       của [`lo-trinh-phat-trien.md`](lo-trinh-phat-trien.md).
 
-- [ ] **Quyết chỗ cho kho ôn luyện.** `src/lib/exercise-gen.ts` sinh được bài tập Chương 1-5
-      nhưng chưa có trang nào gọi nó, nên người học chưa thấy gì. Đề xuất đang chờ: trang
-      `/review/[chapter]`, `seed` nằm trong đường dẫn, nút *Bài khác*, và *Tập bài này với đàn*
-      qua micro. Xem mục 3 của [`nhat-ky-quyet-dinh.md`](nhat-ky-quyet-dinh.md).
+- [x] ~~**Quyết chỗ cho kho ôn luyện.**~~ Xong 13/09/2026: `/review/[chapter]` đã dựng đúng
+      đề xuất — `seed` trong đường dẫn, nút *Bài khác*, hàng chọn kiểu bài, và *Tập bài này với
+      đàn* có sẵn trong `SheetViewer`. Đường vào nằm cuối danh sách bước của mỗi chương.
+
+- [ ] **Thử Kho nhạc của tôi trên điện thoại thật.** `/my-sheets` mới chỉ chạy qua `next build`
+      và test, chưa ai nhập một file `.mid` thật hay chụp một trang sách thật. Ba thứ cần thử,
+      vì cả ba chỉ hỏng trên máy thật: (1) chọn file `.mid` tải từ mạng — có ra bản nhạc đọc
+      được không, hai tay chia có hợp lý không; (2) chụp hai ba trang sách bằng điện thoại —
+      ảnh có bị nằm ngang không (thẻ EXIF, bẫy 41), gửi có lâu quá không trên 4G; (3) mở lại
+      trên máy khác xem ảnh có hiện không. Gặp gì lạ thì kể lại kèm tên file hoặc kiểu điện thoại.
 
 - [ ] **Thử bộ sinh bằng mắt trước khi cho người học thấy.** Test đã gác cao độ, số phách và
       tầm nốt, nhưng *bài tập có nghe được không* thì chỉ đánh thử mới biết. Mở Chương 1-5,
@@ -156,6 +162,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Đánh dấu việc *quyết chỗ cho kho ôn luyện* đã xong, và thay bằng việc mới: thử Kho nhạc của tôi trên điện thoại thật — ba thứ chỉ hỏng trên máy thật (file `.mid` thật, ảnh chụp bị xoay theo EXIF, mở lại trên máy khác) mà không ca test nào bắt được |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên tối 13/09 và ba việc còn treo` | Thêm ba việc vào mục 7: cấp gói kèm nhắn tay cho người đã điền form (việc chặn cả đợt beta mà chưa ai làm), thử phần nghe micro của trang Đặt tay ở đâu trên đàn thật, và kiểm lại hai lỗi nhạc nền trên đúng máy đã gặp |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm hai việc vào mục 7: quyết chỗ cho kho ôn luyện (bộ sinh bài tập đã xong mà chưa trang nào gọi nó) và đánh thử bài sinh ra trên đàn thật — test gác được cao độ và số phách, nhưng "bài tập có nghe được không" thì không ca test nào phát biểu nổi |
 | 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Cổng kiểm tra ở bước 1 lên năm lệnh sau một lần deploy đỏ dù bốn lệnh ở máy xanh hết; nói rõ ở bước 4 rằng CI không chạy build nên build chỉ được kiểm ở bước 1 |
