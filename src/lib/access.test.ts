@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   canReadLesson,
+  canReviewChapter,
   canUseDrillPreset,
   chapterOf,
   FREE_DRILL_PRESET_ID,
@@ -133,5 +134,16 @@ describe('isFreshGrant', () => {
 
   it('đồng hồ database chạy nhanh hơn máy chủ vài giây vẫn báo', () => {
     expect(isFreshGrant({ grantedAt: new Date(now.getTime() + 5_000), now })).toBe(true);
+  });
+});
+
+describe('canReviewChapter — kho ôn luyện đi theo ranh giới nội dung', () => {
+  it('người chưa mở gói ôn được đúng phần miễn phí', () => {
+    expect(canReviewChapter({ chapter: FREE_THROUGH_CHAPTER, hasFullAccess: false })).toBe(true);
+    expect(canReviewChapter({ chapter: FREE_THROUGH_CHAPTER + 1, hasFullAccess: false })).toBe(false);
+  });
+
+  it('người đã mở gói ôn được mọi chương', () => {
+    expect(canReviewChapter({ chapter: 5, hasFullAccess: true })).toBe(true);
   });
 });

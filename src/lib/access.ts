@@ -96,6 +96,22 @@ export function canUseDrillPreset(params: {
 }
 
 /**
+ * Người đang xem có được mở kho ôn luyện của chương này không?
+ *
+ * Ranh giới **trùng đúng ranh giới nội dung** (`FREE_THROUGH_CHAPTER`), không
+ * phải hàng rào mới: bài ôn luyện của Chương N sinh ra từ đúng tầm nốt và đúng
+ * hình nốt mà Chương N dạy, nên ai đọc được chương đó thì ôn được chương đó. Để
+ * ở đây cùng hai luật kia để cả ba chỉ có MỘT chỗ sửa; `exercise-gen.ts` vẫn là
+ * bộ sinh nhạc thuần, không biết gì về chuyện tiền.
+ */
+export function canReviewChapter(params: {
+  chapter: number;
+  hasFullAccess: boolean;
+}): boolean {
+  return params.hasFullAccess || params.chapter <= FREE_THROUGH_CHAPTER;
+}
+
+/**
  * Bao lâu thì tin "vừa được mở khoá" thôi còn là tin mới, tính bằng ngày.
  *
  * Có hai thứ phải cùng đúng nên mới cần con số này, không chỉ cần nút tắt:

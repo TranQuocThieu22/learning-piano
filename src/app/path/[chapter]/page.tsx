@@ -1,5 +1,5 @@
 import { Container, Group, Progress, Stack, Text } from '@mantine/core';
-import { IconArrowLeft, IconArrowRight, IconMap2 } from '@tabler/icons-react';
+import { IconArrowLeft, IconArrowRight, IconMap2, IconRepeat } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { ChapterSteps, type ChapterStepView } from '@/components/ChapterSteps';
@@ -11,6 +11,7 @@ import { viewerHasFullAccess } from '@/lib/access-server';
 import { getAllSteps, getLearningPath, nextStep, shortTitle } from '@/lib/learning-path';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { chapterColorVars } from '@/lib/chapter-colors';
+import { reviewKinds } from '@/lib/review';
 
 /**
  * Một chương, bày ra thành từng bước: lý thuyết trước, rồi các bài tập của chương.
@@ -106,6 +107,26 @@ export default async function ChapterPage({ params }: { params: Promise<{ chapte
           <Text size="xs" c="dimmed" mt="md" ta="center">
             Đăng nhập ở Trang chủ để app nhớ những bước bạn đã xong.
           </Text>
+        )}
+
+        {/*
+          Đường vào kho ôn luyện, đặt ngay dưới danh sách bước chứ không ở cuối
+          trang: người học tìm thêm bài để tập là lúc họ vừa làm xong một bước,
+          không phải lúc đang định sang chương khác. Chỉ hiện ở chương mà bộ sinh
+          bài có luật (`reviewKinds`) — chương chưa có thì nút dẫn tới trang 404.
+        */}
+        {reviewKinds(chapterNumber).length > 0 && (
+          <NavButton
+            href={`/review/${chapterNumber}`}
+            variant="light"
+            color="orange"
+            size="md"
+            mt="lg"
+            fullWidth
+            leftSection={<IconRepeat size={18} />}
+          >
+            Ôn luyện thêm — bài mới mỗi lần bấm
+          </NavButton>
         )}
 
         {/* Sang chương kế là bước cuối của một buổi học, nên nút nằm ở cuối trang. */}
