@@ -160,6 +160,26 @@ quãng tám. Nhầm luật này là lệch cả bài một quãng tám mà vẫn
 **Ghi nguồn vào trường `nguon` của file bài hát**, kèm tên bản khắc nếu nguồn có khai. Đó
 là chỗ vài tháng sau trả lời được câu "nốt này lấy ở đâu ra".
 
+**Đã khảo kho cho BÀI TẬP và kết luận là không có — đừng khảo lại.** 13/09/2026 clone nông
+kho Mutopia (1,1MB, `--filter=blob:none` kèm sparse checkout) để tìm bài ôn luyện cho Chương
+1-5, và kết quả là không dùng được bài nào:
+
+- 324 nhạc sĩ, nhưng đếm giấy phép thì chỉ **38 trong 158 bản "dễ" là vừa hết hạn bảo hộ vừa
+  khai rõ bản khắc gốc** — số còn lại thiếu một trong hai, mà thiếu `source` thì không có
+  nguồn thứ hai để đối chiếu (xem ba lớp kiểm ở trên).
+- Bản **dễ nhất** trong 38 bản đó là Czerny op. 821, tên bài nghĩa là "bài tập 8 ô nhịp" — và
+  nó đã chạy từ **Đô3 tới La6** với **nốt móc kép**. Chương 1-5 dạy đúng năm nốt Đô-Rê-Mi-Pha-Sol
+  một vị trí, hình nốt chỉ tới nốt tròn.
+- Các sách vỡ lòng đúng tầm (Beyer op. 101, Köhler, Le Couppey) **không có trong kho nào lấy
+  được** từ máy dựng bản.
+
+Nguyên nhân gốc, và là lý do đừng đi tìm lại: **thế tay 5 ngón một vị trí là phát minh của
+sách phương pháp hiện đại**, còn nhạc cổ điển thật bắt đầu từ chỗ hai tay đi khắp bàn phím.
+Kho nhạc công cộng chứa *nhạc*, không chứa *bài tập vỡ lòng*. Vì vậy bài tập Chương 1-5 **tự
+sinh bằng luật** (`src/lib/exercise-gen.ts`) — xem mục 1 của `nhat-ky-quyet-dinh.md`. Ba kho ở
+bảng trên vẫn là nguồn đúng cho **bài hát** ở `/songs` và cho bài ôn luyện từ Chương 6 trở lên,
+khi tầm nốt đã mở ra cả quãng tám.
+
 ## 7. Hai chuyện đã bàn và đã chốt, đừng bàn lại
 
 - **"Soạn bằng AI rồi ghi nguồn là được."** Không. Bản quyền bảo hộ **bản thân tác phẩm âm
@@ -179,5 +199,6 @@ là chỗ vài tháng sau trả lời được câu "nốt này lấy ở đâu 
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Ghi vào mục 6 kết quả khảo kho Mutopia cho BÀI TẬP Chương 1-5: chỉ 38/158 bản dễ là vừa hết hạn bảo hộ vừa khai bản khắc gốc, và bản dễ nhất (Czerny op. 821) đã chạy Đô3-La6 với nốt móc kép. Nguyên nhân gốc là thế tay 5 ngón một vị trí vốn là phát minh của sách phương pháp hiện đại nên kho nhạc công cộng không có — ghi lại để đừng mất công khảo lại, và để nhớ ba kho kia vẫn đúng cho bài hát và cho Chương 6 trở lên |
 | 11/09/2026 | `fix: Chép lại Für Elise, Minuet và Jingle Bells theo bản nhạc gốc thay vì trí nhớ` | Thêm mục 6 — ba kho bản nhạc công cộng thật sự lấy được từ máy dựng bản (Mutopia qua GitHub, hai kho của bbloomf, musetrainer), luật đọc `\relative` của LilyPond, và ba lớp kiểm sau khi chép; ghi luôn chuyện IMSLP với abcnotation bị chặn ở cổng ra nên đừng mất công thử lại |
 | 11/09/2026 | `docs(internal): Hướng dẫn xin phép bản quyền bài hát` | Tạo file — chủ sản phẩm hỏi cách hỏi VCPMC và chi phí. Ghi rõ chỗ dễ hỏi nhầm cửa nhất (quyền in ấn thường không nằm ở tổ chức quản lý tập thể), thư hỏi mẫu dán là gửi được, và nói thẳng là **chưa biết chi phí** kèm ba con số cần chốt — thà để trống còn hơn điền một con số đoán rồi ai đó lập ngân sách theo nó |

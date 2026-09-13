@@ -109,6 +109,16 @@ Không gấp, xoá dòng nào đã xong:
       sai kiểu gì (nhầm quãng tám, nốt ma, sót nốt nhẹ) — thứ tự đo đầy đủ ở Giai đoạn D
       của [`lo-trinh-phat-trien.md`](lo-trinh-phat-trien.md).
 
+- [ ] **Quyết chỗ cho kho ôn luyện.** `src/lib/exercise-gen.ts` sinh được bài tập Chương 1-5
+      nhưng chưa có trang nào gọi nó, nên người học chưa thấy gì. Đề xuất đang chờ: trang
+      `/review/[chapter]`, `seed` nằm trong đường dẫn, nút *Bài khác*, và *Tập bài này với đàn*
+      qua micro. Xem mục 3 của [`nhat-ky-quyet-dinh.md`](nhat-ky-quyet-dinh.md).
+
+- [ ] **Thử bộ sinh bằng mắt trước khi cho người học thấy.** Test đã gác cao độ, số phách và
+      tầm nốt, nhưng *bài tập có nghe được không* thì chỉ đánh thử mới biết. Mở Chương 1-5,
+      mỗi chương lấy vài `seed`, đánh trên đàn thật. Gặp bài nghe kỳ thì kể lại `seed` và kiểu
+      bài — chỗ sửa nằm ở `cauBaO` và `cauLienBac`.
+
 - [ ] **Khi đóng đợt beta:** gỡ khối mời đăng ký ở đầu `docs/01-roadmap/roadmap.md`
       và hằng số `FORM_DANG_KY` cùng nút của nó trong `src/components/LessonLocked.tsx`.
       Hai chỗ này chỉ đúng trong lúc còn nhận người thử.
@@ -130,6 +140,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm hai việc vào mục 7: quyết chỗ cho kho ôn luyện (bộ sinh bài tập đã xong mà chưa trang nào gọi nó) và đánh thử bài sinh ra trên đàn thật — test gác được cao độ và số phách, nhưng "bài tập có nghe được không" thì không ca test nào phát biểu nổi |
 | 11/09/2026 | `docs: Thêm next build vào cổng kiểm tra trước khi commit` | Cổng kiểm tra ở bước 1 lên năm lệnh sau một lần deploy đỏ dù bốn lệnh ở máy xanh hết; nói rõ ở bước 4 rằng CI không chạy build nên build chỉ được kiểm ở bước 1 |
 | 11/09/2026 | `feat: Nghe tiếng đàn qua micro để tập với đàn trên mọi điện thoại` | Thêm vào mục 7 việc thử micro trên máy thật — tính năng mới chỉ được đo trên tiếng đàn tổng hợp, mà đó là việc duy nhất Claude không làm hộ được vì cần một chiếc điện thoại đặt cạnh cây đàn thật; ghi luôn cách thử cụ thể để làm được ngay khi mở file ra |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi địa chỉ xem kết quả ở bước 5 sang tên miền mới — bước này được đọc mỗi ngày nên để tên miền cũ ở đây là chỗ dễ tin nhầm nhất |

@@ -40,6 +40,76 @@
 
 ---
 
+## 13/09/2026 — Gom mã về một cửa, nối Bluetooth, và bộ sinh bài tập
+
+> Khối này gộp một phiên dài từ trưa 12/09 tới khuya 13/09, từ commit `d964d40` tới
+> `dc514c6`. Hai khối 12/09 bên dưới ghi phần đầu ngày, đừng đọc chồng.
+
+**Đã làm**
+
+- **Gom bốn kho nhớ lựa chọn và ba hàm "phím đen hay phím trắng" về một chỗ**, rồi viết
+  `.claude/skills/code-standards/SKILL.md` — bảng tra *cần gì thì đã có sẵn ở đâu*, sáu quy
+  tắc kèm chỗ từng quy tắc đã cứu repo này, và danh sách những chỗ **đừng** refactor. Lý do
+  làm cái skill chứ chỉ gom mã: chép một khuôn sang chỗ mới là cách dự án này sinh lỗi nhiều
+  nhất, mà nó sẽ còn tái diễn nếu không có chỗ nào nói trước "thứ này đã có rồi".
+- **Ghim `abcjs` đúng `6.7.0` không có dấu `^`, và tách khung xem bản nhạc thành cửa vẽ
+  (`useSheetRender`) và cửa tiếng (`useSheetAudio`)**; hai bài luyện cũng đi qua cửa đó nên
+  **không component nào còn gọi thẳng abcjs**. Bốn file là toàn bộ chỗ nhập thư viện. Đây là
+  câu trả lời cho câu hỏi "thư viện sheet hiện tại còn ổn không": ổn, và thứ phải làm không
+  phải đổi thư viện mà là **co đường ra vào nó lại** để đổi được nếu sau này cần.
+- **Thêm hình bàn phím vẽ thẳng trong bài lý thuyết** (khối ```keys, dựng bởi
+  `src/lib/keyboard-diagram.ts`), ba chương trống nay có hình, rồi sửa ba lỗi của hình. Người
+  dùng báo tiếp *"sao bị dư phím trắng phía sau"* — hình vẽ thừa phím ở hai đầu nên bàn tay
+  nhìn như đặt lệch; nay hình hết ở đúng chỗ bàn tay hết.
+- **Nối đàn qua Bluetooth, không cần dây**: ba vòng đầu đều sai hướng dẫn chứ không sai mã
+  (xem mục Quan sát), vòng cuối làm **đường thứ ba** — `useBleMidiInput` nối thẳng bằng **Web
+  Bluetooth** rồi tự đọc gói BLE-MIDI qua `src/lib/ble-midi.ts`, vì Chrome trên Android không
+  liệt kê thiết bị BLE MIDI qua `requestMIDIAccess`. Ghi thành **bẫy 35**, viết lại hướng dẫn
+  và một bài *Có gì mới*.
+- **Bài luyện nhận nốt đổi sang ba màu** theo đúng câu người dùng nói: nốt chưa trả lời để
+  **đen**, bấm đúng **xanh**, bấm trượt **nháy đỏ** — thay màu tím mặc định của abcjs.
+- **Đi tìm kho nhạc cổ điển miễn phí để làm kho ôn luyện, và kết luận là không có.** Clone
+  nông kho Mutopia (1,1MB), soi 324 nhạc sĩ, đếm giấy phép: chỉ 38 trong 158 bản dễ là vừa
+  hết hạn bảo hộ vừa khai rõ bản khắc gốc, và bản dễ nhất trong số đó — Czerny op. 821 — đã
+  chạy từ Đô3 tới La6 với nốt móc kép. Chi tiết ghi vào mục 6 của `ban-quyen-bai-hat.md`.
+- **Dựng `src/lib/exercise-gen.ts`: sinh bài tập ôn luyện Chương 1-5 bằng LUẬT.** Hai bảng
+  dữ liệu (`CHAPTER_RULES`, `EXERCISE_KINDS`), bảy kiểu bài, cùng `seed` thì cùng một bài trên
+  mọi máy. 111 ca test, trong đó ca then chốt đọc **cao độ vang ra thật** bằng
+  `getMidiFile(..., 'binary')` rồi so với cao độ bộ sinh tự khai. Ghi thành **bẫy 36**.
+
+**Quan sát**
+
+- **Ba vòng hướng dẫn Bluetooth sai liên tiếp, và cả ba lần mã đều không sai.** Vòng 1 viết
+  "ghép đôi ở Cài đặt là xong" — sai, ghép đôi chỉ nối phần TIẾNG. Vòng 2 viết "mở bằng app
+  của hãng đàn" — vẫn chưa đủ, Chrome Android không liệt kê thiết bị BLE MIDI. Thứ thực sự
+  còn thiếu ở máy người dùng lại là **hộp xin quyền của trình duyệt**, và chỉ người dùng nói
+  *"mới cho phép kết nối của trình duyệt, trước đó không biết"* mới lộ ra. Bài học đáng ghi
+  hơn cả ba vòng: **hướng dẫn kết nối thiết bị thì phải thử trên máy thật mới được phát
+  hành**, vì người đọc không có cách nào phân biệt "mình làm sai" với "hướng dẫn sai".
+- **Hai lỗi người dùng báo trong phiên này đều là thứ mình nhìn mà không thấy** — màu tím của
+  nốt và phím trắng thừa ở hình. Cả hai đều thuộc loại "mặc định của thư viện để nguyên", và
+  cả hai đều không có lỗi nào báo ra.
+- **Ca test đọc cao độ vang ra tìm được lỗi ngay lượt chạy đầu tiên**, sau khi ba ca khác
+  cùng soi đúng bài đó đều báo xanh. Đó là lý do nó xứng đáng thành luật chung: *thứ gì sinh
+  ra nhạc thì phải có một ca so cao độ vang ra với cao độ bộ sinh tự khai* — đọc lại chuỗi ABC
+  bằng biểu thức chính quy chỉ chứng minh mình viết ra đúng thứ mình định viết.
+- **Một lỗi nữa test không thấy được, phải đọc bản nhạc mới thấy**: ô `E _E F E` đủ phách và
+  vang đúng luật dấu hoá, nhưng bày cho người mới hai nốt nhìn y hệt mà một nốt bấm phím
+  trắng, một nốt bấm phím đen. Chất lượng bài tập có phần không ca test nào phát biểu nổi
+  trừ khi đã nhìn bằng mắt một lần.
+
+**Tiếp theo**
+
+- **Bộ sinh chưa có chỗ nào gọi nó** — đó là việc còn tồn lớn nhất của phiên này. Đề xuất
+  trang `/review/[chapter]` lấy `seed` từ đường dẫn (để quay lại đúng bài đã tập và gửi link
+  được), dựng ở máy chủ bằng `SheetViewer` có sẵn, kèm nút *Bài khác* và *Tập bài này với
+  đàn* qua micro.
+- **Chương 6 trở lên chưa có luật sinh.** Chương 6 mới là chương dạy luồn ngón đi quá thế tay
+  5 ngón, nên tầm nốt, kiểu bài và cả cách dựng câu đều phải bàn lại — đừng nới `CHAPTER_RULES`
+  thêm một dòng rồi tưởng xong.
+- **Viết bài *Có gì mới* và bài Facebook rút gọn** — nhưng chỉ khi kho ôn luyện đã ra mắt:
+  mục đó kể bằng việc người học làm được, mà hiện họ chưa làm được gì với bộ sinh.
+
 ## 12/09/2026 — Mục *Có gì mới*, và bài đăng thứ hai
 
 **Đã làm**
