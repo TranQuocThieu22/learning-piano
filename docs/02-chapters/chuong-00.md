@@ -101,7 +101,7 @@ Bản đầu tiên của chương này kể toàn bộ lịch sử: bốn thời
 
 Chuyện hay thật, nhưng nó **dài** — và không có chữ nào trong đó giúp ngón tay bạn bấm đúng phím trong ngày đầu tiên. Dựng một bức tường chữ ngay trước mặt người vừa mới bắt đầu là cách nhanh nhất khiến họ đóng tab và không quay lại.
 
-Nên phần đó được chuyển xuống mục **Đọc thêm** ở cuối thanh điều hướng bên trái:
+Nên phần đó được chuyển sang mục **Đọc thêm** — bạn tìm thấy nó trong trang **Mục lục**, và ở cuối màn hình chủ:
 
 **👉 [Cây đàn này đến từ đâu?](/07-doc-them/lich-su-piano)**
 

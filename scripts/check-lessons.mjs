@@ -96,6 +96,36 @@ function splitBars(elements) {
   return bars;
 }
 
+/**
+ * Dò bẫy 25: **dấu hoá có hiệu lực tới hết ô nhịp**.
+ *
+ * Viết `F ^F F ^F` thì nốt Pha thứ ba KHÔNG quay về phím trắng — nó vẫn vang
+ * Pha thăng, vì dấu thăng ở nốt trước còn hiệu lực tới hết ô. Bản nhạc nhìn thì
+ * xen kẽ trắng/đen, tiếng ra lại ba nốt đen liền nhau, và **không có lỗi nào báo**:
+ * ô vẫn đủ phách, nốt vẫn trong tầm, abcjs vẫn vẽ đẹp. Muốn nốt sau trở về phím
+ * trắng thì phải ghi dấu bình (`=F`).
+ *
+ * Chỉ tính dấu hoá ghi TAY cạnh nốt, không tính hoá biểu: trong giọng Sol trưởng
+ * thì nốt Pha trơn vốn đã là Pha thăng, đó là đúng chứ không phải bẫy.
+ *
+ * Đã cắn thật hai lần: Für Elise (11/09/2026) và bốn ô nhịp trong Chương 4 —
+ * đúng chương dạy dấu hoá.
+ */
+function accidentalBleeds(els) {
+  const hits = [];
+  let seen = new Map();
+  for (const el of els) {
+    if (el.el_type === 'bar') { seen = new Map(); continue; }
+    if (el.el_type !== 'note' || el.rest) continue;
+    for (const p of el.pitches ?? []) {
+      if (p.accidental) { seen.set(p.pitch, p.accidental); continue; }
+      const truoc = seen.get(p.pitch);
+      if (truoc) hits.push({ name: p.name ?? `pitch ${p.pitch}`, truoc });
+    }
+  }
+  return hits;
+}
+
 const pitchesOf = (els) =>
   els.filter((e) => e.el_type === 'note' && !e.rest)
      .flatMap((e) => (e.pitches ?? []).map((p) => p.pitch));
@@ -154,6 +184,11 @@ for (const { dir, file, strictNaming } of targets) {
       const bars = splitBars(els);
       barCounts.push(bars.length);
       allPitches.push(...pitchesOf(els));
+
+      for (const { name, truoc } of accidentalBleeds(els)) {
+        err(label, `khuông ${si + 1}: nốt ${name} viết trơn nhưng dấu ${truoc} ở nốt cùng tên phía trước `
+          + 'trong cùng ô nhịp vẫn còn hiệu lực — nó sẽ vang ra nốt hoá. Ghi dấu bình (=) nếu muốn phím trắng.');
+      }
 
       bars.forEach((total, bi) => {
         if (Math.abs(total - expected) < 1e-9) return;

@@ -63,7 +63,9 @@ K: C
 ```
 
 ## Bài tập 1B: So sánh Pha và Pha thăng
-Bài này cực kỳ quan trọng cho đôi tai của bạn: đánh Pha rồi đánh Pha thăng liền nhau để **nghe rõ sự khác biệt nửa cung**. Chú ý ô nhịp 3 có dấu bình (♮) đưa nốt về lại phím trắng.
+Bài này cực kỳ quan trọng cho đôi tai của bạn: đánh Pha rồi đánh Pha thăng liền nhau để **nghe rõ sự khác biệt nửa cung**.
+
+Chú ý **dấu bình (♮)** ở ô nhịp 1 và ô nhịp 3 — nó đưa nốt về lại phím trắng. Nó bắt buộc phải có ở đó: dấu thăng có hiệu lực tới hết ô nhịp, nên nếu không ghi dấu bình thì nốt Pha thứ ba trong ô vẫn là **Pha thăng**, dù nhìn trên giấy tưởng là phím trắng. Đây chính là quy tắc hiệu lực bạn vừa đọc ở phần lý thuyết.
 
 ```abc
 X: 2
@@ -73,7 +75,7 @@ M: 4/4
 L: 1/4
 Q: 1/4=60
 K: C
-F ^F F ^F | G2 ^F2 | =F E =F G | C4 |]
+F ^F =F ^F | G2 ^F2 | =F E =F G | C4 |]
 ```
 
 *(Ký hiệu `=F` trong bản nhạc chính là **dấu bình (♮)** — hủy dấu thăng, quay về phím trắng Pha.)*

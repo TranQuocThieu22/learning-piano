@@ -1,6 +1,6 @@
 # Chương 2: Nhịp điệu và Phối hợp 2 tay
 
-Chào bạn, hôm qua chúng ta đã làm quen với 5 nốt C-D-E-F-G rất tốt rồi. Hôm nay chúng ta sẽ học thêm một khái niệm cực kỳ quan trọng trong âm nhạc: **Nhịp điệu (Trường độ)** và bắt đầu thử thách **phối hợp 2 tay**.
+Bốn buổi của Chương 1 đã cho bạn năm nốt C-D-E-F-G và một bản nhạc hoàn chỉnh chơi bằng một tay. Chương này thêm hai thứ: **nhịp điệu (trường độ)** — nốt dài nốt ngắn — và lần đầu tiên bạn cho **hai tay đánh cùng lúc**.
 
 ## 1. Các loại hình nốt cơ bản (Trường độ)
 Âm nhạc không chỉ có nốt cao hay thấp, mà còn có nốt dài hay ngắn. 

@@ -52,12 +52,14 @@ D#4
 
 Đây là chỗ nhiều người mới hay nhầm:
 
-- Dấu thăng/giáng được viết **NGAY TRƯỚC nốt nhạc** (bên trái), **không phải bên trên hay bên dưới**.
-- Nhưng khi **đọc to tên nốt**, ta lại đọc **ngược lại**: viết `#F` nhưng đọc là "Pha thăng".
+- Trên khuông nhạc, dấu thăng/giáng đứng **NGAY TRƯỚC nốt** (bên trái nó), **không phải bên trên hay bên dưới**.
+- Nhưng khi **viết tên nốt bằng chữ**, ký hiệu lại đứng **SAU** chữ cái: **F#**, **Eb** — như trong bảng ở trên. Cả hai cách đều đọc là "Pha thăng", "Mi giáng".
+
+> Hai chỗ ngược nhau nghe rối, nhưng chỉ cần nhớ: **trên bản nhạc thì dấu đi trước nốt, trong dòng chữ thì dấu đi sau chữ cái.**
 
 **👉 Quy tắc hiệu lực (rất quan trọng):** Một dấu hóa có hiệu lực với **tất cả các nốt cùng tên trong CÙNG một ô nhịp**, cho đến khi gặp vạch nhịp tiếp theo.
 
-> Ví dụ: nếu ô nhịp có `#F` ở đầu, thì mọi nốt Pha khác trong ô nhịp đó đều là Pha thăng, dù không ghi dấu # lại. Sang ô nhịp mới, nốt Pha quay về phím trắng bình thường.
+> Ví dụ: nếu ô nhịp có một nốt **Pha thăng (F#)** ở đầu, thì mọi nốt Pha khác trong ô nhịp đó đều là Pha thăng, dù không ghi lại dấu # lần nữa. Sang ô nhịp mới, nốt Pha quay về phím trắng bình thường.
 
 ## 4. Kỹ thuật chạm phím đen
 

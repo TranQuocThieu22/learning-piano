@@ -168,6 +168,6 @@ Việc này lúc đầu rất chậm và hơi bực. Nhưng nó chính là **c�
 
 ---
 
-Xong bài này là bạn **hoàn thành Giai đoạn 1**. Đừng quên vào **Nhật ký học tập** tick nốt bài cuối cùng này.
+Xong bài này là bạn **hoàn thành Giai đoạn 1**. Đừng quên tick nốt bài cuối cùng này bằng nút **Đánh dấu đã học xong** ở cuối trang.
 
 Giai đoạn 2 sẽ dạy bạn **hợp âm và đệm hát** — thứ cho phép bạn tự đệm một bài hát mình thích từ đầu tới cuối, thay vì chỉ chơi giai điệu.

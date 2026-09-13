@@ -166,6 +166,6 @@ Sai nhiều lần là chuyện đương nhiên, và chính những lần "nghe c
 
 ---
 
-Xong bài này là bạn hết **Chương 7**. Đừng quên vào **Nhật ký học tập** tick bài.
+Xong bài này là bạn hết **Chương 7**. Đừng quên tick bài bằng nút **Đánh dấu đã học xong** ở cuối trang.
 
 Chương 8 sẽ dạy các **mẫu đệm** — thay vì bấm cả hợp âm một cục ở phách 1, tay trái sẽ rải nốt, chia nhịp, và bản đệm bắt đầu nghe giống nhạc thật sự.

@@ -90,20 +90,16 @@ T: Ba nốt Pha ở ba quãng tám khác nhau
 M: 4/4
 L: 1/4
 Q: 1/4=70
+%%score { 1 | 2 }
 K: C
-V: 1 clef=bass
-F,4 | z4 | z4 |]
+V:1 clef=treble
+V:2 clef=bass
+[V:1] z4 | F4 | f4 |]
+[V:2] F,4 | z4 | z4 |]
 ```
 
-```abc
-X: 106
-T: Hai nốt Pha còn lại (Khóa Sol)
-M: 4/4
-L: 1/4
-Q: 1/4=70
-K: C
-F4 | f4 |]
-```
+Ba ô nhịp, mỗi ô một nốt Pha: ô đầu ở khuông dưới (tay trái), hai ô sau ở khuông trên (tay phải).
+Cùng một chữ Pha, mà mỗi lần lại cao hơn lần trước đúng một quãng tám.
 
 **👉 Điều cần nhớ:** khi đọc một nốt, đừng chỉ hỏi "nốt gì" mà phải hỏi **"nốt gì, và nằm ở khuông nào"**. Cùng chữ Pha nhưng ở Khóa Pha thì tay trái chơi, ở Khóa Sol thì tay phải chơi.
 

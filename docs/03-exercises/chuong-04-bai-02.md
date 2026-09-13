@@ -62,7 +62,9 @@ K: C
 ```
 
 ## Bài tập 2B: So sánh Mi và Mi giáng
-Nghe kỹ sự khác biệt. Ô nhịp 3 dùng dấu bình (`=E`) để quay lại phím trắng — chú ý tai bạn sẽ thấy "sáng" trở lại ngay.
+Nghe kỹ sự khác biệt. Dấu bình (`=E`) đưa nốt về lại phím trắng — chú ý tai bạn sẽ thấy "sáng" trở lại ngay.
+
+Nó phải có mặt ngay trong ô nhịp 1: dấu giáng có hiệu lực tới hết ô, nên không ghi dấu bình thì nốt Mi thứ ba vẫn vang ra **Mi giáng** chứ không quay về phím trắng.
 
 ```abc
 X: 2
@@ -72,7 +74,7 @@ M: 4/4
 L: 1/4
 Q: 1/4=60
 K: C
-E _E E _E | D2 _E2 | =E D =E G | C4 |]
+E _E =E _E | D2 _E2 | =E D =E G | C4 |]
 ```
 
 ## Bài tập 2C: Vui và Buồn - Cùng một giai điệu

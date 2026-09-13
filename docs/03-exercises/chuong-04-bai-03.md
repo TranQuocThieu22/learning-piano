@@ -85,7 +85,7 @@ M: 4/4
 L: 1/4
 Q: 1/4=70
 K: C
-C _E F ^F | G4 | G ^F F _E | C4 |
+C _E F ^F | G4 | G ^F =F _E | C4 |
 C _E F ^F | G2 F2 | _E C _E C | C4 |]
 ```
 
@@ -100,7 +100,7 @@ M: 4/4
 L: 1/4
 Q: 1/4=60
 K: C
-C _E G ^F | _E2 E2 | F ^F G2 | _E C2 z |
+C _E G ^F | _E2 =E2 | F ^F G2 | _E C2 z |
 C D _E F | ^F G2 z | G ^F _E C | C4 |]
 ```
 
@@ -117,7 +117,7 @@ Q: 1/4=70
 %%staves {1 2}
 K: C
 V: 1 clef=treble
-C _E F ^F | G4 | G ^F F _E | C4 |
+C _E F ^F | G4 | G ^F =F _E | C4 |
 C _E F ^F | G2 F2 | _E C _E C | C4 |]
 V: 2 clef=bass
 C,4 | C,4 | G,4 | C,4 |

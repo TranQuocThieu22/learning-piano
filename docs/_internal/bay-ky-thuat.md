@@ -886,6 +886,27 @@ nghe, và nói thẳng ra là chưa ai nghe.
 
 ---
 
+**Tái phát 13/09/2026, và lần này ngay trong chương DẠY dấu hoá.** Soi lại toàn bộ giáo
+trình trước khi mở cho người học mới thì thấy bốn ô nhịp nữa mắc đúng bẫy này, cả bốn đều
+ở Chương 4:
+
+| Bài | Viết | Vang ra thật |
+|---|---|---|
+| 1B *So sánh Pha và Pha thăng* | `F ^F F ^F` | Pha, Pha#, **Pha#**, Pha# |
+| 2B *So sánh Mi và Mi giáng* | `E _E E _E` | Mi, Mi♭, **Mi♭**, Mi♭ |
+| 3B và 3D *Câu Blues* | `G ^F F _E` | Sol, Pha#, **Pha#**, Mi♭ |
+| 3C *Kết hợp hai phím đen* | `_E2 E2` | Mi♭, **Mi♭** |
+
+Chỗ chua nhất: hai bài đầu tên là *"So sánh Pha và Pha thăng"* và *"So sánh Mi và Mi
+giáng"* — cả giá trị của bài nằm ở chỗ nghe hai nốt khác nhau, mà app phát ba nốt giống
+nhau liền. Người soạn còn biết luật (ô nhịp 3 của chính bài đó có ghi `=F`), chỉ là quên
+rằng ô nhịp 1 cũng cần. Cách sửa: ghi dấu bình — `F ^F =F ^F`.
+
+**Nay đã có lớp gác, không phải soi bằng mắt nữa.** `scripts/check-lessons.mjs` có hàm
+`accidentalBleeds()` báo đỏ mọi nốt viết trơn mà có dấu hoá cùng tên đứng trước nó trong
+cùng ô nhịp. Chỉ tính dấu ghi tay cạnh nốt, không tính hoá biểu — trong giọng Sol trưởng
+thì nốt Pha trơn vốn đã là Pha thăng, đó là đúng luật chứ không phải bẫy.
+
 ## 26. Chạm vào hình SVG có chữ trên Android: kính lúp chọn chữ nhảy ra che nửa màn hình
 
 **Triệu chứng.** Người dùng gửi ảnh chụp màn hình: giữa bàn phím piano vẽ bằng SVG có **một
@@ -1323,6 +1344,7 @@ theo bản nhạc này thì có ra đúng tiếng không".
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 13/09/2026 | `fix: Sửa bốn ô nhịp Chương 4 phát ra nốt khác với nốt đã vẽ` | Ghi vào bẫy 25 lần tái phát thứ hai: bốn ô nhịp trong Chương 4 (đúng chương dạy dấu hoá) phát ra nốt hoá ở chỗ bản nhạc vẽ phím trắng, trong đó hai bài tên là "So sánh Pha và Pha thăng" và "So sánh Mi và Mi giáng" — cả giá trị của bài nằm ở chỗ nghe hai nốt khác nhau mà app phát ba nốt giống nhau liền. Kèm lớp gác mới `accidentalBleeds()` trong check-lessons.mjs để lần sau không phải soi bằng mắt |
 | 12/09/2026 | `fix: Sửa hướng dẫn nối Bluetooth — ghép đôi ở Cài đặt chỉ ra tiếng, không ra MIDI` | Thêm bẫy 35 — trên Android, BLE MIDI chỉ hiện ra sau khi một app gọi `MidiManager.openBluetoothDevice()`, nên ghép đôi ở Cài đặt xong vẫn "chưa thấy đàn nào"; ghi kèm chuyện hướng dẫn sai đã lên production một lần vì viết mà chưa thử trên máy thật |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Ghi vào bẫy 28 lý do `abcjs` bị ghim đúng `6.7.0` không có `^`: bẫy 28-33 đều bám vào chi tiết bên trong thư viện, mà chi tiết đó đổi thì cả năm lệnh kiểm vẫn xanh và chỉ bản nhạc trên màn hình là sai. Sửa tên file cho khớp: `AbcjsViewer.tsx` nay là `SheetViewer.tsx`, phần vá `SynthControllerInternals` dời sang `src/hooks/useSheetAudio.ts` |
 | 12/09/2026 | `refactor: Gộp bốn kho nhớ và ba hàm phím đen về một chỗ, kèm quy ước viết mã` | Thêm bẫy 34 — đổi tên biến trùng tên hàm vừa import làm `key.chromatic?.[pitchClass]` tra bảng bằng hàm, nốt Si giáng lặng lẽ hiện thành La thăng mà `tsc` và lint đều xanh; ghi kèm luật mỗi lần gom trùng lặp phải có test chạy qua chỗ gom |

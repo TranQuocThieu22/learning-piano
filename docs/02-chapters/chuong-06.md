@@ -45,7 +45,7 @@ Câu hỏi rất hợp lý: cần thêm ba nốt thì cứ với ngón út ra th
 
 ```keys
 C4 C5
-Ngón cái giữ ở Đô, ngón út với tới Đô cao — bảy phím trắng. Thử xem tay bạn với nổi không.
+Ngón cái giữ ở Đô, ngón út với tới Đô cao — tám phím trắng. Thử xem tay bạn với nổi không.
 ```
 
 Thử là thấy ngay. Giữ ngón cái ở nốt Đô rồi cố với ngón út tới nốt Đô cao: bàn tay căng ra như cái nan quạt, cổ tay lệch đi, và các ngón giữa bị kéo đờ ra không bấm nổi. Chưa kể tám phím thì vượt xa tầm với của tay người mới.
