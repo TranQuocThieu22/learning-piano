@@ -40,6 +40,64 @@
 
 ---
 
+## 14/09/2026 (rạng sáng) — Kho ôn luyện và Kho nhạc của tôi
+
+**Đã làm**
+
+- **Mở cửa cho bộ sinh bài tập: `/review/[chapter]`.** Bộ sinh viết xong từ 13/09 nhưng
+  không có trang nào gọi nó, nên người học chưa hề thấy. Nay mỗi chương 1-5 có nút *Ôn luyện
+  thêm*, bấm là ra bài mới; hạt giống nằm trong đường dẫn nên tải lại không mất bài, và nút
+  *Bài khác* chỉ là một thẻ `<a>` máy chủ dựng sẵn (`nextSeed`), không cần JavaScript.
+- **Dựng *Kho nhạc của tôi* (`/my-sheets`)** — người học tự đưa bản nhạc vào, hai đường:
+  file `.mid`/`.musicxml` đọc **ngay tại máy họ** rồi ra chuỗi ABC (dùng lại trọn
+  `SheetViewer`, có luôn *Tập bài này với đàn*), và ảnh chụp bản nhạc giấy thu nhỏ ở trình
+  duyệt rồi gửi từng trang.
+- **Tự viết hai bộ đọc**: `src/lib/midi-file.ts` (đọc SMF, gộp nốt, tách hai tay theo Đô
+  giữa) và `src/lib/musicxml.ts` (tự quét XML vì vitest không có `DOMParser`), cả hai đổ về
+  một dạng chung rồi ghi ra ABC qua một cửa duy nhất `toAbc`.
+- **Thêm hai bảng `user_sheet` và `user_sheet_page`** bằng migration có file, chỉ THÊM.
+- **Ghi ranh giới pháp lý thành mục 7 của `ban-quyen-bai-hat.md`** và thêm mục 4 vào Điều
+  khoản (kèm đầu mối nhận khiếu nại). Đánh số lại các mục sau đó trong `terms.md`, sửa luôn
+  chú thích trỏ tới mục 7 cũ trong `LessonLocked.tsx`.
+- **Hai bài *Có gì mới*** cho người học, và bài Facebook số 5 rút gọn dẫn về chúng.
+- **Đẩy lên production**: ba commit vào `main` (`ac0ea51`, `43ae20f`, `41202f1`), CI *Cổng
+  kiểm tra* lần chạy #160 xanh.
+
+**Quan sát**
+
+- **Một tính năng "đã xong" trong `src/lib/` chưa phải là tính năng.** Bộ sinh bài tập có
+  111 ca test và không ai dùng được nó suốt một ngày, chỉ vì thiếu một trang. Lần sau viết
+  lib xong thì hỏi ngay *người học chạm vào nó ở đâu* — nếu chưa trả lời được thì việc chưa
+  xong, dù test có xanh.
+- **Nhánh `main` trong máy ảo của phiên Claude Code là lịch sử KHÁC hẳn.** Lúc định merge,
+  git từ chối với *"refusing to merge unrelated histories"*: `main` nội bộ là bản clone cũ
+  (gốc lịch sử khác, commit mới nhất 10/09), lệch `origin/main` 50 commit mỗi bên. Cách đi
+  đúng là đẩy thẳng nhánh lên `main` của remote (`git push origin <nhánh>:main`). **Từ nay
+  trong phiên trên máy ảo: luôn đối chiếu với `origin/main`, đừng tin `main` đang có sẵn.**
+- **Lần đẩy đầu vào `main` bị chính Claude Code chặn** với lý do *Production Deploy* — phải
+  có câu cho phép rõ ràng của chủ sản phẩm mới đẩy được. Đây là hàng rào tốt, ghi lại để lần
+  sau khỏi tưởng hỏng mạng.
+- **Test MIDI đỏ hai ca, và lỗi nằm ở chính bộ dựng file của test** — phần thân `MThd` tôi
+  viết thừa hai byte nên số tick mỗi nốt đen đọc ra bằng 1, mọi trường độ sai bét. Đúng bài
+  học đã ghi ở bẫy 18 hồi 13/09: **test dựng lại một thứ phức tạp thì nghi cái máy đo trước,
+  đừng nghi mã ngay.**
+- **Ảnh lưu thẳng trong Postgres, không thuê kho file.** Cân nhắc và chọn ít nhà cung cấp
+  hơn ở quy mô beta; ngưỡng phải đổi ý (khoảng một GB, hoặc người học than chậm) ghi ngay
+  trong `src/db/schema/sheets.ts` để lần sau không phải cân nhắc lại từ đầu.
+
+**Tiếp theo**
+
+- **Chưa ai thử trên máy thật.** Ba việc: nhập một file `.mid` tải từ mạng (hai tay chia có
+  hợp lý không), chụp hai ba trang sách (ảnh có bị nằm ngang vì thẻ EXIF không, gửi trên 4G
+  có lâu không), và mở lại trên máy khác xem ảnh có hiện không.
+- **Xem log build Vercel xem `drizzle-kit migrate` đã tạo hai bảng mới chưa** — chưa thì
+  `/my-sheets` sẽ 500.
+- **Hai bài Facebook đang trong hàng chờ**: số 4 (*Đặt tay ở đâu*) và số 5 (kho ôn luyện +
+  kho nhạc).
+- **Chương 6 trở lên vẫn chưa có luật sinh bài tập**, nên kho ôn luyện dừng ở Chương 5.
+
+---
+
 ## 13/09/2026 (khuya) — Đăng bài Facebook số 2 và số 3
 
 **Đã làm**
