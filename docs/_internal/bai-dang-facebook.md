@@ -340,6 +340,35 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 
 ---
 
+## 4h. Bài đăng số 9 — soạn 14/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** tập khuya phải mở nhỏ hoặc đeo tai nghe là cảnh ai tự học cũng
+> gặp, mà chói tai thì người ta tắt máy sớm hơn là họ tưởng. Bài ngắn, không cần ảnh đồ hoạ
+> — đây là loại bài giữ nhịp đăng của trang chứ không phải bài kéo người.
+>
+> **Đừng viết thành "đổi tiếng đàn cho hay hơn".** Nói rõ đây là tiếng **nghe mẫu**, không
+> dính gì tới cây đàn thật lúc tập — người chưa dùng dễ tưởng app đổi tiếng đàn của họ.
+
+```text
+Nghe đi nghe lại một câu nhạc hai chục lần thì tiếng piano bắt đầu chói tai.
+Tập khuya phải mở nhỏ, hoặc đeo tai nghe, thì càng rõ.
+
+Ô chọn tiếng đàn dưới mỗi bản nhạc trên web giờ có thêm nhóm Tiếng êm: piano
+điện Rhodes, vibraphone, đàn hạc, celesta. Chọn một lần là mọi bài sau đều
+dùng tiếng đó. Đây là tiếng lúc app phát nhạc mẫu cho bạn nghe — cây đàn thật
+của bạn thì vẫn y nguyên.
+
+Bốn tiếng này không chọn theo cảm tính: mẫu âm được đo độ chói và độ ngân
+trước khi đưa vào. Marimba nghe cũng rất êm nhưng bị loại vì tiếng tắt sau nửa
+giây, mà một nốt trắng ở tốc độ người mới tập kéo dài tới bốn giây — tiếng tắt
+giữa chừng thì bạn lại tưởng bản nhạc bị lỗi.
+
+Chi tiết:
+https://pianojourney.rehover.io/updates
+```
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -397,6 +426,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Thêm nhóm tiếng êm cho phần nghe mẫu, chọn bằng số đo` | Thêm bài đăng số 9 rút từ bài cập nhật cùng ngày — bài ngắn giữ nhịp đăng, kèm lời dặn nói rõ đây là tiếng **nghe mẫu** chứ không phải tiếng cây đàn thật, vì người chưa dùng rất dễ hiểu nhầm chỗ đó |
 | 14/09/2026 | `feat: Chọn hoá biểu đầu khuông cho bản nhạc nhập vào` | Thêm bài đăng số 8 rút từ bài cập nhật cùng ngày — chọn góc "kể cả chỗ sửa sai" (mục 5) vì rừng dấu hoá là thứ người nhập file đã thấy tận mắt, nói thẳng nó là lỗi của app tin được hơn khoe thêm tính năng. Ghi kèm lời dặn đừng viết thành "app tự nhận ra giọng" — app cố ý không đoán |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Bài đăng số 7: đổi từ "hai chương đầu" sang cả 25 bài vì Chương 3-7 đã viết lại cùng ngày, và đổi lời dặn thành "nói đúng phạm vi" — Chương 8-10 chưa soạn nên vẫn không được viết "toàn bộ giáo trình" |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm bài đăng số 7 rút từ bài *Mở bài ra là tập*, kèm lời dặn chỉ nói về Chương 1-2 — Chương 3-7 chưa viết lại, viết như thể cả giáo trình đã đổi là hứa thứ chưa có |

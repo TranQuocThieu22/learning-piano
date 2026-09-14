@@ -16,6 +16,14 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT_DIR = join(ROOT, 'public', 'soundfonts');
 const BASE_URL = 'https://paulrosen.github.io/midi-js-soundfonts/MusyngKite';
 
+/**
+ * Cùng kho, đọc thẳng tệp trong Git thay vì qua trang GitHub Pages.
+ *
+ * Dùng khi `BASE_URL` không tới được: máy ảo của phiên Claude Code trên web chặn
+ * tên miền `github.io`, nên không có đường này thì phải tải mẫu âm bằng tay.
+ */
+const MIRROR_URL = 'https://raw.githubusercontent.com/paulrosen/midi-js-soundfonts/master/MusyngKite';
+
 /** Giữ danh sách này khớp với INSTRUMENTS trong src/lib/soundfont.ts. */
 const INSTRUMENTS = [
   'acoustic_grand_piano',
@@ -26,6 +34,9 @@ const INSTRUMENTS = [
   'electric_piano_2',
   'clavinet',
   'harpsichord',
+  'celesta',
+  'vibraphone',
+  'orchestral_harp',
 ];
 
 /**
@@ -53,8 +64,9 @@ async function downloadNote(instrument, note) {
   const target = join(OUT_DIR, `${instrument}-mp3`, `${note}.mp3`);
   if (await exists(target)) return 'skipped';
 
-  const res = await fetch(`${BASE_URL}/${instrument}-mp3/${note}.mp3`);
-  if (!res.ok) throw new Error(`${instrument}/${note}: HTTP ${res.status}`);
+  let res = await fetch(`${BASE_URL}/${instrument}-mp3/${note}.mp3`).catch(() => null);
+  if (!res?.ok) res = await fetch(`${MIRROR_URL}/${instrument}-mp3/${note}.mp3`).catch(() => null);
+  if (!res?.ok) throw new Error(`${instrument}/${note}: HTTP ${res?.status ?? 'không nối được'}`);
   await writeFile(target, Buffer.from(await res.arrayBuffer()));
   return 'downloaded';
 }

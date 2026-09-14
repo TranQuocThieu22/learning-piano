@@ -12,7 +12,7 @@ import {
 import { ScorePractice } from './ScorePractice';
 import { holdAmbient } from '@/lib/ambient-hold';
 import { SheetAudioControls } from './SheetAudioControls';
-import { INSTRUMENTS } from '@/lib/soundfont';
+import { INSTRUMENTS, INSTRUMENT_GROUPS } from '@/lib/soundfont';
 import { useSheetRender } from '@/hooks/useSheetRender';
 import { useSheetAudio } from '@/hooks/useSheetAudio';
 
@@ -227,7 +227,7 @@ export function SheetViewer({
             <Select
               size="xs"
               label="Tiếng đàn khi nghe mẫu"
-              data={['Piano cơ', 'Piano điện', 'Khác'].map((group) => ({
+              data={INSTRUMENT_GROUPS.map((group) => ({
                 group,
                 items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
                   value: String(i.program),

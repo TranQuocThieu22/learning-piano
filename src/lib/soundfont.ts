@@ -21,29 +21,68 @@ export const SOUNDFONT_URL = '/soundfonts/';
  */
 const MUSYNG_KITE_VOLUME_MULTIPLIER = 3.0;
 
+/**
+ * Thứ tự nhóm trong ô chọn. Xuất ra để ô chọn đọc thẳng từ đây — trước kia
+ * component chép lại danh sách này, mà chép thì thêm nhóm mới là nhóm đó im lặng
+ * biến khỏi ô chọn chứ không báo gì.
+ *
+ * **Tiếng êm** đứng ngay sau piano cơ vì đó là nhóm người học đi tìm khi thấy
+ * Grand Piano chói tai lúc nghe đi nghe lại một câu nhạc.
+ */
+export const INSTRUMENT_GROUPS = ['Piano cơ', 'Tiếng êm', 'Piano điện', 'Khác'] as const;
+
+export type InstrumentGroup = typeof INSTRUMENT_GROUPS[number];
+
 export interface Instrument {
   /** Số hiệu nhạc cụ theo chuẩn General MIDI, truyền vào abcjs qua `program`. */
   program: number;
-  /** Tên thư mục mẫu âm, phải khớp thư mục trong public/soundfonts/. */
+  /**
+   * Tên thư mục mẫu âm, phải khớp thư mục trong public/soundfonts/.
+   *
+   * **Không phải mình đặt tên**: abcjs tự suy tên thư mục từ `program` theo bảng
+   * `instrumentIndexToName` của nó, nên trường này chỉ chép lại cho người đọc và
+   * cho script tải mẫu âm. Ghi lệch là tải về một thư mục abcjs không bao giờ
+   * tìm tới — `soundfont.test.ts` gác chỗ đó.
+   */
   folder: string;
   label: string;
   /** Nhóm hiển thị trong ô chọn (Select group của Mantine). */
-  group: 'Piano cơ' | 'Piano điện' | 'Khác';
+  group: InstrumentGroup;
 }
 
 /**
  * Giữ danh sách này khớp với INSTRUMENTS trong scripts/download-soundfont.mjs.
  *
  * Bộ MusyngKite chỉ có một nguồn mẫu âm chung (General MIDI), không có bản
- * ghi riêng theo hãng đàn (Yamaha, Steinway...) — danh sách dưới đây là các
+ * ghi riêng theo hãng đàn (Yamaha, Steinway...) — mấy tiếng piano dưới đây là các
  * *loại* piano khác nhau trong họ nhạc cụ GM (program 0-7), không phải hãng.
+ *
+ * **Nhóm *Tiếng êm* chọn bằng số đo, không chọn theo cảm tính.** Đo trên mẫu âm
+ * thật (C3, C4, C5) hai thứ tai nghe ra ngay — trọng tâm phổ, tức tiếng sáng hay
+ * tối, và phần năng lượng trên 2kHz, tức độ chói:
+ *
+ * | Tiếng | Trọng tâm phổ | Trên 2kHz | Còn ngân (-20dB) |
+ * |---|---|---|---|
+ * | Grand Piano | 624 Hz | 2,0% | 1,51s |
+ * | Rhodes (`electric_piano_1`) | 360 Hz | 0,0% | 3,12s |
+ * | Vibraphone | 310 Hz | 0,1% | 1,67s |
+ * | Đàn hạc | 418 Hz | 0,1% | 1,05s |
+ * | Celesta | 452 Hz | 3,4% | 1,78s |
+ *
+ * **Còn ngân bao lâu quan trọng ngang tiếng sáng hay tối**, nên marimba và
+ * kalimba bị loại dù êm ngang vibraphone: chúng tắt sau 0,46s, mà nốt trắng bốn
+ * phách ở tốc độ người mới tập kéo dài tới bốn giây — tiếng tắt giữa chừng thì
+ * người học tưởng bản nhạc bị lỗi.
  */
 export const INSTRUMENTS: Instrument[] = [
   { program: 0, folder: 'acoustic_grand_piano', label: 'Grand Piano', group: 'Piano cơ' },
   { program: 1, folder: 'bright_acoustic_piano', label: 'Piano sáng tiếng', group: 'Piano cơ' },
   { program: 3, folder: 'honkytonk_piano', label: 'Honky-tonk (piano cũ, hơi lệch tông)', group: 'Piano cơ' },
+  { program: 4, folder: 'electric_piano_1', label: 'Piano điện Rhodes (êm nhất, ngân dài)', group: 'Tiếng êm' },
+  { program: 11, folder: 'vibraphone', label: 'Vibraphone (êm, ngân dài)', group: 'Tiếng êm' },
+  { program: 46, folder: 'orchestral_harp', label: 'Đàn hạc (hợp bài rải chậm)', group: 'Tiếng êm' },
+  { program: 8, folder: 'celesta', label: 'Celesta (tiếng hộp nhạc)', group: 'Tiếng êm' },
   { program: 2, folder: 'electric_grand_piano', label: 'Grand Piano điện', group: 'Piano điện' },
-  { program: 4, folder: 'electric_piano_1', label: 'Piano điện 1', group: 'Piano điện' },
   { program: 5, folder: 'electric_piano_2', label: 'Piano điện 2', group: 'Piano điện' },
   { program: 7, folder: 'clavinet', label: 'Clavinet', group: 'Piano điện' },
   { program: 6, folder: 'harpsichord', label: 'Harpsichord (đàn cổ)', group: 'Khác' },
