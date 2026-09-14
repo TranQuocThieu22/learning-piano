@@ -32,6 +32,8 @@ export const envSchema = z.object({
   SEPAY_WEBHOOK_API_KEY: tuyChon,
   /** Thiếu hoặc khác "true" thì KHÔNG bán — xem `dangBan()` bên dưới. */
   SELLING_ENABLED: tuyChon,
+  /** Chỉ có tác dụng khi chạy `next dev` — xem `moKhoaKhiDev()` bên dưới. */
+  DEV_UNLOCK_ALL: tuyChon,
 
   // --- 3. Tuỳ chọn ---
   /** Chuỗi không qua pooler, chỉ drizzle-kit dùng. Thiếu thì lùi về DATABASE_URL. */
@@ -62,6 +64,28 @@ export type Env = z.infer<typeof envSchema>;
  */
 export function dangBan(raw: string | undefined | null): boolean {
   return raw?.trim().toLowerCase() === 'true';
+}
+
+/**
+ * Có mở khoá toàn bộ nội dung trả phí cho mọi người xem không — CHỈ ở máy làm việc.
+ *
+ * Vì sao cần (14/09/2026): soạn lại Chương 2-7 xong mà không đọc thử được, vì
+ * trình duyệt dùng để kiểm ở máy không đăng nhập Google được (redirect URI chỉ
+ * khớp tên miền thật) nên bài nào sau Chương 1 cũng chỉ thấy màn hình khoá.
+ *
+ * Mở khi và chỉ khi **cả hai** điều cùng đúng:
+ *
+ * 1. `DEV_UNLOCK_ALL` là đúng chuỗi "true" — cùng lối nhận cờ với `dangBan()`.
+ * 2. `NODE_ENV` là "development", tức đang chạy `next dev`.
+ *
+ * Điều 2 là cái chốt thật. `next build` và `next start` luôn đặt `NODE_ENV` là
+ * "production", Vercel cũng vậy ở cả production lẫn preview — nên lỡ ai khai
+ * biến này trên Vercel thì nó vẫn không mở gì. Đừng nới điều 2 ra thành "khác
+ * production": `NODE_ENV` còn là "test" khi chạy vitest, và mọi giá trị lạ đều
+ * phải là đóng.
+ */
+export function moKhoaKhiDev(raw: string | undefined | null, nodeEnv: string | undefined): boolean {
+  return nodeEnv === 'development' && dangBan(raw);
 }
 
 /** Tên mọi biến ứng dụng dùng, để test đối chiếu với .env.example. */

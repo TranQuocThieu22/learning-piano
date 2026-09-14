@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { dangBan, ENV_KEYS } from './env-schema';
+import { dangBan, ENV_KEYS, moKhoaKhiDev } from './env-schema';
 
 /**
  * Canh gác: mọi biến môi trường code đọc đều phải được ghi trong .env.example.
@@ -90,6 +90,29 @@ describe('công tắc mở bán', () => {
   it('mặc định là KHÔNG bán — thiếu biến, chuỗi rỗng, hay giá trị lạ đều đóng', () => {
     for (const raw of [undefined, null, '', '  ', '1', 'yes', 'false', 'bật']) {
       expect(dangBan(raw)).toBe(false);
+    }
+  });
+});
+
+describe('công tắc mở khoá nội dung khi chạy dev', () => {
+  it('bật cờ và đang chạy next dev thì mở', () => {
+    expect(moKhoaKhiDev('true', 'development')).toBe(true);
+  });
+
+  // Đây là chỗ không được phép sai: lỡ khai biến này trên Vercel thì bài trả phí mở cho cả thế giới.
+  it('bản production và preview trên Vercel thì KHÔNG mở, kể cả khi lỡ khai biến', () => {
+    expect(moKhoaKhiDev('true', 'production')).toBe(false);
+  });
+
+  it('chạy test hay NODE_ENV lạ thì cũng không mở', () => {
+    for (const nodeEnv of ['test', undefined, '', 'dev', 'Development']) {
+      expect(moKhoaKhiDev('true', nodeEnv)).toBe(false);
+    }
+  });
+
+  it('đang chạy dev mà không bật đúng cờ thì vẫn khoá như thường', () => {
+    for (const raw of [undefined, null, '', '1', 'yes', 'false']) {
+      expect(moKhoaKhiDev(raw, 'development')).toBe(false);
     }
   });
 });

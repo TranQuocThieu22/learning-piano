@@ -41,7 +41,7 @@ chủ ý — đừng gộp**:
 | Tầng | Biến | Thiếu thì |
 |---|---|---|
 | Bắt buộc | `DATABASE_URL`, `AUTH_SECRET`, `AUTH_GOOGLE_ID`, `AUTH_GOOGLE_SECRET` | ném lỗi ngay lúc khởi động, nêu đủ mọi biến thiếu cùng lúc |
-| Đóng cửa an toàn | `ADMIN_EMAILS`, `SEPAY_WEBHOOK_API_KEY`, `SELLING_ENABLED` | tính năng đó tự khoá lại, ứng dụng vẫn sống |
+| Đóng cửa an toàn | `ADMIN_EMAILS`, `SEPAY_WEBHOOK_API_KEY`, `SELLING_ENABLED`, `DEV_UNLOCK_ALL` | tính năng đó tự khoá lại, ứng dụng vẫn sống |
 | Tuỳ chọn | `DATABASE_URL_UNPOOLED`, `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME` | lùi về mặc định |
 
 Nâng ba biến tầng giữa lên tầng bắt buộc nghe có vẻ chặt hơn nhưng là **làm yếu
@@ -118,6 +118,22 @@ khoảng trắng. Không phân biệt hoa thường.
 > database vẫn không tự phong mình làm admin, vì danh sách nằm chỗ khác. Đổi danh
 > sách phải deploy lại — chậm, nhưng với một cửa cấp được quyền truy cập trả phí thì
 > đó là điểm mạnh.
+
+### `DEV_UNLOCK_ALL` — chỉ cho máy làm việc, KHÔNG khai trên Vercel
+
+`"true"` thì khi chạy `next dev`, mọi bài trả phí mở cho cả người chưa đăng nhập.
+
+- Đọc bởi: `src/lib/env.ts` (`devUnlockAll`), qua hàm thuần `moKhoaKhiDev()` trong
+  `src/lib/env-schema.ts`; dùng ở `viewerHasFullAccess` (`src/lib/access-server.ts`).
+- **Vì sao có:** ở máy làm việc không đăng nhập Google được (redirect URI chỉ khớp tên
+  miền thật), nên trình duyệt dùng để kiểm chỉ thấy màn hình khoá từ Chương 2 trở đi —
+  soạn lại nội dung xong mà không đọc thử được.
+- **Chỉ mở khi cả hai cùng đúng:** biến là đúng chuỗi `"true"`, và `NODE_ENV` là
+  `"development"`. `next build`, `next start` và mọi môi trường trên Vercel (cả preview)
+  đều chạy `NODE_ENV=production`, nên lỡ khai trên Vercel thì biến vẫn bị bỏ qua. Có test
+  canh đúng chỗ này (`env.test.ts`).
+- **Chỉ mở phần xem.** Tick bài, phản hồi, Kho nhạc của tôi vẫn cần đăng nhập — mấy thứ
+  đó gắn với tài khoản, không có tài khoản thì không có chỗ ghi.
 
 ---
 
@@ -235,6 +251,9 @@ Google Cloud Console, xem ô ngay bên dưới.
       `https://pianojourney.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
       này, endpoint tự từ chối mọi request khi thiếu khoá
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
+- [ ] **Không** khai `DEV_UNLOCK_ALL` — biến này chỉ cho `.env.local`. Khai nhầm cũng
+      không mở gì vì Vercel chạy `NODE_ENV=production`, nhưng để nó trong bảng điều khiển là
+      để lại một cái bẫy cho lần ai đó đổi cách kiểm
 - [ ] `SELLING_ENABLED` — **trong beta để trống**. Chỉ đặt `true` vào ngày mở bán,
       và chỉ sau khi đã nâng gói Vercel Pro
 - [ ] Bật **Web Analytics** trong bảng điều khiển Vercel (project → Analytics →
@@ -285,6 +304,7 @@ người dùng bấm đồng ý — chỗ đó cần tài khoản thật.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `chore: Công tắc DEV_UNLOCK_ALL mở khoá bài trả phí khi chạy dev` | Thêm `DEV_UNLOCK_ALL` vào tầng đóng cửa an toàn, một mục riêng ở phần Quản trị và một dòng "không khai trên Vercel" ở danh sách kiểm khi deploy — viết lại nội dung Chương 2-7 xong mà ở máy không đọc thử được vì không đăng nhập Google được; ghi rõ chốt thật là `NODE_ENV`, để không ai "sửa cho gọn" thành chỉ kiểm cờ |
 | 09/09/2026 | `feat: Đếm lượt truy cập bằng Vercel Web Analytics` | Thêm ô bật Web Analytics vào danh sách kiểm khi deploy. Đây là **nút bấm ở bảng điều khiển**, không phải biến môi trường — nên nó không lọt vào ba tầng biến ở mục 2 và cũng không có test nào canh. Quên bấm thì `<Analytics />` im lặng và bảng số liệu trống trơn, trông hệt như chưa có ai vào; đó là lý do ô này phải nằm trong danh sách chứ không chỉ nằm trong trí nhớ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Thêm `SELLING_ENABLED` vào tầng đóng cửa an toàn và giải thích vì sao chiều cờ ngược với trực giác — quên bật thì phát hiện ngay, quên tắt thì người beta tạo được đơn thật trên gói Hobby mà không có triệu chứng nào |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Đổi tên miền ở mục 7 sang `pianojourney.rehover.io` (bản ghi CNAME, redirect URI Google, webhook SePay, phép thử 401). Ghi rõ tên miền cũ vẫn trả 308 nên đừng gỡ — link đã phát ra trong beta trỏ vào đó — nhưng chuyển hướng không mang theo redirect URI, nên tên miền mới phải có mục riêng ở Google Console, thiếu thì báo `redirect_uri_mismatch` chứ không báo lỗi app. Thêm phép thử đăng nhập Google không cần tài khoản thật: một bước hỏi app sinh ra `redirect_uri` nào, một bước hỏi Google có nhận không — tách được hai nguyên nhân vốn cho cùng một triệu chứng |

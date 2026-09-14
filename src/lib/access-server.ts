@@ -2,7 +2,7 @@ import 'server-only';
 import type { Session } from 'next-auth';
 import { getEntitlementGrantedAt, getOwnedPackageIds } from './payment/orders';
 import { isAdminEmail } from './admin-allowlist';
-import { env } from './env';
+import { devUnlockAll, env } from './env';
 import { isFreshGrant, REQUIRED_PACKAGE_ID } from './access';
 
 /**
@@ -15,8 +15,14 @@ import { isFreshGrant, REQUIRED_PACKAGE_ID } from './access';
  * Admin đi thẳng, để chủ sản phẩm xem lại được bài đã khoá mà không phải tự cấp
  * quyền cho mình trong database. Đây chỉ là ưu ái xem nội dung — cổng bảo mật
  * của khu /admin vẫn là requireAdmin() như cũ.
+ *
+ * `devUnlockAll` mở cho cả người chưa đăng nhập, nhưng chỉ khi chạy `next dev`
+ * với `DEV_UNLOCK_ALL="true"` — để đọc thử bài trả phí ở máy làm việc, nơi không
+ * đăng nhập Google được. Nó chỉ mở phần XEM; tick, phản hồi, kho nhạc riêng vẫn
+ * cần đăng nhập như cũ.
  */
 export async function viewerHasFullAccess(session: Session | null): Promise<boolean> {
+  if (devUnlockAll) return true;
   if (isAdminEmail(session?.user?.email, env.ADMIN_EMAILS)) return true;
 
   const userId = session?.user?.id;

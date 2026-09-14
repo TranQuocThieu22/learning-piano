@@ -1,5 +1,5 @@
 import 'server-only';
-import { envSchema, moTaLoiThieuBien, type Env } from './env-schema';
+import { envSchema, moKhoaKhiDev, moTaLoiThieuBien, type Env } from './env-schema';
 
 /**
  * Nơi DUY NHẤT phía ứng dụng đọc process.env.
@@ -19,3 +19,11 @@ function doc(): Env {
 }
 
 export const env = doc();
+
+/**
+ * Mở khoá toàn bộ nội dung trả phí trên máy làm việc — xem `moKhoaKhiDev()`.
+ *
+ * Đọc `NODE_ENV` ở đây chứ không qua schema: nó do Next.js đặt, không phải cấu
+ * hình của dự án, nên không thuộc `.env.example`.
+ */
+export const devUnlockAll = moKhoaKhiDev(env.DEV_UNLOCK_ALL, process.env.NODE_ENV);
