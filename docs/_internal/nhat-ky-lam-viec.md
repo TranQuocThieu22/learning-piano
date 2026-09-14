@@ -40,6 +40,55 @@
 
 ---
 
+## 14/09/2026 (tối) — Chọn hoá biểu cho bản nhạc nhập vào
+
+> Commit `654e4d8`, đẩy thẳng `main` sau khi năm lệnh kiểm đều xanh. Làm trong phiên
+> Claude Code chạy trên web (máy ảo), không phải máy làm việc.
+
+**Đã làm**
+
+- **Ô chọn *Hoá biểu đầu khuông* ở trang nhập bản nhạc**, đủ mười lăm giọng xếp theo vòng
+  quãng năm. Chủ sản phẩm gửi ảnh chụp màn hình một bản nhạc nhập vào dày đặc dấu thăng
+  giáng — gần như nốt nào cũng có một dấu đứng cạnh — và bảo cho chọn hoá biểu.
+- **Đọc hoá biểu file gốc khai ra**: meta `0x59` của MIDI, thẻ `<fifths>` của MusicXML. File
+  có khai thì mở ra đúng giọng luôn, không phải chọn.
+- **`KEY_SIGNATURES` mở từ bảy lên mười lăm dòng**, thêm cột `fifths` và cờ `drill`.
+  `keysForOptions` lọc theo `drill` nên bài luyện nhận nốt vẫn chỉ hỏi đúng bảy giọng cũ.
+- **Bài *Có gì mới*** `2026-09-14-chon-hoa-bieu-khi-nhap-ban-nhac.md` và **bài Facebook số 8**
+  rút từ nó, chọn góc "kể cả chỗ sửa sai".
+
+**Quan sát**
+
+- **Rừng dấu hoá là lỗi của app, không phải bài khó.** `toAbc` ghi cứng `K: C` rồi dán dấu
+  cho từng nốt — quyết định cũ, có lý do đàng hoàng (thà nhiều dấu còn hơn đoán sai giọng rồi
+  lệch nửa cung). Nhưng người nhập file **không có cách nào biết điều đó**, nên họ chỉ thấy
+  bản nhạc rối và tưởng tại bài mình.
+- **Cái chốt gỡ được quyết định cũ:** viết lại từng nốt theo giọng đang chọn thì hoá biểu chỉ
+  đổi CÁCH VIẾT, không đổi cao độ. Chọn trật hoá ra không còn nguy hiểm — chỉ là nhiều dấu
+  hơn mức cần. Nỗi lo "đoán sai là lệch nửa cung" vốn nhắm vào việc đoán mà không viết lại.
+- **Sổ dấu hoá từng ô nhịp gộp `''` với `=` làm một**, đúng khi mọi bản đều `K: C` nhưng sai
+  ngay khi có hoá biểu: `F` ở giọng Sol trưởng đã là Pha thăng. Không sửa là nốt lệch nửa
+  cung mà bản nhạc nhìn vẫn hợp lý — đúng họ nhà bẫy 25. Đổi sang ghi bằng số.
+- **Giọng Đô trưởng viết La giáng thành Sol thăng** (bảng `chromatic` của `C`, cố ý từ trước).
+  Thêm một lý do nên chọn đúng hoá biểu cho bản nhạc giọng giáng, chứ không chỉ để bớt dấu.
+- **Máy ảo của phiên web không có sẵn `node_modules` lẫn biến môi trường.** Phải `pnpm install`
+  rồi dựng một `.env.local` toàn giá trị giả mới chạy được `npx next build` — không có nó thì
+  build đỏ ở `/api/webhooks/sepay` mà trông như lỗi của mình. Xoá file đó trước khi commit.
+- **Vẫn không mở được trang nhập bằng mắt**: nút chọn file khoá khi chưa đăng nhập Google, mà
+  trình duyệt thử không đăng nhập được. Đúng lỗ hổng đã ghi hôm nay, lần này chạm lại.
+
+**Tiếp theo**
+
+- **Bản nhạc đã lưu rồi thì chưa đổi hoá biểu được** — chuỗi ABC chốt lúc lưu. Muốn đổi phải
+  thêm ô chọn ở `/my-sheets/[id]`; chưa làm vì rộng hơn câu đã hỏi.
+- **Thử trang nhập trên máy thật đã đăng nhập**, nhập một file `.mid` giọng nhiều giáng rồi
+  đổi qua lại vài dòng xem có mượt không — bản nhạc 400 ô nhịp phải ghi lại cả chuỗi ABC mỗi
+  lần đổi.
+- **Bài Facebook số 8** chờ đăng, cần hai ảnh chụp cùng một bản nhạc trước và sau khi chọn
+  đúng hoá biểu.
+
+---
+
 ## 14/09/2026 — Số liệu beta đầu tiên, tiêu chí xong bài, và tập trước lý thuyết sau
 
 > Từ commit `dccf138` tới `a84acd0`, `e946a7a` (công tắc `DEV_UNLOCK_ALL`) và commit của khối này. Hai commit `72d5aa7` (đưa hai kho ra
