@@ -45,6 +45,11 @@ rồi mở link nó gửi về. Thấy được cả thứ đang sửa dở. Hai
 Google sẽ hỏng** (redirect URI không khớp), và URL đó công khai với ai có link — tắt
 tunnel là hết.
 
+**Muốn đọc bài trả phí mà không đăng nhập được** (tunnel, trình duyệt thử của Claude): đặt
+`DEV_UNLOCK_ALL="true"` trong `.env.local` rồi chạy `pnpm dev`. Chỉ có tác dụng với
+`next dev` — Vercel bỏ qua biến này. Nhưng **nhớ tunnel là công khai**: bật công tắc mà mở
+tunnel thì ai có link cũng đọc được cả giáo trình, nên dùng xong thì tắt tunnel.
+
 ## 4. Khi đổi cấu trúc bảng
 
 Ba lệnh `db:generate`, `db:migrate`, `pnpm dev` là **việc của Claude** — bạn không
@@ -174,6 +179,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `docs(internal): Ghi nhật ký phiên 14/09 và cách đọc bài trả phí ở máy` | Mục 3: thêm cách đọc bài trả phí ở máy bằng `DEV_UNLOCK_ALL`, kèm cảnh báo tunnel là công khai — bật công tắc rồi mở tunnel là cả giáo trình trả phí mở cho ai có link, đúng kiểu sơ suất không có triệu chứng |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Đánh dấu xong việc đọc thử Chương 1-2 và làm tiếp Chương 3-7 — chủ sản phẩm bảo làm tiếp nên cả giáo trình đã đổi khuôn; giữ lời nhắc mở thử vài bài Chương 3-7 trên máy thật vì chúng chưa ai đọc trên điện thoại |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm vào mục 7 việc đọc thử Chương 1-2 khuôn mới trước khi làm Chương 3-7 — đợt viết lại cố ý dừng ở hai chương để chủ sản phẩm duyệt khuôn trên máy thật, và việc duyệt đó không ai làm hộ được |
 | 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm vào mục 7 việc thử dòng nhắc vượt bài và dòng khen đánh trọn trên máy thật đã đăng nhập — dòng nhắc chỉ hiện với tài khoản đã đăng nhập mà trình duyệt thử của Claude không đăng nhập Google được, nên đây là phần duy nhất của thay đổi chưa ai nhìn thấy chạy thật |
