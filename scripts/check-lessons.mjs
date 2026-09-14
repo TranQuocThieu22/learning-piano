@@ -62,9 +62,11 @@ const MISSING_DIACRITICS = [
  *
  * Chủ sản phẩm chốt: chữ trong bài chỉ để dẫn vào việc tập, còn phần chính là bản
  * nhạc, hình và công cụ thực hành. Trước khi chốt, bài tập đo được khoảng 70% là
- * chữ. Luật trên giấy thì trôi dần mỗi lần soạn bài mới, nên gác bằng máy — nhưng
- * CHỈ với bài đã theo khuôn mới (nhận ra bằng tiêu đề mục cuối bài), để Chương 3-7
- * chưa viết lại không đỏ oan.
+ * chữ. Luật trên giấy thì trôi dần mỗi lần soạn bài mới, nên gác bằng máy.
+ *
+ * Từ 14/09/2026 cả 25 bài đã theo khuôn này, nên **mọi bài tập đều phải có** mục
+ * cuối bài *Tập thấy khó? Đọc ở đây* — thiếu là lỗi, không phải được miễn. Trước
+ * đó luật chỉ áp cho bài có tiêu đề ấy, để Chương 3-7 chưa viết lại không đỏ oan.
  *
  * Các ngưỡng đặt ngay trên bài dài nhất của Chương 1-2 lúc chốt, tính bằng ký tự
  * chữ (không tính bản nhạc, hình, dòng trống):
@@ -81,7 +83,10 @@ const MAX_READ_MORE_PARAGRAPH_CHARS = 300;
 const VISUAL = /^(```abc|```keys|!\[|\{\{sheet:)/;
 
 function checkPracticeFirst(file, text) {
-  if (!text.includes(READ_MORE_HEADING)) return;
+  if (!text.includes(READ_MORE_HEADING)) {
+    err(file, `thiếu mục "${READ_MORE_HEADING.slice(3)}" — bài tập phải theo khuôn tập trước, xem skill daily-practice-structure`);
+    return;
+  }
   const lines = text.split(/\r?\n/);
   const isProse = (l) => l.trim() !== '' && !VISUAL.test(l) && !l.startsWith('```');
 
@@ -111,7 +116,11 @@ function checkPracticeFirst(file, text) {
     i = end - 1;
   }
 
-  const paragraphs = lines.slice(readMoreAt + 1).join('\n').split(/\n\s*\n/)
+  // Bỏ khối nhạc và hình trước khi đo: chúng là thứ để nhìn, không phải chữ phải đọc.
+  const readMoreText = lines.slice(readMoreAt + 1).join('\n')
+    .replace(/^```[\s\S]*?^```$/gm, '')
+    .replace(/^!\[.*$/gm, '');
+  const paragraphs = readMoreText.split(/\n\s*\n/)
     .map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
   for (const p of paragraphs) {
     if (p.length > MAX_READ_MORE_PARAGRAPH_CHARS)

@@ -87,10 +87,10 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
 - **Ít chữ, tập liên tục (chốt 14/09/2026).** Mở bài ra là tập; lý thuyết là chỗ người
   học tự tìm tới khi tập thấy khó, và chữ mời họ làm vậy. Chữ chỉ để dẫn vào việc tập —
   ưu tiên bản nhạc, hình bàn phím và dẫn tới công cụ tập hơn câu giải thích.
-- **Bố cục một bài (khuôn mới, Chương 1-2):** đoạn mở bài ngắn → kiến thức bắt buộc 1-3
-  dòng kèm hình → khởi động → **3-4 bài tập ABC**, mỗi bài 1-2 dòng dẫn → *Xong bài khi*
-  → mục *Tập thấy khó? Đọc ở đây* (gõ mặt bàn, **thẩm âm**, vì sao). Chương 3-7 còn khuôn
-  cũ, chờ duyệt. Chi tiết ở skill `daily-practice-structure`.
+- **Bố cục một bài (cả 25 bài):** đoạn mở bài ngắn → kiến thức bắt buộc 1-3 dòng kèm một
+  khuông hoặc hình bàn phím nhỏ → khởi động → **3-4 bài tập ABC**, mỗi bài 1-2 dòng dẫn →
+  *Xong bài khi* → mục *Tập thấy khó? Đọc ở đây* (gõ mặt bàn, **thẩm âm**, vì sao). Chi
+  tiết ở skill `daily-practice-structure`.
 - **Giới hạn nốt:** không bao giờ dùng nốt chưa dạy. **Chương 1-5** giới hạn ở thế tay
   5 ngón: tay phải C-D-E-F-G khóa Sol, tay trái C-D-E-F-G khóa Pha thấp hơn một quãng
   tám — nên **"Twinkle Twinkle" và "Happy Birthday" không dùng được** (cần nốt La), còn
@@ -106,7 +106,7 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
   cụ thể, không phải khoảng.
 - **Kiểm tra:** chạy `pnpm check:lessons` sau khi soạn bài. Script dùng chính parser
   abcjs của app, bắt lỗi ô nhịp lệch, nốt ngoài thế tay, tên file/tiêu đề sai mẫu,
-  tiếng Việt mất dấu — và với bài theo khuôn mới, chữ vượt ngưỡng (mở bài 450, một phần
+  tiếng Việt mất dấu — và với mọi bài tập, thiếu mục cuối bài, chữ vượt ngưỡng (mở bài 450, một phần
   tập 350, một đoạn cuối bài 300 ký tự) hoặc bài tập không có bản nhạc hay hình.
 
 ---
@@ -345,6 +345,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Mục soạn bài: bỏ chữ "Chương 3-7 còn khuôn cũ, chờ duyệt" vì cả 25 bài đã viết lại, và ghi rằng `check:lessons` nay bắt mọi bài tập theo khuôn — để nguyên thì người đọc tưởng còn hai kiểu bài cùng tồn tại |
 | 14/09/2026 | `feat: Bài học ít chữ, tập liên tục — có máy gác độ dài chữ` | Mục soạn bài: thay bố cục "buổi tập bốn phần" bằng nguyên tắc ít chữ - tập liên tục và khuôn bài mới, ghi thêm những gì `check:lessons` nay gác — mục này là chỗ người mới vào dự án đọc để biết soạn bài thế nào, để khuôn cũ ở đây là dạy họ viết đúng cái vừa bỏ |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Bảng đường dẫn và đoạn nói về `/path`: lý thuyết không còn là bước trên đường đi mà là nút *Đọc thêm* của trang chương — hai chỗ này mô tả đúng cấu trúc cũ, để nguyên thì người đọc tài liệu sẽ đi tìm một bước lý thuyết không còn tồn tại |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Mục 4 thêm ba đường dẫn mới (`/review/[chapter]`, `/my-sheets`, `/my-sheets/[id]`) và hai tính năng: kho ôn luyện mở cửa cho bộ sinh bài tập vốn đã viết xong mà chưa ai gọi, và Kho nhạc của tôi cho người học tự đưa bản nhạc vào — hai lời giải cho cùng một vấn đề *hết bài để tập*, một bên không đụng bản quyền, một bên đổi vai app thành nơi chứa |

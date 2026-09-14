@@ -270,8 +270,8 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 > cũng từng gặp, và thay đổi này trả lời thẳng vào nó. Góc kể là **mở ra là tập**, không phải
 > "giáo trình đã được tối ưu".
 >
-> **Chỉ nói về Chương 1-2.** Chương 3-7 chưa viết lại — viết như thể cả giáo trình đã đổi là
-> hứa một thứ chưa có (ràng buộc 3 ở mục 2).
+> **Nói đúng phạm vi.** Cả 25 bài Chương 1-7 đã viết lại (14/09/2026), nhưng Chương 8-10 chưa
+> soạn — đừng viết "toàn bộ giáo trình" như thể Giai đoạn 2 đã xong (ràng buộc 3 ở mục 2).
 >
 > **Ảnh nên kèm:** ảnh chụp màn hình điện thoại mở Chương 1 - Bài 1, thấy hình bàn phím chỉ
 > Đô giữa ngay dưới tiêu đề.
@@ -280,14 +280,14 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 Nhiều người tự học đàn bỏ cuộc không phải vì tập khó, mà vì chưa kịp tập đã
 phải đọc cả trang lý thuyết.
 
-Hai chương đầu trên web vừa được viết lại theo đúng hướng ngược lại: mở bài ra
+Cả 25 bài trên web vừa được viết lại theo đúng hướng ngược lại: mở bài ra
 là tập. Mỗi bài tập chỉ còn một hai dòng dặn — tay nào, chú ý chỗ nào, chậm cỡ
 nào — rồi tới bản nhạc. Thứ phải biết để đánh được (nốt Đô giữa ở đâu, ngón nào
-số mấy) nằm ngay chỗ cần, kèm hình bàn phím.
+số mấy, phím đen nào, hợp âm bấm ra sao) nằm ngay chỗ cần, bằng hình.
 
 Phần giải thích vì sao, bài tập mặt bàn lúc không có đàn, luyện tai — vẫn còn
-đủ, chỉ dời xuống cuối bài dưới mục "Đọc thêm". Ai thích hiểu kỹ thì đọc, ai
-muốn ngồi vào đàn luôn thì cứ tập.
+đủ, chỉ dời xuống cuối bài. Cứ tập thử trước; chỗ nào khó hiểu thì mới kéo
+xuống đọc.
 
 Buổi đầu tiên vẫn như cũ: chơi được câu mở đầu Ode to Joy.
 
@@ -356,6 +356,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Bài đăng số 7: đổi từ "hai chương đầu" sang cả 25 bài vì Chương 3-7 đã viết lại cùng ngày, và đổi lời dặn thành "nói đúng phạm vi" — Chương 8-10 chưa soạn nên vẫn không được viết "toàn bộ giáo trình" |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm bài đăng số 7 rút từ bài *Mở bài ra là tập*, kèm lời dặn chỉ nói về Chương 1-2 — Chương 3-7 chưa viết lại, viết như thể cả giáo trình đã đổi là hứa thứ chưa có |
 | 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm bài đăng số 6 rút từ bài *Tick lúc nào? Giờ mỗi bài nói rõ luôn*, kèm lời dặn đừng viết thành "app khoá bài bắt tập đạt" — app cố ý không khoá, viết sai là hứa một thứ trái với chính sản phẩm |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bài đăng số 5 — gộp kho ôn luyện và Kho nhạc của tôi vào một bài vì cả hai trả lời cùng một câu *hết bài rồi tập gì tiếp*, và nói thẳng chuyện bản quyền thay vì để người đọc tự đoán vì sao Góc bài hát ít bài. Ghi kèm lời nhắc đừng viết thành "kho nhạc không giới hạn" |

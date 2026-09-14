@@ -1,42 +1,30 @@
 # Chương 3 - Bài 1: Đọc nốt trên dòng kẻ phụ (Đô, Rê, Mi)
 
-Hôm nay chúng ta sẽ chính thức tập nhìn bản nhạc mà KHÔNG ghi sẵn chữ cái C-D-E ở dưới nữa. Chúng ta sẽ bắt đầu với 3 nốt dễ nhất: Đô (C), Rê (D) và Mi (E).
+Hôm nay bạn đọc nốt **không có chữ nhắc** bên dưới, bắt đầu với Đô, Rê, Mi. Bài này tập trong **3 ngày**: ngày 1 làm 3A, ngày 2 làm 3B, ngày 3 làm 3C. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 3](/02-chapters/chuong-03).
 
-> [!WARNING]
-> **⏱️ Ước lượng thời gian hoàn thành:** Việc tập phản xạ mắt đọc nốt trên giấy mất khá nhiều năng lượng não bộ. Bài này cần **3 ngày** luyện tập để mắt bạn bắt đầu quen với việc "nhìn nốt - bấm phím" một cách vô thức.
+## Ba nốt trên khuông
 
-**📅 Kế hoạch từng ngày**
+Đô đứng trên một gạch ngắn dưới khuông. Rê treo ngay dưới dòng cuối. Mi bị dòng cuối xuyên qua.
 
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Chép nốt ra giấy trước. Trên đàn chỉ tập **3A**, mắt dán vào bản nhạc, tuyệt đối không nhìn tay. |
-| **Ngày 2** | Ôn 3A rồi sang **3B** (Mary Had A Little Lamb). Vừa đánh vừa đọc to tên nốt. |
-| **Ngày 3** | Thử **3C** (bước nhảy Đô - Mi). Cuối buổi đánh lại 3B một lần liền mạch không dừng sửa lỗi. |
+```abc
+X: 10
+T: Đô, Rê, Mi trên khuông nhạc
+M: 3/4
+L: 1/4
+K: C
+C D E |]
+w: Đô Rê Mi
+```
 
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+## Khởi động
 
-## Bài tập Không cần đàn (Away from piano)
-*(Tập ban ngày lúc rảnh rỗi)*
+Đánh lại 3A của Chương 2 - Bài 3 khoảng 5 phút.
 
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-- **Động tác 1:** Úp 2 bàn tay lên mặt bàn (tư thế khum tròn như đang cầm quả bóng). Nhấc từng ngón tay một từ ngón 1 đến ngón 5, gõ mạnh xuống bàn. Gõ liên tục 5 lần cho mỗi ngón.
-- **Động tác 2:** Đặt bàn tay lên bàn. Nâng đồng thời ngón cái (ngón 1) và ngón giữa (ngón 3) lên, gõ xuống bàn 10 lần. Đây chính là mô phỏng thao tác đánh "bước nhảy" từ Đô lên Mi mà không làm di chuyển các ngón khác. Bài tập này giúp ngón tay của bạn quen với khoảng cách phím đàn.
-
-**2. TÙY CHỌN [Phương pháp: Chép nốt nhạc ra giấy / Music Copying]**
-- Vì đây là ngày đầu tiên học nốt nhạc mới trên giấy, phương pháp này cực kỳ hữu ích!
-- **Chuẩn bị:** Lấy 1 tờ giấy trắng, kẻ 5 đường thẳng ngang song song cách đều nhau (tạo thành Khuông nhạc).
-- **Thực hành vẽ:**
-  1. **Khóa Sol:** Vẽ một dấu Khóa Sol ở đầu khuông nhạc (bạn có thể xem hình trên mạng để vẽ theo).
-  2. **Nốt Đô (C):** Vẽ một hình bầu dục nằm lơ lửng ở BÊN DƯỚI dòng kẻ cuối cùng. Sau đó, kẻ một vạch ngang ngắn đâm xuyên qua nốt Đô (gọi là dòng kẻ phụ).
-  3. **Nốt Rê (D):** Vẽ một hình bầu dục nằm ngay dưới mép của dòng kẻ số 1 (dòng dưới cùng). Nó như đang "treo lơ lửng" chạm vào đáy dòng kẻ.
-  4. **Nốt Mi (E):** Vẽ một hình bầu dục nằm đè lên dòng kẻ số 1 (bị dòng kẻ thứ 1 đâm xuyên qua chính giữa).
-- **Lặp lại:** Hãy vẽ chuỗi Đô-Rê-Mi này lặp đi lặp lại 10 lần. Vừa vẽ vừa đọc to tên nốt. Việc tự tay vẽ nốt sẽ giúp não bộ "chụp ảnh" vị trí cực kỳ sâu sắc, khi nhìn vào sheet nhạc thật bạn sẽ nhận ra chúng ngay lập tức!
-
-## Khởi động & Ôn tập trên đàn
-Hãy ôn lại [**Chương 2 - Bài 3**](/03-exercises/chuong-02-bai-03) (Thử thách độc lập nhịp điệu) khoảng 5 phút để làm nóng ngón tay.
+{{sheet: chuong-02-bai-03#3A}}
 
 ## Bài tập 3A: Khởi động Đô Rê Mi
-Mắt nhìn thẳng vào bản nhạc trên màn hình, ngón tay đặt sẵn lên 3 nốt Đô Rê Mi. KHÔNG NHÌN XUỐNG TAY. Ở bài tập này mình đã xóa bỏ các chữ cái ghi nhớ (lyrics) ở bên dưới.
+
+Mắt ở bản nhạc, **không nhìn xuống tay**. Lần này không có chữ nhắc tên nốt.
 
 ```abc
 X: 1
@@ -50,7 +38,8 @@ C D E C | E D C2 | C E D E | C4 |]
 ```
 
 ## Bài tập 3B: Giai điệu quen thuộc (Mary Had A Little Lamb)
-Hãy thử đọc bản nhạc này, bạn sẽ nhận ra một giai điệu cực kỳ quen thuộc dù chỉ dùng 3 nốt C, D, E!
+
+Chỉ ba nốt Đô, Rê, Mi. Vừa đánh vừa đọc to tên nốt.
 
 ```abc
 X: 2
@@ -65,7 +54,8 @@ E D C D | E E E E | D D E D | C4 |]
 ```
 
 ## Bài tập 3C: Bước nhảy (Leaps) giữa Đô và Mi
-Bài này khó hơn một chút vì bạn sẽ phải đọc nốt Đô và nhảy hẳn lên nốt Mi (bỏ qua Rê).
+
+Đô nhảy thẳng lên Mi, bỏ qua Rê. Bấm nhầm thì nhắm mắt, sờ tìm lại Đô cạnh cụm 2 phím đen rồi đánh tiếp.
 
 ```abc
 X: 3
@@ -78,24 +68,24 @@ K: C
 C E D C | E C D2 | C C E E | D D C2 |]
 ```
 
-## Thực hành tự do & Luyện tai (5 phút)
-
-**Thử thách Thẩm âm (Ear Training) — Đoán một trong ba nốt:**
-- Nhắm mắt, tay phải đặt ngón 1-2-3 lên **Đô, Rê, Mi**.
-- Bấm ngẫu nhiên **một** trong ba nốt đó.
-- Không mở mắt, đoán vừa nghe nốt nào rồi nói to tên nốt.
-- Mở mắt kiểm tra. Làm 10 lần.
-
-*Chỉ ba lựa chọn nên đừng vội nản nếu đoán sai — ba nốt này nằm sát nhau nên rất dễ nhầm. Đoán đúng 6/10 lần đã là tốt cho lần đầu.*
-
-**Tự do:** Đánh lại Bài 3B (Mary Had A Little Lamb) mà **không nhìn xuống tay**.
-
 ## Xong bài khi
 
 - Nhìn nốt Đô, Rê, Mi trên khuông là gọi được tên, không phải đếm dòng kẻ.
 - Đánh 3A, 3B, 3C chậm mà gần như không phải cúi nhìn tay.
 - Bấm nhầm thì tự tìm lại nốt Đô bằng cụm hai phím đen rồi đánh tiếp.
 
-## Yêu cầu thực hành
-1. Hãy đánh thật chậm từng bài (3A, 3B, 3C). Đọc to tên nốt "Đô - Rê - Mi" khi đánh.
-2. Nếu bạn bị bấm nhầm phím, hãy nhắm mắt lại, tự "sờ" để tìm lại nốt Đô (C) ở cụm 2 phím đen, sau đó đánh tiếp. Tuyệt đối hạn chế cúi đầu xuống nhìn tay!
+---
+
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — phải đếm dòng kẻ mới ra tên nốt, hay mắt cứ tụt xuống tay thì đọc tiếp.
+
+**Chép nốt ra giấy.** Kẻ 5 dòng, vẽ Đô (có gạch ngắn), Rê (treo dưới dòng 1), Mi (dòng 1 xuyên qua). Vẽ 10 lần, vừa vẽ vừa đọc tên. Tự tay vẽ giúp mắt nhận ra nốt nhanh hơn hẳn.
+
+**Tập khi không có đàn.** Úp tay khum tròn lên bàn, nhấc riêng ngón 1 rồi ngón 3 gõ xuống, 10 lần — đúng động tác nhảy Đô lên Mi.
+
+**Luyện tai: một trong ba nốt.** Nhắm mắt, ngón 1-2-3 trên Đô Rê Mi, bấm ngẫu nhiên một nốt rồi đoán tên. Làm 10 lần. Đúng 6/10 là tốt cho lần đầu.
+
+**Vì sao không nhìn tay:** mắt rời bản nhạc là mất chỗ đang đọc. Ngón tay nhớ phím nhanh hơn bạn nghĩ.
+
+Tập rồi mà vẫn chưa quen khuông nhạc và khóa Sol: đọc **[Chương 3: Đọc bản nhạc cơ bản](/02-chapters/chuong-03)**.

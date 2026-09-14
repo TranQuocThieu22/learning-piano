@@ -1,5 +1,7 @@
 # Chương 7: Hợp âm — ba nốt cùng một lúc
 
+> **Nên tập thử trước khi đọc trang này.** Mỗi bài tập đã có hình bàn phím của từng hợp âm — mở **[Chương 7 - Bài 1](/03-exercises/chuong-07-bai-01)** và đánh thử. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
+
 Chúc mừng bạn đã sang **Giai đoạn 2**.
 
 Suốt Giai đoạn 1, bạn luôn chơi **mỗi lúc một nốt** ở mỗi tay. Giai điệu chạy ở tay phải, tay trái giữ một nốt nền. Nghe được, nhưng mỏng — và đó chính là thứ khiến bản nhạc của bạn nghe chưa giống bản thu bạn vẫn nghe.
@@ -130,3 +132,5 @@ Chương 7 mới chỉ dạy **bấm** hợp âm. Ba chương còn lại của G
 - **Chương 10:** đệm trọn một bài hát, và Trạm dừng chân số 3 khép lại Giai đoạn 2.
 
 Từ đây trở đi, thứ bạn tập mỗi ngày sẽ nghe ngày càng giống **âm nhạc thật** chứ không còn giống bài tập nữa.
+
+**👉 Về tập tiếp: [Chương 7 - Bài 1: Hợp âm Đô trưởng](/03-exercises/chuong-07-bai-01)**

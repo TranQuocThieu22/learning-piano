@@ -1,61 +1,16 @@
 # Chương 7 - Bài 4: Đệm trọn một bài hát
 
-Ba bài vừa rồi bạn học bấm hợp âm và đổi hợp âm. Hôm nay ghép tất cả lại: **một bản nhạc hoàn chỉnh, giai điệu tay phải, hợp âm tay trái, từ nốt đầu tới nốt cuối**.
+Hôm nay **đệm trọn Ode to Joy**: giai điệu tay phải, hợp âm tay trái, từ nốt đầu tới nốt cuối. Bài này tập trong **4 ngày**: ngày 1 làm 4A, ngày 2 làm 4B, ngày 3 ghép 4C, ngày 4 chơi trọn 4C rồi thử 4D. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 7](/02-chapters/chuong-07).
 
-Bài hát hôm nay là **Ode to Joy** — chính bản nhạc bạn đã chơi từ Chương 3. Lần này nó nghe khác hẳn.
+## Khởi động
 
-> [!TIP]
-> **⏱️ Ước lượng thời gian hoàn thành:** Giai điệu bạn đã thuộc, hợp âm bạn đã bấm được. Cái khó nằm ở chỗ **hai tay làm hai việc khác nhau cùng lúc** trong suốt cả bài. Bài này cần **4 ngày** luyện tập.
+Chạy vòng C - Am - F - G một lượt.
 
-**📅 Kế hoạch từng ngày**
-
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Tập **4A** — chỉ tay trái, thuộc lòng vòng hợp âm của bài. |
-| **Ngày 2** | Tập **4B** — chỉ tay phải, ôn lại giai điệu cho trơn. |
-| **Ngày 3** | Ghép hai tay ở **4C**. Chậm hết mức, dừng bao nhiêu lần cũng được. |
-| **Ngày 4** | Chơi **4C** liền một mạch không dừng, rồi thử sức với **4D**. |
-
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
-
-## Vì sao phải tập riêng từng tay trước
-
-Nhiều người nhảy thẳng vào ghép hai tay rồi vật lộn cả tuần không xong. Lý do rất đơn giản: **não chỉ chú ý được một việc mới tại một thời điểm**.
-
-Nếu tay trái còn phải nghĩ "hợp âm tiếp theo là gì", thì tay phải chắc chắn sẽ sai nhịp. Ngược lại cũng vậy.
-
-> Quy tắc: chỉ ghép hai tay khi **mỗi tay đã chơi được mà không cần nghĩ**. Tay trái phải chạy được vòng hợp âm trong lúc bạn đang nói chuyện với người khác.
-
-## Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-
-- **Mục tiêu:** Dạy hai tay làm **hai việc khác nhau** cùng lúc — tay trái gõ chậm theo ô nhịp, tay phải gõ nhanh theo giai điệu.
-- **Động tác:**
-  1. Đặt cả hai tay úp lên bàn.
-  2. **Tay trái** gõ một cái duy nhất vào mỗi tiếng "một" khi bạn đếm "một - hai - ba - bốn".
-  3. **Tay phải** gõ vào cả bốn tiếng đếm.
-  4. Đếm to và gõ đều trong 1 phút.
-  5. Đổi vai: tay phải gõ chậm, tay trái gõ nhanh. Khó hơn hẳn, và đó là bình thường.
-- **Nâng độ khó:** tay trái gõ vào phách 1 và 3, tay phải gõ cả bốn phách.
-- **Điểm dễ sai nhất:** tay chậm bị tay nhanh "kéo" theo, thành ra gõ cả bốn phách lúc nào không hay. Đếm to là cách duy nhất giữ hai tay tách bạch.
-
-**2. TÙY CHỌN [Phương pháp: Đọc chay bản nhạc / Score Study]**
-
-- Nhìn vào bài **4C** bên dưới, không chạm đàn.
-- Đọc to **tên hợp âm ở mỗi ô nhịp** theo đúng nhịp đếm: "Đô... Sol... Đô... Sol..." — mỗi tên hợp âm giữ trọn bốn nhịp.
-- Làm 3 lượt, tới khi bạn đọc được vòng hợp âm mà không cần nhìn.
-- *Vì sao hiệu quả:* thuộc **thứ tự hợp âm** trong đầu thì lúc chơi tay trái tự chạy, để bạn dồn hết chú ý cho tay phải.
-
-## Khởi động & Ôn tập trên đàn (5 phút)
-
-Chạy **Bài tập 3D (Vòng hợp âm C - Am - F - G)** của bài trước một lượt, rồi thang âm Đô trưởng hai tay một lượt. Tay đã nóng thì mới vào bài chính.
+{{sheet: chuong-07-bai-03#3D}}
 
 ## Bài tập 4A: Vòng hợp âm của bài — chỉ tay trái
 
-Đây là toàn bộ phần tay trái của Ode to Joy. Tám ô nhịp, chỉ hai hợp âm thay nhau: **Đô trưởng** và **Sol trưởng**.
-
-Tập cho tới khi tay tự chạy được mà bạn không cần nhìn xuống. Thử vừa chơi vừa đọc to tên hợp âm — nếu làm được là thuộc thật.
+Toàn bộ tay trái của Ode to Joy: chỉ **Đô trưởng và Sol trưởng** thay nhau. Tập tới khi vừa chơi vừa đọc to được tên hợp âm.
 
 ```abc
 X: 1
@@ -72,9 +27,7 @@ V: 1 clef=bass
 
 ## Bài tập 4B: Giai điệu — chỉ tay phải
 
-Giai điệu Ode to Joy, đúng như bạn đã chơi ở Chương 3. Ôn lại cho trơn tay, giữ thế tay Đô suốt bài.
-
-Lần này thêm một yêu cầu mà hồi Chương 3 chưa có: chơi **legato**, các nốt nối liền nhau không hở. Kỹ thuật Chương 5 phải sống trong mọi bài từ giờ trở đi.
+Giai điệu đã thuộc từ Chương 3, lần này chơi **liền mạch**, không hở giữa các nốt.
 
 ```abc
 X: 2
@@ -90,11 +43,7 @@ K: C
 
 ## Bài tập 4C: Ghép hai tay — bản đệm hoàn chỉnh
 
-Đây là đích đến của cả Chương 7.
-
-Chơi **thật chậm** ở lần đầu — chậm hơn nhiều so với tốc độ ghi trên bài cũng không sao. Điều duy nhất quan trọng là **hợp âm rơi đúng vào phách 1** cùng lúc với nốt giai điệu đầu ô nhịp.
-
-Nghe lại Ode to Joy phiên bản Chương 3 trong trí nhớ mà so sánh: cùng một giai điệu, nhưng giờ nó có nền, có màu sắc, có chiều sâu. Đó là thứ hợp âm mang lại.
+Đích đến của Chương 7. Thật chậm lần đầu; điều duy nhất quan trọng là **hợp âm rơi đúng phách 1** cùng nốt giai điệu. Rối thì quay lại 4A, 4B thêm một ngày.
 
 ```abc
 X: 3
@@ -113,14 +62,9 @@ V: 2 clef=bass
 "C"[C,E,G,]4 | "G"[G,B,D]4 | "C"[C,E,G,]4 | "G"[G,B,D]2 "C"[C,E,G,]2 |]
 ```
 
-> [!WARNING]
-> Nếu ghép hai tay mà rối, **đừng cố thêm**. Quay lại 4A và 4B thêm một ngày nữa. Ghép hai tay khi một tay còn chưa tự động là cách nhanh nhất để học sai và mất tự tin.
-
 ## Bài tập 4D: Bài thứ hai — Twinkle Twinkle có hợp âm
 
-Bài hát bạn đã chơi ở Trạm dừng chân số 2, giờ khoác thêm hợp âm. Ở đây có ba hợp âm thay nhau (C, F, G) nên đổi hợp âm nhiều hơn hẳn — coi như bài kiểm tra cuối chương.
-
-Mười hai ô nhịp, nhưng đừng ngại: ô nhịp 9 đến 12 giống hệt ô nhịp 1 đến 4.
+Twinkle Twinkle của Trạm dừng chân 2, giờ có ba hợp âm C, F, G thay nhau. Ô 9-12 giống hệt ô 1-4.
 
 ```abc
 X: 4
@@ -141,21 +85,6 @@ V: 2 clef=bass
 "C"[C,E,G,]4 | "F"[F,A,C]4 | "F"[F,A,C]4 | "C"[C,E,G,]4 |]
 ```
 
-## Thực hành tự do & Luyện tai (5-10 phút)
-
-**Thử thách Thẩm âm (Ear Training) — Dò hợp âm cho một giai điệu**
-
-Đây là bài tập tai có giá trị thực tế nhất từ đầu giáo trình tới giờ.
-
-1. Chơi giai điệu **Jingle Bells** bằng tay phải (bạn đã thuộc từ Chương 3).
-2. Ở ô nhịp đầu tiên, thử lần lượt ba hợp âm **C, F, G** bằng tay trái. Một trong ba sẽ nghe **hợp**, hai cái kia nghe cấn.
-3. Chọn cái nghe hợp, rồi làm tiếp với ô nhịp thứ hai, thứ ba...
-4. Cứ vậy dò cho hết câu đầu.
-
-Sai nhiều lần là chuyện đương nhiên, và chính những lần "nghe cấn" mới dạy tai bạn. Đây đúng là cách người chơi đàn tự đệm một bài hát mà không cần ai đưa bản nhạc — kỹ năng trung tâm của Giai đoạn 4 sau này.
-
-**Tự do:** Chơi **4C** một lần với ba tính cách khác nhau — một lần nhỏ và dịu (`p`), một lần to và hùng tráng (`f`), một lần tự bạn quyết chỗ nào to chỗ nào nhỏ. Bản Ode to Joy nguyên gốc của Beethoven là một bài ca mừng vui, nên bản `f` có lẽ gần với ý tác giả nhất.
-
 ## Xong bài khi
 
 - Chơi trọn 4C từ đầu tới cuối, không dừng lại để sửa.
@@ -165,6 +94,20 @@ Sai nhiều lần là chuyện đương nhiên, và chính những lần "nghe c
 
 ---
 
-Xong bài này là bạn hết **Chương 7**. Đừng quên tick bài bằng nút **Đánh dấu đã học xong** ở cuối trang.
+🎉 **Xong Chương 7:** bạn vừa tự đệm trọn một bài hát. Chương 8 dạy mẫu đệm — tay trái rải nốt, chia nhịp, nghe giống nhạc thật hơn.
 
-Chương 8 sẽ dạy các **mẫu đệm** — thay vì bấm cả hợp âm một cục ở phách 1, tay trái sẽ rải nốt, chia nhịp, và bản đệm bắt đầu nghe giống nhạc thật sự.
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — ghép hai tay là loạn, hay đổi hợp âm là giai điệu đứt thì đọc tiếp.
+
+**Vì sao phải tập riêng từng tay trước:** não chỉ chú ý được một việc mới tại một lúc. Tay trái còn phải nghĩ "hợp âm tiếp là gì" thì tay phải chắc chắn lệch nhịp. Chỉ ghép khi mỗi tay chơi được mà không cần nghĩ.
+
+**Tập khi không có đàn.** Đếm 1-2-3-4: tay trái gõ ở "một", tay phải gõ cả bốn. 1 phút. Đổi vai — khó hơn hẳn. Khó hơn nữa: tay trái gõ phách 1 và 3. Đếm to để tay chậm không bị tay nhanh kéo theo.
+
+**Đọc chay vòng hợp âm.** Nhìn 4C, đọc to tên hợp âm mỗi ô theo nhịp: "Đô… Sol… Đô… Sol…", mỗi tên giữ bốn nhịp. Thuộc thứ tự thì tay trái tự chạy.
+
+**Luyện tai: dò hợp âm cho giai điệu.** Chơi Jingle Bells tay phải. Ở mỗi ô, thử lần lượt C, F, G tay trái — một cái nghe hợp, hai cái nghe cấn. Dò hết câu đầu. Đây là cách tự đệm một bài hát không cần bản nhạc.
+
+**Tự do:** chơi 4C ba lần — nhỏ và dịu (p), to và hùng tráng (f), rồi tự quyết chỗ nào to nhỏ.
+
+Tập rồi mà vẫn chưa quen đệm hai tay: đọc **[Chương 7: Hợp âm](/02-chapters/chuong-07)**.

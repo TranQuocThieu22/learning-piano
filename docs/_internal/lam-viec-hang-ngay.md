@@ -135,12 +135,10 @@ Không gấp, xoá dòng nào đã xong:
       ảnh có bị nằm ngang không (thẻ EXIF, bẫy 41), gửi có lâu quá không trên 4G; (3) mở lại
       trên máy khác xem ảnh có hiện không. Gặp gì lạ thì kể lại kèm tên file hoặc kiểu điện thoại.
 
-- [ ] **Đọc thử Chương 1-2 khuôn mới trên điện thoại, rồi bảo Claude làm tiếp Chương 3-7.**
-      Chương 1-2 đã viết lại theo lối *tập trước, lý thuyết thành đọc thêm*; Chương 3-7 vẫn
-      khuôn cũ và **chờ bạn duyệt** — viết sai khuôn cho cả 25 bài thì phải sửa cả 25. Mở
-      Chương 1 - Bài 1 và Chương 2 - Bài 1 trên điện thoại, đặt lên giá nhạc: đọc được hướng
-      dẫn từ nửa sải tay không, có chỗ nào thiếu thông tin để tập không, mục *Đọc thêm* ở
-      cuối có thừa không. Ưng thì nói "làm tiếp Chương 3-7 theo khuôn Chương 1-2".
+- [x] ~~**Đọc thử Chương 1-2 khuôn mới, rồi làm tiếp Chương 3-7.**~~ Xong 14/09/2026: chủ
+      sản phẩm bảo làm tiếp, cả 20 bài Chương 3-7 đã viết lại cùng khuôn (bản nhạc giữ nguyên
+      từng ký tự, thêm khuông và hình bàn phím minh hoạ). Vẫn nên mở vài bài Chương 3-7 trên
+      điện thoại xem có câu dẫn nào thiếu thông tin để tập không.
 
 - [ ] **Thử dòng nhắc vượt bài và dòng khen đánh trọn trên điện thoại thật, đã đăng nhập.**
       Hai thứ này mới chạy qua test và trình duyệt thử ở máy — dòng nhắc chỉ hiện khi đã đăng nhập,
@@ -176,6 +174,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Đánh dấu xong việc đọc thử Chương 1-2 và làm tiếp Chương 3-7 — chủ sản phẩm bảo làm tiếp nên cả giáo trình đã đổi khuôn; giữ lời nhắc mở thử vài bài Chương 3-7 trên máy thật vì chúng chưa ai đọc trên điện thoại |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm vào mục 7 việc đọc thử Chương 1-2 khuôn mới trước khi làm Chương 3-7 — đợt viết lại cố ý dừng ở hai chương để chủ sản phẩm duyệt khuôn trên máy thật, và việc duyệt đó không ai làm hộ được |
 | 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm vào mục 7 việc thử dòng nhắc vượt bài và dòng khen đánh trọn trên máy thật đã đăng nhập — dòng nhắc chỉ hiện với tài khoản đã đăng nhập mà trình duyệt thử của Claude không đăng nhập Google được, nên đây là phần duy nhất của thay đổi chưa ai nhìn thấy chạy thật |
 | 14/09/2026 | `docs(internal): Đánh dấu đã cấp gói và nhắn tay cho người điền form beta` | Đánh dấu xong việc chặn cả đợt beta: đã cấp gói và nhắn tay cho những người điền form tới 14/09. Giữ lại lời nhắc rằng người điền form sau ngày này vẫn phải đi đủ hai bước, vì gạch dòng đi dễ khiến tưởng việc cấp gói đã xong hẳn chứ không phải việc lặp lại mỗi lần có người mới |

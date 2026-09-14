@@ -1,5 +1,7 @@
 # Chương 5: Kỹ thuật ngón và Cảm xúc (Expression)
 
+> **Nên tập thử trước khi đọc trang này.** Mỗi bài tập đã có khuông nhỏ chỉ đúng ký hiệu đang học — mở **[Chương 5 - Bài 1](/03-exercises/chuong-05-bai-01)** và đánh thử. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
+
 Tới đây bạn đã đọc được nốt ở cả hai khóa, ghép được hai tay, và chạm được phím đen. Nghĩa là bạn **đánh đúng** được rồi.
 
 Nhưng đánh đúng và đánh **hay** là hai chuyện khác nhau. Hai người cùng đánh đúng y hệt các nốt của một bài, một người nghe cuốn hút, một người nghe như máy đánh chữ — khác biệt nằm ở chương này.
@@ -98,3 +100,5 @@ Ba kỹ thuật trên nghe có vẻ chỉ là "trang trí". Thực ra chúng là
 Và có một lợi ích rất thực tế nữa: cả ba đều buộc bạn **nghe lại chính mình**. Cho tới giờ bạn chủ yếu tập mắt (đọc nốt) và tay (bấm đúng). Từ chương này trở đi, tai bạn mới thật sự vào cuộc — vì bạn không thể biết mình đánh legato đã liền chưa, staccato đã gọn chưa, nếu không lắng nghe.
 
 Đó cũng là lý do chương này đặt trước Chương 6 (kỹ thuật mở rộng tay): tay cần mềm và tai cần nhạy **trước khi** bắt đầu di chuyển khắp bàn phím.
+
+**👉 Về tập tiếp: [Chương 5 - Bài 1: Legato - Đánh liền mạch](/03-exercises/chuong-05-bai-01)**

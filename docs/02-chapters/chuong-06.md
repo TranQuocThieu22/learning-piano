@@ -1,5 +1,7 @@
 # Chương 6: Kỹ thuật mở rộng tay
 
+> **Nên tập thử trước khi đọc trang này.** Mỗi bài tập đã có hình thế tay và số ngón ghi trên nốt — mở **[Chương 6 - Bài 1](/03-exercises/chuong-06-bai-01)** và đánh thử. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
+
 Suốt năm chương vừa qua, bàn tay bạn gần như **đứng yên một chỗ**. Năm ngón đặt lên năm phím, và mọi bản nhạc đều được chọn sao cho vừa khít trong năm phím đó.
 
 Đó là một sự sắp đặt có chủ ý — nó cho bạn tập đọc nốt, ghép hai tay và điều khiển lực ngón mà không phải lo tay mình đang ở đâu. Nhưng bạn hẳn đã nhận ra giới hạn của nó: cây đàn có **88 phím**, còn bạn mới dùng có năm.
@@ -119,3 +121,5 @@ Có một lý do rất thực tế nữa để tập nó: **phần lớn giai đ
 Chương 6 khép lại Giai đoạn 1. Nhìn lại chặng đường: từ chỗ không biết nốt Đô nằm đâu, giờ bạn đọc được cả hai khóa, ghép được hai tay, chạm được phím đen, kiểm soát được to nhỏ và liền nảy, và bàn tay đã đi lại được trên bàn phím.
 
 Bài cuối chương là **Trạm dừng chân số 2** — không có kỹ thuật mới nào, chỉ ngồi chơi trọn vẹn mấy bản nhạc. Trong đó có một bài mà từ đầu giáo trình tới giờ bạn **chưa chơi được**, vì nó cần nốt La: **Twinkle Twinkle Little Star**. Giờ thì được rồi.
+
+**👉 Về tập tiếp: [Chương 6 - Bài 1: Ba nốt mới La, Si, Đô cao](/03-exercises/chuong-06-bai-01)**

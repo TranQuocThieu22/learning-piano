@@ -62,6 +62,11 @@
   5 bài tập Chương 1-2 (ngắn đi 25-37%, bản nhạc giữ nguyên từng ký tự). Chương 3-7 chờ duyệt.
 - **Đổi lời dẫn thành lời mời** *"cứ tập thử trước, chỗ nào khó hiểu thì vào đây"* — đầu mỗi
   bài, tiêu đề mục cuối bài, nút ở trang chương và đầu trang lý thuyết.
+- **Viết lại cả Chương 3-7** (20 bài) theo khuôn Chương 1-2, không chờ bản thử. Phần chữ
+  viết lại, còn khối nhạc được script chép nguyên văn từ bản trên `main` rồi so lại — không
+  gõ tay một nốt nào. Mỗi bài thêm một khuông hoặc hình bàn phím nhỏ cho khái niệm mới (17
+  khối). Năm bài lý thuyết mở đầu bằng "Nên tập thử trước khi đọc trang này". `check:lessons`
+  nay bắt mọi bài tập phải theo khuôn.
 - **Chốt luật "ít chữ, tập liên tục" và cho máy gác.** Ghi vào `AGENTS.md`, skill
   `daily-practice-structure` và nhật ký quyết định: chữ chỉ để dẫn vào việc tập, ưu tiên bản
   nhạc, hình và công cụ tập. `check:lessons` nay báo lỗi với bài theo khuôn mới khi chữ vượt

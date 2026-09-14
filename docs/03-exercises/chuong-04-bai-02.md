@@ -1,54 +1,25 @@
 # Chương 4 - Bài 2: Làm quen Dấu Giáng (Mi giáng - Eb)
 
-Hôm qua bạn đi **sang phải** nửa cung với dấu thăng. Hôm nay chúng ta đi **sang trái** nửa cung với **Dấu Giáng (b)**, qua nốt **Mi giáng (Eb)**.
+Hôm nay đi **sang trái** nửa cung với dấu giáng: **Mi giáng**. Chỉ hạ một nốt Mi mà giai điệu vui hoá buồn. Bài này tập trong **2 ngày**: ngày 1 làm 2A và 2B, ngày 2 làm 2C và 2D. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 4](/02-chapters/chuong-04).
 
-Và bạn sắp được nghe một điều thú vị: chỉ cần hạ một nốt Mi xuống nửa cung, cả giai điệu vui vẻ quen thuộc sẽ lập tức chuyển sang màu **buồn, sâu lắng**. Đó là sự khác biệt giữa âm giai Trưởng và Thứ.
+## Mi giáng ở đâu
 
-> [!TIP]
-> **⏱️ Ước lượng thời gian hoàn thành:** Bạn đã quen với khái niệm dấu hóa từ bài trước rồi, nên bài này nhẹ nhàng hơn. Cần **2 ngày** luyện tập.
+Phím đen **bên phải của cụm 2 phím đen**, ngay bên trái Mi. Ngón 3 đẩy vào trong đàn. Trên khuông, dấu **♭** đứng trước nốt. Giáng là sang trái, thăng là sang phải.
 
-**📅 Kế hoạch từng ngày**
+```keys
+Eb4 E4
+Mi giáng và Mi: ngón 3 lùi vào phím đen ngay bên trái.
+```
 
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Gõ mặt bàn cho ngón 3. Trên đàn tập **2A và 2B**, nghe kỹ sự khác nhau giữa Mi và Mi giáng. |
-| **Ngày 2** | Tập **2C** (Vui và Buồn) — bài quan trọng nhất, chơi liền 8 ô nhịp để nghe rõ chuyển màu. Rồi thử **2D**. |
+## Khởi động
 
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
-
-## Cách tìm Mi giáng trên đàn
-
-1. Đặt tay phải ở thế quen thuộc: ngón 3 trên nốt Mi.
-2. Nhìn vào **cụm 2 phím đen** gần đó.
-3. **Mi giáng (Eb)** chính là **phím đen THỨ HAI (bên phải)** của cụm 2 phím đen.
-4. Đẩy ngón 3 tiến vào trong đàn, đặt lên chính giữa phím đen ấy.
-
-**👉 Nhớ mẹo:** Dấu **giáng (b)** = đi **xuống** = sang **TRÁI**. Dấu **thăng (#)** = đi **lên** = sang **PHẢI**.
-
-**👉 Lưu ý một phím hai tên:** Phím đen này cũng chính là **Rê thăng (D#)** nếu nhìn từ nốt Rê đi lên. Cùng một phím, hai cách gọi. Hôm nay ta gọi nó là Mi giáng.
-
-## Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-- **Mục tiêu:** Rèn ngón 3 tiến - lùi độc lập (tương tự ngón 4 hôm trước, nhưng ngón 3 dài hơn nên cảm giác khác).
-- **Động tác:** Úp tay phải lên bàn, khum tròn.
-  - Giữ 4 ngón (1, 2, 4, 5) **dính chặt** mặt bàn.
-  - Nhấc **riêng ngón 3**, đẩy tiến về trước khoảng 3cm, gõ xuống.
-  - Nhấc lên, kéo về chỗ cũ, gõ xuống.
-- Lặp lại 10 lần. Sau đó thử **xen kẽ**: ngón 3 tiến (Mi giáng) → ngón 4 tiến (Pha thăng) → về chỗ cũ. Đây là mô phỏng cho Bài 3 sắp tới.
-
-**2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
-- **Mục tiêu:** Cảm nhận sự khác biệt Trưởng - Thứ bằng giọng hát.
-- **Cách làm:** Hát ba nốt "Đô - Mi - Sol" (nghe vui, sáng). Sau đó hát "Đô - Mi giáng - Sol" (hạ nốt giữa xuống một chút, nghe buồn hẳn).
-- Hát đi hát lại hai bộ ba này, cảm nhận cái "chùng xuống" của nốt giữa. Đây là nền tảng để sau này bạn nghe một bài hát và biết ngay nó vui hay buồn.
-
-## Khởi động & Ôn tập trên đàn (5 phút)
-Đánh lại **Bài tập 1C (Màu sắc Lydian)** của hôm trước để ngón 4 không quên phím đen.
+Đánh lại 1C (màu Lydian) để ngón 4 nhớ phím đen.
 
 {{sheet: chuong-04-bai-01#1C}}
 
 ## Bài tập 2A: Chạm Mi giáng
-Đi lên đi xuống với ngón 3 vươn vào phím đen. Đánh chậm, cảm nhận màu buồn của giai điệu.
+
+Đi lên đi xuống, ngón 3 vươn vào phím đen. Chậm, nghe màu buồn.
 
 ```abc
 X: 1
@@ -62,9 +33,8 @@ K: C
 ```
 
 ## Bài tập 2B: So sánh Mi và Mi giáng
-Nghe kỹ sự khác biệt. Dấu bình (`=E`) đưa nốt về lại phím trắng — chú ý tai bạn sẽ thấy "sáng" trở lại ngay.
 
-Nó phải có mặt ngay trong ô nhịp 1: dấu giáng có hiệu lực tới hết ô, nên không ghi dấu bình thì nốt Mi thứ ba vẫn vang ra **Mi giáng** chứ không quay về phím trắng.
+Nghe kỹ: dấu bình đưa nốt về phím trắng là tai thấy "sáng" lại ngay.
 
 ```abc
 X: 2
@@ -78,7 +48,8 @@ E _E =E _E | D2 _E2 | =E D =E G | C4 |]
 ```
 
 ## Bài tập 2C: Vui và Buồn - Cùng một giai điệu
-Đây là bài tập "wow" của hôm nay. **Bốn ô nhịp đầu** là giai điệu Trưởng (vui). **Bốn ô nhịp sau** là giai điệu Y HỆT nhưng đổi Mi thành Mi giáng — và nó buồn hẳn đi. Chỉ một nốt thôi đấy!
+
+Bốn ô đầu vui (Mi), bốn ô sau y hệt nhưng Mi giáng — buồn hẳn. Chơi liền cả 8 ô.
 
 ```abc
 X: 3
@@ -93,7 +64,8 @@ C _E G _E | F _E D2 | C _E G _E | C4 |]
 ```
 
 ## Bài tập 2D: Khuông nhạc kép màu Thứ
-Ghép 2 tay với màu sắc buồn. Hãy thử chơi bài này **nhỏ nhẹ (p)** như đã học ở bài Tổng ôn — nhạc buồn chơi khẽ sẽ rất hợp.
+
+Hai tay, màu buồn. Chơi nhỏ nhẹ (**p**).
 
 ```abc
 X: 4
@@ -110,23 +82,26 @@ V: 2 clef=bass
 C,4 | G,4 | C,4 | C,4 |]
 ```
 
-## Thực hành tự do & Luyện tai (5 phút)
-
-**Thử thách Thẩm âm (Ear Training) - Vui hay Buồn:**
-- Nhắm mắt. Bấm ngẫu nhiên **hoặc** bộ ba "Đô - Mi - Sol" **hoặc** bộ ba "Đô - Mi giáng - Sol".
-- Không nhìn tay, chỉ nghe và tự nói to: "Vui!" hay "Buồn!".
-- Mở mắt kiểm tra. Làm 10 lần.
-- Đây là bài luyện tai giá trị nhất từ trước đến giờ — phân biệt Trưởng/Thứ là kỹ năng nền tảng của mọi nhạc sĩ.
-
-**Tự do:** Đặt tay ở thế C-D-Eb-F-G và tự bịa một giai điệu buồn trong 2 phút. Chơi thật chậm và khẽ.
-
 ## Xong bài khi
 
 - Ngón 3 tự tìm được Mi giáng mà không cần cúi nhìn.
 - Chơi liền mạch cả 8 ô nhịp của 2C và nghe ra chỗ nhạc chuyển từ vui sang buồn.
 - Khi ngón 3 vào phím đen, cổ tay vẫn thẳng hướng, không xoay lệch.
 
-## Yêu cầu thực hành
-1. Bài 2C là bài quan trọng nhất — chơi cả 8 ô nhịp liền mạch để nghe rõ sự chuyển màu từ vui sang buồn.
-2. Kiểm tra: khi ngón 3 vào phím đen, **cổ tay có bị xoay lệch không?** Bàn tay phải giữ thẳng hướng, chỉ có ngón tay vươn tới.
-3. So sánh cảm giác vật lý: ngón 4 với Pha thăng (hôm qua) và ngón 3 với Mi giáng (hôm nay) — ngón nào dễ hơn với bạn?
+---
+
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — cổ tay cứ xoay khi ngón 3 vào phím đen, hay chưa nghe ra vui với buồn thì đọc tiếp.
+
+**Vì sao cần dấu bình trong 2B:** dấu giáng có hiệu lực tới hết ô nhịp. Không ghi dấu bình thì nốt Mi phía sau trong cùng ô vẫn vang ra Mi giáng.
+
+**Một phím, hai tên:** phím đen này cũng là Rê thăng nếu đi lên từ Rê. Hôm nay gọi là Mi giáng.
+
+**Tập khi không có đàn.** Tay phải khum trên bàn, nhấc riêng ngón 3 đẩy tới 3cm, gõ, kéo về. 10 lần. Rồi xen kẽ: ngón 3 tiến, ngón 4 tiến, về chỗ cũ — chuẩn bị cho bài sau.
+
+**Hát trước khi đánh.** Hát "Đô - Mi - Sol" (vui), rồi "Đô - Mi giáng - Sol" (hạ nốt giữa, buồn). Hát xen kẽ cho tới khi nghe rõ nốt giữa "chùng xuống".
+
+**Luyện tai: vui hay buồn?** Nhắm mắt, bấm ngẫu nhiên Đô-Mi-Sol hoặc Đô-Mi giáng-Sol, nói to "Vui!" hay "Buồn!". Làm 10 lần.
+
+Tập rồi mà vẫn chưa rõ trưởng và thứ khác nhau thế nào: đọc **[Chương 4: Phím đen và Dấu hóa](/02-chapters/chuong-04)**.

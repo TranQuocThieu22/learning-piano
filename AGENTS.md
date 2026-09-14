@@ -56,7 +56,7 @@ dẫn về nó.
 3. **Ưu tiên thứ để nhìn và để làm hơn chữ:** bản nhạc (khối `abc`), hình bàn phím (khối `keys`, ảnh), và dẫn thẳng tới công cụ tập — *Tập bài này với đàn*, kho ôn luyện `/review`, luyện nhận nốt, luyện tai, máy đánh nhịp. Một câu tả "phím nào" là một tấm hình đang giả làm đoạn văn.
 4. **Có máy gác.** `pnpm check:lessons` báo lỗi với bài đã theo khuôn mới khi đoạn mở bài quá 450 ký tự, chữ dẫn một phần tập quá 350, một đoạn cuối bài quá 300, hoặc một bài tập không có bản nhạc hay hình nào. Vượt thì cắt chữ hoặc đổi thành hình — **đừng nâng ngưỡng cho vừa**.
 
-Chương 1-2 đã theo khuôn này; Chương 3-7 chờ chủ sản phẩm duyệt bản thử rồi mới viết lại.
+Cả 25 bài tập (Chương 1-7) đã theo khuôn này, và `check:lessons` bắt buộc mọi bài tập phải theo — bài mới thiếu mục *Tập thấy khó? Đọc ở đây* là lỗi.
 
 # Định hướng kinh doanh
 

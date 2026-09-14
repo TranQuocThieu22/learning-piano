@@ -1,61 +1,23 @@
 # Chương 7 - Bài 1: Hợp âm Đô trưởng
 
-Bài đầu tiên của Giai đoạn 2. Từ hôm nay tay trái của bạn không giữ một nốt nữa — nó giữ **ba nốt cùng lúc**.
+Giai đoạn 2 bắt đầu: tay trái giữ **ba nốt cùng lúc** — hợp âm Đô trưởng. Bài này tập trong **2 ngày**: ngày 1 làm 1A và 1B, ngày 2 làm 1C và 1D. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 7](/02-chapters/chuong-07).
 
-> [!TIP]
-> **⏱️ Ước lượng thời gian hoàn thành:** Bấm ba phím cùng lúc không khó về mặt đọc nốt, nhưng để ba nốt vang **đều nhau** thì cần luyện. Bài này cần **2 ngày** luyện tập.
+## Hợp âm Đô trưởng
 
-**📅 Kế hoạch từng ngày**
+Tay trái: ngón 5 Đô, ngón 3 Mi, ngón 1 Sol — **bấm một, bỏ một, bấm một, bỏ một, bấm một**. Nhớ hình dạng này: mọi hợp âm sắp học đều cùng hình. Ngón 2 và 4 khum nhẹ bên trên, không tì xuống.
 
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Bài tập mặt bàn ba ngón. Trên đàn tập **1A và 1B** — nghe cho ba nốt thật đều. |
-| **Ngày 2** | Ôn 1A rồi sang **1C và 1D**, lần đầu ghép giai điệu tay phải lên trên hợp âm. |
+```keys
+C3 E3 G3
+Đô trưởng: giữa mỗi cặp ngón có đúng một phím trắng bỏ trống.
+```
 
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+## Khởi động
 
-## Hợp âm Đô trưởng nằm ở đâu
-
-Ba nốt: **Đô - Mi - Sol**, chơi bằng tay trái ở vùng nốt Đô trầm quen thuộc.
-
-| Ngón | 5 | 3 | 1 |
-|---|---|---|---|
-| **Nốt** | Đô | Mi | Sol |
-
-Để ý cách dựng: Đô — bỏ Rê — **Mi** — bỏ Pha — **Sol**. Giữa mỗi cặp ngón có đúng một phím trắng bỏ trống. Nhớ **hình dạng** này thay vì nhớ tên từng nốt, vì mọi hợp âm sắp học đều cùng một hình.
-
-Ngón 2 và ngón 4 không dùng tới. Cứ để chúng khum tự nhiên bên trên phím, đừng nhấc cao và đừng duỗi thẳng.
-
-## Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-
-- **Mục tiêu:** Dạy ba ngón 5, 3, 1 chạm bàn **cùng một khoảnh khắc**, và dạy tay đi xuống thành một khối.
-- **Động tác — tay trái:**
-  1. Úp tay trái lên bàn ở tư thế khum tròn.
-  2. Nhấc **cả bàn tay** lên khoảng 3cm, ngón 5, 3, 1 hơi chìa xuống, ngón 2 và 4 co nhẹ lên.
-  3. **Thả cả bàn tay rơi xuống** theo sức nặng. Ba ngón phải chạm bàn phát ra **một tiếng gõ duy nhất**.
-  4. Nghe kỹ: nếu ra hai hay ba tiếng lách cách nối nhau là ba ngón đang lệch nhau.
-  5. Làm 10 lần, chậm, mỗi lần nghe lại tiếng gõ.
-- **Cách tự kiểm tra:** kẹp một tờ giấy dưới ngón 2 hoặc ngón 4. Nếu tờ giấy bị đè, nghĩa là hai ngón không dùng đang tì xuống — tay bạn đang gồng.
-- **Điểm dễ sai nhất:** ngón cái chạm trước, vì nó khỏe và nặng nhất. Cố ý thả ngón cái nhẹ hơn hai ngón kia một chút.
-
-**2. TÙY CHỌN [Phương pháp: Chép nốt ra giấy / Music Copying]**
-
-- Kẻ một khuông năm dòng, vẽ **Khóa Pha** ở đầu.
-- Vẽ hợp âm Đô trưởng: ba hình bầu dục **xếp chồng thẳng đứng** trên cùng một vạch dọc — Đô ở khe thứ 2, Mi ở khe thứ 3, Sol ở khe thứ 4.
-- Nhìn kỹ hình vừa vẽ: ba nốt xếp **cách nhau đều đặn**, nốt nào cũng nằm trong khe. Đó là dấu hiệu nhận ra hợp âm trên bản nhạc — ba nốt cùng nằm khe, hoặc cùng nằm trên dòng kẻ.
-- Vẽ thêm 4 lần nữa cho quen tay.
-
-## Khởi động & Ôn tập trên đàn (5 phút)
-
-Chạy **thang âm Đô trưởng hai tay** (Tiết mục 2 của Trạm dừng chân) hai lượt. Giai đoạn 2 không bỏ rơi kỹ thuật của Giai đoạn 1 — thang âm nên có mặt trong buổi khởi động của bạn từ giờ trở đi, mãi mãi.
+Chạy thang âm Đô trưởng hai tay (Tiết mục 2 ở **[Trạm dừng chân 2](/03-exercises/chuong-06-bai-04)**) hai lượt. Từ giờ, thang âm luôn có mặt lúc khởi động.
 
 ## Bài tập 1A: Hợp âm Đô trưởng, nốt tròn
 
-Bài đơn giản nhất có thể: một hợp âm, bốn ô nhịp, mỗi ô một lần bấm.
-
-Đừng vội. Mỗi lần bấm xong, **giữ nguyên và nghe cho hết bốn nhịp**. Câu hỏi duy nhất cần trả lời: ba nốt có vang đều nhau không, hay có nốt nào nổi hẳn lên?
+Mỗi ô bấm một lần, **giữ và nghe hết bốn nhịp**: ba nốt có vang đều, hay có nốt nổi hẳn lên?
 
 ```abc
 X: 1
@@ -71,9 +33,7 @@ V: 1 clef=bass
 
 ## Bài tập 1B: Rải hợp âm ra từng nốt
 
-Cùng ba nốt đó nhưng bấm lần lượt. Bài này dạy tai bạn nghe **từng nốt bên trong** hợp âm, thay vì chỉ nghe một khối.
-
-Sau khi rải xong, ô nhịp cuối bấm cả ba nốt cùng lúc. Nghe sự khác biệt: cùng ba nốt, một bên kể ra từng cái, một bên nói cùng lúc.
+Cùng ba nốt, bấm lần lượt để tai nghe từng nốt bên trong. Ô cuối bấm cả ba cùng lúc.
 
 ```abc
 X: 2
@@ -89,9 +49,7 @@ V: 1 clef=bass
 
 ## Bài tập 1C: Giai điệu trên nền hợp âm
 
-Lần đầu tiên bạn nghe bản nhạc của mình **dày lên**. Tay phải chơi giai điệu ở thế tay Đô quen thuộc, tay trái giữ hợp âm bên dưới.
-
-Hãy để ý: cùng một giai điệu đó, hồi Chương 3 tay trái chỉ giữ một nốt. Giờ có ba nốt, và nó nghe đầy đặn hơn hẳn.
+Tay phải chơi giai điệu ở thế tay Đô, tay trái giữ hợp âm. Nghe bản nhạc **dày lên** so với hồi tay trái giữ một nốt.
 
 ```abc
 X: 3
@@ -110,9 +68,7 @@ V: 2 clef=bass
 
 ## Bài tập 1D: Hợp âm ở phách 1 và phách 3
 
-Giữ nguyên một hợp âm suốt bốn nhịp thì tiếng đàn tắt dần đi. Cách đơn giản nhất để giữ cho nền âm thanh luôn sống là **bấm lại hợp âm ở phách 1 và phách 3**.
-
-Đây chính là mẫu đệm đơn giản nhất trong âm nhạc, và bạn sẽ gặp lại nó suốt Chương 8.
+Bấm lại hợp âm ở phách 1 và 3 để nền không tắt — mẫu đệm đơn giản nhất. **Tay trái nhẹ hơn giai điệu** rõ rệt.
 
 ```abc
 X: 4
@@ -129,29 +85,26 @@ V: 2 clef=bass
 "5-3-1"[C,E,G,]2 [C,E,G,]2 | [C,E,G,]2 [C,E,G,]2 | [C,E,G,]2 [C,E,G,]2 | [C,E,G,]4 |]
 ```
 
-> [!WARNING]
-> Tay trái bấm lại hợp âm **không được to hơn giai điệu**. Đệm là nền, giai điệu mới là thứ người nghe cần nghe. Nếu tay trái át tay phải, hãy đánh tay trái nhẹ đi rõ rệt — đây là lúc dùng lại kỹ năng cường độ của Chương 5.
-
-## Thực hành tự do & Luyện tai (5 phút)
-
-**Thử thách Thẩm âm (Ear Training) — Một nốt hay nhiều nốt?**
-
-1. Nhắm mắt. Bấm **một nốt đơn** bất kỳ ở tay trái, nghe kỹ.
-2. Vẫn nhắm mắt, bấm **hợp âm Đô trưởng**. Nghe sự khác biệt về độ dày.
-3. Bây giờ trộn lẫn: nhắm mắt, bấm ngẫu nhiên hoặc một nốt hoặc cả hợp âm, rồi tự trả lời thành tiếng "một nốt" hay "hợp âm".
-4. Nâng độ khó: bấm **hai nốt** (Đô và Sol, bỏ Mi ở giữa) và thử nghe ra rằng nó mỏng hơn hợp âm đủ ba nốt.
-
-Nghe ra được số lượng nốt đang vang là nền tảng của **cảm âm hợp âm** — kỹ năng cho phép bạn nghe một bài hát rồi đoán ra người ta đang đệm hợp âm gì.
-
-**Tự do:** Giữ hợp âm Đô trưởng ở tay trái và **tự bịa giai điệu** bằng tay phải trên năm nốt Đô-Rê-Mi-Pha-Sol. Chơi gì cũng được, sai cũng không sao — hầu như mọi thứ bạn chơi đều sẽ nghe hợp tai, vì cả năm nốt đó đều thuộc về giọng Đô trưởng. Đây là lần đầu bạn **ứng tấu**, và cảm giác này chính là thứ Giai đoạn 4 xây trên đó.
-
 ## Xong bài khi
 
 - Ba nốt của hợp âm vang cùng một lúc, không nghe ra tiếng "rẹt".
 - Trong 1C và 1D tay trái nhẹ hơn tay phải rõ rệt.
 - Chơi 1D ba lần liên tiếp không vấp.
 
-## Yêu cầu thực hành
+---
 
-1. Không nốt nào nổi hẳn lên, đặc biệt là nốt do ngón cái bấm.
-2. Ngón 2 và ngón 4 thả lỏng khum tự nhiên, không tì xuống phím, không duỗi thẳng.
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — ba nốt không xuống cùng lúc, hay tay trái át mất giai điệu thì đọc tiếp.
+
+**Ngón cái hay chạm trước** vì nó khỏe nhất. Cố ý thả ngón cái nhẹ hơn hai ngón kia một chút. Không nốt nào được nổi hẳn lên.
+
+**Tập khi không có đàn.** Tay trái khum, nhấc cả bàn tay 3cm, ngón 5-3-1 hơi chìa xuống. Thả rơi: ba ngón chạm bàn thành **một tiếng gõ**. Hai ba tiếng lách cách là lệch. 10 lần. Kẹp tờ giấy dưới ngón 2 hoặc 4 — bị đè là đang gồng.
+
+**Nhận ra hợp âm trên bản nhạc.** Ba nốt xếp chồng thẳng đứng, cách đều nhau — cùng nằm trong khe hoặc cùng nằm trên dòng. Vẽ thử Đô trưởng ở khóa Pha: Đô khe 2, Mi khe 3, Sol khe 4.
+
+**Luyện tai: một nốt hay hợp âm?** Nhắm mắt, bấm ngẫu nhiên một nốt đơn hoặc cả hợp âm, nói to "một nốt" hay "hợp âm". Khó hơn: bấm Đô và Sol bỏ Mi, nghe nó mỏng hơn đủ ba nốt.
+
+**Ứng tấu lần đầu.** Giữ Đô trưởng tay trái, tay phải bịa giai điệu trên năm nốt Đô-Sol. Gần như thứ gì cũng nghe hợp tai.
+
+Tập rồi mà vẫn chưa rõ hợp âm là gì: đọc **[Chương 7: Hợp âm](/02-chapters/chuong-07)**.

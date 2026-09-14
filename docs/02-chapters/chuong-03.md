@@ -1,5 +1,7 @@
 # Chương 3: Đọc bản nhạc (Sight-reading) cơ bản
 
+> **Nên tập thử trước khi đọc trang này.** Mỗi bài tập đã có khuông nhỏ chỉ nốt nằm ở đâu — mở **[Chương 3 - Bài 1](/03-exercises/chuong-03-bai-01)** và đánh thử. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
+
 Chào mừng bạn đến với Chương 3! Ở 2 chương trước, bạn đã chơi nhạc chủ yếu dựa vào việc nhìn phím đàn và nhìn tên nốt (C, D, E...) ghi trên giấy. Đó là cách rất tốt để làm quen.
 
 Tuy nhiên, ngôn ngữ quốc tế của âm nhạc là **Khuông nhạc**. Việc đọc được các nốt nhạc "nhảy múa" trên 5 dòng kẻ sẽ giúp bạn có thể tự đánh bất cứ bài hát nào bạn thích sau này mà không cần ai dạy.
@@ -104,6 +106,6 @@ Cùng một chữ Pha, mà mỗi lần lại cao hơn lần trước đúng mộ
 **👉 Điều cần nhớ:** khi đọc một nốt, đừng chỉ hỏi "nốt gì" mà phải hỏi **"nốt gì, và nằm ở khuông nào"**. Cùng chữ Pha nhưng ở Khóa Pha thì tay trái chơi, ở Khóa Sol thì tay phải chơi.
 
 ---
-**Nhiệm vụ của bạn trong Chương này:**
-1. Tập thói quen **không nhìn xuống phím đàn**. Hãy để mắt dán chặt vào bản nhạc, và để các ngón tay tự "mò" vị trí.
-2. Chúng ta sẽ bắt đầu tập đọc bản nhạc ngay bây giờ! Hãy chuyển sang **[Chương 3 - Bài 1: Đọc nốt trên dòng kẻ phụ](/03-exercises/chuong-03-bai-01)**.
+**Nhớ một điều thôi:** mắt ở bản nhạc, để ngón tay tự tìm phím.
+
+**👉 Về tập tiếp: [Chương 3 - Bài 1: Đọc nốt trên dòng kẻ phụ](/03-exercises/chuong-03-bai-01)**

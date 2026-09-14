@@ -1,82 +1,39 @@
 # Chương 6 - Bài 1: Ba nốt mới La, Si, Đô cao
 
-Từ Chương 1 tới giờ, mọi bản nhạc bạn chơi đều nằm gọn trong năm phím. Hôm nay bàn tay bước ra khỏi cái khung đó lần đầu tiên.
+Hôm nay bàn tay **bước ra khỏi năm phím** lần đầu: thêm La, Si, Đô cao. Bài này tập trong **3 ngày**: ngày 1 làm 1A, ngày 2 làm 1B và 1C, ngày 3 làm 1D. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 6](/02-chapters/chuong-06).
 
-Chưa vội học di chuyển tay ngay — trước hết phải có **chỗ để đi tới**. Bài này thêm ba nốt mới vào vốn đọc của bạn: **La, Si và Đô cao**.
+## Ba nốt mới
 
-> [!TIP]
-> **⏱️ Ước lượng thời gian hoàn thành:** Ba nốt mới không khó bấm, nhưng mắt bạn đã quen đọc năm nốt suốt mấy tuần nên sẽ đọc chậm hẳn lại ở nốt mới. Bài này cần **3 ngày** luyện tập.
+Trên đàn: ba phím trắng ngay sau Sol. Trên khuông: La trong khe 2, Si trên dòng giữa, Đô cao trong khe 3.
 
-**📅 Kế hoạch từng ngày**
+```abc
+X: 10
+T: La, Si, Đô cao trên khuông nhạc
+M: 3/4
+L: 1/4
+K: C
+A B c |]
+w: La Si Đô~cao
+```
 
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Chép nốt ra giấy cho thuộc mặt. Trên đàn chỉ tập **1A**, làm quen thế tay mới đặt trên Sol. |
-| **Ngày 2** | Ôn 1A rồi sang **1B và 1C**. Tập trung đọc đúng tên nốt trước khi bấm. |
-| **Ngày 3** | Tập **1D** — bài khó nhất, có chuyển thế tay giữa chừng. |
+## Thế tay Sol
 
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
+Ngón cái lên **Sol**, ngón 2 La, ngón 3 Si, ngón 4 Đô cao. Ngón 5 để khum tự nhiên, không duỗi ra.
 
-## Ba nốt mới nằm ở đâu
+```keys
+G4 A4 B4 C5
+Thế tay Sol: cả bàn tay dịch sang phải bốn phím so với thế tay Đô.
+```
 
-Trên **đàn**, ba nốt này nằm ngay bên phải nốt Sol quen thuộc. Đi tiếp lên các phím trắng: Sol → **La** → **Si** → **Đô cao**.
+## Khởi động
 
-Trên **khuông nhạc Khóa Sol**:
-
-| Nốt | Vị trí |
-|---|---|
-| **La (A)** | Khe thứ 2 |
-| **Si (B)** | Dòng kẻ số 3 — đúng dòng giữa khuông |
-| **Đô cao (C)** | Khe thứ 3 |
-
-Nốt **Đô cao** là nốt Đô giữa nhưng cao hơn **một quãng tám**. Bấm thử hai nốt Đô đó liên tiếp mà nghe: cùng một tên, cùng một màu sắc, chỉ khác cao thấp. Đó là lý do bàn phím cứ lặp lại mãi cùng một hình dạng.
-
-## Thế tay mới: đặt ngón cái lên Sol
-
-Hôm nay bạn dùng một thế tay khác, gọi là **thế tay Sol**:
-
-| Ngón | 1 | 2 | 3 | 4 |
-|---|---|---|---|---|
-| **Nốt** | Sol | La | Si | Đô cao |
-
-Cả bàn tay dịch sang phải bốn phím so với thế tay Đô quen thuộc. Ngón 5 tạm thời không dùng tới, cứ để nó khum tự nhiên bên cạnh ngón 4, đừng để nó duỗi thẳng ra.
-
-> [!NOTE]
-> Hôm nay ta **dịch cả bàn tay** sang vị trí mới rồi mới chơi — vẫn là cách chơi "đứng yên một chỗ" như cũ, chỉ là chỗ khác. Kỹ thuật đi lại **trong lúc đang chơi** mới là bài sau.
-
-## Bài tập Không cần đàn (Away from piano)
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-
-- **Mục tiêu:** Dạy tay quen với thế tay bốn ngón, và giữ ngón 5 thả lỏng thay vì duỗi cứng.
-- **Động tác:**
-  1. Úp tay phải lên mặt bàn ở tư thế khum tròn.
-  2. Gõ lần lượt ngón 1 - 2 - 3 - 4, mỗi ngón một cái, đều nhau. Ngón 5 **để yên trên bàn**, không nhấc, không duỗi.
-  3. Gõ ngược lại 4 - 3 - 2 - 1.
-  4. Làm 8 lượt. Mỗi lượt kiểm tra ngón 5: nó có đang duỗi thẳng ra không? Nếu có, thả lỏng lại rồi làm tiếp.
-- **Điểm dễ sai nhất:** ngón 4 gõ yếu hơn hẳn ba ngón kia. Bình thường, vì ngón 4 là ngón yếu nhất. Cứ gõ chậm lại cho đều, đừng gõ mạnh bù.
-
-**2. TÙY CHỌN [Phương pháp: Chép nốt ra giấy / Music Copying]**
-
-- Kẻ một khuông năm dòng, vẽ Khóa Sol ở đầu.
-- Vẽ ba nốt mới, mỗi nốt **năm lần**, vừa vẽ vừa đọc to tên nó:
-  - **La** — hình bầu dục nằm lọt trong **khe thứ 2**, tức khe ngay bên trên dòng kẻ số 2.
-  - **Si** — hình bầu dục bị **dòng kẻ số 3 cắt ngang giữa**.
-  - **Đô cao** — hình bầu dục nằm lọt trong **khe thứ 3**.
-- Vẽ xong, viết xen kẽ một dãy 8 nốt tự nghĩ (ví dụ: Sol La Si Đô La Si Sol Đô) rồi đọc lại thành tiếng từ đầu.
-- *Vì sao hiệu quả:* tay vẽ nốt mười lăm lần thì mắt nhận ra nó ngay lập tức lúc đọc bản nhạc thật — nhanh hơn nhiều so với chỉ nhìn.
-
-## Khởi động & Ôn tập trên đàn (5 phút)
-
-Đánh lại **Bài tập 3D (Tổng kết Chương 5)** của bài trước một lần. Giữ nguyên chất lượng legato, staccato và to nhỏ — hôm nay thêm nốt mới, nhưng những gì đã học không được rơi rụng.
+Đánh lại 3D (Tổng kết Chương 5) một lần, giữ đủ liền, nảy, to nhỏ.
 
 {{sheet: chuong-05-bai-03#3D}}
 
 ## Bài tập 1A: Khởi động thế tay Sol
 
-Bài đầu tiên chỉ để tay quen chỗ mới. Bốn ngón, bốn phím, không có gì bất ngờ.
-
-Đặt ngón cái lên **Sol** rồi kiểm tra: ngón 4 có đúng đang nằm trên nốt Đô cao không? Nếu phải với tay mới tới, nghĩa là bạn đặt lệch.
+Bốn ngón, bốn phím. Kiểm tra: ngón 4 phải nằm sẵn trên Đô cao, không phải với tới.
 
 ```abc
 X: 1
@@ -92,9 +49,7 @@ w: Sol La Si Do | Do Si La Sol | Sol Si La Do | Sol
 
 ## Bài tập 1B: Đọc nốt mới với trường độ dài
 
-Cũng ba nốt đó, nhưng mỗi nốt kéo dài hai nhịp. Mục đích không phải luyện ngón — mà là cho **mắt có thời gian đọc**.
-
-Trước khi bấm mỗi nốt, hãy đọc to tên nó. Đọc sai thì dừng lại, nhìn kỹ xem nốt nằm trên dòng kẻ hay trong khe rồi mới bấm.
+Mỗi nốt giữ hai nhịp để mắt kịp đọc. **Đọc to tên nốt trước khi bấm.**
 
 ```abc
 X: 2
@@ -110,9 +65,7 @@ w: Sol La | Si Do | Do Si | La Sol
 
 ## Bài tập 1C: Câu nhạc ở vùng cao, hai tay
 
-Tay phải chơi giai điệu ở thế tay Sol, tay trái giữ nốt nền dài bên dưới — đúng kiểu đã làm ở Chương 3.
-
-Nghe kỹ một điều: giai điệu lần này nằm **cao hơn** mọi bài bạn từng chơi. Âm sắc ở vùng này sáng và mảnh hơn hẳn vùng Đô giữa.
+Tay phải ở thế tay Sol, tay trái giữ nốt nền dài. Nghe: vùng này sáng và mảnh hơn hẳn.
 
 ```abc
 X: 3
@@ -131,11 +84,7 @@ V: 2 clef=bass
 
 ## Bài tập 1D: Chuyển thế tay giữa chừng
 
-Bài khó nhất hôm nay, và cũng là bài mở đường cho cả chương.
-
-Hai ô nhịp đầu chơi ở **thế tay Đô** quen thuộc (ngón 1 trên Đô). Ô nhịp 2 có hai nhịp lặng — đó chính là **thời gian để bạn nhấc tay và dịch sang thế tay Sol**. Hai ô nhịp cuối chơi ở thế tay mới.
-
-Nhấc tay lên dứt khoát, đặt xuống chỗ mới, đừng bò từng ngón sang.
+Đầu bài ở thế tay Đô. Hai nhịp lặng ở ô 2 là lúc **nhấc tay dịch sang thế tay Sol** — nhấc gọn một lần, và vừa dịch vừa đếm "ba - bốn" vì nhịp vẫn chạy.
 
 ```abc
 X: 4
@@ -149,29 +98,26 @@ K: C
 w: Do Re Mi Pha | Sol | Sol La Si Do | Sol
 ```
 
-> [!WARNING]
-> Ô nhịp 2 có hai nhịp lặng, **nhưng nhịp vẫn chạy**. Đừng dừng lại lâu hơn hai nhịp đó rồi mới chơi tiếp. Vừa dịch tay vừa đếm to "ba - bốn" là cách duy nhất giữ đúng nhịp.
-
-## Thực hành tự do & Luyện tai (5 phút)
-
-**Thử thách Thẩm âm (Ear Training) — Hai nốt Đô cách nhau một quãng tám**
-
-1. Bấm nốt **Đô giữa**, nghe kỹ, rồi bấm **Đô cao**. Nghe hai lần cho quen.
-2. Nhắm mắt. Bấm một trong hai nốt Đô đó bất kỳ, rồi tự trả lời thành tiếng: vừa nãy là Đô thấp hay Đô cao?
-3. Làm 6 lần.
-4. Nâng độ khó: nhắm mắt, bấm **Đô cao** rồi bấm **Si** ngay bên trái nó. Hai nốt này chỉ cách nhau một phím — nghe ra được sự khác biệt nhỏ đó khó hơn nhiều so với cả một quãng tám.
-
-Hai nốt cách nhau đúng một quãng tám nghe **giống nhau đến mức lạ lùng** — tai người coi chúng gần như cùng một nốt. Chính hiện tượng đó là lý do bảy nốt nhạc cứ lặp lại vòng tròn trên toàn bộ 88 phím.
-
-**Tự do:** Đặt ngón cái lên nốt Đô giữa và chơi lên từng phím trắng một, vừa chơi vừa đọc tên: Đô - Rê - Mi - Pha - Sol - La - Si - Đô. Dùng ngón nào cũng được, dịch tay thoải mái — hôm nay chưa cần đúng kỹ thuật. Chỉ cần **nghe cho quen con đường tám nốt** đó, vì cả chương này xoay quanh nó.
-
 ## Xong bài khi
 
 - Nhìn bản nhạc là đọc được tên La, Si, Đô cao trong vòng 2 giây, không đếm dòng kẻ.
 - Đặt được thế tay Sol mà không nhìn tay: ngón 1 trên Sol, ngón 4 trên Đô cao.
 - Trong 1D chuyển thế tay gọn trong hai nhịp lặng, không kéo dài thêm.
 
-## Yêu cầu thực hành
+---
 
-1. Trong suốt **1A**, ngón 5 phải luôn thả lỏng khum tự nhiên, không duỗi cứng ra ngoài.
-2. Nói được nốt Đô cao khác nốt Đô giữa ở chỗ nào — cùng tên, cách nhau một quãng tám.
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — đọc nốt mới cứ chậm hẳn lại, hay dịch tay xong là lỡ nhịp thì đọc tiếp.
+
+**Chép nốt ra giấy.** Vẽ La (khe 2), Si (dòng 3 cắt ngang), Đô cao (khe 3), mỗi nốt 5 lần, vừa vẽ vừa đọc tên. Rồi viết một dãy 8 nốt tự nghĩ và đọc lại.
+
+**Tập khi không có đàn.** Tay khum trên bàn, gõ 1-2-3-4 rồi 4-3-2-1, ngón 5 nằm yên không duỗi. 8 lượt. Ngón 4 gõ yếu là bình thường — chậm lại cho đều, đừng gõ mạnh bù.
+
+**Đô cao khác Đô giữa ở đâu:** cùng tên, cách nhau một quãng tám. Bấm hai nốt liền nhau mà nghe — giống nhau lạ lùng, chỉ khác cao thấp. Vì vậy bàn phím lặp lại mãi một hình dạng.
+
+**Luyện tai.** Nhắm mắt, bấm Đô giữa hoặc Đô cao rồi đoán. Làm 6 lần. Khó hơn: bấm Đô cao rồi Si ngay bên trái — cách một phím khó nghe hơn cả một quãng tám.
+
+**Tự do:** từ Đô giữa đi lên tám phím trắng, vừa chơi vừa đọc tên, ngón nào cũng được. Nghe cho quen con đường tám nốt — cả chương xoay quanh nó.
+
+Tập rồi mà muốn hiểu vì sao cần dịch tay: đọc **[Chương 6: Kỹ thuật mở rộng tay](/02-chapters/chuong-06)**.

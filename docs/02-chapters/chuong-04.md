@@ -1,5 +1,7 @@
 # Chương 4: Phím đen và Dấu hóa (Accidentals)
 
+> **Nên tập thử trước khi đọc trang này.** Mỗi bài tập đã có hình bàn phím chỉ phím đen cần bấm — mở **[Chương 4 - Bài 1](/03-exercises/chuong-04-bai-01)** và đánh thử. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
+
 Chào mừng bạn đến với Chương 4! Suốt 3 chương vừa qua, bạn chỉ chơi trên các **phím trắng**. Nhưng cây đàn của bạn còn cả một hàng **phím đen** nữa đang chờ được chạm tới — và chúng chính là thứ tạo ra màu sắc, cảm xúc, sự "gai góc" hay "u buồn" cho âm nhạc.
 
 ## 1. Nửa cung và Nguyên cung
@@ -71,7 +73,6 @@ Phím đen **hẹp hơn, cao hơn và nằm sâu hơn** phím trắng, nên cầ
 - **Ngón cái (ngón 1)** là ngón ngắn nhất và thường vụng nhất khi chơi phím đen. Nếu bài nhạc cho phép, hãy ưu tiên dùng ngón 2, 3, 4 cho phím đen.
 
 ---
-**Nhiệm vụ của bạn trong Chương này:**
-1. Tìm và gọi đúng tên tất cả các phím đen quanh vị trí 5 ngón C-D-E-F-G của bạn.
-2. Ghi nhớ 2 cặp phím trắng đặc biệt: **Mi-Pha** và **Si-Đô**.
-3. Chuyển sang **[Chương 4 - Bài 1: Làm quen Dấu Thăng (Pha thăng)](/03-exercises/chuong-04-bai-01)** để bắt đầu tập luyện!
+**Nhớ một điều thôi:** Mi-Pha và Si-Đô dính sát nhau, không có phím đen chen giữa.
+
+**👉 Về tập tiếp: [Chương 4 - Bài 1: Làm quen Dấu Thăng (Pha thăng)](/03-exercises/chuong-04-bai-01)**
