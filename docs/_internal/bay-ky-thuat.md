@@ -1536,6 +1536,44 @@ file vừa soạn trên Windows mà chưa commit (trình soạn thảo trên Win
 người soạn mở dev server lên xem bài mới. Nó cũng không viết test được. Cửa đọc thì che mọi nguồn,
 và có ca test tự dựng file `\r\n` để gác, không trông vào máy đang chạy là Windows hay Linux.
 
+## 43. Bản nhạc nhập từ file vẽ đúng mà phát sai nốt: bẫy 25 ở máy ghi, cộng nốt luyến qua vạch nhịp
+
+**Triệu chứng.** Nhập một bản MusicXML thật (La giáng trưởng, 4 giáng) vào *Kho nhạc của tôi*:
+bản nhạc trông bình thường, nhưng nghe mẫu lạ tai và *Tập bài này với đàn* chờ sai phím. Đo cao
+độ vang ra thì **39 trên 168 nốt tay phải lệch**: ô đầu gốc là `63,72,73,72` mà phát
+`63,72,73,73`. Test của `imported-score.ts` xanh hết, vì chúng chỉ đọc lại chuỗi ABC.
+
+**Nguyên nhân thứ nhất: bẫy 25 lần ba, lần này do máy ghi chứ không do người gõ.** `toAbc` luôn
+ghi `K: C` và đổi từng nốt bằng `noteAt(midi).abc`. `noteAt` chỉ nhìn một nốt, nên Đô thăng ra
+`^c`, Đô trắng ra `c`, và không bao giờ ra `=c`. Đứng sau `^c` trong cùng ô thì `c` vang thành Đô
+thăng.
+
+**Nguyên nhân thứ hai: lộ ra sau khi sửa nguyên nhân thứ nhất, và chỉ ca test ngẫu nhiên thấy.**
+Nốt vắt qua vạch nhịp bị cắt đôi, nửa sau đứng đầu ô mới. abcjs xử lý dấu trên nửa sau đó **không
+nhất quán**:
+
+| Viết | Vang ra | Dấu trên nốt luyến tới |
+|---|---|---|
+| `C ^C3-\|^C C` | Đô, Đô♯, **Đô** | không ăn sang nốt sau |
+| `[=F^F]-\|[F^F] F` | Pha, Pha♯, **Pha♯** | có ăn sang nốt sau |
+
+Sổ dấu hoá tính cả nửa sau thì sai ở dòng đầu; sổ bỏ qua nửa sau thì sai ở dòng thứ hai. Cả hai
+bản sửa đều qua được mọi ca viết tay.
+
+**Cách sửa.** `toBars` giữ sổ dấu hoá cho từng ô nhịp, khoá theo **chữ** mà `noteAt` sắp viết ra
+(bẫy 36). Nốt khác dấu đang hiệu lực thì ghi dấu tường minh, nốt trắng thì ghi `=`. Chữ cái xuất
+hiện ở nửa sau nốt luyến được ghi vào sổ là *chưa rõ*, nên nốt kế tiếp cùng chữ luôn tự ghi dấu.
+**Đừng đoán abcjs theo luật nào**: dấu ghi tường minh thì nó luôn theo.
+
+**Cách gác.** `imported-score.test.ts` so cao độ vang ra với file gốc bằng `caoDoVangRa` (nay ở
+`src/lib/__fixtures__/abc-sound.ts`, dùng chung với `exercise-gen.test.ts`): ba ca viết tay, và một
+ca ngẫu nhiên hai khuông với mười hạt giống, tầm nốt hẹp để cùng một chữ cái lặp dày trong ô. Ca
+ngẫu nhiên so **theo từng hợp âm** chứ không theo thứ tự phẳng, vì hợp âm có hai nốt cùng chữ
+(`[C^C]`) thì abcjs không phát theo thứ tự viết.
+
+**Dữ liệu cũ không tự lành.** Bản nhạc lưu vào kho trước lần sửa này vẫn giữ chuỗi ABC sai: sửa
+`toAbc` không đụng tới những gì đã ghi trong database. Người học phải xoá bản đó rồi nhập lại file.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1544,6 +1582,7 @@ và có ca test tự dựng file `\r\n` để gác, không trông vào máy đan
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `fix: Sửa bản nhạc nhập từ file phát sai nốt vì dấu hoá ăn theo ô nhịp` | Thêm bẫy 43 — bản nhạc nhập từ file ghi `noteAt` từng nốt một nên nốt trắng đứng sau nốt hoá cùng tên bị ăn theo dấu (39/168 nốt lệch ở một bản thật), và sau khi sửa thì lộ thêm chuyện abcjs mang dấu trên nửa sau nốt luyến không nhất quán. Ghi cả hai số đo mâu thuẫn nhau để lần sau không ai "sửa gọn" bằng cách đoán theo một luật, kèm lời nhắc bản nhạc đã lưu không tự lành |
 | 14/09/2026 | `fix: Quy xuống dòng CRLF về LF ngay ở cửa đọc file docs` | Thêm bẫy 42 — worktree mới trên Windows checkout `docs/` ra `\r\n` nên regex tách khối abc viết theo `\n` không khớp, `songs.test.ts` trượt hai ca trong khi CI xanh. Ghi lý do sửa ở cửa đọc `readDocFile` thay vì vá tiếp từng regex (đã vá ba chỗ mà chỗ thứ tư vẫn quên) và thay vì `.gitattributes` (không che file chưa commit, không test được) |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bẫy 40 (file `'use server'` chỉ xuất được hàm async, một bảng hằng số là `next build` đỏ trong khi bốn lệnh kia xanh) và bẫy 41 (Server Action chặn 1MB mỗi lời gọi nên ảnh chụp phải thu nhỏ ở trình duyệt rồi gửi từng trang, kèm chuyện `canvas` không tự xoay theo EXIF) — cả hai gặp khi dựng Kho nhạc của tôi |
 | 13/09/2026 | `fix: Hai lệnh bật nhạc nền đua nhau sinh ra bộ phát không ai tắt được` | Ghi vào bẫy 18 lần tái phát thứ hai: hai lệnh `start()` cùng chờ `resume()` thì cùng đặt `this.timer`, cái sau đè cái trước và `stop()` chỉ tắt được một. Kèm chuyện bộ giả nói dối hai lần (chỉ nhớ một lời hứa `resume`, và đồng hồ đứng yên ở 0) khiến ca test trượt rồi lại xanh nhầm |

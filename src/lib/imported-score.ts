@@ -79,12 +79,43 @@ export function abcLength(beats: number): string {
   return numerator === 1 ? `/${denominator}` : `${numerator}/${denominator}`;
 }
 
-/** Một sự kiện thành chữ ABC, chưa kèm độ dài. */
-function abcPitches(event: ImportedEvent): string {
+/**
+ * Sổ dấu hoá của MỘT ô nhịp: cách viết chữ cái kèm dấu quãng tám (`c`, `C,`,
+ * `c'`) → dấu đang có hiệu lực (`^`, `_`, hoặc chuỗi rỗng là nốt trắng). Chữ nào
+ * chưa có trong sổ là nốt trắng, vì bản nhập vào luôn ghi `K: C`.
+ */
+type BarAccidentals = Map<string, string>;
+
+/**
+ * Giá trị trong sổ cho chữ cái mà không biết abcjs đang giữ dấu nào (xem chỗ nốt
+ * luyến trong `toBars`). Nó không bằng dấu thật nào, nên nốt kế tiếp luôn tự ghi dấu.
+ */
+const CHUA_RO = '?';
+
+/**
+ * Một sự kiện thành chữ ABC, chưa kèm độ dài.
+ *
+ * Dấu hoá sống tới hết ô nhịp, cho mọi nốt cùng chữ cái cùng quãng tám — abcjs áp
+ * đúng luật đó (bẫy 25). `noteAt` chỉ nhìn từng nốt một nên viết `^c` rồi `c`, và
+ * nốt thứ hai vang thành Đô thăng. Đo trên một bản 4 giáng thật: 39 trên 168 nốt
+ * tay phải vang sai. Vì vậy ghi theo sổ của ô nhịp: khác dấu đang hiệu lực thì ghi
+ * dấu tường minh (`=` cho nốt trắng), trùng thì bỏ dấu thừa như bản chép tay.
+ *
+ * Khoá của sổ là CHỮ mà `noteAt` sắp viết ra, không suy lại từ số MIDI: luật dấu
+ * hoá bám theo cách viết chứ không bám theo phím (bẫy 36).
+ */
+function abcPitches(event: ImportedEvent, dauHoa: BarAccidentals): string {
   if (event.midis.length === 0) return 'z';
   // Dùng lại bộ đổi nốt của bài luyện nhận nốt: dấu hoá và dấu quãng tám đã có
   // test ở đó, mà đó đúng là hai chỗ sai thì bản nhạc vẽ ra sai không ai báo.
-  const spelled = event.midis.map((midi) => noteAt(midi).abc);
+  const spelled = event.midis.map((midi) => {
+    const abc = noteAt(midi).abc;
+    const chu = abc.replace(/^[\^_=]+/, '');
+    const dau = abc.slice(0, abc.length - chu.length).replace('=', '');
+    const dangCo = dauHoa.get(chu) ?? '';
+    dauHoa.set(chu, dau);
+    return dau === dangCo ? chu : `${dau || '='}${chu}`;
+  });
   return spelled.length === 1 ? spelled[0] : `[${spelled.join('')}]`;
 }
 
@@ -101,6 +132,7 @@ export function toBars(events: ImportedEvent[], beatsPerBar: number): string[][]
   const bars: string[][] = [];
   let bar: string[] = [];
   let filled = 0;
+  let dauHoa: BarAccidentals = new Map();
 
   for (const event of events) {
     let left = quantize(event.beats);
@@ -108,13 +140,29 @@ export function toBars(events: ImportedEvent[], beatsPerBar: number): string[][]
       const room = beatsPerBar - filled;
       const take = Math.min(left, room);
       const tied = take < left && event.midis.length > 0;
-      bar.push(`${abcPitches(event)}${abcLength(take)}${tied ? '-' : ''}`);
+      /*
+       * Nửa sau của nốt luyến (luôn đứng đầu ô mới) vẫn ghi dấu của nó, nhưng chữ
+       * cái của nó vào sổ dưới dạng CHƯA RÕ, để nốt kế tiếp cùng chữ phải tự ghi dấu.
+       *
+       * Vì sao không đoán: abcjs xử lý dấu trên nốt luyến tới không nhất quán. Đo
+       * được `C ^C3-|^C C` vang Đô thăng rồi Đô TRẮNG (dấu không ăn sang nốt sau),
+       * còn `[=F^F]-|[F^F] F` lại vang Pha THĂNG (dấu có ăn). Đoán theo bên nào
+       * cũng sai bên kia — cả hai lọt qua mọi ca viết tay, chỉ ca ngẫu nhiên hai
+       * khuông bắt được. Dấu ghi tường minh thì abcjs luôn theo.
+       */
+      const nuaSau = left < quantize(event.beats);
+      const soNuaSau: BarAccidentals = new Map();
+      bar.push(`${abcPitches(event, nuaSau ? soNuaSau : dauHoa)}${abcLength(take)}${tied ? '-' : ''}`);
+      for (const chu of soNuaSau.keys()) dauHoa.set(chu, CHUA_RO);
       filled += take;
       left -= take;
       if (filled >= beatsPerBar - 1e-9) {
         bars.push(bar);
         bar = [];
         filled = 0;
+        // Sang ô mới là sổ trắng — nửa sau của nốt luyến cũng phải ghi lại dấu
+        // của nó, không thì nó vang (và vẽ) thành nốt trắng.
+        dauHoa = new Map();
       }
     }
   }
@@ -145,10 +193,10 @@ function barsToLines(bars: string[][]): string[] {
  * Ghi ra chuỗi ABC hoàn chỉnh — thứ mà `SheetViewer` vẽ, phát tiếng và tập được
  * với đàn thật.
  *
- * Luôn ghi `K: C`: file nhập vào có thể ở giọng bất kỳ, nhưng `noteAt` đã viết
- * sẵn dấu hoá cạnh từng nốt nên bản nhạc vẫn kêu đúng. Đoán hoá biểu rồi đoán sai
- * là mọi nốt sau đó lệch nửa cung mà nhìn vẫn hợp lý — thà nhiều dấu hoá còn hơn
- * sai cao độ.
+ * Luôn ghi `K: C`: file nhập vào có thể ở giọng bất kỳ, nhưng mỗi nốt đã mang dấu
+ * hoá của nó theo sổ từng ô nhịp (`abcPitches`), nên bản nhạc vẫn kêu đúng. Đoán
+ * hoá biểu rồi đoán sai là mọi nốt sau đó lệch nửa cung mà nhìn vẫn hợp lý — thà
+ * nhiều dấu hoá còn hơn sai cao độ.
  */
 export function toAbc(score: ImportedScore): string {
   if (score.staves.length === 0) {
