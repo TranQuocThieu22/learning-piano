@@ -213,7 +213,9 @@ const targets = [
 console.log(`Soi ${targets.length} file trong ${EXERCISE_DIR} và ${CHAPTER_DIR}\n`);
 
 for (const { dir, file, strictNaming } of targets) {
-  const text = readFileSync(join(dir, file), 'utf8');
+  // Quy xuống dòng về `\n` ngay khi đọc, cùng lối `readDocFile` bên src/lib — máy
+  // Windows checkout ra `\r\n`, regex nào viết theo `\n` là lặng lẽ trượt (bẫy 42).
+  const text = readFileSync(join(dir, file), 'utf8').replace(/\r\n?/g, '\n');
 
   if (strictNaming) {
     const fm = FILE_PATTERN.exec(file);

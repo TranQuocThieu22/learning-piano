@@ -1,4 +1,7 @@
-import { describe, expect, it } from 'vitest';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import abcjs from 'abcjs';
 import {
   capDoLabel,
@@ -7,6 +10,7 @@ import {
   getSongSheets,
   HEADING_CO_BAN,
   HEADING_NANG_CAO,
+  SONGS_CATEGORY,
 } from './songs';
 
 const songs = getAllSongs();
@@ -227,6 +231,45 @@ describe('bản nhạc trong file bài hát', () => {
         }
       }
     }
+  });
+});
+
+/*
+ * **Ca test sinh ra từ bẫy 42.** Máy Windows với `core.autocrlf=true` checkout
+ * file ra xuống dòng `\r\n`, và regex tách khối abc viết theo `\n` thế là không
+ * khớp: bài hát mất sạch bản nhạc, trang vẫn hiện, không lỗi nào báo.
+ *
+ * Tự dựng bản `\r\n` chứ không trông vào máy đang chạy: CI và Vercel là Linux,
+ * file ở đó luôn là `\n`, nên các ca phía trên không bao giờ thấy được lỗi này.
+ */
+describe('file bài hát xuống dòng kiểu Windows', () => {
+  let tam: string | null = null;
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    if (tam) fs.rmSync(tam, { recursive: true, force: true });
+    tam = null;
+  });
+
+  it('vẫn đọc ra đủ bản cơ bản lẫn bản nâng cao hai khuông', () => {
+    const goc = fs.readFileSync(
+      path.join(process.cwd(), 'docs', SONGS_CATEGORY, 'jingle-bells.md'),
+      'utf-8'
+    );
+    tam = fs.mkdtempSync(path.join(os.tmpdir(), 'songs-crlf-'));
+    const thuMuc = path.join(tam, 'docs', SONGS_CATEGORY);
+    fs.mkdirSync(thuMuc, { recursive: true });
+    fs.writeFileSync(path.join(thuMuc, 'jingle-bells.md'), goc.replace(/\r?\n/g, '\r\n'));
+    vi.spyOn(process, 'cwd').mockReturnValue(tam);
+
+    const [song] = getAllSongs();
+    expect(song.slug).toBe('jingle-bells');
+    expect(song.coNangCao).toBe(true);
+
+    const sheets = getSongSheets(song);
+    expect(sheets.length).toBeGreaterThanOrEqual(2);
+    expect(sheets.at(-1)).toContain('%%staves');
+    expect(sheets.join('')).not.toContain('\r');
   });
 });
 

@@ -1509,6 +1509,33 @@ tiền của người học.
 nên ảnh chụp bằng điện thoại cầm dọc sẽ nằm ngang sau khi thu. Phải gọi
 `createImageBitmap(file, { imageOrientation: 'from-image' })`.
 
+## 42. Máy Windows checkout ra `\r\n`, regex viết theo `\n` lặng lẽ trượt — bài hát mất bản nhạc
+
+**Triệu chứng.** Ở máy Windows, một worktree mới tạo chạy `pnpm test` là trượt hai ca trong
+`songs.test.ts`: *"jingle-bells phải có từ hai bản nhạc: expected 0"* và *"bản nâng cao viết trên
+hai khuông nhạc"*. Chưa sửa dòng nào. CI và Vercel vẫn xanh, nên dễ tưởng máy mình hỏng cái gì.
+`git ls-files --eol docs` báo `i/lf w/crlf` cho gần hết file.
+
+**Nguyên nhân.** Git trên Windows mặc định `core.autocrlf=true`: trong kho lưu `\n`, nhưng
+checkout ra ổ đĩa thì đổi thành `\r\n`. `getSongSheets` tách khối nhạc bằng /```abc\n/ — ngay sau
+chữ `abc` là `\r` chứ không phải `\n`, nên không khớp khối nào. Linux không đổi gì nên ở đó không
+bao giờ thấy.
+
+Trước đó bẫy này đã bị vá **từng regex một** thành `\r?\n` ở `sheet-embed.ts`, `check-lessons.mjs`
+và `extractSummary` — rồi `songs.ts` viết regex mới vẫn quên. Vá từng chỗ thì chỗ sau lại quên.
+
+**Cách sửa.** Quy `\r\n` về `\n` **ngay lúc đọc file**, ở một cửa: `readDocFile`
+(`src/lib/doc-file.ts`). Mọi đường đọc `docs/` — `markdown.ts`, `sheet-embed.ts`, `updates.ts`,
+`internal-docs.ts` — đều đi qua nó; `check-lessons.mjs` là file `.mjs` không import được mã TS nên
+tự quy về `\n` ở đúng dòng đọc của nó. Từ đó regex viết `\n` trần là đúng ở mọi máy. **Đọc file
+trong `docs/` thì đừng gọi `readFileSync` thẳng.**
+
+Vì sao không chọn `.gitattributes` (`*.md text eol=lf`): nó chỉ có tác dụng với lần checkout
+**sau khi** được commit — worktree đang có vẫn là `\r\n` tới khi checkout lại — và không che được
+file vừa soạn trên Windows mà chưa commit (trình soạn thảo trên Windows hay lưu `\r\n`), đúng lúc
+người soạn mở dev server lên xem bài mới. Nó cũng không viết test được. Cửa đọc thì che mọi nguồn,
+và có ca test tự dựng file `\r\n` để gác, không trông vào máy đang chạy là Windows hay Linux.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1517,6 +1544,7 @@ nên ảnh chụp bằng điện thoại cầm dọc sẽ nằm ngang sau khi th
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `fix: Quy xuống dòng CRLF về LF ngay ở cửa đọc file docs` | Thêm bẫy 42 — worktree mới trên Windows checkout `docs/` ra `\r\n` nên regex tách khối abc viết theo `\n` không khớp, `songs.test.ts` trượt hai ca trong khi CI xanh. Ghi lý do sửa ở cửa đọc `readDocFile` thay vì vá tiếp từng regex (đã vá ba chỗ mà chỗ thứ tư vẫn quên) và thay vì `.gitattributes` (không che file chưa commit, không test được) |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bẫy 40 (file `'use server'` chỉ xuất được hàm async, một bảng hằng số là `next build` đỏ trong khi bốn lệnh kia xanh) và bẫy 41 (Server Action chặn 1MB mỗi lời gọi nên ảnh chụp phải thu nhỏ ở trình duyệt rồi gửi từng trang, kèm chuyện `canvas` không tự xoay theo EXIF) — cả hai gặp khi dựng Kho nhạc của tôi |
 | 13/09/2026 | `fix: Hai lệnh bật nhạc nền đua nhau sinh ra bộ phát không ai tắt được` | Ghi vào bẫy 18 lần tái phát thứ hai: hai lệnh `start()` cùng chờ `resume()` thì cùng đặt `this.timer`, cái sau đè cái trước và `stop()` chỉ tắt được một. Kèm chuyện bộ giả nói dối hai lần (chỉ nhớ một lời hứa `resume`, và đồng hồ đứng yên ở 0) khiến ca test trượt rồi lại xanh nhầm |
 | 13/09/2026 | `fix: Bản nhạc ở nền tối không còn mờ tịt, và chạm vào nốt không làm nó đỏ` | Thêm bẫy 39 — abcjs vẽ bằng `currentColor` nên khung giấy trắng quên `color: '#000'` là mất bản nhạc ở nền tối, kèm lỗi thứ hai lộ ra từ cùng ảnh chụp: chạm vào nốt là abcjs chọn nốt và tô đỏ vĩnh viễn |

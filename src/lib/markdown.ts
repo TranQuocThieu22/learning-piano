@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { readDocFile } from './doc-file';
 import { resolveSheetEmbeds } from './sheet-embed';
 
 const contentDirs = [
@@ -49,7 +50,7 @@ export function getAllMarkdownFiles(): MarkdownFile[] {
     
     for (const file of dirFiles) {
       const filePath = path.join(fullPath, file);
-      const raw = fs.readFileSync(filePath, 'utf-8');
+      const raw = readDocFile(filePath);
       const { content, data } = matter(raw);
       const h1Match = content.match(/^#\s+(.*)/m);
       const title = h1Match ? h1Match[1] : file.replace('.md', '');
@@ -75,7 +76,7 @@ export function getMarkdownContent(relativePath: string): string | null {
    * Cắt bỏ phần khai báo ở đầu file trước khi trả về. Không cắt thì nó hiện
    * nguyên si mấy dòng `capDo: 1` lên đầu trang cho người học đọc.
    */
-  const { content } = matter(fs.readFileSync(fullPath, 'utf-8'));
+  const { content } = matter(readDocFile(fullPath));
   // Nhúng bản nhạc của bài khác vào ngay chỗ cần, xem sheet-embed.ts.
   return resolveSheetEmbeds(content);
 }

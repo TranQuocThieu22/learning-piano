@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { readDocFile } from './doc-file';
 
 /**
  * Đọc tài liệu nội bộ (`docs/_internal` và `docs/OVERVIEW.md`) cho khu quản trị.
@@ -132,7 +133,7 @@ export function listInternalDocs(): InternalDoc[] {
     const relative = resolveInternalDocPath(slug);
     if (!relative) return [];
 
-    const content = fs.readFileSync(path.join(root, relative), 'utf-8');
+    const content = readDocFile(path.join(root, relative));
     return [
       {
         slug,
@@ -152,5 +153,5 @@ export function readInternalDoc(slug: string): string | null {
   const fullPath = path.join(docsRoot(), relative);
   if (!fs.existsSync(fullPath)) return null;
 
-  return rewriteInternalLinks(fs.readFileSync(fullPath, 'utf-8'));
+  return rewriteInternalLinks(readDocFile(fullPath));
 }

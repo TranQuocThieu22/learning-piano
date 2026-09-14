@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
+import { readDocFile } from './doc-file';
 import { resolveSheetEmbeds } from './sheet-embed';
 
 /**
@@ -107,7 +108,7 @@ export function listUpdates(): UpdatePost[] {
     const parsed = parseUpdateFileName(file);
     if (!parsed) return [];
 
-    const raw = fs.readFileSync(path.join(root, file), 'utf-8');
+    const raw = readDocFile(path.join(root, file));
     const { content, data } = matter(raw);
     const nhan = typeof data.nhan === 'string' && data.nhan.trim() ? data.nhan.trim() : null;
 

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import { readDocFile } from './doc-file';
 
 /**
  * Nhúng lại bản nhạc của một bài tập ở bài khác, ngay tại chỗ đang cần.
@@ -88,7 +89,7 @@ export function resolveSheetEmbeds(markdown: string): string {
       );
     }
 
-    const fileText = fs.readFileSync(lesson.fullPath, 'utf-8');
+    const fileText = readDocFile(lesson.fullPath);
     const abc = extractExerciseAbc(fileText, code);
     if (abc === null) {
       throw new SheetEmbedError(

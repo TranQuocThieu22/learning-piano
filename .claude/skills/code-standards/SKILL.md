@@ -19,7 +19,7 @@ một chi tiết khác nhau.
 | Nghe đàn thật (micro hoặc MIDI) | `src/hooks/usePianoInput.ts`, `src/lib/mic-*.ts` |
 | Vẽ hoặc phát bản nhạc (abcjs) | **Chỉ bốn hook**: `useSheetRender`, `useSheetAudio` (bài học), `useDrillStaff` (luyện nhận nốt), `usePhrasePlayer` (luyện tai). Component đừng import abcjs |
 | Con trỏ đi theo bản nhạc | `src/lib/score-follow.ts` |
-| Đọc file markdown trong `docs/` | `markdown.ts` (bài học), `internal-docs.ts` (`_internal`), `updates.ts` (`09-cap-nhat`) |
+| Đọc file markdown trong `docs/` | `markdown.ts` (bài học), `internal-docs.ts` (`_internal`), `updates.ts` (`09-cap-nhat`) — cả ba đọc ổ đĩa qua `readDocFile` (`doc-file.ts`), đừng gọi `readFileSync` thẳng (bẫy 42) |
 | Kiểm đầu vào của Server Action | `src/lib/validation.ts` |
 | Hỏi quyền, hỏi gói đã mua | `src/lib/access.ts`, `access-server.ts` |
 | Biến môi trường | `src/lib/env.ts` (kiểu ở `env-schema.ts`) |
