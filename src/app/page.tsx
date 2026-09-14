@@ -9,6 +9,7 @@ import { getCompletedLessonSlugs } from '@/lib/progress';
 import { canReadLesson } from '@/lib/access';
 import { viewerFreshGrantAt, viewerHasFullAccess } from '@/lib/access-server';
 import { latestUpdate } from '@/lib/updates';
+import { reviewKinds } from '@/lib/review';
 
 const EXTRA_CATEGORY = '07-doc-them';
 
@@ -75,6 +76,17 @@ export default async function Home() {
       }
     : null;
 
+  /*
+   * Kho ôn luyện của đúng chương đang học. Hỏi `reviewKinds` ở đây chứ không để
+   * màn hình chủ đoán: bộ sinh bài mới có luật cho Chương 1-5, mà chương chưa có
+   * luật thì `/review/<số>` gọi `notFound()` — bày ra một đường dẫn dẫn tới trang
+   * 404 còn tệ hơn là không bày.
+   */
+  const reviewChapter =
+    currentChapter && reviewKinds(currentChapter.chapterNumber).length > 0
+      ? currentChapter.chapterNumber
+      : null;
+
   return (
     <AppLayout>
       {/* Cố ý không có tiêu đề trang: người học vừa mở app ra, họ biết mình
@@ -94,6 +106,7 @@ export default async function Home() {
             firstLesson ? { title: shortTitle(firstLesson.title), href: firstLesson.href } : null
           }
           currentChapter={currentChapter}
+          review={reviewChapter ? { chapter: reviewChapter, href: `/review/${reviewChapter}` } : null}
           roadmapHref={
             // Trỏ đích danh `roadmap` chứ không lấy file đầu thư mục: xếp theo
             // slug thì `phuong-phap-luyen-tap` đứng trước, mà đó là bài phụ.

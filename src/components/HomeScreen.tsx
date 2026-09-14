@@ -4,11 +4,13 @@ import { Button, RingProgress, SimpleGrid, Stack, Text, Title } from '@mantine/c
 import {
   IconBook2,
   IconChevronRight,
+  IconFolders,
   IconMusic,
   IconEar,
   IconHandFinger,
   IconMusicSearch,
   IconPlayerPlayFilled,
+  IconRepeat,
   IconRoute,
   IconSparkles,
   type IconProps,
@@ -20,6 +22,7 @@ import { AccountCard } from './AccountCard';
 import { AmbientControl } from './AmbientControl';
 import type { AppSessionUser } from './AppLayout';
 import { ChapterCard, type MapChapter } from './ExerciseMap';
+import { LinkRow } from './LinkRow';
 
 /**
  * Màn hình chủ của app.
@@ -55,6 +58,12 @@ export interface HomeScreenProps {
   firstLesson: { title: string; href: string } | null;
   /** Chương chứa bài đang tới, `null` khi giáo trình chưa có bài tập nào. */
   currentChapter: MapChapter | null;
+  /**
+   * Kho ôn luyện của chương đang học. `null` khi chương đó chưa có luật sinh bài
+   * — máy chủ hỏi `reviewKinds` trước, vì chương chưa có luật thì `/review/<số>`
+   * trả về trang 404 chứ không phải một danh sách rỗng.
+   */
+  review: { chapter: number; href: string } | null;
   /** Trang lộ trình và bài đọc thêm đầu tiên, tính ở server. */
   roadmapHref: string | null;
   extraHref: string | null;
@@ -98,6 +107,7 @@ export function HomeScreen({
   continueLesson,
   firstLesson,
   currentChapter,
+  review,
   roadmapHref,
   extraHref,
   latestUpdate,
@@ -121,6 +131,17 @@ export function HomeScreen({
       label: 'Góc bài hát',
       hint: 'Thử bài quen tai',
       Icon: IconMusic,
+      section: 'extra',
+    },
+    {
+      // Ngay cạnh *Góc bài hát*: hai ô trả lời cùng một câu — "tập bài gì bây
+      // giờ" — chỉ khác chỗ lấy bản nhạc. Góc bài hát chỉ có nhạc đã hết hạn
+      // bảo hộ, nên bài người học đang muốn tập thường phải tự mang vào; để hai
+      // ô cạnh nhau thì họ thấy luôn đường thứ hai thay vì nghĩ là app không có.
+      href: '/my-sheets',
+      label: 'Kho nhạc của tôi',
+      hint: 'Bản nhạc bạn tự đưa lên',
+      Icon: IconFolders,
       section: 'extra',
     },
     ...(roadmapHref
@@ -236,21 +257,43 @@ export function HomeScreen({
       {freshGrantAt !== null && <AccessGrantedNotice grantedAt={freshGrantAt} />}
 
       {currentChapter && (
-        <ChapterCard
-          chapter={currentChapter}
-          action={
-            <Button
-              component={Link}
-              href="/path"
-              variant="subtle"
-              size="compact-sm"
-              rightSection={<IconChevronRight size={16} />}
-              style={{ flexShrink: 0 }}
-            >
-              Cả bản đồ
-            </Button>
-          }
-        />
+        <Stack gap="sm">
+          <ChapterCard
+            chapter={currentChapter}
+            action={
+              <Button
+                component={Link}
+                href="/path"
+                variant="subtle"
+                size="compact-sm"
+                rightSection={<IconChevronRight size={16} />}
+                style={{ flexShrink: 0 }}
+              >
+                Cả bản đồ
+              </Button>
+            }
+          />
+
+          {/*
+            Đường vào kho ôn luyện DÍNH LIỀN thẻ chương, không nằm trong hàng ô
+            công cụ phía dưới: bài ôn sinh theo đúng tầm nốt của một chương, nên
+            nó chỉ có nghĩa khi đi kèm cái thẻ vừa nói người học đang ở chương
+            nào. Đứng rời ra thành ô riêng thì nhãn phải mang theo số chương, mà
+            số đó vừa nằm ngay trên đầu.
+          */}
+          {review && (
+            <LinkRow
+              href={review.href}
+              title={`Ôn luyện Chương ${review.chapter}`}
+              meta="Bài mới mỗi lần bấm, không tick không chấm"
+              leading={
+                <span className="section-icon section-icon--sm" data-section="exercises" aria-hidden>
+                  <IconRepeat size={24} />
+                </span>
+              }
+            />
+          )}
+        </Stack>
       )}
 
       {/*
