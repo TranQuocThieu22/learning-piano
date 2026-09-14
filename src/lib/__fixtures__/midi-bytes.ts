@@ -30,11 +30,11 @@ export function chunk(kind: string, body: number[]): number[] {
 
 export const END_OF_TRACK = [0x00, 0xff, 0x2f, 0x00];
 
-/** Một nốt: bấm sau `delay` tick, giữ `dai` tick rồi nhả. */
-export function note(midi: number, dai: number, delay = 0): number[] {
+/** Một nốt: bấm sau `delay` tick, giữ `dai` tick rồi nhả, ở kênh chỉ số `channel`. */
+export function note(midi: number, dai: number, delay = 0, channel = 0): number[] {
   return [
-    ...varint(delay), 0x90, midi, 0x40,
-    ...varint(dai), 0x80, midi, 0x40,
+    ...varint(delay), 0x90 | channel, midi, 0x40,
+    ...varint(dai), 0x80 | channel, midi, 0x40,
   ];
 }
 

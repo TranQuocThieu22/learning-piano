@@ -70,6 +70,34 @@ describe('đọc file MIDI thành bản nhạc', () => {
     expect(score.staves[0].events.map((e) => e.midis)).toEqual([[60], [62]]);
   });
 
+  it('file có đệm trống thì chỉ còn nốt piano, tiếng trống không thành nốt rác', () => {
+    // Trống và piano chung một track, đan xen nhau như file format 0 tải từ mạng.
+    // Trống 60 (Hi Bongo) trùng số với nốt piano đang giữ: lệnh nhả của nó không
+    // được chốt nốt piano sớm. Trống 36 thì nhả bằng trạng thái chạy tiếp, để chắc
+    // bỏ qua kênh trống vẫn đọc đủ byte.
+    const track = [
+      0x00, 0x90, 60, 0x40, // piano Đô giữa
+      0x00, 0x99, 36, 0x40, // trống bass
+      ...varint(120), 36, 0x00, // nhả trống bằng trạng thái chạy tiếp
+      0x00, 0x99, 60, 0x40,
+      ...varint(120), 0x89, 60, 0x40,
+      ...varint(240), 0x80, 60, 0x40,
+      ...note(38, 240, 0, 9), // trống snare
+      ...note(64, 480),
+      ...END_OF_TRACK,
+    ];
+    const score = parseMidiFile(file([track]));
+    expect(score.staves).toHaveLength(1);
+    expect(score.staves[0].events.map((e) => e.midis)).toEqual([[60], [], [64]]);
+    expect(score.staves[0].events.map((e) => e.beats)).toEqual([1, 0.5, 1]);
+  });
+
+  it('file chỉ có tiếng trống thì báo không có nốt nào', () => {
+    const track = [...note(36, 240, 0, 9), ...note(38, 240, 0, 9), ...note(42, 240, 0, 9), ...END_OF_TRACK];
+    expect(() => parseMidiFile(file([track]))).toThrow(ImportedScoreError);
+    expect(() => parseMidiFile(file([track]))).toThrow(/không có nốt nào — có thể nó chỉ chứa tiếng trống hoặc rỗng/);
+  });
+
   it('file không phải MIDI thì nói rõ cho người học, không ném lỗi kỹ thuật', () => {
     expect(() => parseMidiFile(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8])))
       .toThrow(ImportedScoreError);

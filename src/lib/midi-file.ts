@@ -18,7 +18,8 @@ import {
  * - **Hai tay** — tách theo Đô giữa (`splitByHand`), đúng chỗ giáo trình này đặt
  *   hai tay từ Chương 1. Kênh MIDI và số track KHÔNG dùng để tách: nhiều file
  *   xuất ra từ đàn điện chỉ có một track cho cả hai tay, nên luật theo track lúc
- *   đúng lúc sai, mà sai kiểu đó thì bản nhạc trông vẫn bình thường.
+ *   đúng lúc sai, mà sai kiểu đó thì bản nhạc trông vẫn bình thường. Kênh chỉ
+ *   dùng vào một việc: bỏ kênh bộ gõ (`PERCUSSION_CHANNEL`).
  * - **Trường độ** — làm tròn về móc kép (`quantize`).
  *
  * Người học phải biết ba điều này, nên trang nhập nói thẳng ra chứ không giấu.
@@ -97,6 +98,13 @@ class Reader {
   }
 }
 
+/**
+ * Kênh 10 của General MIDI (chỉ số 9) dành cho bộ gõ. File `.mid` tải từ mạng hay
+ * có đệm trống; không bỏ kênh này thì tiếng trống thành nốt rác quanh Si1–La5,
+ * rồi `splitByHand` còn chia chúng sang hai tay.
+ */
+const PERCUSSION_CHANNEL = 9;
+
 interface TrackResult {
   notes: RawNote[];
   name: string | null;
@@ -159,6 +167,10 @@ function readTrack(reader: Reader, length: number): TrackResult {
     if (command === 0x90 || command === 0x80) {
       const midi = reader.u8();
       const velocity = reader.u8();
+      // Kênh bộ gõ: số MIDI ở đó là loại trống chứ không phải cao độ. Phải bỏ trước
+      // khi đụng `dangGiu` — lệnh nhả của một trống trùng số sẽ chốt nhầm nốt piano
+      // đang giữ. Hai byte trên vẫn phải đọc để con trỏ không lệch.
+      if ((status & 0x0f) === PERCUSSION_CHANNEL) continue;
       const bam = command === 0x90 && velocity > 0;
       const batDau = dangGiu.get(midi);
       if (batDau !== undefined) {
