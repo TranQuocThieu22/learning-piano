@@ -1,6 +1,6 @@
 # Chương 1 - Bài 2: Luyện tập bước nhảy (Leaps) trên 5 nốt đầu tiên
 
-Hôm nay ngón tay học **nhảy** — bỏ qua một phím để với tới phím xa hơn, ví dụ Đô lên Mi. Cuối bài bạn chơi **trọn Ode to Joy**. Bài này tập trong **2 ngày**: ngày 1 làm 2A và 2B, ngày 2 làm 2C, 2D rồi dành nửa buổi cho 2E.
+Hôm nay ngón tay học **nhảy** — bỏ qua một phím để với tới phím xa hơn, ví dụ Đô lên Mi. Cuối bài bạn chơi **trọn Ode to Joy**. Bài này tập trong **2 ngày**: ngày 1 làm 2A và 2B, ngày 2 làm 2C, 2D rồi dành nửa buổi cho 2E. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 1](/02-chapters/chuong-01).
 
 ## Khởi động
 
@@ -98,7 +98,9 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re | Mi Mi Pha Sol | Sol Pha
 
 🎉 **Xong bài này là xong Chương 1:** bạn vừa chơi trọn một bản nhạc thật từ đầu tới cuối. Chương 2 cho hai tay đánh cùng lúc.
 
-## Đọc thêm (không bắt buộc)
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — nhảy quãng mà tay cứ nhấc lên, hay bài 2E mãi chưa trọn được thì đọc tiếp.
 
 **Tập khi không có đàn.** Úp tay khum tròn lên bàn, gõ lần lượt ngón **1 → 3 → 5**, các ngón còn lại dính chặt mặt bàn. 10 lần mỗi tay. Đặt tay kia lên cổ tay để chắc cổ tay đứng yên.
 

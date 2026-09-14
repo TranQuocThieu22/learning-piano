@@ -47,6 +47,17 @@ dẫn về nó.
   3. **Chữ cho người học không giả định máy tính** — không viết "trên máy tính", "bấm chuột", "cắm vào máy tính" như thể đó là cách duy nhất.
   4. **Web MIDI chạy trên Android (Chrome, Edge) và máy tính, không chạy trên iPhone/iPad**. Đàn nối vào bằng **dây** (điện thoại cần cáp OTG) hoặc bằng **Bluetooth MIDI** nếu đàn có — cả hai đều hiện ra qua cùng `requestMIDIAccess`, nên mã không phân biệt; Bluetooth chỉ thêm khoảng 15-40ms trễ, không đáng kể vì app cố ý không chấm thời gian thực. **Bluetooth trên Android KHÔNG đi qua Web MIDI** — đã thử tới cùng trên Roland FP-30X và Chrome không liệt kê thiết bị BLE MIDI, kể cả khi app của hãng đàn đã nối xong (bẫy 35). Vì vậy có **đường thứ ba**: `useBleMidiInput` nối thẳng bằng **Web Bluetooth** rồi tự đọc gói BLE-MIDI qua `src/lib/ble-midi.ts`. Đừng viết hướng dẫn "ghép đôi ở Cài đặt là xong" — sai, và người học kẹt đúng ở đó — mọi trình duyệt trên iOS đều dùng WebKit, mà WebKit không có Web MIDI. Vì vậy **micro là cách nối mặc định**, MIDI đứng thứ hai. Tính năng nghe đàn nào cũng phải có cả hai đường, và không bài học nào được bắt buộc phải cho app nghe đàn.
 
+# Bài học: ít chữ, tập liên tục
+
+**Soạn hay sửa chương, bài học, bài ôn luyện thì đọc skill `daily-practice-structure` trước.** Đã chốt 14/09/2026, lý do ở `docs/_internal/nhat-ky-quyet-dinh.md`: trước đó bài tập đo được khoảng 70% là chữ, lý thuyết đứng chắn đầu chương và người học phải đọc cả trang mới được chạm phím. Bốn điều giữ:
+
+1. **Tập trước, lý thuyết sau.** Mở bài ra là tập. Lý thuyết không phải một bước trên đường đi — nó là chỗ người học tự tìm tới khi tập thấy khó, và chữ phải **mời** họ làm vậy ("Cứ tập thử trước; chỗ nào khó hiểu thì…"), không chỉ ghi "không bắt buộc".
+2. **Chữ chỉ để dẫn vào việc tập.** Mỗi phần tập một hai dòng: tay nào, chú ý gì, chậm cỡ nào. Giải thích, tập mặt bàn, luyện tai gom xuống mục *Tập thấy khó? Đọc ở đây* cuối bài.
+3. **Ưu tiên thứ để nhìn và để làm hơn chữ:** bản nhạc (khối `abc`), hình bàn phím (khối `keys`, ảnh), và dẫn thẳng tới công cụ tập — *Tập bài này với đàn*, kho ôn luyện `/review`, luyện nhận nốt, luyện tai, máy đánh nhịp. Một câu tả "phím nào" là một tấm hình đang giả làm đoạn văn.
+4. **Có máy gác.** `pnpm check:lessons` báo lỗi với bài đã theo khuôn mới khi đoạn mở bài quá 450 ký tự, chữ dẫn một phần tập quá 350, một đoạn cuối bài quá 300, hoặc một bài tập không có bản nhạc hay hình nào. Vượt thì cắt chữ hoặc đổi thành hình — **đừng nâng ngưỡng cho vừa**.
+
+Chương 1-2 đã theo khuôn này; Chương 3-7 chờ chủ sản phẩm duyệt bản thử rồi mới viết lại.
+
 # Định hướng kinh doanh
 
 Trước khi đụng tới bất cứ thứ gì liên quan tới giá, gói bán, phân quyền hay thanh toán, **đọc `docs/_internal/dinh-huong-kinh-doanh.md`**.

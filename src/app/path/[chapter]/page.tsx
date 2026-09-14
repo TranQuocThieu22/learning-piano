@@ -131,7 +131,9 @@ export default async function ChapterPage({ params }: { params: Promise<{ chapte
 
         {/*
           Lý thuyết của chương: đọc thêm, không phải một bước (đổi 14/09/2026 — xem
-          `learning-path.ts`). Nút viền mờ, đứng sau cả danh sách bài tập lẫn kho ôn
+          `learning-path.ts`). Nhãn nói *khi nào* nên bấm — tập thấy khó hiểu — chứ không
+          chỉ nói "không bắt buộc": người học cần biết nó để làm gì, không chỉ biết được
+          phép bỏ qua. Nút viền mờ, đứng sau cả danh sách bài tập lẫn kho ôn
           luyện, để mắt người học gặp bài ngồi vào đàn trước. Chương chưa mở khoá thì
           không hiện: bấm vào chỉ ra màn hình giới thiệu gói, mà bài tập ngay trên đã
           dẫn tới đó rồi.
@@ -145,7 +147,7 @@ export default async function ChapterPage({ params }: { params: Promise<{ chapte
             fullWidth
             leftSection={<IconBook size={18} />}
           >
-            Đọc thêm: lý thuyết của chương (không bắt buộc)
+            Tập thấy khó hiểu? Đọc lý thuyết chương này
           </NavButton>
         )}
 

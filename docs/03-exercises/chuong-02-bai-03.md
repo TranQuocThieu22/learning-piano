@@ -1,6 +1,6 @@
 # Chương 2 - Bài 3: Thử thách độc lập nhịp điệu (Rhythm Patterns)
 
-Bài cuối Chương 2: **mỗi tay một nhịp điệu** — một tay giữ nốt dài, tay kia đánh nốt ngắn. Bài này tập trong **3 ngày**: ngày 1 tập tay trái riêng của 3A, ngày 2 ghép hai tay 3A, ngày 3 làm 3B rồi 3C.
+Bài cuối Chương 2: **mỗi tay một nhịp điệu** — một tay giữ nốt dài, tay kia đánh nốt ngắn. Bài này tập trong **3 ngày**: ngày 1 tập tay trái riêng của 3A, ngày 2 ghép hai tay 3A, ngày 3 làm 3B rồi 3C. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 2](/02-chapters/chuong-02).
 
 ## Trước khi ngồi vào đàn
 
@@ -74,7 +74,9 @@ V: 2 clef=bass
 
 🎉 **Xong bài này là xong Chương 2:** hai tay của bạn đã đánh được cùng lúc, luân phiên, và mỗi tay một nhịp. Chương 3 bắt đầu đọc nốt trên khuông nhạc mà không cần chữ nhắc.
 
-## Đọc thêm (không bắt buộc)
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — tay giữ nốt dài cứ nhúc nhích theo tay kia thì đọc tiếp.
 
 **Đọc chay trước khi đánh.** Nhìn khuông dưới của 3A, gõ chân theo nhịp và đọc to "Đôôô — Miii" (kéo dài ở nốt trắng). Rồi làm với khuông trên. Đọc xong rồi mới đánh thì tay chỉ còn việc bấm phím.
 

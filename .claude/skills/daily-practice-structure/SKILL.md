@@ -39,16 +39,28 @@ Every exercise lesson, in this order:
 4. **3 to 4 exercises**, each `## Bài tập <code>: <title>` (the heading pattern is a contract with `src/lib/sheet-embed.ts`) followed by **1-2 lines of instruction**, then the ```abc``` block. The cue is what the eye needs at arm's length: which hand, what to watch for, how slow. No "vì sao" here.
 5. `## Xong bài khi` (see below).
 6. `---`, then an optional one-line celebration at the end of a chapter.
-7. `## Đọc thêm (không bắt buộc)` — short bold-led paragraphs: **Tập khi không có đàn** (tapping), a **Luyện tai** challenge, and any *why* explanation or motivation. End with a link to the chapter's theory page.
+7. `## Tập thấy khó? Đọc ở đây` (see *Invite, don't just permit* below) — short bold-led paragraphs: **Tập khi không có đàn** (tapping), a **Luyện tai** challenge, and any *why* explanation or motivation. End with a link to the chapter's theory page.
+
+**Invite, don't just permit.** The owner's rule: *"thực hành trước, người dùng thấy cần hoặc khó hiểu khi tập bài sẽ tìm đến lý thuyết — khuyến khích người dùng như vậy"*. Saying "không bắt buộc" only tells the learner they may skip; it does not tell them **when** the reading helps. So every pointer to explanation names the moment to use it:
+- End of the opening paragraph: *"Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương N](/02-chapters/chuong-0N)."*
+- The read-more heading is `## Tập thấy khó? Đọc ở đây`, opened by one line naming **this lesson's** typical sticking points: *"Không bắt buộc. Cứ tập thử phần trên trước — tay đang chờ cứ đánh theo, hay 2F rối quá thì đọc tiếp."*
+- The link to the theory chapter starts from the trouble: *"Tập rồi mà vẫn lẫn ba loại nốt…: đọc [Chương 2](…)"*, not *"Muốn biết thêm…"*.
+- Theory chapters open with *"> **Nên tập thử trước khi đọc trang này.** … Trang này dành cho lúc bạn tập mà thấy khó hiểu…"*. The chapter page button reads *"Tập thấy khó hiểu? Đọc lý thuyết chương này"*.
+
+**Short text, practice without a break (settled 14/09/2026).** The owner's rule for every chapter, lesson and review page: *"các phần ngắn gọn chữ thôi, ưu tiên hình, bản nhạc hoặc các phần khác để người dùng thực hành liên tục và hứng thú khi học bài và ôn luyện"*. The learner should go from one thing to play to the next with only a glance at text in between.
+- **Reach for these before writing a sentence**, in this order: an `abc` staff to play → a `keys` diagram or an image for *where* → a `{{sheet: ...}}` embed to replay an earlier piece → a link to a practice tool. If a sentence describes which keys, which fingers, or what a symbol looks like, it should be a picture.
+- **Send the learner to a tool instead of explaining more.** Stuck reading notes → `/note-trainer`. Unsure of a rhythm → `/metronome`. Finished the lesson and wants more → `/review/<chapter>` (Chương 1-5). Wants to check themselves on a piece → *Tập bài này với đàn* is already under every staff, so say "bấm *Tập bài này với đàn*" rather than describing it. Never make a tool a required step (iPhone has no Web MIDI; mic is optional).
+- **Recital / review lessons follow the same rule**: pieces first, one or two lines per piece, the pass standard in `## Xong bài khi`.
+- **Hard limits, enforced by `pnpm check:lessons`** for any lesson that has the `## Tập thấy khó? Đọc ở đây` heading: opening paragraph ≤ 450 characters, prose in one practice section ≤ 350, one paragraph in the read-more section ≤ 300, and every `## Bài tập` section must contain a staff, a diagram, an image or a sheet embed. The limits sit just above the longest Chương 1-2 lesson at the time they were set. Over the limit → cut words or turn them into a picture; **never raise the number to make a lesson pass**.
 
 Rules that did not change, only moved:
-- Still give an away-from-piano tapping drill and an ear-training challenge in every lesson — but inside *Đọc thêm*, specific to the day's skill (which fingers, which rhythm), 2-3 lines each.
+- Still give an away-from-piano tapping drill and an ear-training challenge in every lesson — but inside the read-more section, specific to the day's skill (which fingers, which rhythm), 2-3 lines each.
 - Still at least 3-4 varied ABC exercises (warm-up, familiar melody, harder pattern).
 
 **Theory chapters (`docs/02-chapters/chuong-XX.md`) are not steps.** They are not on the learning path, not tickable, and open with a quote block saying *"Đây là bài đọc thêm, không bắt buộc"* plus a link to the chapter's first exercise. Never write an exercise that only makes sense after reading the theory chapter, and never tell the learner to read it first.
 
 # "Xong bài khi" — every exercise lesson MUST have it
-- Put a `## Xong bài khi` section **right after the last exercise**, before the `---` that opens *Đọc thêm*. (Chương 3-7, still in the old layout, have it right before `## Yêu cầu thực hành`.) It holds **2 to 4 bullet lines** (`- ...`), each a concrete, self-checkable outcome: *"Đánh trọn 2E từ nốt đầu tới nốt cuối — chậm cũng được, không dừng lại để sửa."*
+- Put a `## Xong bài khi` section **right after the last exercise**, before the `---` that opens the read-more section. (Chương 3-7, still in the old layout, have it right before `## Yêu cầu thực hành`.) It holds **2 to 4 bullet lines** (`- ...`), each a concrete, self-checkable outcome: *"Đánh trọn 2E từ nốt đầu tới nốt cuối — chậm cũng được, không dừng lại để sửa."*
 - The app **lifts this section out of the lesson body and shows it right above the tick button** (`src/lib/done-criteria.ts`). That is the moment the learner asks "am I done?", so write it for that moment: short enough to read at arm's length from the music stand (max 130 characters per line), plain text only — no `**bold**`, links or backticks, they would show up as raw symbols.
 - **Outcomes, not practice instructions.** "Tập 15 lần" or "tập riêng từng tay trước" belong in the exercise cue. "Hai tay xuống phím cùng một lúc" belongs in *Xong bài khi*. Do not write the same sentence in both sections — the learner reads them back to back.
 - **Never demand perfection or a connected piano.** "Chậm cũng được", "sai nốt cũng được, chỉ không dừng lại để sửa" is the house standard. Never write "tập với đàn đạt 100%" — the app deliberately does not gate lessons (reasons in `docs/_internal/nhat-ky-quyet-dinh.md`), and iPhone cannot use Web MIDI.
@@ -62,7 +74,7 @@ Rules that did not change, only moved:
 # Write for a Phone on the Music Stand
 Learners read lessons mainly on a **phone or tablet**, and practise with that device propped on the piano's music stand — a laptop has nowhere to sit on a keyboard, so almost nobody practises with one. This is a settled product decision (see `AGENTS.md`). When writing lesson text:
 - **Never assume a computer.** Do not write "trên máy tính", "bấm chuột", "mở máy tính lên nghe". Say "trên điện thoại" or just "bấm nghe thử" — the instruction should work on whatever device the learner holds.
-- **The practice sections are read at arm's length, hands on the keys.** Keep each on-piano step short enough to take in with one glance at the stand; put the long explanation in *Đọc thêm* or the theory chapter, which are read with the phone in hand.
+- **The practice sections are read at arm's length, hands on the keys.** Keep each on-piano step short enough to take in with one glance at the stand; put the long explanation in the read-more section or the theory chapter, which are read with the phone in hand.
 - **Never make a lesson depend on connecting the piano (Web MIDI).** It works on Android and on computers but not on iPhone/iPad, so every exercise must be fully doable with just the piano and the sheet music. "Tập bài này với đàn" can be suggested as an extra, never as a step.
 
 Always remind the user that **quality over quantity** is key. 30 minutes of highly focused practice is better than 2 hours of mindless playing.

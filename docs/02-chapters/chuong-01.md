@@ -1,6 +1,6 @@
 # Chương 1: Nền tảng phím đàn và nốt nhạc
 
-> **Đây là bài đọc thêm, không bắt buộc.** Mọi thứ cần để tập đã nằm sẵn trong bài tập. Muốn tập ngay thì mở **[Chương 1 - Bài 1](/03-exercises/chuong-01-bai-01)**; trang này dành cho lúc bạn muốn hiểu kỹ hơn.
+> **Nên tập thử trước khi đọc trang này.** Mọi thứ cần để tập đã nằm sẵn trong **[Chương 1 - Bài 1](/03-exercises/chuong-01-bai-01)**. Trang này dành cho lúc bạn tập mà thấy khó hiểu, hoặc muốn biết vì sao phải làm vậy.
 
 Chương này có đúng **hai bài tập, tổng cộng bốn buổi**, mỗi buổi 30 phút. Hết bốn buổi đó, bạn sẽ **chơi trọn vẹn được Ode to Joy bằng một tay** — bản nhạc của Beethoven, từ nốt đầu tới nốt cuối, không nhìn hướng dẫn.
 

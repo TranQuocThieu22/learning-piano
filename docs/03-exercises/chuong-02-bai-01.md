@@ -1,6 +1,6 @@
 # Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay
 
-Hôm nay có nốt dài nốt ngắn, và lần đầu **hai tay đánh cùng lúc**. Bài này tập trong **3 ngày**: ngày 1 làm 2A từng tay, ngày 2 ghép hai tay ở 2B, ngày 3 làm 2C. Hai tay loạn trong một hai ngày đầu là chuyện bình thường.
+Hôm nay có nốt dài nốt ngắn, và lần đầu **hai tay đánh cùng lúc**. Bài này tập trong **3 ngày**: ngày 1 làm 2A từng tay, ngày 2 ghép hai tay ở 2B, ngày 3 làm 2C. Hai tay loạn trong một hai ngày đầu là chuyện bình thường. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 2](/02-chapters/chuong-02).
 
 Tay đặt như Chương 1: tay phải ngón 1 trên Đô giữa, tay trái ngón 5 trên Đô thấp.
 
@@ -67,7 +67,9 @@ V: 2 clef=bass
 
 ---
 
-## Đọc thêm (không bắt buộc)
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — giữ phím không đủ nhịp, hay ghép hai tay cứ loạn thì đọc tiếp.
 
 **Tập khi không có đàn.** Đếm to "1-2-3-4". Tay trái gõ ngón trỏ ở mọi nhịp, tay phải chỉ gõ ở nhịp 1 và 3. Xong đổi tay. Thêm: nhấc riêng ngón áp út hai tay gõ 5 lần, các ngón khác dính mặt bàn.
 
@@ -77,4 +79,4 @@ V: 2 clef=bass
 
 **Vì sao ghép hai tay thấy loạn:** não phải lo hai việc song song. Chậm tới mức hai tay chắc chắn xuống cùng lúc là cách nhanh nhất.
 
-Muốn xem hình ba loại nốt và cách đọc hai khuông chồng nhau: đọc **[Chương 2: Nhịp điệu và Phối hợp 2 tay](/02-chapters/chuong-02)**.
+Tập rồi mà vẫn lẫn ba loại nốt, hay chưa quen đọc hai khuông chồng nhau: đọc **[Chương 2: Nhịp điệu và Phối hợp 2 tay](/02-chapters/chuong-02)**.

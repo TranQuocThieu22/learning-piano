@@ -1,6 +1,6 @@
 # Chương 2: Nhịp điệu và Phối hợp 2 tay
 
-> **Đây là bài đọc thêm, không bắt buộc.** Bài tập đã ghi sẵn nốt nào giữ mấy nhịp. Muốn tập ngay thì mở **[Chương 2 - Bài 1](/03-exercises/chuong-02-bai-01)**.
+> **Nên tập thử trước khi đọc trang này.** Bài tập đã ghi sẵn nốt nào giữ mấy nhịp — mở **[Chương 2 - Bài 1](/03-exercises/chuong-02-bai-01)** và đánh thử. Tập mà thấy khó hiểu thì quay lại đây.
 
 Bốn buổi của Chương 1 đã cho bạn năm nốt C-D-E-F-G và một bản nhạc hoàn chỉnh chơi bằng một tay. Chương này thêm hai thứ: **nhịp điệu (trường độ)** — nốt dài nốt ngắn — và lần đầu tiên bạn cho **hai tay đánh cùng lúc**.
 

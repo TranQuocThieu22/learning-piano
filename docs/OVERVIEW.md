@@ -46,7 +46,6 @@ khiển ngón độc lập.
 
 | Chương | Nội dung | Số bài | Trạng thái |
 |---|---|---|---|
-| 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Bảng cách nghe đàn thêm đường thứ ba (Web Bluetooth nối thẳng), vì hai đường cũ không dùng được với đàn Bluetooth trên Android |
 | 0 | Vì sao bạn muốn chơi piano — bài đọc tạo động lực, không có bài tập; lịch sử piano tách sang trang *Đọc thêm* | 0 | ✅ Xong |
 | 1 | 5 nốt đầu tiên C-D-E-F-G, độc lập ngón | 2 | ✅ Xong |
 | 2 | Trường độ (đen/trắng/tròn), phối hợp 2 tay | 3 | ✅ Xong |
@@ -85,10 +84,13 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
   `/^chuong-(\d+)-bai-(\d+)$/` trong `src/lib/lessons.ts` — sai mẫu là bài **biến mất
   khỏi trang Nhật ký** và không tick được. Áp cho cả bài Tổng ôn.
 - **Tiêu đề H1:** đúng khuôn `# Chương [X] - Bài [Y]: [Chủ đề]`.
-- **Bố cục một buổi tập 30-45 phút:** ① bài tập không cần đàn (bắt buộc có gõ mặt
-  bàn + 1 phương pháp tùy chọn) → ② khởi động & ôn bài cũ 5-10 phút → ③ kỹ năng mới
-  15-20 phút, **tối thiểu 3-4 bài tập ABC khác nhau** → ④ thực hành tự do + **thẩm âm
-  (bắt buộc)**.
+- **Ít chữ, tập liên tục (chốt 14/09/2026).** Mở bài ra là tập; lý thuyết là chỗ người
+  học tự tìm tới khi tập thấy khó, và chữ mời họ làm vậy. Chữ chỉ để dẫn vào việc tập —
+  ưu tiên bản nhạc, hình bàn phím và dẫn tới công cụ tập hơn câu giải thích.
+- **Bố cục một bài (khuôn mới, Chương 1-2):** đoạn mở bài ngắn → kiến thức bắt buộc 1-3
+  dòng kèm hình → khởi động → **3-4 bài tập ABC**, mỗi bài 1-2 dòng dẫn → *Xong bài khi*
+  → mục *Tập thấy khó? Đọc ở đây* (gõ mặt bàn, **thẩm âm**, vì sao). Chương 3-7 còn khuôn
+  cũ, chờ duyệt. Chi tiết ở skill `daily-practice-structure`.
 - **Giới hạn nốt:** không bao giờ dùng nốt chưa dạy. **Chương 1-5** giới hạn ở thế tay
   5 ngón: tay phải C-D-E-F-G khóa Sol, tay trái C-D-E-F-G khóa Pha thấp hơn một quãng
   tám — nên **"Twinkle Twinkle" và "Happy Birthday" không dùng được** (cần nốt La), còn
@@ -103,8 +105,9 @@ Chi tiết đầy đủ ở `.claude/skills/daily-practice-structure/SKILL.md`. 
 - **Ước lượng số ngày:** mỗi bài mới phải nói rõ cần tập bao nhiêu ngày — một con số
   cụ thể, không phải khoảng.
 - **Kiểm tra:** chạy `pnpm check:lessons` sau khi soạn bài. Script dùng chính parser
-  abcjs của app, bắt lỗi ô nhịp lệch, nốt ngoài thế tay, tên file/tiêu đề sai mẫu, và
-  tiếng Việt mất dấu.
+  abcjs của app, bắt lỗi ô nhịp lệch, nốt ngoài thế tay, tên file/tiêu đề sai mẫu,
+  tiếng Việt mất dấu — và với bài theo khuôn mới, chữ vượt ngưỡng (mở bài 450, một phần
+  tập 350, một đoạn cuối bài 300 ký tự) hoặc bài tập không có bản nhạc hay hình.
 
 ---
 
@@ -342,8 +345,10 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Bài học ít chữ, tập liên tục — có máy gác độ dài chữ` | Mục soạn bài: thay bố cục "buổi tập bốn phần" bằng nguyên tắc ít chữ - tập liên tục và khuôn bài mới, ghi thêm những gì `check:lessons` nay gác — mục này là chỗ người mới vào dự án đọc để biết soạn bài thế nào, để khuôn cũ ở đây là dạy họ viết đúng cái vừa bỏ |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Bảng đường dẫn và đoạn nói về `/path`: lý thuyết không còn là bước trên đường đi mà là nút *Đọc thêm* của trang chương — hai chỗ này mô tả đúng cấu trúc cũ, để nguyên thì người đọc tài liệu sẽ đi tìm một bước lý thuyết không còn tồn tại |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Mục 4 thêm ba đường dẫn mới (`/review/[chapter]`, `/my-sheets`, `/my-sheets/[id]`) và hai tính năng: kho ôn luyện mở cửa cho bộ sinh bài tập vốn đã viết xong mà chưa ai gọi, và Kho nhạc của tôi cho người học tự đưa bản nhạc vào — hai lời giải cho cùng một vấn đề *hết bài để tập*, một bên không đụng bản quyền, một bên đổi vai app thành nơi chứa |
+| 12/09/2026 | `feat: Nối thẳng đàn qua Bluetooth, không cần dây cũng không cần app của hãng` | Bảng cách nghe đàn thêm đường thứ ba (Web Bluetooth nối thẳng), vì hai đường cũ không dùng được với đàn Bluetooth trên Android |
 | 12/09/2026 | `feat: Nối đàn qua Bluetooth MIDI, khỏi cần dây` | Nói rõ MIDI nối được bằng cả dây lẫn Bluetooth — chỗ này trước chỉ ghi "dây MIDI, cáp OTG", đọc vào tưởng bắt buộc phải có dây, trong khi đàn có Bluetooth thì ghép đôi là chạy |
 | 12/09/2026 | `refactor: Hai bài luyện cũng đi qua cửa abcjs, không component nào gọi thẳng nữa` | Sơ đồ thư mục thêm `hooks/` và nói rõ bốn cửa duy nhất gọi abcjs — để người sửa sau biết đụng vào thư viện vẽ nhạc là đụng vào đâu, thay vì lần theo import trong từng component |
 | 12/09/2026 | `refactor: Tách khung xem bản nhạc thành cửa vẽ và cửa tiếng, ghim phiên bản abcjs` | Đổi tên `AbcjsViewer` thành `SheetViewer` trong sơ đồ thư mục: component không còn mang tên thư viện vẽ nhạc, vì abcjs nay nằm sau hai hook `useSheetRender` / `useSheetAudio` chứ không nằm trong component |

@@ -40,6 +40,75 @@
 
 ---
 
+## 14/09/2026 — Số liệu beta đầu tiên, tiêu chí xong bài, và tập trước lý thuyết sau
+
+> Từ commit `dccf138` tới `f1fdbc7` và commit của khối này. Hai commit `72d5aa7` (đưa hai kho ra
+> màn hình chủ) và `5da54cf` (bài hướng dẫn nối đàn) ra đời sau khối rạng sáng nhưng chưa
+> được ghi ở đâu — ghi bù ở đây.
+
+**Đã làm**
+
+- **Chủ sản phẩm cấp gói và nhắn tay cho những người đã điền form** — việc chặn cả đợt beta
+  từ tối 13/09 đã xong.
+- **Đọc số liệu thật lần đầu.** Vercel Analytics 7 ngày: 111 người vào, khoảng 50 từ
+  Facebook, 40 mở trang lộ trình, **24 mở Bài 1**. Trang admin: **3 người lạ đăng nhập**, 2
+  người đã có gói (Lê Thị Vân Anh tick 3 bài và đã tới Chương 3; Vân Anh tick 1 bài, dừng ở
+  Chương 0), 1 người đăng nhập mà chưa có gói (Huyền Trang). Tài khoản Bin Kun đăng ký
+  28/08 — chưa rõ là tài khoản thử hay người quen.
+- **Mục *Xong bài khi* cho cả 25 bài tập**, đứng ngay trên nút tick; **dòng nhắc** khi mở bài
+  đứng sau bước chưa tick; **dòng khen** khi đánh trọn một bản nhạc với đàn (`5742652`). Chủ
+  sản phẩm hỏi có nên khoá bài theo điều kiện — không khoá, năm lý do ở `nhat-ky-quyet-dinh.md`.
+- **Tập trước, lý thuyết thành đọc thêm** (`f1fdbc7`): lý thuyết ra khỏi đường đi, viết lại
+  5 bài tập Chương 1-2 (ngắn đi 25-37%, bản nhạc giữ nguyên từng ký tự). Chương 3-7 chờ duyệt.
+- **Đổi lời dẫn thành lời mời** *"cứ tập thử trước, chỗ nào khó hiểu thì vào đây"* — đầu mỗi
+  bài, tiêu đề mục cuối bài, nút ở trang chương và đầu trang lý thuyết.
+- **Chốt luật "ít chữ, tập liên tục" và cho máy gác.** Ghi vào `AGENTS.md`, skill
+  `daily-practice-structure` và nhật ký quyết định: chữ chỉ để dẫn vào việc tập, ưu tiên bản
+  nhạc, hình và công cụ tập. `check:lessons` nay báo lỗi với bài theo khuôn mới khi chữ vượt
+  ngưỡng (450 / 350 / 300 ký tự) hoặc bài tập không có bản nhạc hay hình — đã thử cố ý làm
+  sai một bài để chắc nó bắt được.
+- **Bàn và gác lại chuyện hợp tác nhận hoa hồng với trang bản nhạc nước ngoài.** Không tìm
+  thấy chương trình giới thiệu công khai; chỉ nguồn tải cho người học là mất vị trí trung
+  gian ở mục 7 của `ban-quyen-bai-hat.md`; và chưa đúng thứ tự ưu tiên trước khi bán.
+
+**Quan sát**
+
+- **Người ta có vào, có đọc — rơi ở giữa "đọc bài" và "đăng ký".** 24 người mở Bài 1 mà chỉ
+  3 người đăng nhập. Lời mời ở đầu trang lộ trình đang nói *"Chương 1 mở sẵn, không cần đăng
+  ký gì — cứ học thử trước đã. Thấy hợp thì điền form"*, nên người ta làm đúng như thế: tập
+  mà không đăng ký. **Nó còn đi ngược mục 2 của `ke-hoach-beta.md`** ("cấp trước, không cấp
+  giữa chừng"): người điền form sau khi đã qua Chương 1 kéo tỉ lệ đi hết Chương 1 lên ảo.
+- **Mỗi bài đăng kéo người vào 1-2 ngày rồi tắt** (đỉnh 12/09 rồi giảm dần) — muốn đều thì
+  phải comment đều trong nhiều nhóm.
+- **Một người beta tick 3 bài mà đã tới Chương 3.** Chưa biết vì lười hay vì đã biết chơi —
+  chính câu hỏi này dẫn tới đợt tiêu chí xong bài. Hỏi người đó trước khi kết luận.
+- **Nội dung đo được 70% là chữ** trước khi viết lại — cảm nhận "nhiều chữ quá" của chủ sản
+  phẩm có số liệu đỡ, không chỉ là cảm giác.
+- **Dòng nhắc vượt bài vừa ra đã va vào lý thuyết**: người bỏ qua trang lý thuyết để tập luôn
+  bị nhắc "chưa tick Chương 1". Hai tính năng làm cùng ngày mà đá nhau — đợt tập trước gỡ luôn.
+- **Bẫy 2 cắn lại hai lần trong một buổi** khi sửa file bằng script qua shell: `\d` trong
+  template literal mất dấu gạch chéo, một lần thành `/^chuong-(d+)$/` trong trang bài học.
+  `tsc` và test đều không bắt được vì regex vẫn hợp lệ — chỉ đọc lại mới thấy. Sửa file có
+  regex thì dùng công cụ sửa trực tiếp, đừng đi qua heredoc.
+
+**Tiếp theo**
+
+- **Đọc thử Chương 1-2 khuôn mới trên điện thoại**, rồi nói "làm tiếp Chương 3-7 theo khuôn
+  Chương 1-2".
+- **Sửa lời mời ở đầu `docs/01-roadmap/roadmap.md` và mẫu comment số 3, số 7** thành "đăng ký
+  ngay từ đầu, miễn phí" — đã đề xuất và chủ sản phẩm chưa trả lời. Đây là chỗ rơi lớn nhất
+  của phễu, và nó đang làm sai con số quyết định của cả đợt beta.
+- **Cân nhắc cho app tự hỏi "có đàn thật chưa" ngay sau khi đăng nhập rồi tự cấp `beta dot 1`**
+  — Huyền Trang là đúng trường hợp lọt ra ngoài. Đổi quy trình đã chốt nên phải chủ sản phẩm quyết.
+- **Nhắn Huyền Trang** hỏi có đàn chưa kèm link form; **hỏi Lê Thị Vân Anh** trước đây đã tập
+  đàn bao lâu; **hỏi thăm Vân Anh** nếu tới khoảng 19/09 vẫn chưa tick thêm.
+- **Quay một video 20-30 giây** điện thoại trên giá nhạc, đánh Ode to Joy, nốt tô xanh — vẫn
+  chưa có ảnh hay video thật nào.
+- **Thử dòng nhắc vượt bài và dòng khen trên máy thật đã đăng nhập** — chưa ai thấy chạy thật.
+- **Hai bài Facebook số 6 và số 7** đang chờ đăng, cùng số 4 và số 5 từ hôm trước.
+
+---
+
 ## 14/09/2026 (rạng sáng) — Kho ôn luyện và Kho nhạc của tôi
 
 **Đã làm**

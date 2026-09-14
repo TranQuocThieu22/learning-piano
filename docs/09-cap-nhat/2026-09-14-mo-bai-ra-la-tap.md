@@ -14,15 +14,19 @@ Giờ **Chương 1 và Chương 2** đi theo hướng ngược lại:
   cỡ nào — rồi tới bản nhạc.
 - **Thứ phải biết thì nằm đúng chỗ cần.** Nốt Đô giữa ở đâu, ngón nào số mấy, nốt trắng giữ
   mấy nhịp — ghi ngay trong bài tập, có hình bàn phím kèm theo.
-- **Phần giải thích vẫn còn đủ, chỉ dời xuống cuối bài** dưới mục *Đọc thêm (không bắt
-  buộc)*: bài tập mặt bàn khi không có đàn, luyện tai, và *vì sao* tập như vậy.
+- **Phần giải thích vẫn còn đủ, chỉ dời xuống cuối bài** dưới mục *Tập thấy khó? Đọc ở
+  đây*: bài tập mặt bàn khi không có đàn, luyện tai, và *vì sao* tập như vậy.
 
-## Lý thuyết giờ là đọc thêm
+## Tập thử trước, khó hiểu thì mới đọc
+
+Đây là cách dùng được gợi ý: **cứ ngồi vào đàn đánh thử trước.** Phần lớn thời gian bạn sẽ
+không cần đọc gì thêm. Chỗ nào tập mà thấy khó — bấm nhầm hoài, hai tay cứ loạn, không hiểu
+vì sao phải làm vậy — thì lúc đó mới kéo xuống cuối bài, hoặc mở lý thuyết của chương.
 
 Trong *Đường đi*, mỗi chương giờ chỉ còn các bài ngồi vào đàn. Trang lý thuyết của chương
-nằm ở nút **Đọc thêm: lý thuyết của chương** cuối trang chương — đọc lúc nào cũng được,
-không tick, không tính vào tiến độ. Nút *Bắt đầu* và *Học tiếp* ở màn hình chủ luôn dẫn
-thẳng vào bài tập.
+nằm ở nút **Tập thấy khó hiểu? Đọc lý thuyết chương này** cuối trang chương — không tick,
+không tính vào tiến độ. Nút *Bắt đầu* và *Học tiếp* ở màn hình chủ luôn dẫn thẳng vào bài
+tập.
 
 Nếu trước đây bạn đã tick các trang lý thuyết thì cũng không mất gì: những bài tập đã tick
 vẫn còn nguyên.

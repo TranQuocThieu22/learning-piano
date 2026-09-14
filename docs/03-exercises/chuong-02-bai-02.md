@@ -1,6 +1,6 @@
 # Chương 2 - Bài 2: Đánh luân phiên 2 tay (Alternating hands)
 
-Hôm nay hai tay **thay phiên nhau**: tay này đánh thì tay kia chờ. Nghe dễ mà lại khó hơn đánh cùng lúc, vì tay đang chờ cứ muốn nhúc nhích theo. Bài này tập trong **3 ngày**: ngày 1 làm 2D, ngày 2 làm 2E, ngày 3 thử 2F.
+Hôm nay hai tay **thay phiên nhau**: tay này đánh thì tay kia chờ. Nghe dễ mà lại khó hơn đánh cùng lúc, vì tay đang chờ cứ muốn nhúc nhích theo. Bài này tập trong **3 ngày**: ngày 1 làm 2D, ngày 2 làm 2E, ngày 3 thử 2F. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 2](/02-chapters/chuong-02).
 
 ## Khởi động
 
@@ -73,7 +73,9 @@ V: 2 clef=bass
 
 ---
 
-## Đọc thêm (không bắt buộc)
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — tay đang chờ cứ đánh theo, hay 2F rối quá thì đọc tiếp.
 
 **Tập khi không có đàn.** Úp tay lên đùi, đếm "1-2-3-4": nhịp 1 vỗ tay trái, nhịp 2 vỗ tay phải, nhịp 3 vỗ cả hai, nhịp 4 nghỉ. Lặp 10 lần liền không khựng.
 

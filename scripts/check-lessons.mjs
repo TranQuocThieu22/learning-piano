@@ -57,6 +57,68 @@ const MISSING_DIACRITICS = [
   'Ban day du', 'Ban trinh dien',
 ];
 
+/**
+ * Khuôn "ít chữ, tập liên tục" (chốt 14/09/2026, lý do ở nhat-ky-quyet-dinh.md).
+ *
+ * Chủ sản phẩm chốt: chữ trong bài chỉ để dẫn vào việc tập, còn phần chính là bản
+ * nhạc, hình và công cụ thực hành. Trước khi chốt, bài tập đo được khoảng 70% là
+ * chữ. Luật trên giấy thì trôi dần mỗi lần soạn bài mới, nên gác bằng máy — nhưng
+ * CHỈ với bài đã theo khuôn mới (nhận ra bằng tiêu đề mục cuối bài), để Chương 3-7
+ * chưa viết lại không đỏ oan.
+ *
+ * Các ngưỡng đặt ngay trên bài dài nhất của Chương 1-2 lúc chốt, tính bằng ký tự
+ * chữ (không tính bản nhạc, hình, dòng trống):
+ *   - đoạn mở bài 450 — Chương 2 - Bài 1 là 420;
+ *   - chữ dẫn của một phần tập 350 — "Đặt tay lên phím" ở Chương 1 - Bài 1 là 336;
+ *   - một đoạn trong mục cuối bài 300 — dài nhất là 272.
+ * Vượt ngưỡng thì cắt chữ hoặc đổi thành hình, đừng nâng ngưỡng cho vừa.
+ */
+const READ_MORE_HEADING = '## Tập thấy khó? Đọc ở đây';
+const MAX_INTRO_CHARS = 450;
+const MAX_CUE_CHARS = 350;
+const MAX_READ_MORE_PARAGRAPH_CHARS = 300;
+/** Thứ người học nhìn vào để tập: bản nhạc, hình bàn phím, ảnh, bản nhạc nhúng từ bài khác. */
+const VISUAL = /^(```abc|```keys|!\[|\{\{sheet:)/;
+
+function checkPracticeFirst(file, text) {
+  if (!text.includes(READ_MORE_HEADING)) return;
+  const lines = text.split(/\r?\n/);
+  const isProse = (l) => l.trim() !== '' && !VISUAL.test(l) && !l.startsWith('```');
+
+  const firstH2 = lines.findIndex((l, i) => i > 0 && l.startsWith('## '));
+  const intro = lines.slice(1, firstH2).filter(isProse).join(' ').trim();
+  if (intro.length > MAX_INTRO_CHARS)
+    err(file, `đoạn mở bài dài ${intro.length} ký tự (tối đa ${MAX_INTRO_CHARS}) — cắt bớt, phần giải thích dời xuống mục cuối bài`);
+
+  const readMoreAt = lines.indexOf(READ_MORE_HEADING);
+  for (let i = firstH2; i < readMoreAt; i++) {
+    const heading = lines[i];
+    if (!heading.startsWith('## ') || heading === '## Xong bài khi') continue;
+    let end = i + 1;
+    while (end < lines.length && !lines[end].startsWith('## ') && lines[end] !== '---') end++;
+    const section = lines.slice(i + 1, end);
+
+    let inFence = false;
+    const cue = section.filter((l) => {
+      if (l.startsWith('```')) { inFence = !inFence; return false; }
+      return !inFence && isProse(l);
+    }).join(' ').trim();
+    if (cue.length > MAX_CUE_CHARS)
+      err(file, `"${heading.slice(3, 50)}" có ${cue.length} ký tự chữ (tối đa ${MAX_CUE_CHARS}) — một hai dòng dẫn là đủ, còn lại đổi thành hình hoặc dời xuống mục cuối bài`);
+
+    if (heading.startsWith('## Bài tập ') && !section.some((l) => VISUAL.test(l)))
+      err(file, `"${heading.slice(3, 50)}" không có bản nhạc hay hình nào — bài tập phải có thứ để nhìn vào mà tập`);
+    i = end - 1;
+  }
+
+  const paragraphs = lines.slice(readMoreAt + 1).join('\n').split(/\n\s*\n/)
+    .map((p) => p.replace(/\s+/g, ' ').trim()).filter(Boolean);
+  for (const p of paragraphs) {
+    if (p.length > MAX_READ_MORE_PARAGRAPH_CHARS)
+      err(file, `mục cuối bài có đoạn dài ${p.length} ký tự (tối đa ${MAX_READ_MORE_PARAGRAPH_CHARS}): "${p.slice(0, 50)}…"`);
+  }
+}
+
 const quiet = process.argv.includes('--quiet');
 let errors = 0, warnings = 0;
 
@@ -152,6 +214,7 @@ for (const { dir, file, strictNaming } of targets) {
     if (!tm) err(file, `tiêu đề sai mẫu "# Chương X - Bài Y: ..." (đang là "${first.slice(0, 50)}")`);
     else if (Number(tm[1]) !== Number(fm[1]) || Number(tm[2]) !== Number(fm[2]))
       err(file, `tiêu đề ghi Chương ${tm[1]} Bài ${tm[2]} nhưng tên file là ${fm[1]}/${fm[2]}`);
+    checkPracticeFirst(file, text);
   }
 
   const blocks = extractAbcBlocks(text);

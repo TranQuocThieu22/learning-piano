@@ -1,6 +1,6 @@
 # Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên (C-D-E-F-G)
 
-Hôm nay bạn chơi được **câu mở đầu của Ode to Joy** bằng tay phải. Bài này tập trong **2 ngày**, mỗi ngày 30 phút: ngày 1 làm 1A và 1B, ngày 2 làm 1C và 1D.
+Hôm nay bạn chơi được **câu mở đầu của Ode to Joy** bằng tay phải. Bài này tập trong **2 ngày**, mỗi ngày 30 phút: ngày 1 làm 1A và 1B, ngày 2 làm 1C và 1D. Cứ tập thử trước; chỗ nào khó hiểu thì kéo xuống mục cuối bài hoặc đọc [lý thuyết Chương 1](/02-chapters/chuong-01).
 
 ## Đặt tay lên phím
 
@@ -88,7 +88,9 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 
 ---
 
-## Đọc thêm (không bắt buộc)
+## Tập thấy khó? Đọc ở đây
+
+Không bắt buộc. Cứ tập thử phần trên trước — tập mà bấm nhầm hoài, ngón không nghe lời, hay muốn biết vì sao phải làm vậy thì đọc tiếp.
 
 **Tập khi không có đàn.** Úp hai bàn tay khum tròn lên bàn. Nhấc **từng ngón một** gõ xuống 5 lần, bốn ngón kia dính chặt mặt bàn. Tới ngón áp út sẽ thấy nó gần như không nhấc lên nổi — ai mới học cũng vậy, gõ vài tuần là đỡ.
 
@@ -98,4 +100,4 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 
 **Đừng chờ hoàn hảo mới đi tiếp.** Chuẩn để sang bài sau là bấm đúng phím và đúng ngón, không phải chơi mượt như bản thu. Độ mượt đến từ việc tập tiếp những bài sau.
 
-Muốn biết thêm về bảy nốt nhạc, khuông nhạc và ba chuyện hay gặp trong tuần đầu: đọc **[Chương 1: Nền tảng phím đàn và nốt nhạc](/02-chapters/chuong-01)**. Muốn nhớ lại vì sao mình tìm tới cây đàn: **[Chương 0: Vì sao bạn muốn chơi piano?](/02-chapters/chuong-00)**.
+Tập rồi mà vẫn chưa rõ bảy nốt nhạc, khuông nhạc, hay thấy tuần đầu khó hơn mình nghĩ: đọc **[Chương 1: Nền tảng phím đàn và nốt nhạc](/02-chapters/chuong-01)**. Muốn nhớ lại vì sao mình tìm tới cây đàn: **[Chương 0: Vì sao bạn muốn chơi piano?](/02-chapters/chuong-00)**.
