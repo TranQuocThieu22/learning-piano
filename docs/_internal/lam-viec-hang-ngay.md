@@ -101,11 +101,10 @@ Lý do đầy đủ ở mục 9 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-vi
 
 Không gấp, xoá dòng nào đã xong:
 
-- [ ] **Cấp gói cho những người đã điền form, rồi NHẮN TAY cho từng người.** Vào `/admin`,
-      bấm *Cấp gói* → `Nền tảng`, ô *Lý do* gõ đúng `beta dot 1` (sai chữ đó là họ rơi khỏi
-      mẫu số của `beta-metrics.mjs`). Cấp xong phải nhắn lại — màn hình bài khoá đã hứa mở
-      trong 24 giờ, mà app chưa gửi được email. Thẻ báo ở màn hình chủ chỉ đón được người
-      tự mở app lại. Chi tiết ở mục 2 của [`ke-hoach-beta.md`](ke-hoach-beta.md).
+- [x] ~~**Cấp gói cho những người đã điền form, rồi NHẮN TAY cho từng người.**~~ Xong
+      14/09/2026: đã cấp gói và nhắn tay cho những người điền form tới hôm đó. Người điền
+      form **sau** ngày này vẫn đi đúng hai bước ấy — cách làm ở mục 2 của
+      [`ke-hoach-beta.md`](ke-hoach-beta.md), nhớ ô *Lý do* gõ đúng `beta dot 1`.
 
 - [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
       micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
@@ -162,6 +161,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `docs(internal): Đánh dấu đã cấp gói và nhắn tay cho người điền form beta` | Đánh dấu xong việc chặn cả đợt beta: đã cấp gói và nhắn tay cho những người điền form tới 14/09. Giữ lại lời nhắc rằng người điền form sau ngày này vẫn phải đi đủ hai bước, vì gạch dòng đi dễ khiến tưởng việc cấp gói đã xong hẳn chứ không phải việc lặp lại mỗi lần có người mới |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Đánh dấu việc *quyết chỗ cho kho ôn luyện* đã xong, và thay bằng việc mới: thử Kho nhạc của tôi trên điện thoại thật — ba thứ chỉ hỏng trên máy thật (file `.mid` thật, ảnh chụp bị xoay theo EXIF, mở lại trên máy khác) mà không ca test nào bắt được |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên tối 13/09 và ba việc còn treo` | Thêm ba việc vào mục 7: cấp gói kèm nhắn tay cho người đã điền form (việc chặn cả đợt beta mà chưa ai làm), thử phần nghe micro của trang Đặt tay ở đâu trên đàn thật, và kiểm lại hai lỗi nhạc nền trên đúng máy đã gặp |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên 12-13/09 và gom việc còn tồn đọng vào một chỗ` | Thêm hai việc vào mục 7: quyết chỗ cho kho ôn luyện (bộ sinh bài tập đã xong mà chưa trang nào gọi nó) và đánh thử bài sinh ra trên đàn thật — test gác được cao độ và số phách, nhưng "bài tập có nghe được không" thì không ca test nào phát biểu nổi |
