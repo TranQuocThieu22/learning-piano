@@ -103,6 +103,12 @@ V: 2 clef=bass
 
 **Tự do:** Đánh Bài 2D thật chậm, tập trung vào khoảnh khắc "chờ đến lượt" của mỗi tay.
 
+## Xong bài khi
+
+- Đánh 2D và 2E chậm mà tới lượt tay nào thì đúng tay đó đánh, không nhầm tay.
+- Trong lúc chờ tới lượt, tay kia nằm yên trên phím, không đánh theo.
+- Đánh trọn 2F — chậm cũng được, không dừng lại để sửa.
+
 ## Yêu cầu thực hành
 1. Mở đàn, khởi động bằng cách đánh lại Bài 2A và 2B trong 5 phút để làm nóng ngón tay.
 2. Bắt đầu tập Bài 2D, 2E, 2F cực kỳ chậm. Chú ý lúc nào tay phải đánh, lúc nào tay trái đánh. 

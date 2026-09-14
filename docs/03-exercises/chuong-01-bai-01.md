@@ -130,12 +130,18 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re Re
 
 **Tự do:** Đặt tay lên 5 phím và bấm lung tung trong 2 phút, không theo bản nhạc nào. Năm nốt này đều thuộc giọng Đô trưởng nên bấm kiểu gì cũng không "sai" tai. Mục đích chỉ là làm quen cảm giác phím đàn dưới đầu ngón.
 
+## Xong bài khi
+
+- Đánh 1A và 1B bằng tay phải đúng phím, đúng ngón — chậm cũng được.
+- Đánh 1C và 1D bằng tay trái đúng phím, đúng ngón.
+- Đặt năm ngón lên Đô - Rê - Mi - Pha - Sol mà không phải dò lại từng phím.
+
 ## Yêu cầu thực hành
 
 1. Tập **1A và 1B** thật chậm, vừa đánh vừa đọc tên nốt ra miệng. Giữ tay khum tròn, không xẹp khớp.
 2. Sang ngày 2 thì làm y hệt với tay trái ở **1C và 1D**.
 3. **Mẹo tự kiểm tra:** quay một đoạn video ngắn chỉ bàn tay rồi tự xem lại. Bạn sẽ thấy ngay những thói quen mà lúc đang đánh không hề nhận ra — vai nhô lên, cổ tay sụp xuống, hay ngón tay xẹp khớp.
-4. Khi ngón tay đã nhớ vị trí và không còn ấn nhầm phím, tick hoàn thành bài này bằng nút **Đánh dấu đã học xong** ở cuối trang — hoặc bấm vào ô tròn bên trái bài này trong **[Đường đi](/path)**.
+4. Làm được những điều ở mục **Xong bài khi** — nằm ngay trên nút tick ở cuối trang — thì tick hoàn thành bài này bằng nút **Đánh dấu đã học xong**, hoặc bấm vào ô tròn bên trái bài này trong **[Đường đi](/path)**.
 
 > [!IMPORTANT]
 > **Đừng chờ hoàn hảo mới đi tiếp.** Chuẩn để sang bài sau là *bấm đúng phím và đúng ngón*, không phải *chơi mượt như bản thu*. Sự mượt mà đến từ việc tiếp tục tập ở những bài sau, không đến từ việc dừng lại mài mãi một bài.

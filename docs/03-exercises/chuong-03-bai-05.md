@@ -130,6 +130,12 @@ C,3 | C,3 | G,3 | C,3 | G,3 | G,3 | C,3 | C,3 |]
 
 **Tự do:** Tự bịa một giai điệu nhịp 3/4 bằng 5 nốt C-D-E-F-G. Không cần hay, chỉ cần **đếm đúng 3 phách mỗi ô nhịp**. Tay trái giữ nốt Đô trầm làm nền cho vui tai.
 
+## Xong bài khi
+
+- Vỗ tay được "BÙM - chát - chát" đều nhịp trước khi ngồi vào đàn.
+- Trong 5B tay trái chỉ đánh một lần ở phách 1 rồi nghỉ.
+- Đánh trọn 5C bằng hai tay, vừa đánh vừa đếm được 1-2-3.
+
 ## Yêu cầu thực hành
 1. Trước khi đụng vào đàn, phải vỗ tay thành thạo bài tập mặt bàn "BÙM - chát - chát" đã.
 2. Tập Bài 5A cho quen cảm giác đếm 3, rồi mới sang 5B.

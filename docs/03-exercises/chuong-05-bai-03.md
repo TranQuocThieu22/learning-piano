@@ -162,10 +162,14 @@ Tai người phân biệt cao độ tốt hơn phân biệt âm lượng rất n
 
 Lần thứ ba chính là **diễn giải âm nhạc** — thứ mà không bản nhạc nào ghi sẵn hết cho bạn, và cũng là thứ khiến mỗi người chơi cùng một bài lại nghe khác nhau.
 
+## Xong bài khi
+
+- Đánh 3A mà người ngồi phòng bên nghe ra ô nhịp nào to, ô nhịp nào nhỏ.
+- Trong 3B âm lượng tăng giảm đều qua từng nốt, không nhảy vọt ở nốt cuối.
+- Đánh trọn 3D, và đánh nhỏ vẫn nghe rõ từng nốt.
+
 ## Yêu cầu thực hành
 
-1. Tập **3A** đến khi người ngồi phòng bên cũng nghe ra được đâu là ô nhịp to, đâu là ô nhịp nhỏ.
-2. Với **3B**, tự kiểm tra: âm lượng có tăng **đều** qua bốn nốt không, hay nhảy vọt ở nốt cuối?
-3. **Kiểm tra căng cơ khi đánh forte.** Đây là chỗ dễ sai nhất bài này. Đánh to phải là *thả rơi nhanh hơn*, không phải *đè mạnh hơn*. Nếu vai nhô lên hoặc cẳng tay cứng, bạn đang làm sai.
-4. Đánh **p** vẫn phải nghe rõ từng nốt. Nhỏ không có nghĩa là mờ nhạt hay hụt nốt.
-5. Khi đã tập xong **3D**, bạn đã hoàn thành Chương 5. Hãy đánh lại một bài cũ bất kỳ và tự nghe xem nó đã khác so với hồi Chương 3 thế nào.
+1. **Kiểm tra căng cơ khi đánh forte.** Đây là chỗ dễ sai nhất bài này. Đánh to phải là *thả rơi nhanh hơn*, không phải *đè mạnh hơn*. Nếu vai nhô lên hoặc cẳng tay cứng, bạn đang làm sai.
+2. Đánh **p** vẫn phải nghe rõ từng nốt. Nhỏ không có nghĩa là mờ nhạt hay hụt nốt.
+3. Khi đã tập xong **3D**, bạn đã hoàn thành Chương 5. Hãy đánh lại một bài cũ bất kỳ và tự nghe xem nó đã khác so với hồi Chương 3 thế nào.

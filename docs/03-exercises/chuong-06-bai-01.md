@@ -165,10 +165,13 @@ Hai nốt cách nhau đúng một quãng tám nghe **giống nhau đến mức l
 
 **Tự do:** Đặt ngón cái lên nốt Đô giữa và chơi lên từng phím trắng một, vừa chơi vừa đọc tên: Đô - Rê - Mi - Pha - Sol - La - Si - Đô. Dùng ngón nào cũng được, dịch tay thoải mái — hôm nay chưa cần đúng kỹ thuật. Chỉ cần **nghe cho quen con đường tám nốt** đó, vì cả chương này xoay quanh nó.
 
+## Xong bài khi
+
+- Nhìn bản nhạc là đọc được tên La, Si, Đô cao trong vòng 2 giây, không đếm dòng kẻ.
+- Đặt được thế tay Sol mà không nhìn tay: ngón 1 trên Sol, ngón 4 trên Đô cao.
+- Trong 1D chuyển thế tay gọn trong hai nhịp lặng, không kéo dài thêm.
+
 ## Yêu cầu thực hành
 
-1. Đọc được tên ba nốt mới **trong vòng 2 giây** khi nhìn vào bản nhạc, không phải đếm dòng kẻ.
-2. Đặt được thế tay Sol mà không cần nhìn xuống tay: ngón 1 trên Sol, ngón 4 trên Đô cao.
-3. Trong suốt **1A**, ngón 5 phải luôn thả lỏng khum tự nhiên, không duỗi cứng ra ngoài.
-4. **1D** chuyển thế tay đúng trong hai nhịp lặng, không kéo dài thêm.
-5. Nói được nốt Đô cao khác nốt Đô giữa ở chỗ nào — cùng tên, cách nhau một quãng tám.
+1. Trong suốt **1A**, ngón 5 phải luôn thả lỏng khum tự nhiên, không duỗi cứng ra ngoài.
+2. Nói được nốt Đô cao khác nốt Đô giữa ở chỗ nào — cùng tên, cách nhau một quãng tám.

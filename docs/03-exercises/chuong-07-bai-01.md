@@ -145,10 +145,13 @@ Nghe ra được số lượng nốt đang vang là nền tảng của **cảm �
 
 **Tự do:** Giữ hợp âm Đô trưởng ở tay trái và **tự bịa giai điệu** bằng tay phải trên năm nốt Đô-Rê-Mi-Pha-Sol. Chơi gì cũng được, sai cũng không sao — hầu như mọi thứ bạn chơi đều sẽ nghe hợp tai, vì cả năm nốt đó đều thuộc về giọng Đô trưởng. Đây là lần đầu bạn **ứng tấu**, và cảm giác này chính là thứ Giai đoạn 4 xây trên đó.
 
+## Xong bài khi
+
+- Ba nốt của hợp âm vang cùng một lúc, không nghe ra tiếng "rẹt".
+- Trong 1C và 1D tay trái nhẹ hơn tay phải rõ rệt.
+- Chơi 1D ba lần liên tiếp không vấp.
+
 ## Yêu cầu thực hành
 
-1. Ba nốt trong hợp âm phải vang **cùng một lúc** — nghe ra tiếng "rẹt" là chưa đạt.
-2. Không nốt nào nổi hẳn lên, đặc biệt là nốt do ngón cái bấm.
-3. Ngón 2 và ngón 4 thả lỏng khum tự nhiên, không tì xuống phím, không duỗi thẳng.
-4. Trong **1C** và **1D**, tay trái phải nhẹ hơn tay phải rõ rệt.
-5. Chơi **1D** ba lần liên tiếp không vấp thì mới sang bài sau.
+1. Không nốt nào nổi hẳn lên, đặc biệt là nốt do ngón cái bấm.
+2. Ngón 2 và ngón 4 thả lỏng khum tự nhiên, không tì xuống phím, không duỗi thẳng.

@@ -153,10 +153,15 @@ Thang âm là một trong vài chuỗi âm thanh mà tai người thuộc nằm 
 
 **Tự do:** Chơi thang âm đi lên nhiều lần với các sắc thái khác nhau — một lần thật nhỏ (`p`), một lần to dần từ Đô tới Đô cao (crescendo), một lần liền mạch hoàn toàn (legato), một lần nảy gọn (staccato). Kỹ thuật của Chương 5 vẫn phải sống, đừng để nó rơi rụng chỉ vì đang bận nghĩ về ngón cái.
 
+## Xong bài khi
+
+- Trong 2A chỗ nối từ Mi sang Pha nghe đều như mọi chỗ khác, không khựng.
+- Lúc ngón cái luồn qua, cổ tay không xoay, không nhấc.
+- Chơi 2C ba lần liên tiếp không vấp ở tốc độ 50.
+
 ## Yêu cầu thực hành
 
-1. Trong **2A**, chỗ nối từ Mi sang Pha phải nghe **đều như mọi chỗ khác** — không khựng, không nhanh vọt lên.
-2. Đặt tay trái lên cổ tay phải mà kiểm tra: lúc ngón cái chui, cổ tay **không xoay, không nhấc**.
-3. Khuỷu tay thả lỏng bên hông suốt cả bài. Thấy nó nhô lên là dừng lại, thả lỏng rồi làm lại.
-4. Chơi **2C** ba lần liên tiếp không vấp ở tốc độ 50 thì mới được tăng lên 60.
-5. Đừng tập quá 20 phút liên tục cho bài này. Động tác này mỏi tay hơn vẻ ngoài của nó, và tay mỏi thì bắt đầu gồng — gồng thì học sai mất.
+1. Đặt tay trái lên cổ tay phải mà kiểm tra: lúc ngón cái chui, cổ tay **không xoay, không nhấc**.
+2. Khuỷu tay thả lỏng bên hông suốt cả bài. Thấy nó nhô lên là dừng lại, thả lỏng rồi làm lại.
+3. Chơi **2C** ba lần liên tiếp không vấp ở tốc độ 50 thì mới được tăng lên 60.
+4. Đừng tập quá 20 phút liên tục cho bài này. Động tác này mỏi tay hơn vẻ ngoài của nó, và tay mỏi thì bắt đầu gồng — gồng thì học sai mất.

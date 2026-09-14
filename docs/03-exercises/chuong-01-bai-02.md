@@ -147,12 +147,15 @@ w: Mi Mi Pha Sol | Sol Pha Mi Re | Do Do Re Mi | Mi Re | Mi Mi Pha Sol | Sol Pha
 
 **Tự do:** Tắt màn hình đi và tự đánh lại **Đô Mi Sol Mi** bằng trí nhớ. Rồi thử chơi câu đầu Ode to Joy mà không nhìn bản nhạc — chơi sai cũng không sao, mục đích là để tay tự tìm phím thay vì mắt chỉ đường.
 
+## Xong bài khi
+
+- Đánh 2A và 2B chậm mà không vấp, nhảy quãng với cổ tay đứng yên.
+- Đánh trọn 2E (Ode to Joy) từ nốt đầu tới nốt cuối — chậm cũng được, nhưng không dừng lại để sửa.
+
 ## Yêu cầu thực hành
 
 1. Nhảy quãng mà **cổ tay đứng yên**, không nhấc bổng cả bàn tay lên tìm phím.
-2. Chơi **2A và 2B** trơn tru, không vấp, ở tốc độ chậm.
-3. Chơi trọn **2E — Ode to Joy** từ nốt đầu tới nốt cuối. Được phép chậm, nhưng **không dừng lại giữa chừng để sửa**.
-4. Tick hoàn thành bài này bằng nút **Đánh dấu đã học xong** ở cuối trang — hoặc bấm vào ô tròn bên trái bài này trong **[Đường đi](/path)**.
+2. Tick hoàn thành bài này bằng nút **Đánh dấu đã học xong** ở cuối trang — hoặc bấm vào ô tròn bên trái bài này trong **[Đường đi](/path)**.
 
 ---
 

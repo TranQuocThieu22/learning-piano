@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { Button, Checkbox, Group, Stack, Text, Tooltip, UnstyledButton } from '@mantine/core';
-import { IconCircleCheck, IconCircleCheckFilled } from '@tabler/icons-react';
+import { Button, Checkbox, Group, List, Paper, Stack, Text, Tooltip, UnstyledButton } from '@mantine/core';
+import { IconCircleCheck, IconCircleCheckFilled, IconPiano } from '@tabler/icons-react';
 import { toggleLessonCompletion } from '@/lib/progress-actions';
+import { playedThroughStore } from '@/lib/slug-list';
+import { useLocalStore } from '@/hooks/useLocalStore';
 
 /**
  * Nút tick "đã học xong", hai hình dạng:
@@ -17,6 +19,17 @@ import { toggleLessonCompletion } from '@/lib/progress-actions';
  *   Tick mà không phải mở bài lên — bài tập ở đây dài mấy màn hình, bắt cuộn
  *   xuống đáy chỉ để tick là đúng cái phiền mà trang chương sinh ra để bỏ.
  *
+ * Bản `card` mang thêm hai thứ ngay trên nút (14/09/2026):
+ *
+ * - **Xong bài khi** — tiêu chí người soạn viết cho bài này (`done-criteria.ts`).
+ *   Đặt đúng chỗ người học đang tự hỏi "mình xong chưa", thay vì chìm giữa bài.
+ * - **Dòng khen** khi người học đã đánh trọn một bản nhạc của bài với đàn trên máy
+ *   này. Chỉ khen, không bao giờ nói "chưa đánh trọn": tập với đàn là tuỳ chọn,
+ *   không bài học nào được bắt buộc phải cho app nghe đàn (`AGENTS.md`).
+ *
+ * Cả hai chỉ là lời nói với người học — nút tick vẫn bấm được bất cứ lúc nào.
+ * Chủ sản phẩm hỏi có nên khoá bài theo điều kiện, và câu trả lời đã chốt là không.
+ *
  * 44px là cỡ tối thiểu cho một vùng chạm: lúc tick thì máy đang nằm trên giá
  * nhạc cách mắt nửa sải tay, tay vừa rời phím đàn.
  */
@@ -26,14 +39,18 @@ export function LessonTickButton({
   signedIn,
   label = 'Đã học xong bài này',
   variant = 'inline',
+  criteria = [],
 }: {
   lessonSlug: string;
   initialCompleted: boolean;
   signedIn: boolean;
   label?: string;
   variant?: 'inline' | 'card' | 'step';
+  /** Dòng tiêu chí *Xong bài khi*. Chỉ bản `card` vẽ ra. */
+  criteria?: string[];
 }) {
   const [completed, setCompleted] = useState(initialCompleted);
+  const playedThrough = useLocalStore(playedThroughStore).includes(lessonSlug);
   const [isPending, startTransition] = useTransition();
 
   const toggle = (next: boolean) => {
@@ -52,6 +69,26 @@ export function LessonTickButton({
   if (variant === 'card') {
     return (
       <Stack gap={6} mt="xl">
+        {(criteria.length > 0 || playedThrough) && (
+          <Paper withBorder radius="md" p="md" mb={6} data-testid="done-criteria">
+            {criteria.length > 0 && (
+              <>
+                <Text fw={700} size="sm">Xong bài khi</Text>
+                <List size="sm" spacing={4} mt={6}>
+                  {criteria.map((item) => (
+                    <List.Item key={item}>{item}</List.Item>
+                  ))}
+                </List>
+              </>
+            )}
+            {playedThrough && (
+              <Group gap={6} wrap="nowrap" mt={criteria.length > 0 ? 'sm' : 0} c="teal" data-testid="played-through">
+                <IconPiano size={18} style={{ flexShrink: 0 }} aria-hidden />
+                <Text size="sm" fw={600}>Bạn đã đánh trọn một bản nhạc trong bài này với đàn.</Text>
+              </Group>
+            )}
+          </Paper>
+        )}
         <Button
           size="lg"
           fullWidth
@@ -70,7 +107,9 @@ export function LessonTickButton({
             ? 'Đăng nhập ở Trang chủ để app nhớ những bài bạn đã học xong.'
             : completed
               ? 'Đã lưu vào nhật ký 🎉 Bấm lần nữa nếu muốn bỏ tick.'
-              : 'Tập xong phần trong bài thì tick — không cần đánh hoàn hảo.'}
+              : criteria.length > 0
+                ? 'Làm được những điều trên thì tick — chậm cũng được, thỉnh thoảng vấp cũng không sao.'
+                : 'Tập xong phần trong bài thì tick — không cần đánh hoàn hảo.'}
         </Text>
       </Stack>
     );

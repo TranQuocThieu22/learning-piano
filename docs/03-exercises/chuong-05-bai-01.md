@@ -138,10 +138,14 @@ Bài này nghe có vẻ dễ đến mức vô lý, nhưng nó rèn đúng thứ 
 
 **Tự do:** Đặt tay ở thế Đô và đi lang thang trên 5 phím trong 2 phút, nhưng bắt buộc **mọi nốt đều phải legato**. Không cần theo bản nhạc nào. Chỉ cần liền mạch.
 
+## Xong bài khi
+
+- Trong 1A không còn nghe thấy khe hở giữa hai nốt của mỗi cặp.
+- Bịt mắt nghe lại 1C vẫn phân biệt được ô nhịp 1 với ô nhịp 3.
+- Đánh 1D hai tay liền mạch — chậm cũng được, cẳng tay không gồng.
+
 ## Yêu cầu thực hành
 
-1. Tập **1A** đến khi trong mỗi cặp hai nốt bạn **không còn nghe thấy khe hở**.
-2. Tập **1C** và tự chấm: nếu bịt mắt nghe lại, bạn có phân biệt được ô nhịp 1 với ô nhịp 3 không?
-3. **Kiểm tra tay có bị cứng không.** Legato làm nhiều người vô thức gồng lên vì cố "giữ" ngón. Dừng lại mỗi phút, buông thõng tay xuống đùi, lắc nhẹ rồi tập tiếp.
-4. Cổ tay phải **mềm và hơi chuyển động**, không khoá cứng một chỗ.
-5. **Chậm mà chắc.** Tốc độ gợi ý là 60 — nếu chưa liền được thì chậm hơn nữa cũng không sao. Legato ở tốc độ chậm mà đẹp còn giá trị hơn nhiều so với đánh nhanh mà đứt quãng.
+1. **Kiểm tra tay có bị cứng không.** Legato làm nhiều người vô thức gồng lên vì cố "giữ" ngón. Dừng lại mỗi phút, buông thõng tay xuống đùi, lắc nhẹ rồi tập tiếp.
+2. Cổ tay phải **mềm và hơi chuyển động**, không khoá cứng một chỗ.
+3. **Chậm mà chắc.** Tốc độ gợi ý là 60 — nếu chưa liền được thì chậm hơn nữa cũng không sao. Legato ở tốc độ chậm mà đẹp còn giá trị hơn nhiều so với đánh nhanh mà đứt quãng.

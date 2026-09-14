@@ -9,7 +9,9 @@ import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
 import { LessonNav } from '@/components/LessonNav';
-import { stepNeighbors } from '@/lib/learning-path';
+import { getAllSteps, skippedStep, stepNeighbors } from '@/lib/learning-path';
+import { splitDoneCriteria } from '@/lib/done-criteria';
+import { SkipAheadNotice } from '@/components/SkipAheadNotice';
 import { canReadLesson } from '@/lib/access';
 import { env } from '@/lib/env';
 import { dangBan } from '@/lib/env-schema';
@@ -60,11 +62,31 @@ export default async function Page({ params }: { params: Promise<{ category: str
   const fileTitle =
     allFiles.find((f) => f.category === category && f.slug === slug)?.title ?? slug;
 
+  /*
+   * Tiêu chí *Xong bài khi* rời thân bài xuống đứng ngay trên nút tick — xem
+   * `done-criteria.ts`. Chỉ bài tập có mục này; lý thuyết thì `criteria` rỗng.
+   */
+  const { body, criteria } = category === '03-exercises'
+    ? splitDoneCriteria(content)
+    : { body: content, criteria: [] };
+
+  // Chưa đăng nhập thì chưa tick được gì, nên bài nào cũng thành "vượt" — không nhắc.
+  const skipped = isPathStep && session?.user
+    ? skippedStep(getAllSteps(), completedSlugs, slug)
+    : null;
+
   return (
     <AppLayout>
       {allowed ? (
         <>
-          <MarkdownViewer content={content} />
+          {skipped && (
+            <SkipAheadNotice
+              lessonSlug={slug}
+              skippedTitle={skipped.title}
+              skippedHref={skipped.href}
+            />
+          )}
+          <MarkdownViewer content={body} lessonSlug={isPathStep ? slug : undefined} />
           {/* Tick và chuyển bài đều nằm CUỐI bài: đó là lúc người học vừa học
               xong, không phải lúc vừa mở ra. Hai nút liền nhau để "tick rồi sang
               bài kế" là hai lần chạm. Bài lẻ (Lộ trình, Đọc thêm) không có chuỗi
@@ -75,6 +97,7 @@ export default async function Page({ params }: { params: Promise<{ category: str
               initialCompleted={completedSlugs.has(slug)}
               signedIn={Boolean(session?.user)}
               variant="card"
+              criteria={criteria}
               label={category === '02-chapters' ? 'Đã đọc xong chương này' : 'Đã học xong bài này'}
             />
           )}

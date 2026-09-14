@@ -135,6 +135,14 @@ Không gấp, xoá dòng nào đã xong:
       ảnh có bị nằm ngang không (thẻ EXIF, bẫy 41), gửi có lâu quá không trên 4G; (3) mở lại
       trên máy khác xem ảnh có hiện không. Gặp gì lạ thì kể lại kèm tên file hoặc kiểu điện thoại.
 
+- [ ] **Thử dòng nhắc vượt bài và dòng khen đánh trọn trên điện thoại thật, đã đăng nhập.**
+      Hai thứ này mới chạy qua test và trình duyệt thử ở máy — dòng nhắc chỉ hiện khi đã đăng nhập,
+      mà trình duyệt thử không đăng nhập Google được. Ba việc: (1) chưa tick Chương 1 - Bài 1
+      rồi mở Bài 2 — phải thấy dòng nhắc ở đầu trang, bấm *Học tiếp* thì mất và mở lại không
+      hiện nữa; (2) mở *Tập bài này với đàn* ở một bản nhạc ngắn, đánh tới nốt cuối — cuối
+      trang phải có dòng *Bạn đã đánh trọn…*; (3) đọc khung *Xong bài khi* ở vài bài Chương 2-4
+      xem có câu nào đòi quá sức người mới không.
+
 - [ ] **Thử bộ sinh bằng mắt trước khi cho người học thấy.** Test đã gác cao độ, số phách và
       tầm nốt, nhưng *bài tập có nghe được không* thì chỉ đánh thử mới biết. Mở Chương 1-5,
       mỗi chương lấy vài `seed`, đánh trên đàn thật. Gặp bài nghe kỳ thì kể lại `seed` và kiểu
@@ -161,6 +169,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm vào mục 7 việc thử dòng nhắc vượt bài và dòng khen đánh trọn trên máy thật đã đăng nhập — dòng nhắc chỉ hiện với tài khoản đã đăng nhập mà trình duyệt thử của Claude không đăng nhập Google được, nên đây là phần duy nhất của thay đổi chưa ai nhìn thấy chạy thật |
 | 14/09/2026 | `docs(internal): Đánh dấu đã cấp gói và nhắn tay cho người điền form beta` | Đánh dấu xong việc chặn cả đợt beta: đã cấp gói và nhắn tay cho những người điền form tới 14/09. Giữ lại lời nhắc rằng người điền form sau ngày này vẫn phải đi đủ hai bước, vì gạch dòng đi dễ khiến tưởng việc cấp gói đã xong hẳn chứ không phải việc lặp lại mỗi lần có người mới |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Đánh dấu việc *quyết chỗ cho kho ôn luyện* đã xong, và thay bằng việc mới: thử Kho nhạc của tôi trên điện thoại thật — ba thứ chỉ hỏng trên máy thật (file `.mid` thật, ảnh chụp bị xoay theo EXIF, mở lại trên máy khác) mà không ca test nào bắt được |
 | 13/09/2026 | `docs(internal): Ghi nhật ký phiên tối 13/09 và ba việc còn treo` | Thêm ba việc vào mục 7: cấp gói kèm nhắn tay cho người đã điền form (việc chặn cả đợt beta mà chưa ai làm), thử phần nghe micro của trang Đặt tay ở đâu trên đàn thật, và kiểm lại hai lỗi nhạc nền trên đúng máy đã gặp |

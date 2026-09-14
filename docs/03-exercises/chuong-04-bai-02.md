@@ -120,8 +120,13 @@ C,4 | G,4 | C,4 | C,4 |]
 
 **Tự do:** Đặt tay ở thế C-D-Eb-F-G và tự bịa một giai điệu buồn trong 2 phút. Chơi thật chậm và khẽ.
 
+## Xong bài khi
+
+- Ngón 3 tự tìm được Mi giáng mà không cần cúi nhìn.
+- Chơi liền mạch cả 8 ô nhịp của 2C và nghe ra chỗ nhạc chuyển từ vui sang buồn.
+- Khi ngón 3 vào phím đen, cổ tay vẫn thẳng hướng, không xoay lệch.
+
 ## Yêu cầu thực hành
-1. Tập Bài 2A đến khi ngón 3 tự tìm được Mi giáng không cần nhìn.
-2. Bài 2C là bài quan trọng nhất — chơi cả 8 ô nhịp liền mạch để nghe rõ sự chuyển màu từ vui sang buồn.
-3. Kiểm tra: khi ngón 3 vào phím đen, **cổ tay có bị xoay lệch không?** Bàn tay phải giữ thẳng hướng, chỉ có ngón tay vươn tới.
-4. So sánh cảm giác vật lý: ngón 4 với Pha thăng (hôm qua) và ngón 3 với Mi giáng (hôm nay) — ngón nào dễ hơn với bạn?
+1. Bài 2C là bài quan trọng nhất — chơi cả 8 ô nhịp liền mạch để nghe rõ sự chuyển màu từ vui sang buồn.
+2. Kiểm tra: khi ngón 3 vào phím đen, **cổ tay có bị xoay lệch không?** Bàn tay phải giữ thẳng hướng, chỉ có ngón tay vươn tới.
+3. So sánh cảm giác vật lý: ngón 4 với Pha thăng (hôm qua) và ngón 3 với Mi giáng (hôm nay) — ngón nào dễ hơn với bạn?

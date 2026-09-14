@@ -90,6 +90,12 @@ C E D C | E C D2 | C C E E | D D C2 |]
 
 **Tự do:** Đánh lại Bài 3B (Mary Had A Little Lamb) mà **không nhìn xuống tay**.
 
+## Xong bài khi
+
+- Nhìn nốt Đô, Rê, Mi trên khuông là gọi được tên, không phải đếm dòng kẻ.
+- Đánh 3A, 3B, 3C chậm mà gần như không phải cúi nhìn tay.
+- Bấm nhầm thì tự tìm lại nốt Đô bằng cụm hai phím đen rồi đánh tiếp.
+
 ## Yêu cầu thực hành
 1. Hãy đánh thật chậm từng bài (3A, 3B, 3C). Đọc to tên nốt "Đô - Rê - Mi" khi đánh.
 2. Nếu bạn bị bấm nhầm phím, hãy nhắm mắt lại, tự "sờ" để tìm lại nốt Đô (C) ở cụm 2 phím đen, sau đó đánh tiếp. Tuyệt đối hạn chế cúi đầu xuống nhìn tay!

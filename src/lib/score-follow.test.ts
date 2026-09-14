@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { createFollowState, followNote, skipCurrent } from './score-follow';
+import { createFollowState, followNote, isPlayedThrough, skipCurrent } from './score-follow';
 import type { ScoreEvent } from './score-compare';
 
 /** Dựng chuỗi sự kiện từ danh sách cao độ, mỗi phần tử là một thời điểm. */
@@ -198,5 +198,41 @@ describe('skipCurrent — người học tự cho qua', () => {
     const xong = play(expected, [DO, RE]);
     expect(skipCurrent(expected, xong)).toBe(xong);
     expect(skipCurrent([], createFollowState()).cursor).toBe(0);
+  });
+});
+
+describe('isPlayedThrough — lượt đánh trọn bài', () => {
+  const tamNot = score(DO, RE, MI, PHA, SOL, PHA, MI, RE);
+
+  it('đánh đúng từ nốt đầu tới nốt cuối thì là đánh trọn', () => {
+    expect(isPlayedThrough(tamNot, play(tamNot, [DO, RE, MI, PHA, SOL, PHA, MI, RE]))).toBe(true);
+  });
+
+  it('mới tới giữa bài thì chưa phải', () => {
+    expect(isPlayedThrough(tamNot, play(tamNot, [DO, RE, MI, PHA]))).toBe(false);
+  });
+
+  // Nút bỏ qua sinh ra cho lúc micro không nghe được một nốt — không được phạt người học vì nó.
+  it('bỏ qua một nốt micro không nghe được thì vẫn là đánh trọn', () => {
+    let state = play(tamNot, [DO, RE, MI, PHA, SOL, PHA, MI]);
+    state = skipCurrent(tamNot, state);
+    expect(isPlayedThrough(tamNot, state)).toBe(true);
+  });
+
+  it('bấm bỏ qua liền một mạch tới cuối thì không tính', () => {
+    let state = play(tamNot, [DO, RE]);
+    for (let i = 0; i < 6; i++) state = skipCurrent(tamNot, state);
+    expect(state.cursor).toBe(tamNot.length);
+    expect(isPlayedThrough(tamNot, state)).toBe(false);
+  });
+
+  // Đánh trượt chỉ nháy đỏ rồi thôi, nên cũng không được làm mất lời khen.
+  it('bấm trượt vài lần dọc đường vẫn là đánh trọn', () => {
+    const state = play(tamNot, [DO, SOL, RE, MI, DO, PHA, SOL, PHA, MI, RE]);
+    expect(isPlayedThrough(tamNot, state)).toBe(true);
+  });
+
+  it('bản nhạc rỗng thì không có gì để đánh trọn', () => {
+    expect(isPlayedThrough([], createFollowState())).toBe(false);
   });
 });

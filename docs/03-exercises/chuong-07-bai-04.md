@@ -156,13 +156,12 @@ Sai nhiều lần là chuyện đương nhiên, và chính những lần "nghe c
 
 **Tự do:** Chơi **4C** một lần với ba tính cách khác nhau — một lần nhỏ và dịu (`p`), một lần to và hùng tráng (`f`), một lần tự bạn quyết chỗ nào to chỗ nào nhỏ. Bản Ode to Joy nguyên gốc của Beethoven là một bài ca mừng vui, nên bản `f` có lẽ gần với ý tác giả nhất.
 
-## Yêu cầu thực hành
+## Xong bài khi
 
-1. Chơi trọn **4C** từ đầu tới cuối **không dừng lại sửa lỗi**. Đây là tiêu chuẩn đạt của Chương 7.
-2. Hợp âm rơi **đúng phách 1**, cùng lúc với nốt giai điệu đầu ô nhịp.
-3. Tay trái **nhẹ hơn** tay phải trong suốt bài — người nghe phải nghe ra giai điệu trước.
-4. Giai điệu chơi **legato**, không đứt quãng ở chỗ tay trái đổi hợp âm.
-5. Bấm được sáu hợp âm C, F, G, Am, Dm, Em mà không cần dò nốt, trước khi sang Chương 8.
+- Chơi trọn 4C từ đầu tới cuối, không dừng lại để sửa.
+- Hợp âm rơi đúng phách 1, tay trái nhẹ hơn để giai điệu nổi lên trước.
+- Giai điệu liền mạch, không đứt ở chỗ tay trái đổi hợp âm.
+- Bấm được C, F, G, Am, Dm, Em mà không cần dò nốt, trước khi sang Chương 8.
 
 ---
 

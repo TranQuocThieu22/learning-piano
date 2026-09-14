@@ -219,6 +219,51 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 
 ---
 
+## 4e. Bài đăng số 6 — soạn 14/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** nó trả lời một câu mà người tự học nào cũng từng tự hỏi mà không
+> ai trả lời — *"mình đã xong bài này chưa, hay phải tập thêm?"*. Người có gia sư thì được
+> thầy nói "được rồi, sang bài mới"; người tự học thì hoặc mài mãi một bài tới chán, hoặc
+> nhảy đi khi tay chưa chắc. Góc kể là **thước để tự đối chiếu**, không phải "app kiểm tra
+> bạn".
+>
+> **Đừng viết thành "app khoá bài, bắt tập đạt mới cho qua".** App cố ý không làm vậy — lý
+> do ở `nhat-ky-quyet-dinh.md`. Viết sai chỗ này là hứa một thứ trái với chính sản phẩm.
+>
+> **Ảnh nên kèm:** ảnh chụp màn hình điện thoại ở cuối Chương 1 - Bài 2, thấy rõ khung
+> *Xong bài khi* ngay trên nút *Đánh dấu đã học xong*.
+
+```text
+Người tự học đàn hay kẹt ở một câu mà không ai trả lời hộ: bài này mình
+xong chưa, hay phải tập thêm?
+
+Có gia sư thì thầy nói "được rồi, sang bài mới". Tự học thì hoặc mài mãi
+một bài tới chán, hoặc nhảy đi khi tay còn chưa chắc.
+
+Từ hôm nay, cuối mỗi bài tập trên web có một khung "Xong bài khi" ngay trên
+nút tick — hai tới bốn dòng nói rõ làm được tới đâu là xong. Ví dụ bài có
+Ode to Joy: đánh trọn từ nốt đầu tới nốt cuối, chậm cũng được, chỉ cần không
+dừng lại để sửa.
+
+Không dòng nào đòi đánh nhanh hay không sai nốt nào. Đây là cái thước để bạn
+tự đối chiếu, không phải cửa kiểm tra — bài sau không bị khoá, bạn vẫn tự
+quyết khi nào đi tiếp.
+
+Thêm hai thứ nhỏ đi kèm:
+
+• Mở một bài phía sau khi bài trước chưa tick, web nhắc một câu, kèm nút
+  quay lại hoặc học tiếp. Học rồi mà quên tick thì bấm học tiếp là thôi.
+• Tập với đàn và đánh trọn một bản nhạc trong bài, cạnh nút tick có một
+  dòng khen. Không dùng tính năng đó thì cũng không thiếu gì.
+
+Chi tiết:
+https://pianojourney.rehover.io/updates
+
+Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn thật để tập.
+```
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -276,6 +321,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm bài đăng số 6 rút từ bài *Tick lúc nào? Giờ mỗi bài nói rõ luôn*, kèm lời dặn đừng viết thành "app khoá bài bắt tập đạt" — app cố ý không khoá, viết sai là hứa một thứ trái với chính sản phẩm |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bài đăng số 5 — gộp kho ôn luyện và Kho nhạc của tôi vào một bài vì cả hai trả lời cùng một câu *hết bài rồi tập gì tiếp*, và nói thẳng chuyện bản quyền thay vì để người đọc tự đoán vì sao Góc bài hát ít bài. Ghi kèm lời nhắc đừng viết thành "kho nhạc không giới hạn" |
 | 13/09/2026 | `docs(internal): Ghi đã đăng bài Facebook số 2 và số 3` | Đánh dấu hai bài đã lên Trang và ghi ảnh đi kèm — không ghi thì lần soạn bài sau không biết bài nào còn trong hàng chờ, dễ đăng lại hoặc bỏ sót. Bài số 4 vẫn chưa đăng |
 | 13/09/2026 | `feat: Công cụ Đặt tay ở đâu cho lúc bản nhạc đi ra ngoài năm nốt` | Thêm bài đăng số 4 rút từ bài cập nhật cùng ngày — góc kể là cái vướng không sách nào nói ra thành lời, nên đoạn "vì sao làm" của khuôn bài có sẵn chứ không phải nghĩ ra |

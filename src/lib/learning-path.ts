@@ -148,6 +148,29 @@ export function nextStep(steps: PathStep[], completed: ReadonlySet<string>): Pat
 }
 
 /**
+ * Bước chưa tick mà người học đang vượt qua khi mở bài `slug` — hoặc `null`.
+ *
+ * Trả về bước đó khi bài đang mở đứng **sau** chỗ người học nên quay lại
+ * (`nextStep`). Đây là dữ liệu cho một dòng nhắc, **không phải ổ khoá**: đường đi
+ * là gợi ý (`ChapterSteps.tsx`), người học vẫn đọc được bài đang mở. Chủ sản phẩm
+ * hỏi có nên khoá bài sau theo bài trước (14/09/2026) và câu trả lời là không —
+ * lý do ghi ở `nhat-ky-quyet-dinh.md`.
+ *
+ * Bài không nằm trên đường đi (Lộ trình, Đọc thêm) thì không có gì để vượt.
+ */
+export function skippedStep(
+  steps: PathStep[],
+  completed: ReadonlySet<string>,
+  slug: string,
+): PathStep | null {
+  const here = steps.findIndex((s) => s.slug === slug);
+  if (here === -1) return null;
+  const pending = nextStep(steps, completed);
+  if (!pending) return null;
+  return steps.indexOf(pending) < here ? pending : null;
+}
+
+/**
  * Bước trước và bước sau của một bài đang mở, tính trên ĐƯỜNG ĐI chứ không trong
  * riêng thư mục của nó.
  *

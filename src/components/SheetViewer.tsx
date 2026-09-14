@@ -35,7 +35,14 @@ const ZOOM_MIN = 1;
 const ZOOM_MAX = 3;
 const ZOOM_STEP = 0.25;
 
-export function SheetViewer({ abcNotation }: { abcNotation: string }) {
+export function SheetViewer({
+  abcNotation,
+  onPlayedThrough,
+}: {
+  abcNotation: string;
+  /** Người học vừa đánh trọn bản nhạc này với đàn. Chỉ bài học truyền vào — xem `MarkdownViewer`. */
+  onPlayedThrough?: () => void;
+}) {
   const paperRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLDivElement>(null);
 
@@ -273,6 +280,7 @@ export function SheetViewer({ abcNotation }: { abcNotation: string }) {
           onResults={sheet.paintResults}
           onLiveMatch={sheet.paintLiveMatches}
           onWrongNote={sheet.flashWrongNote}
+          onPlayedThrough={onPlayedThrough}
           listenPaused={audio.isPlaying}
         />
       )}

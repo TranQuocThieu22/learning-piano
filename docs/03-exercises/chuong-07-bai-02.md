@@ -146,10 +146,13 @@ V: 2 clef=bass
 
 **Tự do:** Chơi vòng C - F - G - C bằng tay trái, lặp đi lặp lại đều đặn, rồi **tự bịa giai điệu** tay phải bên trên. Không cần đúng gì cả — cứ chơi các nốt trong thế tay Đô và nghe xem nốt nào hợp với hợp âm nào. Bạn sẽ dần nhận ra vài nốt nghe "ngọt" hơn hẳn khi đi cùng một hợp âm nhất định. Đó là tai bạn đang tự học hòa âm.
 
+## Xong bài khi
+
+- Đổi hợp âm rơi đúng vào phách 1, không sớm không muộn.
+- Nhấc cả bàn tay một lần rồi đặt xuống một lần, không bò từng ngón sang chỗ mới.
+- Nói được vì sao hợp âm Sol nghe "chưa xong" còn hợp âm Đô nghe "đã xong".
+
 ## Yêu cầu thực hành
 
-1. Đổi hợp âm rơi **đúng vào phách 1**, không sớm không muộn. Đây là tiêu chuẩn đạt của bài này.
-2. Nhấc cả bàn tay một lần, đặt xuống một lần — không bò từng ngón sang chỗ mới.
-3. Trong lúc tay lơ lửng giữa hai hợp âm, ba ngón **giữ nguyên hình dạng**.
-4. Vấp thì chơi tiếp, đừng dừng lại sửa. Nhịp gãy còn tệ hơn nốt sai.
-5. Nói được vì sao hợp âm Sol nghe "chưa xong" còn hợp âm Đô nghe "đã xong".
+1. Trong lúc tay lơ lửng giữa hai hợp âm, ba ngón **giữ nguyên hình dạng**.
+2. Vấp thì chơi tiếp, đừng dừng lại sửa. Nhịp gãy còn tệ hơn nốt sai.

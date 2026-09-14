@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { buildPath, flattenPath, nextStep, shortTitle } from './learning-path';
+import { buildPath, flattenPath, nextStep, shortTitle, skippedStep } from './learning-path';
 
 const file = (category: string, slug: string, title = slug) => ({ category, slug, title });
 
@@ -111,6 +111,40 @@ describe('nextStep', () => {
   // "Học tiếp" mà trỏ vào bài đã xong là nói dối; phía gọi tự quyết hiện gì.
   it('tick hết thì trả về null chứ không trỏ vào bước cuối', () => {
     expect(nextStep(steps, new Set(steps.map((s) => s.slug)))).toBeNull();
+  });
+});
+
+describe('skippedStep', () => {
+  const steps = flattenPath(buildPath(FILES));
+
+  it('mở bài đứng sau chỗ chưa tick thì nhắc đúng bước chưa tick đầu tiên', () => {
+    const done = new Set(['chuong-00', 'chuong-01']);
+    expect(skippedStep(steps, done, 'chuong-02-bai-01')?.slug).toBe('chuong-01-bai-01');
+  });
+
+  it('mở đúng bài đang học tới thì không nhắc gì', () => {
+    const done = new Set(['chuong-00', 'chuong-01']);
+    expect(skippedStep(steps, done, 'chuong-01-bai-01')).toBeNull();
+  });
+
+  // Quay lại ôn một bài đã tick là việc nên khuyến khích, không phải vượt bài.
+  it('mở lại bài cũ phía trước thì không nhắc gì', () => {
+    const done = new Set(['chuong-00', 'chuong-01', 'chuong-01-bai-01']);
+    expect(skippedStep(steps, done, 'chuong-01')).toBeNull();
+  });
+
+  // Tick nhảy cóc rồi quay lại: chỗ bị vượt là bước chưa tick sớm nhất, không phải bước liền trước.
+  it('tick không liền mạch thì nhắc bước chưa tick sớm nhất', () => {
+    const done = new Set(['chuong-00', 'chuong-01', 'chuong-01-bai-02', 'chuong-02']);
+    expect(skippedStep(steps, done, 'chuong-02-bai-01')?.slug).toBe('chuong-01-bai-01');
+  });
+
+  it('bài không nằm trên đường đi thì không có gì để vượt', () => {
+    expect(skippedStep(steps, new Set(), 'roadmap')).toBeNull();
+  });
+
+  it('tick hết rồi thì không nhắc gì', () => {
+    expect(skippedStep(steps, new Set(steps.map((s) => s.slug)), 'chuong-02-bai-01')).toBeNull();
   });
 });
 

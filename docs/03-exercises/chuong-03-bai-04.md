@@ -144,6 +144,12 @@ C,4 | C,4 | C,4 | G,4 |]
 
 **Tự do:** Đánh Bài 4D thật chậm từ đầu đến cuối, không dừng lại sửa lỗi. Sai cũng kệ, cứ đi tiếp cho hết bài.
 
+## Xong bài khi
+
+- Tìm được Pha và Sol ở khoá Pha bằng tay trái mà không cần nhìn tay.
+- Đánh 4B chậm mà hai tay xuống phím cùng một lúc.
+- Đánh trọn 4D (Ode to Joy hai khuông) — chậm cũng được, không dừng lại để sửa.
+
 ## Yêu cầu thực hành
 1. Tập Bài 4A riêng tay trái cho đến khi tìm đúng Pha và Sol mà không cần nhìn.
 2. Với các bài 2 khuông (4B, 4C, 4D): **luôn tập riêng từng tay 3 lần trước**, rồi mới ghép.

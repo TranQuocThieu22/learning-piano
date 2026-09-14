@@ -158,13 +158,16 @@ Việc này lúc đầu rất chậm và hơi bực. Nhưng nó chính là **c�
 
 **Tự do:** Chơi lại một bài bất kỳ từ Trạm dừng chân số 1 — Jingle Bells hoặc Ode to Joy. Để ý xem nó khác thế nào so với hồi bạn mới tập nó ở Chương 3: tay có đỡ cứng hơn không, có tự thêm to nhỏ vào không, có phải nhìn xuống phím nhiều như trước không.
 
+## Xong bài khi
+
+- Chơi trọn cả ba tiết mục, mỗi bài một lần, không dừng lại để sửa — sai một hai nốt cũng được.
+- Trong Twinkle Twinkle, nốt La bấm bằng cách mở nhẹ bàn tay, không nhấc cả tay đi.
+- Thang âm hai tay không nghe ra chỗ nào tay đổi vị trí.
+- Waltz nhỏ số 2 chuyển thế tay đúng nhịp, không kéo dài ô nhịp để kịp dịch tay.
+
 ## Yêu cầu thực hành
 
-1. Chơi trọn **cả ba tiết mục** từ đầu tới cuối, mỗi bài một lần, **không dừng lại sửa lỗi**. Đây là tiêu chuẩn đạt của Trạm dừng chân.
-2. Trong Twinkle Twinkle, nốt **La** phải bấm bằng cách mở nhẹ bàn tay, không phải nhấc cả tay đi.
-3. Trong thang âm hai tay, không nghe ra được chỗ nào tay đổi vị trí.
-4. Waltz nhỏ số 2 chuyển thế tay đúng nhịp, không kéo dài ô nhịp để kịp dịch tay.
-5. Ba tiết mục này nên được **chơi lại đều đặn** kể cả khi bạn đã sang Giai đoạn 2 — đây là vốn tiết mục đầu tiên của bạn.
+1. Ba tiết mục này nên được **chơi lại đều đặn** kể cả khi bạn đã sang Giai đoạn 2 — đây là vốn tiết mục đầu tiên của bạn.
 
 ---
 

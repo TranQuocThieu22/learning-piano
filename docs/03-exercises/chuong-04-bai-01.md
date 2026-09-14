@@ -122,8 +122,13 @@ C,4 | G,4 | C,4 | C,4 |]
 
 **Tự do:** Đặt tay ở thế C-D-E-F#-G và **tự bịa giai điệu** trong 2 phút. Chỉ dùng 5 phím này thôi. Nghe xem cái "màu" Lydian nó gợi cho bạn cảm giác gì.
 
+## Xong bài khi
+
+- Ngón 4 tự tìm được Pha thăng mà không cần cúi nhìn.
+- Đánh 1B nghe ra được khác biệt giữa Pha và Pha thăng.
+- Đánh 1C và 1D chậm mà các ngón còn lại không nhấc bổng khỏi phím trắng.
+
 ## Yêu cầu thực hành
-1. Tập Bài 1A đến khi ngón 4 tự tìm được phím đen mà **không cần cúi nhìn**.
-2. Bài 1B tập chậm, tập trung **nghe** sự khác biệt chứ không chỉ bấm cho đúng.
-3. Kiểm tra tư thế: khi ngón 4 vươn vào phím đen, các ngón còn lại **có bị nhấc bổng lên khỏi phím trắng không?** Nếu có, hãy tập lại chậm hơn — cả bàn tay cần giữ ổn định.
-4. Đừng để cổ tay bị sụp xuống hay vai nhô lên khi với phím đen.
+1. Bài 1B tập chậm, tập trung **nghe** sự khác biệt chứ không chỉ bấm cho đúng.
+2. Kiểm tra tư thế: khi ngón 4 vươn vào phím đen, các ngón còn lại **có bị nhấc bổng lên khỏi phím trắng không?** Nếu có, hãy tập lại chậm hơn — cả bàn tay cần giữ ổn định.
+3. Đừng để cổ tay bị sụp xuống hay vai nhô lên khi với phím đen.

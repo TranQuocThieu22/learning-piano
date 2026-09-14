@@ -96,6 +96,12 @@ V: 2 clef=bass
 
 **Tự do:** Đánh Bài 2A một lần duy nhất từ đầu đến cuối, không dừng lại sửa lỗi.
 
+## Xong bài khi
+
+- Trong 2A giữ phím đủ 2 nhịp với nốt trắng và đủ 4 nhịp với nốt tròn, vừa đánh vừa đếm được.
+- Đánh 2B chậm mà hai tay xuống phím cùng một lúc, không lệch tiếng.
+- Đánh trọn 2C bằng hai tay — chậm cũng được, không dừng lại để sửa.
+
 ## Yêu cầu thực hành
 1. Tập Bài 2A với tay phải và tay trái riêng biệt. Chú ý **giữ phím đàn** đủ nhịp đếm đối với nốt Trắng (2 nhịp) và nốt Tròn (4 nhịp).
 2. Khi tập ghép 2 tay ở Bài 2B, đánh với tốc độ **cực kỳ chậm**. Đảm bảo 2 tay giáng xuống phím đàn cùng một thời điểm, không bị lệch tiếng.

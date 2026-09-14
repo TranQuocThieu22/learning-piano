@@ -144,10 +144,15 @@ V: 2 clef=bass
 
 **Tự do:** Đánh lại **Ode to Joy** (bài tập 3F ở Chương 3) hai lần — lần đầu toàn bộ legato, lần sau toàn bộ staccato. Cùng một bài, hai tính cách hoàn toàn khác nhau. Đây là lần đầu bạn thật sự *diễn giải* một bản nhạc thay vì chỉ chơi đúng nốt.
 
+## Xong bài khi
+
+- Trong 2A giữa các nốt có khoảng lặng rõ ràng mà tay vẫn mềm.
+- Trong 2B hai nốt đầu mỗi ô nhịp nảy gọn, hai nốt sau chảy liền.
+- Đánh 2D mà tay phải vẫn nảy, tay trái vẫn liền, không lẫn sang nhau.
+
 ## Yêu cầu thực hành
 
-1. Tập **2A** đến khi giữa các nốt có khoảng lặng rõ ràng mà tay **vẫn mềm**.
-2. **Kiểm tra căng cơ — quan trọng nhất bài này.** Cứ mỗi phút, dừng lại và sờ vào cẳng tay đang đánh. Nếu nó cứng, bạn đang tạo staccato bằng cách gồng ngón thay vì nảy cổ tay. Buông thõng tay, lắc nhẹ, rồi tập lại chậm hơn.
-3. Ngón tay **giữ nguyên hình khum** trong suốt bài — không quắp vào, không duỗi thẳng ra.
-4. Với **2D**, tập riêng từng tay trước. Ghép hai tay khi mỗi tay đã tự động.
-5. Nếu tay bắt đầu mỏi hoặc đau, **dừng ngay**. Staccato sai cách là một trong những nguyên nhân chấn thương phổ biến nhất ở người mới học.
+1. **Kiểm tra căng cơ — quan trọng nhất bài này.** Cứ mỗi phút, dừng lại và sờ vào cẳng tay đang đánh. Nếu nó cứng, bạn đang tạo staccato bằng cách gồng ngón thay vì nảy cổ tay. Buông thõng tay, lắc nhẹ, rồi tập lại chậm hơn.
+2. Ngón tay **giữ nguyên hình khum** trong suốt bài — không quắp vào, không duỗi thẳng ra.
+3. Với **2D**, tập riêng từng tay trước. Ghép hai tay khi mỗi tay đã tự động.
+4. Nếu tay bắt đầu mỏi hoặc đau, **dừng ngay**. Staccato sai cách là một trong những nguyên nhân chấn thương phổ biến nhất ở người mới học.

@@ -165,10 +165,14 @@ Nghe ra hướng đi của giai điệu là bước đầu tiên để **tự m�
 
 **Tự do:** Chơi thang âm lên xuống liên tục **bốn lượt không dừng**, mỗi lượt nhỏ dần đi — lượt đầu `f`, lượt cuối `p`. Vừa luyện kỹ thuật vừa giữ lại phần cường độ của Chương 5.
 
+## Xong bài khi
+
+- Chơi 3B mà người nghe không đoán ra được chỗ nào tay đổi vị trí.
+- Chơi được 3C mà không phải nhìn xuống tay trái.
+- Chạy thang âm hai tay ở 3D chậm, cổ tay thẳng và bằng suốt bài.
+
 ## Yêu cầu thực hành
 
-1. Trong **3B**, người nghe không đoán ra được chỗ nào tay bạn đổi vị trí. Đây là tiêu chuẩn đạt của cả chương.
-2. Cổ tay giữ thẳng và bằng suốt bài, cả lúc luồn lẫn lúc vắt ngón.
-3. Chơi được **3C** mà không phải nhìn xuống tay trái.
-4. Với **3D**, tập riêng từng tay trước; chỉ ghép hai tay khi mỗi tay đã chạy trơn ba lần liên tiếp.
-5. Nói được: tay trái đi lên thì vắt ngón hay luồn ngón cái? (Đáp án: vắt ngón — ngược với tay phải.)
+1. Cổ tay giữ thẳng và bằng suốt bài, cả lúc luồn lẫn lúc vắt ngón.
+2. Với **3D**, tập riêng từng tay trước; chỉ ghép hai tay khi mỗi tay đã chạy trơn ba lần liên tiếp.
+3. Nói được: tay trái đi lên thì vắt ngón hay luồn ngón cái? (Đáp án: vắt ngón — ngược với tay phải.)

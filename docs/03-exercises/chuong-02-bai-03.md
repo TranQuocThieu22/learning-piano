@@ -97,6 +97,11 @@ V: 2 clef=bass
 
 **Tự do:** Đánh Bài 3A với tốc độ chậm nhất có thể, chú ý giữ tay trái đứng yên ở nhịp 2 và 4.
 
+## Xong bài khi
+
+- Ở 3A và 3B, tay đang giữ nốt trắng đứng yên trên phím trong lúc tay kia đánh tiếp.
+- Đánh trọn 3C bằng hai tay ở tốc độ chậm, vai không gồng.
+
 ## Yêu cầu thực hành
 1. Tuyệt đối không được vội ghép 2 tay ngay lập tức!
 2. Hãy tập Tay Trái riêng 5 lần. Chú ý đếm nhịp thật to và giữ phím đủ 2 nhịp.

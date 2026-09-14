@@ -93,6 +93,12 @@ C, E, D, C, | E, C, D,2 | C, C, E, E, | D, D, C,2 |]
 
 **Tự do:** Đánh Bài 3H (Jingle Bells tay trái) mà không nhìn xuống phím đàn.
 
+## Xong bài khi
+
+- Đọc được Đô, Rê, Mi ở khoá Pha và đánh 3G bằng tay trái, không cúi nhìn tay.
+- Đánh trọn 3H (Jingle Bells) bằng tay trái — chậm cũng được, không dừng lại để sửa.
+- Trong 3I nhảy từ Đô lên Mi bằng ngón 5 và ngón 3, không bấm nhầm Rê.
+
 ## Yêu cầu thực hành
 1. Không cúi đầu nhìn phím đàn. Mắt dán chặt vào bản nhạc.
 2. Vừa đánh vừa đọc to tên nốt "Đô - Rê - Mi". Bạn có thể sẽ bị đọc nhầm vị trí của Khóa Sol, điều đó là hoàn toàn bình thường, hãy kiên nhẫn sửa lại.

@@ -51,9 +51,16 @@ When giving instructions for a daily piano practice session, you MUST structure 
      - Try to find a simple known melody by ear alone, without any sheet music.
    - Also include free playing: playing through slowly without stopping, improvising, or exploring the keyboard.
 
+# "Xong bài khi" — every exercise lesson MUST have it
+- Put a `## Xong bài khi` section **right before** `## Yêu cầu thực hành`. It holds **2 to 4 bullet lines** (`- ...`), each a concrete, self-checkable outcome: *"Đánh trọn 2E từ nốt đầu tới nốt cuối — chậm cũng được, không dừng lại để sửa."*
+- The app **lifts this section out of the lesson body and shows it right above the tick button** (`src/lib/done-criteria.ts`). That is the moment the learner asks "am I done?", so write it for that moment: short enough to read at arm's length from the music stand (max 130 characters per line), plain text only — no `**bold**`, links or backticks, they would show up as raw symbols.
+- **Outcomes, not practice instructions.** "Tập 15 lần" or "tập riêng từng tay trước" belong in *Yêu cầu thực hành*. "Hai tay xuống phím cùng một lúc" belongs in *Xong bài khi*. Do not write the same sentence in both sections — the learner reads them back to back.
+- **Never demand perfection or a connected piano.** "Chậm cũng được", "sai nốt cũng được, chỉ không dừng lại để sửa" is the house standard. Never write "tập với đàn đạt 100%" — the app deliberately does not gate lessons (reasons in `docs/_internal/nhat-ky-quyet-dinh.md`), and iPhone cannot use Web MIDI.
+- `pnpm test` (`done-criteria.test.ts`) fails if an exercise file lacks the section, has fewer than 2 or more than 4 lines, a line is too long, or a line contains markdown.
+
 # Recital Milestones (Trạm dừng chân)
 - After each major cluster of chapters (currently: after Chương 3, and planned after Chương 6), you MUST create a **Tổng ôn / Recital** lesson instead of a new-skill lesson.
-- A Recital lesson: introduces **NO new skill**, gives 2-3 complete pieces that combine everything learned so far, opens by reminding the user how far they have come, and defines an explicit "pass" standard (e.g., "play the whole piece start to finish without stopping to fix mistakes").
+- A Recital lesson: introduces **NO new skill**, gives 2-3 complete pieces that combine everything learned so far, opens by reminding the user how far they have come, and defines an explicit "pass" standard (e.g., "play the whole piece start to finish without stopping to fix mistakes") — written as its `## Xong bài khi` section.
 - Name it as a normal lesson file (`chuong-03-bai-06.md`) so it appears on the Nhật ký page and can be ticked.
 
 # Write for a Phone on the Music Stand

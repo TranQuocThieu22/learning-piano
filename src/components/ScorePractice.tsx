@@ -9,7 +9,7 @@ import {
   compareToScore, ComparisonResult, describePitchList, groupPlayedNotes, PlayedNote, ScoreEvent,
 } from '@/lib/score-compare';
 import { usePianoInput, type PianoInputMode } from '@/hooks/usePianoInput';
-import { createFollowState, followNote, skipCurrent } from '@/lib/score-follow';
+import { createFollowState, followNote, isPlayedThrough, skipCurrent, type FollowState } from '@/lib/score-follow';
 import { pitchesForFollow } from '@/lib/mic-follow';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 import type { EventResult } from '@/lib/score-compare';
@@ -19,6 +19,7 @@ export function ScorePractice({
   onResults,
   onLiveMatch,
   onWrongNote,
+  onPlayedThrough,
   listenPaused = false,
 }: {
   expected: ScoreEvent[];
@@ -34,6 +35,12 @@ export function ScorePractice({
    * nhạc nháy đỏ chỗ đó. Nháy rồi tắt, không ghi lại thành vết.
    */
   onWrongNote: (expectedIndex: number) => void;
+  /**
+   * Báo một lần mỗi lượt khi người học vừa đánh trọn tới nốt cuối (`isPlayedThrough`).
+   * Chỗ gọi dùng nó để khen **sau đó**, cạnh nút tick — trong lúc đánh thì không
+   * hiện gì thêm, đúng luật không có bảng tỉ số chạy ở `AGENTS.md`.
+   */
+  onPlayedThrough?: () => void;
   /**
    * Bật khi app đang tự phát bản nhạc mẫu. Micro sẽ nghe thấy chính cái loa của
    * máy và tưởng người học đang đánh — nên trong lúc đó bỏ qua mọi thứ micro nghe.
@@ -59,6 +66,11 @@ export function ScorePractice({
   const recordingRef = useRef(false);
   const followRef = useRef(createFollowState());
 
+  /** Báo đánh trọn đúng lúc con trỏ vừa chạm nốt cuối — sau đó không báo lại cho tới lượt ghi mới. */
+  const reportIfPlayedThrough = useCallback((previous: FollowState, next: FollowState) => {
+    if (previous.cursor < expected.length && isPlayedThrough(expected, next)) onPlayedThrough?.();
+  }, [expected, onPlayedThrough]);
+
   const handleNoteOn = useCallback((midi: number, atMs: number = performance.now()) => {
     if (!recordingRef.current) return;
     notesRef.current.push({ midi, time: atMs - startRef.current });
@@ -72,6 +84,7 @@ export function ScorePractice({
     followRef.current = next;
     setCursor(next.cursor);
     setStuckAt(next.missesAtCursor);
+    reportIfPlayedThrough(previous, next);
 
     if (next.matched.length > previous.matched.length) {
       setMatchedCount(next.matched.length);
@@ -79,7 +92,7 @@ export function ScorePractice({
     }
     // Lấy con trỏ TRƯỚC khi bấm: đó mới là nốt người học đáng lẽ phải đánh.
     if (next.misses > previous.misses) onWrongNote(previous.cursor);
-  }, [expected, onLiveMatch, onWrongNote]);
+  }, [expected, onLiveMatch, onWrongNote, reportIfPlayedThrough]);
 
   /**
    * Cho qua nốt đang chờ, do người học tự bấm.
@@ -89,12 +102,14 @@ export function ScorePractice({
    * ở máy đoán, xem `score-follow.ts`.
    */
   const skip = useCallback(() => {
-    const next = skipCurrent(expected, followRef.current);
-    if (next === followRef.current) return;
+    const previous = followRef.current;
+    const next = skipCurrent(expected, previous);
+    if (next === previous) return;
     followRef.current = next;
     setCursor(next.cursor);
     setStuckAt(0);
-  }, [expected]);
+    reportIfPlayedThrough(previous, next);
+  }, [expected, reportIfPlayedThrough]);
 
   /**
    * Cài đặt cho micro, suy từ bản nhạc: chỉ nghe trong tầm phím bài này dùng (nới

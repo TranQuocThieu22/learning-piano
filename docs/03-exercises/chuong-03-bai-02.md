@@ -86,6 +86,11 @@ E E F G | G F E D | C C D E | D C C2 |]
 
 **Tự do:** Đánh Bài 3F (Ode to Joy) một lần liền mạch, không dừng sửa lỗi.
 
+## Xong bài khi
+
+- Đánh 3D và 3E chậm, mắt ở bản nhạc, không cúi nhìn tay.
+- Tự đọc nốt và đánh trọn 3F (Ode to Joy) mà không cần chữ nhắc tên nốt.
+
 ## Yêu cầu thực hành
 1. Không cúi đầu nhìn phím đàn. Hãy tin tưởng vào ngón tay của bạn.
 2. Vừa đánh vừa đọc to tên nốt để tạo liên kết vững chắc giữa mắt - miệng - tay.

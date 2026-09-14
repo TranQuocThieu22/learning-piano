@@ -137,6 +137,12 @@ C,4 | C,4 | G,4 | C,4 |]
 - Tay phải **đánh loạn xạ bất kỳ nốt nào trong 5 nốt đó**, theo thứ tự nào cũng được, nhanh chậm tùy thích.
 - Điều kỳ diệu: nghe vẫn hay! Vì thang âm Blues được thiết kế để không nốt nào "chỏi" cả. Chơi thoải mái 3-5 phút.
 
+## Xong bài khi
+
+- Chạy được thang âm Blues ở 3A đúng số ngón mới, ngón 2 trên Mi giáng.
+- Đánh 3B chậm mà không vấp, bàn tay đứng yên khi ngón ra vào phím đen.
+- Đánh trọn 3D hai tay — chậm cũng được, không dừng lại để sửa.
+
 ## Yêu cầu thực hành
 1. Tập Bài 3A đến khi thuộc lòng **số ngón mới** (ngón 2 = Mi giáng). Đây là chỗ dễ nhầm nhất vì trái với thói quen cũ.
 2. Bài 3B tập chậm trước, khi đã chắc mới tăng dần lên tốc độ 70.

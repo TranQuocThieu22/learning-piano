@@ -121,6 +121,29 @@ export function followNote(
 }
 
 /**
+ * Phần nốt tối thiểu phải được **đánh đúng** (không tính nốt bỏ qua) thì một lượt
+ * mới được coi là đánh trọn bài.
+ *
+ * Không đòi 100% vì nút *Bỏ qua nốt này* sinh ra đúng cho lúc micro không nghe
+ * được một nốt — bắt đánh đúng tất cả là phạt người học vì lỗi của micro. Nhưng
+ * cũng không để bằng 0: bấm bỏ qua liền một mạch tới nốt cuối thì chẳng ai gọi
+ * đó là đã đánh trọn. 80% chừa được vài nốt micro sót trong một câu 16-20 nốt.
+ */
+export const PLAYED_THROUGH_MIN_SHARE = 0.8;
+
+/**
+ * Lượt đánh này đã đi tới nốt cuối, với đủ phần nốt đánh đúng.
+ *
+ * Chỉ dùng để **khen sau đó** — dòng "Bạn đã đánh trọn…" cạnh nút tick. Không
+ * hiện gì trong lúc đang đánh và không chặn gì cả: không có nó thì cũng không mất
+ * gì, đúng luật "không bài học nào bắt buộc phải cho app nghe đàn" ở `AGENTS.md`.
+ */
+export function isPlayedThrough(expected: ScoreEvent[], state: FollowState): boolean {
+  if (expected.length === 0 || state.cursor < expected.length) return false;
+  return state.matched.length >= Math.ceil(expected.length * PLAYED_THROUGH_MIN_SHARE);
+}
+
+/**
  * Người học tự cho qua nốt đang chờ.
  *
  * Đây là đường thoát duy nhất khi con trỏ đứng mãi ở một chỗ — micro không nghe

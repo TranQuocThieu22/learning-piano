@@ -130,14 +130,12 @@ C, z z | C, z z | G, z z | C, z z | G, z z | G, z z | G, z z | C,3 |]
 - Bắt đầu từ nốt Đô, thử từng phím một, sai thì thử phím khác. Đừng nản — mò được vài nốt đầu đã là thành công.
 - *(Gợi ý: giai điệu này có một nốt nằm cao hơn nốt Sol, tức là ngoài tầm 5 ngón hiện tại của bạn. Nếu mò tới đó thấy bí, đó là bình thường — kỹ năng dịch chuyển bàn tay sẽ học ở Chương 6.)*
 
-## ✅ Tiêu chuẩn "qua bài" của Trạm dừng chân
+## Xong bài khi
 
-Đây là bài tổng ôn, nên tiêu chuẩn cao hơn bài thường một chút. Bạn được tick hoàn thành khi:
-
-1. **Chơi trọn Tiết mục 1 (Jingle Bells) từ đầu đến cuối mà không dừng lại** — được phép đánh sai nốt, nhưng **không được dừng để sửa**. Nhạc phải chảy liên tục.
-2. Mắt **không cúi xuống nhìn phím** quá 2-3 lần trong cả bài.
-3. Chơi được ít nhất **2 trong 3 tiết mục** ở mức trôi chảy.
-4. Thử chơi Tiết mục 1 hai lần liên tiếp: lần đầu **to (f)**, lần sau **nhỏ (p)**.
+- Chơi trọn Jingle Bells từ đầu tới cuối — sai nốt cũng được, chỉ không dừng lại để sửa.
+- Cả bài chỉ cúi nhìn phím hai ba lần.
+- Chơi trôi chảy ít nhất 2 trong 3 tiết mục.
+- Chơi Jingle Bells hai lần liền: lần đầu to (f), lần sau nhỏ (p).
 
 ## Yêu cầu thực hành
 

@@ -159,10 +159,13 @@ V: 2 clef=bass
 
 **Tự do:** Chơi vòng **C - Am - F - G** lặp đi lặp lại bằng tay trái, thật đều, như một cái nền chạy vòng tròn. Tay phải tự bịa giai điệu trên năm nốt Đô-Rê-Mi-Pha-Sol. Chơi liên tục 2-3 phút không dừng, kể cả khi nghe chưa hay. Rất nhiều bài hát bạn biết được viết ra đúng theo cách này.
 
+## Xong bài khi
+
+- Đổi giữa Đô trưởng và Đô thứ mà chỉ ngón 3 di chuyển, hai ngón ngoài đứng yên.
+- Nghe là nói được hợp âm nào trưởng, hợp âm nào thứ, không cần nhìn tay.
+- Bấm được C, F, G, Am, Dm, Em mà không phải dò từng nốt.
+- Trong 3D tay trái đổi hợp âm đúng phách 1 và vẫn nhẹ hơn giai điệu.
+
 ## Yêu cầu thực hành
 
-1. Đổi giữa Đô trưởng và Đô thứ mà **hai ngón ngoài không xê dịch**, chỉ ngón 3 lùi xuống phím đen.
-2. Nghe và nói được hợp âm nào là trưởng, hợp âm nào là thứ, không cần nhìn tay.
-3. Bấm được cả sáu hợp âm đã học mà không phải dò từng nốt: C, F, G, Am, Dm, Em.
-4. Trong **3D**, tay trái đổi hợp âm đúng phách 1 và vẫn nhẹ hơn giai điệu.
-5. Nói được quy tắc phân biệt trưởng - thứ bằng đúng một câu: khác nhau ở **nốt giữa**, thấp hơn nửa cung là thứ.
+1. Nói được quy tắc phân biệt trưởng - thứ bằng đúng một câu: khác nhau ở **nốt giữa**, thấp hơn nửa cung là thứ.
