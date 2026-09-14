@@ -44,7 +44,7 @@ export default async function PathPage() {
           section="exercises"
           icon={<IconMap2 size={26} />}
           title="Đường đi"
-          description="Mỗi chương gồm phần lý thuyết rồi tới các bài tập. Bấm vào chương để mở từng bước."
+          description="Mỗi chương là các bài ngồi vào đàn, theo thứ tự nên tập. Bấm vào chương để mở từng bài."
         />
 
         <Card withBorder radius="md" padding="md" mb="lg">

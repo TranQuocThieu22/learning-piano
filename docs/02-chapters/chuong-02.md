@@ -1,5 +1,7 @@
 # Chương 2: Nhịp điệu và Phối hợp 2 tay
 
+> **Đây là bài đọc thêm, không bắt buộc.** Bài tập đã ghi sẵn nốt nào giữ mấy nhịp. Muốn tập ngay thì mở **[Chương 2 - Bài 1](/03-exercises/chuong-02-bai-01)**.
+
 Bốn buổi của Chương 1 đã cho bạn năm nốt C-D-E-F-G và một bản nhạc hoàn chỉnh chơi bằng một tay. Chương này thêm hai thứ: **nhịp điệu (trường độ)** — nốt dài nốt ngắn — và lần đầu tiên bạn cho **hai tay đánh cùng lúc**.
 
 ## 1. Các loại hình nốt cơ bản (Trường độ)
@@ -62,8 +64,6 @@ V:2 clef=bass
 Tay trái ở đây chỉ giữ đúng một nốt dài suốt cả ô nhịp, trong khi tay phải đi bốn nốt. Đó là kiểu phối hợp dễ nhất, và cũng là kiểu bạn gặp trong bài tập sắp tới.
 
 ---
-**Nhiệm vụ của bạn hôm nay:**
-1. Hiểu được nốt Đen (1 nhịp), nốt Trắng (2 nhịp), nốt Tròn (4 nhịp).
-2. Vừa đánh đàn vừa nhẩm đếm nhịp thành tiếng (VD: đánh nốt trắng đọc "Một... Hai...").
-3. Chuyển sang **[Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay](/03-exercises/chuong-02-bai-01)** để thực hành phối hợp 2 tay với các hình nốt này.
-4. Luyện thêm **Bài tập mặt bàn (Không cần đàn)** để cải thiện sự linh hoạt của tay vào thời gian rảnh.
+**Nhớ một điều thôi:** nốt đen 1 nhịp, nốt trắng 2 nhịp, nốt tròn 4 nhịp — và đếm to thành tiếng khi đánh.
+
+**👉 Về tập tiếp: [Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay](/03-exercises/chuong-02-bai-01)**

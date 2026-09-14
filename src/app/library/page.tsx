@@ -20,6 +20,11 @@ import { listUpdates } from '@/lib/updates';
  * Vì vậy trang này nay chỉ còn đúng những bài **không có thứ tự và không tick
  * được**. Đó cũng là lý do nó vẫn ở lại trên thanh tab.
  *
+ * Từ 14/09/2026 lý thuyết ra khỏi chuỗi bước và không tick nữa, nhưng vẫn KHÔNG
+ * quay lại đây: mỗi trang chương có nút *Đọc thêm* dẫn tới đúng bài lý thuyết của
+ * nó, và mỗi bài tập trỏ tới nó ở cuối bài. Lý thuyết đọc đúng lúc đang tập chương
+ * đó mới có ích; một danh sách tám chương rời ở đây thì mời người ta đọc trước.
+ *
  * Kéo theo: không còn mục nào ở đây thuộc `PAID_CATEGORIES` (xem `access.ts`), nên
  * cũng không còn nhãn "Trả phí" — bỏ luôn phần tra quyền, và trang thành tĩnh.
  *
@@ -76,7 +81,7 @@ export default function LibraryPage() {
           section="library"
           icon={<IconBook2 size={26} />}
           title="Mục lục"
-          description="Những bài đọc ngoài đường đi. Lý thuyết từng chương nằm ở Đường đi."
+          description="Những bài đọc ngoài đường đi. Lý thuyết từng chương nằm ở cuối mỗi chương trong Đường đi."
         />
 
         <Stack gap="xl">

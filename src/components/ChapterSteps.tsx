@@ -1,13 +1,13 @@
 'use client';
 
 import { Card, Group, Stack, Text, ThemeIcon } from '@mantine/core';
-import { IconArrowRight, IconBook, IconLock, IconMusic } from '@tabler/icons-react';
+import { IconArrowRight, IconLock, IconMusic } from '@tabler/icons-react';
 import Link from 'next/link';
 import { LessonTickButton } from './LessonTickButton';
 
 /**
- * Các bước của MỘT chương, xếp dọc theo đúng thứ tự học: lý thuyết trước, rồi
- * từng bài tập.
+ * Các bài tập của MỘT chương, xếp dọc theo đúng thứ tự học. Lý thuyết không nằm
+ * ở đây — nó là nút *Đọc thêm* của trang chương (đổi 14/09/2026).
  *
  * Đây là chỗ gom lại cái mà trước ngày 11/09/2026 phải đi ba trang mới xong:
  * *Mục lục* để đọc lý thuyết, *Bài tập* để tìm đúng bài, *Nhật ký* để tick. Nay
@@ -33,7 +33,6 @@ export interface ChapterStepView {
   slug: string;
   title: string;
   href: string;
-  kind: 'theory' | 'exercise';
   lessonNumber?: number;
   done: boolean;
   locked: boolean;
@@ -43,7 +42,6 @@ export interface ChapterStepView {
 
 /** Nhãn ngắn bên trên tiêu đề, để liếc là biết bước này phải làm gì. */
 function stepLabel(step: ChapterStepView): string {
-  if (step.kind === 'theory') return 'Lý thuyết — đọc trước khi tập';
   return `Bài ${step.lessonNumber} — ngồi vào đàn`;
 }
 
@@ -77,7 +75,7 @@ export function ChapterSteps({
                 initialCompleted={step.done}
                 signedIn={signedIn}
                 variant="step"
-                label={step.kind === 'theory' ? 'Đã đọc xong chương này' : `Đã học xong bài ${step.lessonNumber}`}
+                label={`Đã học xong bài ${step.lessonNumber}`}
               />
             )}
 
@@ -91,13 +89,8 @@ export function ChapterSteps({
               </Text>
             </Link>
 
-            <ThemeIcon
-              variant="transparent"
-              color={step.kind === 'theory' ? 'violet' : 'orange'}
-              size={28}
-              aria-hidden
-            >
-              {step.kind === 'theory' ? <IconBook size={20} /> : <IconMusic size={20} />}
+            <ThemeIcon variant="transparent" color="orange" size={28} aria-hidden>
+              <IconMusic size={20} />
             </ThemeIcon>
           </Group>
 

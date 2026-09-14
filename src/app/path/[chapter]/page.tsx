@@ -1,5 +1,5 @@
 import { Container, Group, Progress, Stack, Text } from '@mantine/core';
-import { IconArrowLeft, IconArrowRight, IconMap2, IconRepeat } from '@tabler/icons-react';
+import { IconArrowLeft, IconArrowRight, IconBook, IconMap2, IconRepeat } from '@tabler/icons-react';
 import { notFound } from 'next/navigation';
 import { AppLayout } from '@/components/AppLayout';
 import { ChapterSteps, type ChapterStepView } from '@/components/ChapterSteps';
@@ -14,7 +14,8 @@ import { chapterColorVars } from '@/lib/chapter-colors';
 import { reviewKinds } from '@/lib/review';
 
 /**
- * Một chương, bày ra thành từng bước: lý thuyết trước, rồi các bài tập của chương.
+ * Một chương, bày ra thành từng bài tập theo thứ tự học. Lý thuyết của chương là
+ * một nút *Đọc thêm* ở cuối, không phải một bước (đổi 14/09/2026).
  *
  * Đây là "một chỗ" mà chủ sản phẩm xin ngày 11/09/2026. Trước đó một buổi học
  * phải đi ba trang: *Mục lục* để đọc lý thuyết → *Bài tập* để mò đúng bài → *Nhật
@@ -59,7 +60,6 @@ export default async function ChapterPage({ params }: { params: Promise<{ chapte
     slug: step.slug,
     title: shortTitle(step.title),
     href: step.href,
-    kind: step.kind,
     lessonNumber: step.lessonNumber,
     done: completed.has(step.slug),
     locked: !canReadLesson({ category: step.category, slug: step.slug, hasFullAccess }),
@@ -126,6 +126,26 @@ export default async function ChapterPage({ params }: { params: Promise<{ chapte
             leftSection={<IconRepeat size={18} />}
           >
             Ôn luyện thêm — bài mới mỗi lần bấm
+          </NavButton>
+        )}
+
+        {/*
+          Lý thuyết của chương: đọc thêm, không phải một bước (đổi 14/09/2026 — xem
+          `learning-path.ts`). Nút viền mờ, đứng sau cả danh sách bài tập lẫn kho ôn
+          luyện, để mắt người học gặp bài ngồi vào đàn trước. Chương chưa mở khoá thì
+          không hiện: bấm vào chỉ ra màn hình giới thiệu gói, mà bài tập ngay trên đã
+          dẫn tới đó rồi.
+        */}
+        {chapter.theory && !steps.every((s) => s.locked) && (
+          <NavButton
+            href={chapter.theory.href}
+            variant="default"
+            size="md"
+            mt={reviewKinds(chapterNumber).length > 0 ? 'sm' : 'lg'}
+            fullWidth
+            leftSection={<IconBook size={18} />}
+          >
+            Đọc thêm: lý thuyết của chương (không bắt buộc)
           </NavButton>
         )}
 

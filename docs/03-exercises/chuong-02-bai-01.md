@@ -1,39 +1,12 @@
 # Chương 2 - Bài 1: Nhịp điệu và Phối hợp 2 tay
 
-Mục tiêu bài này là kết hợp vị trí tay của Ngày 1 (C-D-E-F-G) với các hình nốt mới (Đen, Trắng, Tròn) và thử đánh 2 tay cùng lúc.
+Hôm nay có nốt dài nốt ngắn, và lần đầu **hai tay đánh cùng lúc**. Bài này tập trong **3 ngày**: ngày 1 làm 2A từng tay, ngày 2 ghép hai tay ở 2B, ngày 3 làm 2C. Hai tay loạn trong một hai ngày đầu là chuyện bình thường.
 
-> [!WARNING]
-> **⏱️ Ước lượng thời gian hoàn thành:** Việc ghép 2 tay chơi cùng lúc là một "cú sốc" nhẹ với người mới. Để qua được bài này một cách trơn tru, bạn cần luyện tập trong **3 ngày**. Đừng nản chí nếu bạn thấy 2 tay bị "loạn" trong 1-2 ngày đầu nhé!
-
-**📅 Kế hoạch từng ngày**
-
-| Ngày | Trọng tâm |
-|---|---|
-| **Ngày 1** | Chỉ tập **2A** với từng tay riêng. Trọng tâm là giữ phím đủ nhịp: nốt Trắng 2 nhịp, nốt Tròn 4 nhịp. |
-| **Ngày 2** | Ôn 2A rồi bắt đầu **2B** — lần đầu ghép hai tay. Đánh cực chậm, chỉ cần hai tay xuống phím cùng lúc. |
-| **Ngày 3** | Ghép 2B cho mượt rồi thử **2C**. Bật máy đánh nhịp ở 60 BPM để kiểm tra xem mình có giữ đều không. |
-
-*Mỗi ngày vẫn giữ nguyên cấu trúc buổi tập: bài tập không cần đàn → khởi động → phần trọng tâm ở trên → thực hành tự do và luyện tai.*
-
-## Bài tập Không cần đàn (Away from piano)
-Đây là phương pháp luyện tập xa đàn cực kỳ hiệu quả mà bạn có thể làm bất cứ lúc nào.
-
-**1. BẮT BUỘC [Phương pháp: Bài tập mặt bàn / Tapping]**
-- **Tư thế:** Đặt 2 bàn tay lên mặt bàn hoặc đùi, úp tay xuống và giữ dáng khum tròn như ôm bóng.
-- **Động tác 1 (Nhịp điệu):** Vừa đếm miệng "1-2-3-4". Tay trái gõ liên tục ngón 2 (trỏ) theo mỗi nhịp đếm. Tay phải chỉ gõ ở nhịp 1 và 3. Đánh xong đổi tay.
-- **Động tác 2 (Độc lập ngón tay):** Giữ nguyên tư thế, nhấc **MỖI** ngón áp út (ngón 4) của 2 tay lên và gõ nhẹ xuống 5 lần. Các ngón khác phải giữ dính chặt xuống mặt bàn.
-
-**2. TÙY CHỌN [Phương pháp: Hát giai điệu / Solfège]**
-- **Mục tiêu:** Cảm nhận nhịp điệu bằng chính cơ thể.
-- **Cách làm:** Hãy bấm nghe mẫu Bài tập 2A. Sau đó tắt đi, bạn tự vỗ tay và miệng tự hát giai điệu: *"Đô Rê Mi Pha... Sol (ngân dài 2 nhịp)... Mi (ngân 2 nhịp)..."* để quen với việc giữ hơi cho nốt Trắng và Tròn.
-
-## Chuẩn bị vị trí tay (Giống bài 1)
-- **Tay phải (Treble Clef):** Ngón 1 lên Đô (C) giữa. Các ngón 2,3,4,5 lên D,E,F,G.
-- **Tay trái (Bass Clef):** Ngón 5 lên Đô (C) thấp. Các ngón 4,3,2,1 lên D,E,F,G.
-
+Tay đặt như Chương 1: tay phải ngón 1 trên Đô giữa, tay trái ngón 5 trên Đô thấp.
 
 ## Bài tập 2A: Cảm nhận nốt Đen, Trắng, Tròn (Tay phải)
-Đánh thật chậm. Với nốt trắng phải giữ phím đàn đủ 2 nhịp. Với nốt tròn giữ đủ 4 nhịp. Vừa đánh vừa đếm miệng "1 2 3 4".
+
+Nốt **đen** (đặc) giữ 1 nhịp, nốt **trắng** (rỗng, có đuôi) giữ 2 nhịp, nốt **tròn** (rỗng, không đuôi) giữ 4 nhịp. Đếm to "1 2 3 4" và giữ phím đủ số nhịp ghi dưới nốt. Làm với tay phải rồi đổi sang tay trái.
 
 ```abc
 X: 1
@@ -48,7 +21,8 @@ w: 1 2 3 4 | 1-2 3-4 | 1-2 3-4 | 1-2-3-4
 ```
 
 ## Bài tập 2B: Thử thách 2 tay chạm nhau
-Lần đầu tiên 2 tay cùng nhấn phím một lúc. Hãy tập tay phải 3 lần, tay trái 3 lần, sau đó mới ghép 2 tay.
+
+Khuông trên là tay phải, khuông dưới là tay trái. **Nốt thẳng hàng thì bấm cùng lúc.** Tập tay phải 3 lần, tay trái 3 lần, rồi mới ghép — thật chậm.
 
 ```abc
 X: 2
@@ -67,7 +41,8 @@ V: 2 clef=bass
 ```
 
 ## Bài tập 2C: Thử thách 2 tay (Biến tấu)
-Bây giờ hai tay của bạn sẽ đàn một giai điệu dài hơn một chút. Đừng quên nốt Trắng giữ 2 nhịp nhé!
+
+Dài hơn 2B một chút. Bật **máy đánh nhịp ở 60** nếu muốn kiểm tra xem mình giữ nhịp có đều không.
 
 ```abc
 X: 3
@@ -84,26 +59,22 @@ V: 2 clef=bass
 "Trái"E,2 D,2 | C,2 D,2 | E, F, G,2 | C,4 |]
 ```
 
-
-## Thực hành tự do & Luyện tai (5 phút)
-
-**Thử thách Thẩm âm (Ear Training) — Nốt này dài mấy nhịp?**
-- Nhắm mắt. Bấm một phím bất kỳ rồi **giữ nó** trong 1, 2 hoặc 4 nhịp, tự chọn ngẫu nhiên.
-- Trong lúc giữ, đếm thầm và tự xác định vừa đánh **nốt Đen, nốt Trắng hay nốt Tròn**.
-- Làm 8 lần, mỗi lần đổi độ dài khác nhau.
-
-*Bài này luyện tai theo **trường độ** chứ không phải cao độ. Nhiều người mới đọc đúng nốt nhưng giữ phím sai nhịp, vì tai chưa quen đo thời gian.*
-
-**Tự do:** Đánh Bài 2A một lần duy nhất từ đầu đến cuối, không dừng lại sửa lỗi.
-
 ## Xong bài khi
 
 - Trong 2A giữ phím đủ 2 nhịp với nốt trắng và đủ 4 nhịp với nốt tròn, vừa đánh vừa đếm được.
 - Đánh 2B chậm mà hai tay xuống phím cùng một lúc, không lệch tiếng.
 - Đánh trọn 2C bằng hai tay — chậm cũng được, không dừng lại để sửa.
 
-## Yêu cầu thực hành
-1. Tập Bài 2A với tay phải và tay trái riêng biệt. Chú ý **giữ phím đàn** đủ nhịp đếm đối với nốt Trắng (2 nhịp) và nốt Tròn (4 nhịp).
-2. Khi tập ghép 2 tay ở Bài 2B, đánh với tốc độ **cực kỳ chậm**. Đảm bảo 2 tay giáng xuống phím đàn cùng một thời điểm, không bị lệch tiếng.
-3. Tập đi tập lại 15-20 lần đến khi 2 tay đồng bộ.
-4. Bất cứ khi nào rảnh, hãy tập Bài 2C trên mặt bàn để tăng sự dẻo dai.
+---
+
+## Đọc thêm (không bắt buộc)
+
+**Tập khi không có đàn.** Đếm to "1-2-3-4". Tay trái gõ ngón trỏ ở mọi nhịp, tay phải chỉ gõ ở nhịp 1 và 3. Xong đổi tay. Thêm: nhấc riêng ngón áp út hai tay gõ 5 lần, các ngón khác dính mặt bàn.
+
+**Hát trước khi đánh.** Nghe mẫu 2A, tắt đi, rồi vỗ tay và hát theo — ngân dài ở nốt trắng và nốt tròn.
+
+**Luyện tai: nốt này dài mấy nhịp?** Nhắm mắt, bấm một phím và giữ 1, 2 hoặc 4 nhịp tuỳ ý. Đếm thầm rồi tự gọi tên: đen, trắng hay tròn. Làm 8 lần. Nhiều người đọc đúng nốt nhưng giữ sai nhịp vì tai chưa quen đo thời gian.
+
+**Vì sao ghép hai tay thấy loạn:** não phải lo hai việc song song. Chậm tới mức hai tay chắc chắn xuống cùng lúc là cách nhanh nhất.
+
+Muốn xem hình ba loại nốt và cách đọc hai khuông chồng nhau: đọc **[Chương 2: Nhịp điệu và Phối hợp 2 tay](/02-chapters/chuong-02)**.

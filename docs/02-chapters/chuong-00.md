@@ -86,12 +86,12 @@ Vì sao có hẳn một chương (Chương 5) dành cho cường độ to nhỏ,
 
 ## Nhiệm vụ của bạn ở chương này
 
-Không có bài tập nào cả. Chỉ hai việc, và cả hai đều không cần đàn:
+Không có bài tập nào cả, và chương này cũng không bắt buộc. Chỉ hai việc, cả hai đều không cần đàn:
 
 1. Nhớ lại **khoảnh khắc của bạn** — bản nhạc nào đã khiến bạn muốn học.
-2. Mở nghe lại bản nhạc đó **một lần**, trọn vẹn, trước khi bước vào Chương 1.
+2. Mở nghe lại bản nhạc đó **một lần**, trọn vẹn.
 
-Sẵn sàng rồi thì sang **[Chương 1: Nền tảng phím đàn và nốt nhạc](/02-chapters/chuong-01)**.
+Rồi ngồi vào đàn: **[Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên](/03-exercises/chuong-01-bai-01)** — ngay buổi đầu bạn đã chơi được một câu nhạc thật.
 
 ---
 

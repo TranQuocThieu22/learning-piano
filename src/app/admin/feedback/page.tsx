@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core';
 import { AdminFeedbackTable } from '@/components/admin/AdminFeedbackTable';
 import { listLessonFeedback } from '@/lib/admin-data';
-import { getAllSteps } from '@/lib/learning-path';
+import { getLearningPath } from '@/lib/learning-path';
 
 export const metadata = { title: 'Quản trị — Phản hồi bài học' };
 
@@ -21,12 +21,16 @@ export default async function AdminFeedbackPage() {
   /*
    * Đổi slug thành tên bài ở SERVER rồi mới truyền xuống.
    *
-   * `getAllSteps()` đọc thư mục `docs/`, mà bảng kia là client component — nó
+   * `getLearningPath()` đọc thư mục `docs/`, mà bảng kia là client component — nó
    * không đọc được đĩa. Slug trần vẫn in kèm bên dưới tên: bài nào mới soạn mà
    * chưa có phản hồi nào thì không tra ra tên, lúc đó slug là thứ duy nhất còn
    * dùng được để đi tìm file.
    */
-  const tenTheoSlug = new Map(getAllSteps().map((s) => [s.slug, s.title]));
+  // Kèm cả bài lý thuyết: trước 14/09/2026 nó là một bước và có nút phản hồi, nên
+  // phản hồi cũ trên trang lý thuyết vẫn nằm trong bảng.
+  const tenTheoSlug = new Map(
+    getLearningPath().flatMap((c) => [...(c.theory ? [c.theory] : []), ...c.steps]).map((s) => [s.slug, s.title])
+  );
 
   const tongStuck = rows.reduce((n, r) => n + r.stuck, 0);
 

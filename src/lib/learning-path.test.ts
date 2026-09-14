@@ -14,24 +14,27 @@ const FILES = [
 ];
 
 describe('buildPath', () => {
-  it('gom theo chương, số chương tăng dần', () => {
-    expect(buildPath(FILES).map((c) => c.chapterNumber)).toEqual([0, 1, 2]);
+  // Chương 0 chỉ có lý thuyết, không có gì để ngồi vào đàn — nên không phải một chương trên đường đi.
+  it('gom theo chương có bài tập, số chương tăng dần', () => {
+    expect(buildPath(FILES).map((c) => c.chapterNumber)).toEqual([1, 2]);
   });
 
   /*
-   * Đây là chỗ cả tính năng này sinh ra để sửa: trước đó lý thuyết và bài tập là
-   * hai dãy rời, nên đọc xong lý thuyết một chương thì "bài tiếp theo" nhảy sang
-   * lý thuyết chương SAU, bỏ qua toàn bộ bài tập của chương vừa đọc.
+   * Đổi 14/09/2026: tập trước, ai muốn thì đọc thêm. Trước đó lý thuyết đứng đầu
+   * mỗi chương và phải tick, nên người học phải đọc cả trang chữ mới được chạm phím.
    */
-  it('trong mỗi chương, lý thuyết đứng trước bài tập của chính chương đó', () => {
+  it('đường đi chỉ gồm bài tập, lý thuyết không phải một bước', () => {
     expect(flattenPath(buildPath(FILES)).map((s) => s.slug)).toEqual([
-      'chuong-00',
-      'chuong-01',
       'chuong-01-bai-01',
       'chuong-01-bai-02',
-      'chuong-02',
       'chuong-02-bai-01',
     ]);
+  });
+
+  it('lý thuyết vẫn gắn vào chương để dẫn tới như bài đọc thêm', () => {
+    const [chuong1] = buildPath(FILES);
+    expect(chuong1.theory).toMatchObject({ slug: 'chuong-01', href: '/02-chapters/chuong-01' });
+    expect(chuong1.steps.every((s) => s.kind === 'exercise')).toBe(true);
   });
 
   it('thứ tự file đưa vào không ảnh hưởng kết quả', () => {
@@ -39,14 +42,6 @@ describe('buildPath', () => {
     expect(flattenPath(daoNguoc).map((s) => s.slug)).toEqual(
       flattenPath(buildPath(FILES)).map((s) => s.slug)
     );
-  });
-
-  // Chương 0 là chương dẫn nhập, không có bài ngồi vào đàn. Đúng chứ không thiếu.
-  it('chương chỉ có lý thuyết vẫn là một chương hợp lệ', () => {
-    const chuong0 = buildPath(FILES)[0];
-    expect(chuong0.theory?.slug).toBe('chuong-00');
-    expect(chuong0.exercises).toEqual([]);
-    expect(chuong0.steps).toHaveLength(1);
   });
 
   it('chương chỉ có bài tập, chưa soạn phần chữ, thì theory là null chứ không mất chương', () => {
@@ -75,13 +70,13 @@ describe('buildPath', () => {
       file('03-exercises', 'bai-tap-them'),
       file('01-roadmap', 'roadmap'),
       file('07-doc-them', 'lich-su-piano'),
-      file('02-chapters', 'chuong-01'),
+      file('03-exercises', 'chuong-01-bai-01'),
     ]);
-    expect(flattenPath(path).map((s) => s.slug)).toEqual(['chuong-01']);
+    expect(flattenPath(path).map((s) => s.slug)).toEqual(['chuong-01-bai-01']);
   });
 
   it('mỗi bước mang đủ đường dẫn, loại và số chương', () => {
-    const [, chuong1] = buildPath(FILES);
+    const [chuong1] = buildPath(FILES);
     expect(chuong1.theory).toMatchObject({
       kind: 'theory',
       href: '/02-chapters/chuong-01',
@@ -99,12 +94,18 @@ describe('buildPath', () => {
 describe('nextStep', () => {
   const steps = flattenPath(buildPath(FILES));
 
-  it('chưa tick gì thì là bước đầu tiên', () => {
-    expect(nextStep(steps, new Set())?.slug).toBe('chuong-00');
+  // Mở app ra lần đầu là vào thẳng bài ngồi vào đàn, không phải một trang chữ.
+  it('chưa tick gì thì là bài tập đầu tiên', () => {
+    expect(nextStep(steps, new Set())?.slug).toBe('chuong-01-bai-01');
+  });
+
+  // Tick lý thuyết từ hồi nó còn là một bước vẫn nằm trong database — không được làm lệch gì.
+  it('tick cũ của bài lý thuyết không làm lệch bước đang tới', () => {
+    expect(nextStep(steps, new Set(['chuong-00', 'chuong-01']))?.slug).toBe('chuong-01-bai-01');
   });
 
   it('bỏ qua các bước đã tick, kể cả tick không liền mạch', () => {
-    const done = new Set(['chuong-00', 'chuong-01', 'chuong-01-bai-02']);
+    const done = new Set(['chuong-01-bai-02']);
     expect(nextStep(steps, done)?.slug).toBe('chuong-01-bai-01');
   });
 
@@ -118,28 +119,33 @@ describe('skippedStep', () => {
   const steps = flattenPath(buildPath(FILES));
 
   it('mở bài đứng sau chỗ chưa tick thì nhắc đúng bước chưa tick đầu tiên', () => {
-    const done = new Set(['chuong-00', 'chuong-01']);
-    expect(skippedStep(steps, done, 'chuong-02-bai-01')?.slug).toBe('chuong-01-bai-01');
+    expect(skippedStep(steps, new Set(), 'chuong-02-bai-01')?.slug).toBe('chuong-01-bai-01');
   });
 
   it('mở đúng bài đang học tới thì không nhắc gì', () => {
-    const done = new Set(['chuong-00', 'chuong-01']);
-    expect(skippedStep(steps, done, 'chuong-01-bai-01')).toBeNull();
+    expect(skippedStep(steps, new Set(), 'chuong-01-bai-01')).toBeNull();
   });
 
   // Quay lại ôn một bài đã tick là việc nên khuyến khích, không phải vượt bài.
   it('mở lại bài cũ phía trước thì không nhắc gì', () => {
-    const done = new Set(['chuong-00', 'chuong-01', 'chuong-01-bai-01']);
-    expect(skippedStep(steps, done, 'chuong-01')).toBeNull();
+    const done = new Set(['chuong-01-bai-01', 'chuong-01-bai-02']);
+    expect(skippedStep(steps, done, 'chuong-01-bai-01')).toBeNull();
   });
 
   // Tick nhảy cóc rồi quay lại: chỗ bị vượt là bước chưa tick sớm nhất, không phải bước liền trước.
   it('tick không liền mạch thì nhắc bước chưa tick sớm nhất', () => {
-    const done = new Set(['chuong-00', 'chuong-01', 'chuong-01-bai-02', 'chuong-02']);
+    const done = new Set(['chuong-01-bai-02']);
     expect(skippedStep(steps, done, 'chuong-02-bai-01')?.slug).toBe('chuong-01-bai-01');
   });
 
-  it('bài không nằm trên đường đi thì không có gì để vượt', () => {
+  // Đây là chỗ đổi 14/09/2026 phải giữ: người bỏ qua lý thuyết để tập luôn không được bị nhắc.
+  it('mở bài tập khi chưa đọc lý thuyết thì không nhắc gì', () => {
+    expect(skippedStep(steps, new Set(), 'chuong-01-bai-01')).toBeNull();
+    expect(skippedStep(steps, new Set(['chuong-01-bai-01', 'chuong-01-bai-02']), 'chuong-02-bai-01')).toBeNull();
+  });
+
+  it('bài lý thuyết và bài không nằm trên đường đi thì không có gì để vượt', () => {
+    expect(skippedStep(steps, new Set(), 'chuong-02')).toBeNull();
     expect(skippedStep(steps, new Set(), 'roadmap')).toBeNull();
   });
 

@@ -26,9 +26,9 @@ export default async function Home() {
   const allFiles = getAllMarkdownFiles();
 
   /*
-   * Tính trên ĐƯỜNG ĐI (lý thuyết + bài tập), không riêng bài tập — đổi
-   * 11/09/2026. Nên "Học tiếp" nay có thể dẫn thẳng vào một chương lý thuyết, và
-   * đó là đúng: nếu chưa đọc chương thì bài tập của nó chưa có nghĩa gì.
+   * Tính trên ĐƯỜNG ĐI, mà đường đi chỉ gồm bài tập (đổi 14/09/2026). Nên "Học
+   * tiếp" và "Bắt đầu" luôn dẫn vào một bài ngồi vào đàn, không bao giờ vào một
+   * trang lý thuyết — người học tập trước, ai muốn thì đọc thêm.
    */
   const path = getLearningPath();
   const allSteps = flattenPath(path);
@@ -67,7 +67,6 @@ export default async function Home() {
           slug: step.slug,
           title: shortTitle(step.title),
           href: step.href,
-          kind: step.kind,
           lessonNumber: step.lessonNumber,
           done: completedSlugs.has(step.slug),
           locked: !canReadLesson({ category: step.category, slug: step.slug, hasFullAccess }),

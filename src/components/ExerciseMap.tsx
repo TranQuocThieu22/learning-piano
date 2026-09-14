@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { Card, Group, Progress, Stack, Text } from '@mantine/core';
-import { IconBook, IconCheck, IconLock } from '@tabler/icons-react';
+import { IconCheck, IconLock } from '@tabler/icons-react';
 import Link from 'next/link';
 import { chapterColor, chapterColorVars } from '@/lib/chapter-colors';
 
@@ -24,14 +24,10 @@ export interface MapLesson {
   title: string;
   href: string;
   /**
-   * `theory` thêm 11/09/2026, khi lý thuyết trở thành một bước tick được.
-   *
-   * Phải có mặt ở đây chứ không chỉ ở trang chương: thiếu nó thì màn hình chủ đếm
-   * "4/6" trong khi `/path/3` đếm "5/7" cho cùng một chương, và hai con số đá
-   * nhau là đúng cái bệnh mà đợt gom này sinh ra để chữa.
+   * Chỉ có bài tập. Lý thuyết từng là một ô ở đây (11/09/2026) rồi ra khỏi đường
+   * đi (14/09/2026); màn hình chủ và `/path/[chapter]` vẫn dựng từ cùng
+   * `getLearningPath()` nên hai nơi luôn đếm giống nhau.
    */
-  kind: 'theory' | 'exercise';
-  /** Chỉ bước bài tập mới có — lý thuyết không đánh số bài. */
   lessonNumber?: number;
   done: boolean;
   locked: boolean;
@@ -53,7 +49,7 @@ function LessonDot({ lesson }: { lesson: MapLesson }) {
       data-state={state}
       title={lesson.title}
       aria-current={lesson.current ? 'step' : undefined}
-      aria-label={`${lesson.kind === 'theory' ? 'Lý thuyết: ' : ''}${lesson.title}${
+      aria-label={`${lesson.title}${
         lesson.done ? ' — đã xong' : ''
       }${lesson.locked ? ' — bài trả phí' : ''}${lesson.current ? ' — bước bạn đang tới' : ''}`}
     >
@@ -62,14 +58,12 @@ function LessonDot({ lesson }: { lesson: MapLesson }) {
           <IconCheck size={26} stroke={3} />
         ) : lesson.locked ? (
           <IconLock size={20} />
-        ) : lesson.kind === 'theory' ? (
-          <IconBook size={22} />
         ) : (
           lesson.lessonNumber
         )}
       </span>
       <span className="lesson-dot__label">
-        {lesson.kind === 'theory' ? 'Lý thuyết' : `Bài ${lesson.lessonNumber}`}
+        {`Bài ${lesson.lessonNumber}`}
       </span>
     </Link>
   );

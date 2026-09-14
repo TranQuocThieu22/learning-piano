@@ -2,7 +2,7 @@ import { getAllMarkdownFiles, type MarkdownFile } from './markdown';
 import { CHAPTERS_CATEGORY, EXERCISES_CATEGORY, neighborsOf } from './lessons';
 
 /**
- * **Đường đi**: một chuỗi bước DUY NHẤT nối lý thuyết với bài tập.
+ * **Đường đi**: một chuỗi bước DUY NHẤT gồm các bài ngồi vào đàn, theo thứ tự học.
  *
  * Vì sao có file này (11/09/2026). Trước đó lý thuyết (`02-chapters`) và bài tập
  * (`03-exercises`) là hai dãy rời nhau, nên đọc xong lý thuyết Chương 3 mà bấm
@@ -14,20 +14,26 @@ import { CHAPTERS_CATEGORY, EXERCISES_CATEGORY, neighborsOf } from './lessons';
  * đúng bài tập rồi qua nhật ký nhớ bài nào vừa học rồi check"*. App không chở họ
  * đi, chỉ có bài văn chở.
  *
- * Ở đây trộn hai thư mục thành một chuỗi theo đúng thứ tự học:
+ * **Đổi 14/09/2026: lý thuyết ra khỏi đường đi.** Bản 11/09 trộn hai thư mục
+ * thành `chuong-01 → chuong-01-bai-01 → …`, lý thuyết đứng đầu mỗi chương và
+ * phải tick. Chủ sản phẩm thấy người học phải đọc cả trang chữ trước khi được
+ * chạm phím, và chốt lại theo lối *tập trước, ai muốn thì đọc thêm*. Nay:
  *
  * ```
- * chuong-00 → chuong-01 → chuong-01-bai-01 → chuong-01-bai-02 → chuong-02 → …
+ * chuong-01-bai-01 → chuong-01-bai-02 → chuong-02-bai-01 → …
  * ```
  *
- * Tức trong mỗi chương, **lý thuyết đứng trước bài tập của chính chương đó**.
- * Chương 0 chỉ có lý thuyết và đó là bình thường, không phải thiếu file.
+ * Bài lý thuyết vẫn còn nguyên và vẫn đọc được, chỉ đứng ngoài chuỗi: `theory`
+ * của mỗi chương là một liên kết *Đọc thêm* — không tick, không đếm vào tiến độ,
+ * không bị dòng nhắc vượt bài nhắc tới. Thứ bắt buộc phải biết để tập được thì
+ * nằm ngay trong bài tập, đúng lúc cần. Chương chỉ có lý thuyết (Chương 0) không
+ * còn là một chương trên đường đi. Lý do ghi ở `nhat-ky-quyet-dinh.md`.
  *
  * Phần dựng chuỗi (`buildPath`) nhận danh sách file qua tham số nên không chạm ổ
  * đĩa và kiểm thử được hết — cùng lối tách như `access.ts` / `access-server.ts`.
  */
 
-/** Bước lý thuyết là bài đọc, bước bài tập là bài ngồi vào đàn. */
+/** Lý thuyết là bài đọc thêm của chương, bài tập là bài ngồi vào đàn — chỉ bài tập là bước. */
 export type StepKind = 'theory' | 'exercise';
 
 export interface PathStep {
@@ -44,10 +50,13 @@ export interface PathStep {
 
 export interface PathChapter {
   chapterNumber: number;
-  /** `null` khi chương chưa soạn phần chữ — vẫn dựng chương, không bỏ qua. */
+  /**
+   * Bài lý thuyết của chương, để dẫn tới như *Đọc thêm* — KHÔNG phải một bước.
+   * `null` khi chương chưa soạn phần chữ.
+   */
   theory: PathStep | null;
   exercises: PathStep[];
-  /** Mọi bước của chương theo thứ tự học, lý thuyết trước. */
+  /** Các bước phải làm của chương, theo thứ tự học. Chỉ gồm bài tập. */
   steps: PathStep[];
 }
 
@@ -99,20 +108,19 @@ export function buildPath(files: Pick<MarkdownFile, 'category' | 'slug' | 'title
     }
   }
 
-  const chapterNumbers = [...new Set([...theoryOf.keys(), ...exercisesOf.keys()])].sort(
-    (a, b) => a - b
-  );
+  // Chỉ chương có bài tập mới là chương trên đường đi — không có gì để ngồi vào
+  // đàn thì không có bước nào để làm.
+  const chapterNumbers = [...exercisesOf.keys()].sort((a, b) => a - b);
 
   return chapterNumbers.map((chapterNumber) => {
-    const theory = theoryOf.get(chapterNumber) ?? null;
     const exercises = (exercisesOf.get(chapterNumber) ?? []).sort(
       (a, b) => (a.lessonNumber ?? 0) - (b.lessonNumber ?? 0)
     );
     return {
       chapterNumber,
-      theory,
+      theory: theoryOf.get(chapterNumber) ?? null,
       exercises,
-      steps: theory ? [theory, ...exercises] : exercises,
+      steps: exercises,
     };
   });
 }
@@ -174,12 +182,11 @@ export function skippedStep(
  * Bước trước và bước sau của một bài đang mở, tính trên ĐƯỜNG ĐI chứ không trong
  * riêng thư mục của nó.
  *
- * Đây là chỗ nút *Bài tiếp theo* đổi nghĩa: cuối lý thuyết Chương 3 nay dẫn sang
- * bài tập Chương 3 - Bài 1, và cuối bài tập cuối của chương dẫn sang lý thuyết
- * chương sau. Trước đó nó chỉ đi trong một thư mục nên nhảy cóc qua cả chương.
+ * Cuối bài tập cuối của một chương, *Bài tiếp theo* dẫn thẳng sang bài tập đầu
+ * của chương sau — không dừng ở trang lý thuyết nữa (đổi 14/09/2026).
  *
- * Bài không nằm trên đường đi (Lộ trình, Đọc thêm) thì trả về hai `null` và giao
- * diện không hiện gì — đúng như cũ, vì chúng là bài rời chứ không có thứ tự.
+ * Bài không nằm trên đường đi (lý thuyết, Lộ trình, Đọc thêm) thì trả về hai
+ * `null` và giao diện không hiện gì, vì chúng là bài rời chứ không có thứ tự.
  */
 export function stepNeighbors(slug: string): { prev: PathStep | null; next: PathStep | null } {
   return neighborsOf(getAllSteps(), slug);

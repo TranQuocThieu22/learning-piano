@@ -26,35 +26,31 @@ description: Soạn bài học piano mới theo cấu trúc Chương/Bài của 
   Pick by what the learner needs to recognise: keys under the fingers, or marks on the page. A sentence like "ba ngón cách nhau đều đặn, giữa mỗi cặp có một phím trắng bỏ trống" is a picture pretending to be a paragraph.
 - Run `pnpm check:lessons` after writing any lesson. It parses every ABC block with the same abcjs the app uses and fails on: bars that do not add up to `M:`, Grand Staff voices with unequal bar counts, notes outside the taught 5-finger position, filenames or titles that break the `chuong-XX-bai-YY` contract, and Vietnamese titles missing their diacritics.
 
-# Daily Practice Structure
-When giving instructions for a daily piano practice session, you MUST structure the lesson to fit a 30-45 minute timeframe, divided into the following sections:
+# Lesson Layout — Practice First (settled 14/09/2026)
+The owner decided lessons are **practice first, theory is optional reading**: *"học gì cũng thực hành trước, ai muốn coi lý thuyết thì đọc thêm"*. Measured before the change, lesson files were ~70% prose and the theory chapter sat in front of every chapter as a required step. Reasons in `docs/_internal/nhat-ky-quyet-dinh.md`.
 
-1. **Bài tập Không cần đàn / Away from piano (Tập ban ngày lúc rảnh rỗi)**:
-   - **CRITICAL DETAIL REQUIREMENT**: When generating these exercises, DO NOT be generic or superficial. You MUST provide highly detailed, step-by-step physical instructions tailored EXACTLY to the new skill of the day. For example, if teaching leaps, specify exactly which fingers to lift and tap. If teaching music copying, describe exactly how to draw the clef and where to place the note on the 5 lines (e.g., "draw a circle cut by the first line").
-   - **MANDATORY**: ALWAYS include a **Tapping/Rhythm (Bài tập mặt bàn)** exercise. This is crucial for beginners to build finger independence and rhythm.
-   - **OPTIONAL ADDITION**: You MUST also add **ONE (1) additional optional method** from the list below to keep things fresh:
-     - **Mental Play / Visualization (Luyện tập Tưởng tượng)**: Closing eyes and vividly imagining the hands, keys, and sounds of the piece.
-     - **Score Study (Đọc chay bản nhạc)**: Reading the sheet music (or ABC notation) like a book, saying note names and clapping the rhythm.
-     - **Solfège/Singing (Hát giai điệu)**: Singing or humming the melody of the exercise to internalize the pitch and rhythm before playing.
-     - **Music Copying / Dictation (Chép nốt nhạc ra giấy)**: Drawing a 5-line staff and manually writing down notes, clefs, or composing short melodies on paper to build deep visual memory.
-2. **Khởi động & Ôn tập trên đàn (5-10 phút)**:
-   - Reviewing the previous day's theory or doing simple finger warm-ups. Name the SPECIFIC exercise from the previous lesson to replay.
-3. **Học kiến thức / Kỹ năng mới trên đàn (15-20 phút)**:
-   - Core practice. Focusing intensely on the new skill for the day (e.g., finding new notes, learning a new rhythm).
-   - **MANDATORY**: You MUST generate at least **3 to 4 varied exercises (ABC notation blocks)** per lesson. Do not just provide 1 exercise. Provide a warm-up exercise (e.g., Bài tập A), a familiar melody or variation (e.g., Bài tập B), and a slightly more challenging pattern (e.g., Bài tập C). This ensures the user has enough material to practice for 15-20 minutes without getting bored.
-   - Emphasize taking breaks if hands get tense.
-4. **Thực hành tự do & Luyện tai (5-10 phút)**:
-   - **MANDATORY: Every lesson MUST include an Ear Training (Thẩm âm) challenge.** The user currently trains eyes (reading) and hands (playing) but not ears. Pick one appropriate to the lesson, for example:
-     - Close eyes, press a key, then sing "Aaaa" matching that exact pitch, then check.
-     - Play two notes blind and guess whether the second is higher or lower, and by how many keys.
-     - Play a major vs minor third blind and call out "Vui!" or "Buồn!".
-     - Try to find a simple known melody by ear alone, without any sheet music.
-   - Also include free playing: playing through slowly without stopping, improvising, or exploring the keyboard.
+**Chương 1-2 already follow this layout — copy them.** Chương 3-7 are still in the old layout and wait for the owner's approval of the pilot before being rewritten.
+
+Every exercise lesson, in this order:
+
+1. **One short paragraph**: what the learner will be able to play by the end, and how many days (ONE number, e.g. "Bài này tập trong **2 ngày**: ngày 1 làm 1A và 1B, ngày 2 làm 1C và 1D."). No day-plan table, no `[!TIP]` box for the estimate.
+2. **Only the knowledge needed to play, right where it is needed** — one to three lines, a picture if the thing is spatial (`![...](/images/...)` or a ```keys``` block). Example: where middle C is, finger numbers, what a rest looks like. Anything longer belongs in the theory chapter.
+3. Optional `## Khởi động`: one line naming the SPECIFIC earlier exercise to replay, with `{{sheet: ...}}` embeds.
+4. **3 to 4 exercises**, each `## Bài tập <code>: <title>` (the heading pattern is a contract with `src/lib/sheet-embed.ts`) followed by **1-2 lines of instruction**, then the ```abc``` block. The cue is what the eye needs at arm's length: which hand, what to watch for, how slow. No "vì sao" here.
+5. `## Xong bài khi` (see below).
+6. `---`, then an optional one-line celebration at the end of a chapter.
+7. `## Đọc thêm (không bắt buộc)` — short bold-led paragraphs: **Tập khi không có đàn** (tapping), a **Luyện tai** challenge, and any *why* explanation or motivation. End with a link to the chapter's theory page.
+
+Rules that did not change, only moved:
+- Still give an away-from-piano tapping drill and an ear-training challenge in every lesson — but inside *Đọc thêm*, specific to the day's skill (which fingers, which rhythm), 2-3 lines each.
+- Still at least 3-4 varied ABC exercises (warm-up, familiar melody, harder pattern).
+
+**Theory chapters (`docs/02-chapters/chuong-XX.md`) are not steps.** They are not on the learning path, not tickable, and open with a quote block saying *"Đây là bài đọc thêm, không bắt buộc"* plus a link to the chapter's first exercise. Never write an exercise that only makes sense after reading the theory chapter, and never tell the learner to read it first.
 
 # "Xong bài khi" — every exercise lesson MUST have it
-- Put a `## Xong bài khi` section **right before** `## Yêu cầu thực hành`. It holds **2 to 4 bullet lines** (`- ...`), each a concrete, self-checkable outcome: *"Đánh trọn 2E từ nốt đầu tới nốt cuối — chậm cũng được, không dừng lại để sửa."*
+- Put a `## Xong bài khi` section **right after the last exercise**, before the `---` that opens *Đọc thêm*. (Chương 3-7, still in the old layout, have it right before `## Yêu cầu thực hành`.) It holds **2 to 4 bullet lines** (`- ...`), each a concrete, self-checkable outcome: *"Đánh trọn 2E từ nốt đầu tới nốt cuối — chậm cũng được, không dừng lại để sửa."*
 - The app **lifts this section out of the lesson body and shows it right above the tick button** (`src/lib/done-criteria.ts`). That is the moment the learner asks "am I done?", so write it for that moment: short enough to read at arm's length from the music stand (max 130 characters per line), plain text only — no `**bold**`, links or backticks, they would show up as raw symbols.
-- **Outcomes, not practice instructions.** "Tập 15 lần" or "tập riêng từng tay trước" belong in *Yêu cầu thực hành*. "Hai tay xuống phím cùng một lúc" belongs in *Xong bài khi*. Do not write the same sentence in both sections — the learner reads them back to back.
+- **Outcomes, not practice instructions.** "Tập 15 lần" or "tập riêng từng tay trước" belong in the exercise cue. "Hai tay xuống phím cùng một lúc" belongs in *Xong bài khi*. Do not write the same sentence in both sections — the learner reads them back to back.
 - **Never demand perfection or a connected piano.** "Chậm cũng được", "sai nốt cũng được, chỉ không dừng lại để sửa" is the house standard. Never write "tập với đàn đạt 100%" — the app deliberately does not gate lessons (reasons in `docs/_internal/nhat-ky-quyet-dinh.md`), and iPhone cannot use Web MIDI.
 - `pnpm test` (`done-criteria.test.ts`) fails if an exercise file lacks the section, has fewer than 2 or more than 4 lines, a line is too long, or a line contains markdown.
 
@@ -66,7 +62,7 @@ When giving instructions for a daily piano practice session, you MUST structure 
 # Write for a Phone on the Music Stand
 Learners read lessons mainly on a **phone or tablet**, and practise with that device propped on the piano's music stand — a laptop has nowhere to sit on a keyboard, so almost nobody practises with one. This is a settled product decision (see `AGENTS.md`). When writing lesson text:
 - **Never assume a computer.** Do not write "trên máy tính", "bấm chuột", "mở máy tính lên nghe". Say "trên điện thoại" or just "bấm nghe thử" — the instruction should work on whatever device the learner holds.
-- **The practice sections are read at arm's length, hands on the keys.** Keep each on-piano step short enough to take in with one glance at the stand; put the long explanation in the theory part or the away-from-piano part, which are read with the phone in hand.
+- **The practice sections are read at arm's length, hands on the keys.** Keep each on-piano step short enough to take in with one glance at the stand; put the long explanation in *Đọc thêm* or the theory chapter, which are read with the phone in hand.
 - **Never make a lesson depend on connecting the piano (Web MIDI).** It works on Android and on computers but not on iPhone/iPad, so every exercise must be fully doable with just the piano and the sheet music. "Tập bài này với đàn" can be suggested as an extra, never as a step.
 
 Always remind the user that **quality over quantity** is key. 30 minutes of highly focused practice is better than 2 hours of mindless playing.

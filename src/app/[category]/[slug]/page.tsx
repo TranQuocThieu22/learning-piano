@@ -9,7 +9,9 @@ import { auth } from '@/auth';
 import { getCompletedLessonSlugs } from '@/lib/progress';
 import { LessonLocked } from '@/components/LessonLocked';
 import { LessonNav } from '@/components/LessonNav';
-import { getAllSteps, skippedStep, stepNeighbors } from '@/lib/learning-path';
+import { getAllSteps, getLearningPath, skippedStep, stepNeighbors } from '@/lib/learning-path';
+import { NavButton } from '@/components/NavButton';
+import { IconArrowLeft } from '@tabler/icons-react';
 import { splitDoneCriteria } from '@/lib/done-criteria';
 import { SkipAheadNotice } from '@/components/SkipAheadNotice';
 import { canReadLesson } from '@/lib/access';
@@ -40,11 +42,22 @@ export default async function Page({ params }: { params: Promise<{ category: str
     : new Set<string>();
 
   /*
-   * Bước trên ĐƯỜNG ĐI thì tick được — cả lý thuyết lẫn bài tập (đổi 11/09/2026).
-   * Trước đó chỉ bài tập mới tick được, nên đọc xong một chương lý thuyết không
-   * có cách nào đánh dấu là đã đọc, và bước đó không đếm vào tiến độ.
+   * Chỉ bài tập là bước trên ĐƯỜNG ĐI, nên chỉ bài tập mới tick được. Lý thuyết
+   * từng tick được (11/09/2026) rồi ra khỏi đường đi (14/09/2026): người học tập
+   * trước, ai muốn thì đọc thêm — xem `learning-path.ts`.
    */
-  const isPathStep = category === '02-chapters' || category === '03-exercises';
+  const isPathStep = category === '03-exercises';
+
+  /*
+   * Bài lý thuyết là bài đọc thêm của một chương, nên cuối bài có đường quay về
+   * chính chương đó để tập. Chương không có bài tập (Chương 0) thì về Đường đi.
+   */
+  const theoryChapter = category === '02-chapters' ? /^chuong-(\d+)$/.exec(slug)?.[1] : undefined;
+  const backToPractice = theoryChapter === undefined
+    ? null
+    : getLearningPath().some((c) => c.chapterNumber === Number(theoryChapter))
+      ? { href: `/path/${Number(theoryChapter)}`, label: `Về Chương ${Number(theoryChapter)} — tập ngay` }
+      : { href: '/path', label: 'Về Đường đi — tập ngay' };
 
   /*
    * Phản hồi chỉ hỏi ở các bước trên đường đi, cùng chỗ với nút tick: đó là phần
@@ -98,7 +111,6 @@ export default async function Page({ params }: { params: Promise<{ category: str
               signedIn={Boolean(session?.user)}
               variant="card"
               criteria={criteria}
-              label={category === '02-chapters' ? 'Đã đọc xong chương này' : 'Đã học xong bài này'}
             />
           )}
           {isPathStep && (
@@ -109,6 +121,17 @@ export default async function Page({ params }: { params: Promise<{ category: str
             />
           )}
           <LessonNav {...stepNeighbors(slug)} />
+          {backToPractice && (
+            <NavButton
+              href={backToPractice.href}
+              size="md"
+              mt="xl"
+              fullWidth
+              leftSection={<IconArrowLeft size={18} />}
+            >
+              {backToPractice.label}
+            </NavButton>
+          )}
         </>
       ) : (
         <LessonLocked

@@ -1,6 +1,6 @@
 # Chương 1: Nền tảng phím đàn và nốt nhạc
 
-Bạn vừa nhớ lại lý do mình muốn chơi piano. Giờ là lúc chạm tay vào phím.
+> **Đây là bài đọc thêm, không bắt buộc.** Mọi thứ cần để tập đã nằm sẵn trong bài tập. Muốn tập ngay thì mở **[Chương 1 - Bài 1](/03-exercises/chuong-01-bai-01)**; trang này dành cho lúc bạn muốn hiểu kỹ hơn.
 
 Chương này có đúng **hai bài tập, tổng cộng bốn buổi**, mỗi buổi 30 phút. Hết bốn buổi đó, bạn sẽ **chơi trọn vẹn được Ode to Joy bằng một tay** — bản nhạc của Beethoven, từ nốt đầu tới nốt cuối, không nhìn hướng dẫn.
 
@@ -14,8 +14,6 @@ Không phải một đoạn. Cả bài.
 | **Buổi 2** | Tay trái làm được y hệt tay phải |
 | **Buổi 3** | Ngón tay vươn xa được, không còn dính chùm vào nhau |
 | **Buổi 4** | Chơi trọn Ode to Joy — bản nhạc hoàn chỉnh đầu tiên của bạn |
-
-Đọc hết trang lý thuyết này mất khoảng 8 phút. Sau đó bạn ngồi vào đàn được ngay.
 
 > [!NOTE]
 > **🎹 Bạn cần cây đàn như thế nào?**
@@ -99,9 +97,6 @@ Nói trước để lúc gặp bạn biết là bình thường, chứ không ng
 
 ---
 
-**Nhiệm vụ của bạn hôm nay:**
+**Nếu muốn thử ngay trên đàn:** tìm hết các nốt Đô trên cây đàn của bạn, rồi đọc thuộc 7 chữ cái C, D, E, F, G, A, B.
 
-1. Thuộc lòng 7 chữ cái C, D, E, F, G, A, B.
-2. Tìm được chính xác tất cả các nốt Đô (C) trên cây đàn của bạn.
-3. Đặt ngón cái tay phải (ngón 1) lên nốt Đô giữa, lần lượt đặt các ngón 2, 3, 4, 5 lên các phím Rê, Mi, Pha, Sol kế tiếp.
-4. Sang **[Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên](/03-exercises/chuong-01-bai-01)** — ngay trong buổi đầu bạn đã chơi được câu nhạc đầu tiên rồi.
+**👉 Về tập tiếp: [Chương 1 - Bài 1: Làm quen 5 nốt đầu tiên](/03-exercises/chuong-01-bai-01)**

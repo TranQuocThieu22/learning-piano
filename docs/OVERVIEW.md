@@ -125,7 +125,7 @@ CMS, không có bảng bài học trong database.
 | `/library` | Mục lục những bài NGOÀI đường đi: lộ trình, đọc thêm, bài hát, tin cập nhật. Lý thuyết từng chương nằm ở `/path` (gỡ khỏi đây 12/09/2026) |
 | `/songs` | Góc bài hát: bài quen tai để thử cho vui, miễn phí, không tick |
 | `/path` | Đường đi: danh sách 8 chương kèm tiến độ từng chương |
-| `/path/[chapter]` | Một chương thành từng bước: lý thuyết rồi các bài tập, tick ngay tại chỗ |
+| `/path/[chapter]` | Một chương thành từng bài tập, tick ngay tại chỗ; lý thuyết của chương là nút *Đọc thêm* ở cuối, không phải một bước (đổi 14/09/2026) |
 | `/exercises` | Chuyển hướng về `/path` (gộp 11/09/2026) |
 | `/[category]/[slug]` | Trang đọc bài (Lộ trình / Lý thuyết / Bài tập / Đọc thêm), cuối bài có nút *Bài trước* / *Bài tiếp theo* |
 | `/journal` | Chuyển hướng về `/path` (gộp 11/09/2026) |
@@ -144,7 +144,7 @@ lại thì dùng cử chỉ vuốt của điện thoại, nút back của trình
 cuối mỗi bài.
 
 Mục lục đầy đủ không mất theo mà dời vào hai trang có tên hẳn hoi: `/path` cho mọi thứ
-**nằm trên đường đi** (lý thuyết và bài tập của từng chương), `/library` cho mọi thứ
+**nằm trên đường đi** (bài tập của từng chương, kèm nút *Đọc thêm* dẫn tới lý thuyết của chương đó), `/library` cho mọi thứ
 **không nằm trên đường đi** (lộ trình, đọc thêm, bài hát, tin cập nhật) — cả hai đều trên
 thanh tab. Ranh giới đó chốt ngày 12/09/2026, khi mục Lý thuyết bị gỡ khỏi `/library`:
 liệt kê chương ở cả hai nơi là hai danh sách vẽ cùng một thứ, mà danh sách ở Mục lục còn
@@ -342,6 +342,7 @@ AGENTS.md                  Ràng buộc bắt buộc cho AI agent làm việc tr
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Bảng đường dẫn và đoạn nói về `/path`: lý thuyết không còn là bước trên đường đi mà là nút *Đọc thêm* của trang chương — hai chỗ này mô tả đúng cấu trúc cũ, để nguyên thì người đọc tài liệu sẽ đi tìm một bước lý thuyết không còn tồn tại |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Mục 4 thêm ba đường dẫn mới (`/review/[chapter]`, `/my-sheets`, `/my-sheets/[id]`) và hai tính năng: kho ôn luyện mở cửa cho bộ sinh bài tập vốn đã viết xong mà chưa ai gọi, và Kho nhạc của tôi cho người học tự đưa bản nhạc vào — hai lời giải cho cùng một vấn đề *hết bài để tập*, một bên không đụng bản quyền, một bên đổi vai app thành nơi chứa |
 | 12/09/2026 | `feat: Nối đàn qua Bluetooth MIDI, khỏi cần dây` | Nói rõ MIDI nối được bằng cả dây lẫn Bluetooth — chỗ này trước chỉ ghi "dây MIDI, cáp OTG", đọc vào tưởng bắt buộc phải có dây, trong khi đàn có Bluetooth thì ghép đôi là chạy |
 | 12/09/2026 | `refactor: Hai bài luyện cũng đi qua cửa abcjs, không component nào gọi thẳng nữa` | Sơ đồ thư mục thêm `hooks/` và nói rõ bốn cửa duy nhất gọi abcjs — để người sửa sau biết đụng vào thư viện vẽ nhạc là đụng vào đâu, thay vì lần theo import trong từng component |
