@@ -115,16 +115,29 @@ export function isImageMime(mime: string): boolean {
 }
 
 /**
+ * Cỡ tối đa của file MusicXML sau khi giải nén từ `.mxl`.
+ *
+ * Chặn "bom nén": vài KB nén ra hàng GB là treo trình duyệt của chính người học.
+ * Hai mươi MB rộng hơn trăm lần một bản nhạc piano thật (bản 4 giáng đã đo giải
+ * nén ra 126KB), và bản dài tới mức ấy thì `MAX_ABC_CHARS` cũng chặn sau khi đọc.
+ */
+export const MAX_UNPACKED_XML_BYTES = 20 * 1024 * 1024;
+
+/**
  * Định dạng suy từ tên file, `null` nếu không nhận ra.
  *
  * Nhận theo ĐUÔI FILE chứ không theo kiểu MIME mà trình duyệt khai: máy Android
  * hay khai `.mid` là `application/octet-stream`, có máy khai chuỗi rỗng — chặn
  * theo MIME là người học thấy app từ chối file hoàn toàn hợp lệ.
+ *
+ * `.mxl` (MusicXML nén) là nguồn `musicxml` chứ không phải một dòng mới trong
+ * `SHEET_SOURCES`: giải nén ra đúng file MusicXML, app làm được đúng những việc
+ * đó, và cột `source` trong database không phải thêm giá trị nào.
  */
 export function detectSource(fileName: string): SheetSource | null {
   const duoi = fileName.toLowerCase().split('.').pop() ?? '';
   if (duoi === 'mid' || duoi === 'midi') return 'midi';
-  if (duoi === 'musicxml' || duoi === 'xml') return 'musicxml';
+  if (duoi === 'musicxml' || duoi === 'xml' || duoi === 'mxl') return 'musicxml';
   return null;
 }
 

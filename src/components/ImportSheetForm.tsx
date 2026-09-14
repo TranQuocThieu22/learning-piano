@@ -10,12 +10,13 @@ import { saveImportedSheet } from '@/lib/sheet-actions';
 import { sheetErrorMessage, sheetSource, type SheetSource } from '@/lib/user-sheets';
 
 /**
- * Nhập một file `.mid` hoặc `.musicxml` thành bản nhạc trong kho riêng.
+ * Nhập một file `.mid`, `.musicxml` hoặc `.mxl` thành bản nhạc trong kho riêng.
  *
  * **File được đọc ngay tại máy người học**, không gửi lên máy chủ: `importSheetFile`
  * là hàm thuần nên chạy được cả hai bên, và chạy ở đây thì người học thấy bản nhạc
  * hiện ra trước khi quyết định lưu — file hỏng hay file nhầm thì biết ngay trong
- * một giây, không phải chờ tải lên.
+ * một giây, không phải chờ tải lên. File `.mxl` cũng được giải nén ngay tại đây,
+ * vì trên điện thoại người học không có cách nào tự giải nén.
  *
  * **Xem trước rồi mới lưu, cố ý.** Máy phải đoán vài thứ khi đọc file MIDI (hai
  * tay, trường độ), nên bắt buộc phải có một bước người học nhìn bằng mắt rồi mới
@@ -36,7 +37,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
     setError(null);
     try {
       const bytes = new Uint8Array(await file.arrayBuffer());
-      const sheet = importSheetFile(file.name, bytes);
+      const sheet = await importSheetFile(file.name, bytes);
       setPreview({ abc: sheet.abc, source: sheet.source });
       setTitle(sheet.title);
     } catch (e) {
@@ -72,7 +73,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
       <input
         ref={inputRef}
         type="file"
-        accept=".mid,.midi,.musicxml,.xml"
+        accept=".mid,.midi,.musicxml,.xml,.mxl"
         hidden
         onChange={(e) => {
           void onPick(e.target.files?.[0] ?? null);
@@ -89,7 +90,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
         variant="light"
         disabled={!signedIn}
       >
-        Chọn file .mid hoặc .musicxml
+        Chọn file .mid, .mxl hoặc .musicxml
       </Button>
 
       {!signedIn && (

@@ -84,8 +84,9 @@ export default async function MySheetsPage() {
               Nhập từ file nhạc
             </Title>
             <Text size="sm" c="dimmed" mb="sm">
-              File <strong>.mid</strong> hoặc <strong>.musicxml</strong> — app đọc ra nốt nên nghe
-              mẫu và tập với đàn thật được như mọi bài trong giáo trình.
+              File <strong>.mid</strong>, <strong>.musicxml</strong> hoặc bản nén{' '}
+              <strong>.mxl</strong> — app đọc ra nốt nên nghe mẫu và tập với đàn thật được như mọi
+              bài trong giáo trình.
             </Text>
             <ImportSheetForm signedIn={Boolean(userId)} />
           </Card>

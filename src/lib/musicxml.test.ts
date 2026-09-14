@@ -93,8 +93,8 @@ describe('đọc file MusicXML', () => {
     expect(parseMusicXml(file(measure)).staves[0].events[0].midis).toEqual([60]);
   });
 
-  it('file .mxl nén thì chỉ đúng cách lấy file đọc được', () => {
-    expect(() => parseMusicXml('PKnén-zip')).toThrow(/\.musicxml/);
+  it('file nén lọt vào tới bộ đọc thì nói rõ là file nén, không bảo "không phải MusicXML"', () => {
+    expect(() => parseMusicXml('PKnén-zip')).toThrow(/file nén/);
   });
 
   it('file không phải MusicXML thì nói thẳng', () => {

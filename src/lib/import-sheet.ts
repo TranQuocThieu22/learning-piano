@@ -1,20 +1,26 @@
 import { ImportedScoreError, toAbc } from './imported-score';
 import { parseMidiFile } from './midi-file';
+import { unpackMxl } from './mxl';
 import { parseMusicXml } from './musicxml';
 import { detectSource, titleFromFileName, MAX_ABC_CHARS, type SheetSource } from './user-sheets';
+import { isZip, type InflateRaw } from './zip-read';
 
 /**
  * Cửa **duy nhất** biến một file người học chọn thành bản nhạc lưu được.
  *
  * Gộp ở đây chứ không để mỗi trang tự gọi `parseMidiFile` hay `parseMusicXml`:
  * trang nhập, phần thử trước khi lưu và (về sau) mọi chỗ khác đều cần đúng chuỗi
- * việc này — nhận ra định dạng, đọc, ghi ra ABC, đặt tên, kiểm độ dài. Chép chuỗi
- * đó sang chỗ thứ hai là chỗ thứ hai quên một bước, thường là bước kiểm.
+ * việc này — nhận ra định dạng, giải nén, đọc, ghi ra ABC, đặt tên, kiểm độ dài.
+ * Chép chuỗi đó sang chỗ thứ hai là chỗ thứ hai quên một bước, thường là bước kiểm.
  *
  * Chạy được cả trong trình duyệt lẫn trong vitest: nhận thẳng `Uint8Array` và
  * không chạm `window` (quy tắc 2 của `.claude/skills/code-standards/SKILL.md`).
  * Thật sự thì nó CHẠY ở trình duyệt — máy của người học đọc file rồi chỉ gửi lên
  * chuỗi ABC, nên máy chủ không bao giờ phải nhận một file nhị phân lạ.
+ *
+ * Là hàm bất đồng bộ vì file `.mxl` phải giải nén, mà bộ giải nén của trình duyệt
+ * (`DecompressionStream`) chỉ có dạng luồng. `inflateRaw` để trống là dùng bộ của
+ * trình duyệt; test truyền bộ của `node:zlib`.
  */
 
 export interface ImportedSheet {
@@ -29,11 +35,15 @@ function decodeUtf8(bytes: Uint8Array): string {
   return text.charCodeAt(0) === 0xfeff ? text.slice(1) : text;
 }
 
-export function importSheetFile(fileName: string, bytes: Uint8Array): ImportedSheet {
+export async function importSheetFile(
+  fileName: string,
+  bytes: Uint8Array,
+  inflateRaw?: InflateRaw,
+): Promise<ImportedSheet> {
   const source = detectSource(fileName);
   if (source === null || source === 'photo') {
     throw new ImportedScoreError(
-      'App nhận file .mid, .midi, .musicxml hoặc .xml. Bản nhạc giấy thì dùng phần chụp ảnh bên dưới.',
+      'App nhận file .mid, .midi, .musicxml, .mxl hoặc .xml. Bản nhạc giấy thì dùng phần chụp ảnh bên dưới.',
     );
   }
 
@@ -41,7 +51,13 @@ export function importSheetFile(fileName: string, bytes: Uint8Array): ImportedSh
     throw new ImportedScoreError('File này rỗng.');
   }
 
-  const score = source === 'midi' ? parseMidiFile(bytes) : parseMusicXml(decodeUtf8(bytes));
+  /*
+   * Bản nén nhận ra theo BYTE ĐẦU, không theo đuôi `.mxl`: file `.xml` mà thật ra
+   * là bản nén vẫn mở được, và file `.mxl` mà không nén cũng không bị bắt giải nén.
+   */
+  const score = source === 'midi'
+    ? parseMidiFile(bytes)
+    : parseMusicXml(decodeUtf8(isZip(bytes) ? await unpackMxl(bytes, inflateRaw) : bytes));
   const abc = toAbc(score);
 
   if (abc.length > MAX_ABC_CHARS) {

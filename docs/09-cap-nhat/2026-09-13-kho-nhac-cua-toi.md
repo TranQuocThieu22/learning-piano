@@ -7,8 +7,8 @@ nhan: Kho nhạc
 Bạn có một bài muốn tập mà Góc bài hát chưa có? Từ hôm nay mang nó vào được, ở mục
 **Kho nhạc của tôi** trong Mục lục. Hai đường, tuỳ thứ bạn đang có trong tay.
 
-**Nếu bạn có file nhạc** (`.mid` hoặc `.musicxml`): chọn file, app vẽ ngay ra khuông nhạc cho
-bạn xem trước. Ưng thì lưu. Bản nhạc đó dùng được **đủ như mọi bài trong giáo trình** — nghe
+**Nếu bạn có file nhạc** (`.mid`, `.musicxml`, hoặc bản nén `.mxl` — không cần giải nén trước):
+chọn file, app vẽ ngay ra khuông nhạc cho bạn xem trước. Ưng thì lưu. Bản nhạc đó dùng được **đủ như mọi bài trong giáo trình** — nghe
 mẫu, phóng to, chế độ tập trung, và *Tập bài này với đàn* để app nghe bạn đánh rồi tô xanh
 từng nốt đúng.
 

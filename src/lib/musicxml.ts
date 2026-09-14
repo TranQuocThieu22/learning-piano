@@ -298,10 +298,26 @@ function readPart(part: Element, divisionsBanDau: number): {
   return { notes, divisions, time, bpm };
 }
 
+/**
+ * Đường dẫn bản nhạc chính ghi trong `META-INF/container.xml` của file `.mxl`.
+ *
+ * Để ở đây để dùng chung bộ đọc XML với phần đọc bản nhạc, thay vì viết thêm một
+ * biểu thức chính quy đọc thuộc tính thứ hai (quy tắc 1 của code-standards). Theo
+ * chuẩn MusicXML, `rootfile` ĐẦU TIÊN là bản nhạc; các `rootfile` sau nếu có là bản
+ * PDF hay ảnh đi kèm.
+ */
+export function rootfilePath(containerXml: string): string | null {
+  const rootfile = findDeep(buildTree(tokenize(containerXml)), 'rootfile');
+  const path = rootfile?.attrs['full-path']?.trim();
+  return path || null;
+}
+
 export function parseMusicXml(xml: string): ImportedScore {
+  // `import-sheet.ts` đã giải nén `.mxl` trước khi gọi tới đây, nên còn gặp `PK` là
+  // file nén lồng trong file nén — nói thẳng thay vì báo "không phải MusicXML".
   if (xml.startsWith('PK')) {
     throw new ImportedScoreError(
-      'Đây là file .mxl (bản nén). Mở nó bằng phần mềm soạn nhạc rồi xuất ra .musicxml, hoặc đổi đuôi file thành .zip rồi giải nén lấy file .musicxml bên trong.',
+      'Bên trong file này lại là một file nén khác, app không đọc được. Xuất lại ra .musicxml từ phần mềm soạn nhạc rồi nhập file đó.',
     );
   }
 

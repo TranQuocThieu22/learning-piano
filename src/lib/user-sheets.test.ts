@@ -21,6 +21,11 @@ describe('nhận ra định dạng file người học chọn', () => {
     expect(detectSource('song.XML')).toBe('musicxml');
   });
 
+  it('file MusicXML nén (.mxl) đi cùng đường với MusicXML thường', () => {
+    expect(detectSource('slow-summer-eve.mxl')).toBe('musicxml');
+    expect(detectSource('BAI.MXL')).toBe('musicxml');
+  });
+
   it('ảnh và file lạ không lọt vào đường nhập bản nhạc', () => {
     expect(detectSource('trang-1.jpg')).toBeNull();
     expect(detectSource('ban-nhac.pdf')).toBeNull();
