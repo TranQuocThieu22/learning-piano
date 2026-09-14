@@ -1,4 +1,5 @@
-import { ImportedScoreError, toAbc } from './imported-score';
+import { ImportedScoreError, toAbc, type ImportedScore } from './imported-score';
+import { findKey, type KeySignature } from './midi-notes';
 import { parseMidiFile } from './midi-file';
 import { unpackMxl } from './mxl';
 import { parseMusicXml } from './musicxml';
@@ -27,6 +28,33 @@ export interface ImportedSheet {
   title: string;
   abc: string;
   source: SheetSource;
+  /**
+   * Bản nhạc đã đọc xong, giữ lại để đổi hoá biểu mà **không phải đọc lại file**.
+   *
+   * Người học đổi hoá biểu ngay trên trang xem trước, và mỗi lần đổi là ghi lại
+   * cả chuỗi ABC. Bắt họ chọn file lần nữa cho mỗi lần thử là hỏng đúng cái bước
+   * "nhìn bằng mắt rồi mới gật" mà cả luồng này dựng ra để có.
+   */
+  score: ImportedScore;
+  /** Hoá biểu đang dùng cho `abc` — file khai gì thì lấy nấy, không khai thì Đô trưởng. */
+  key: KeySignature;
+}
+
+/**
+ * Ghi bản nhạc ra ABC theo một hoá biểu, kèm luôn phần kiểm độ dài.
+ *
+ * Trang nhập gọi lại hàm này mỗi lần người học đổi hoá biểu, nên phần kiểm phải
+ * nằm ngay đây chứ không nằm trong `importSheetFile`: đó đúng là kiểu bỏ sót mà
+ * chú thích đầu file nói tới — chỗ thứ hai quên mất một bước, thường là bước kiểm.
+ */
+export function sheetAbc(score: ImportedScore, key: KeySignature): string {
+  const abc = toAbc(score, key);
+  if (abc.length > MAX_ABC_CHARS) {
+    throw new ImportedScoreError(
+      'Bản nhạc này dài quá mức app giữ được. Cắt bớt trong phần mềm soạn nhạc rồi nhập lại từng đoạn.',
+    );
+  }
+  return abc;
 }
 
 /** Bỏ dấu BOM: phần mềm soạn nhạc trên Windows hay để nó ở đầu file XML. */
@@ -58,13 +86,8 @@ export async function importSheetFile(
   const score = source === 'midi'
     ? parseMidiFile(bytes)
     : parseMusicXml(decodeUtf8(isZip(bytes) ? await unpackMxl(bytes, inflateRaw) : bytes));
-  const abc = toAbc(score);
-
-  if (abc.length > MAX_ABC_CHARS) {
-    throw new ImportedScoreError(
-      'Bản nhạc này dài quá mức app giữ được. Cắt bớt trong phần mềm soạn nhạc rồi nhập lại từng đoạn.',
-    );
-  }
+  const key = score.key ?? findKey('C');
+  const abc = sheetAbc(score, key);
 
   /*
    * Tên file thắng tên ghi trong file khi file khai một cái tên vô nghĩa: phần
@@ -75,5 +98,5 @@ export async function importSheetFile(
   const voNghia = /^(untitled|unnamed|score|bản nhạc của tôi)/i.test(trongFile);
   const title = !trongFile || voNghia ? titleFromFileName(fileName) : trongFile.slice(0, 120);
 
-  return { title, abc, source };
+  return { title, abc, source, score, key };
 }

@@ -31,6 +31,33 @@ describe('đọc file MusicXML', () => {
     expect(parseMusicXml(xml).staves[0].events[0].midis).toEqual([70]);
   });
 
+  it('file khai hoá biểu thì mở ra sẵn đúng giọng đó', () => {
+    const attrs = '<attributes><divisions>1</divisions><key><fifths>-4</fifths><mode>major</mode></key>'
+      + '<time><beats>4</beats><beat-type>4</beat-type></time></attributes>';
+    const score = parseMusicXml(file(`<measure number="1">${attrs}${note('C', 4, 4)}</measure>`));
+    expect(score.key?.id).toBe('Ab');
+    expect(toAbc(score)).toContain('K: Ab');
+  });
+
+  it('bài chuyển giọng giữa chừng thì lấy hoá biểu khai đầu tiên', () => {
+    const dau = '<attributes><divisions>1</divisions><key><fifths>-2</fifths></key>'
+      + '<time><beats>4</beats><beat-type>4</beat-type></time></attributes>';
+    const doi = '<attributes><key><fifths>3</fifths></key></attributes>';
+    const score = parseMusicXml(file(
+      `<measure number="1">${dau}${note('B', 4, 4)}</measure>`
+      + `<measure number="2">${doi}${note('D', 4, 4)}</measure>`,
+    ));
+    // Ba thăng khai ở ô nhịp sau không được trùm lên cả bản nhạc: đoạn chuyển
+    // giọng vẫn đọc được nhờ dấu hoá cạnh nốt, còn ghi đè là cả bài mang hoá biểu
+    // của mấy ô cuối.
+    expect(score.key?.id).toBe('Bb');
+  });
+
+  it('file không khai hoá biểu thì để trống cho người học tự chọn, không đoán', () => {
+    const score = parseMusicXml(file(`<measure number="1">${ATTRS}${note('C', 4, 4)}</measure>`));
+    expect(score.key).toBeNull();
+  });
+
   it('nốt bấm cùng lúc trong cùng thẻ chord thành một chồng nốt', () => {
     const chord = `${note('C', 4, 4)}${note('E', 4, 4, '<chord/>')}${note('G', 4, 4, '<chord/>')}`;
     const score = parseMusicXml(file(`<measure number="1">${ATTRS}${chord}</measure>`));

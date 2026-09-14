@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import {
   allowedDrillOptions, FREE_DRILL_PRESET,
   allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
-  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, KEY_SIGNATURES,
+  DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, keyFromFifths,
+  KEY_SIGNATURES, KEYS_BY_FIFTHS, keysForOptions,
   MAX_PER_STAFF, noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
   pickNextQuestion, presetOf, questionAbc,
 } from './midi-notes';
@@ -48,10 +49,37 @@ describe('hoá biểu', () => {
   const G = findKey('G');
   const F = findKey('F');
 
-  it('bảy giọng, từ không dấu tới ba dấu mỗi bên', () => {
-    expect(KEY_SIGNATURES.map((k) => k.id)).toEqual(['C', 'G', 'D', 'A', 'F', 'Bb', 'Eb']);
+  it('bài luyện nhận nốt vẫn chỉ hỏi bảy giọng, từ không dấu tới ba dấu mỗi bên', () => {
+    const hoi = keysForOptions({ ...DRILL_PRESETS[0].options, randomKeys: true });
+    expect(hoi.map((k) => k.id)).toEqual(['C', 'G', 'D', 'A', 'F', 'Bb', 'Eb']);
     expect(Object.keys(findKey('A').alter)).toHaveLength(3);
     expect(Object.keys(findKey('Eb').alter)).toHaveLength(3);
+  });
+
+  it('bản nhạc nhập vào chọn được cả vòng quãng năm, xếp từ bảy giáng tới bảy thăng', () => {
+    expect(KEYS_BY_FIFTHS.map((k) => k.fifths)).toEqual([-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7]);
+    expect(KEYS_BY_FIFTHS[0].id).toBe('Cb');
+    expect(KEYS_BY_FIFTHS.at(-1)?.id).toBe('C#');
+    // Số dấu ở đầu khuông phải khớp số chữ cái bị hoá, không thì hoá biểu vẽ ra
+    // một đằng mà nốt viết một nẻo.
+    for (const key of KEY_SIGNATURES) {
+      expect(Object.keys(key.alter), key.id).toHaveLength(Math.abs(key.fifths));
+    }
+  });
+
+  it('số dấu file khai tra ra đúng giọng, con số vô lý thì trả về rỗng chứ không bịa', () => {
+    expect(keyFromFifths(-4)?.id).toBe('Ab');
+    expect(keyFromFifths(0)?.id).toBe('C');
+    expect(keyFromFifths(3)?.id).toBe('A');
+    expect(keyFromFifths(9)).toBeNull();
+  });
+
+  it('giọng sáu bảy dấu vẫn viết nốt ra đúng phím', () => {
+    // Sol giáng trưởng: phím trắng Si viết là Đô giáng, vì Si đã bị hoá trong hoá biểu.
+    expect(noteAt(59, findKey('Gb')).abc).toBe('C');
+    expect(noteAt(59, findKey('Gb')).scientific).toBe('C♭4');
+    // Đô thăng trưởng: phím trắng Đô viết là Si thăng, ở quãng tám của chữ B.
+    expect(noteAt(60, findKey('C#')).abc).toBe('B,');
   });
 
   it('giọng lạ thì lùi về Đô trưởng chứ không vỡ', () => {

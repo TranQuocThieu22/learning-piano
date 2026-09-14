@@ -6,14 +6,16 @@ import {
   type ImportedStaff,
   type TimedNote,
 } from './imported-score';
+import { keyFromFifths, type KeySignature } from './midi-notes';
 
 /**
  * Đọc file MusicXML (`.musicxml`, `.xml`) thành bản nhạc nhập vào.
  *
  * **Vì sao MusicXML đứng cạnh MIDI:** MusicXML là bản NHẠC, không phải bản ghi
  * cách đánh — nó có sẵn khuông Sol/khuông Pha, có trường độ đúng từng hình nốt,
- * nên nhập vào không phải đoán gì cả. Mọi phần mềm soạn nhạc đều xuất ra được.
- * Đổi lại, file dạng này hiếm hơn `.mid` nhiều, nên app nhận cả hai.
+ * có sẵn hoá biểu, nên nhập vào không phải đoán gì cả. Mọi phần mềm soạn nhạc
+ * đều xuất ra được. Đổi lại, file dạng này hiếm hơn `.mid` nhiều, nên app nhận
+ * cả hai.
  *
  * **Vì sao tự đọc XML chứ không dùng thư viện:** phần đọc phải chạy được trong
  * `vitest` (`environment: 'node'`, không có `DOMParser`) và trong trình duyệt của
@@ -201,11 +203,13 @@ function readPart(part: Element, divisionsBanDau: number): {
   notes: Map<string, TimedNote[]>;
   divisions: number;
   time: { beatsPerBar: number; beatUnit: number } | null;
+  hoaBieu: KeySignature | null;
   bpm: number | null;
 } {
   const notes = new Map<string, TimedNote[]>();
   let divisions = divisionsBanDau;
   let time: { beatsPerBar: number; beatUnit: number } | null = null;
+  let hoaBieu: KeySignature | null = null;
   let bpm: number | null = null;
 
   let measureStart = 0;
@@ -230,6 +234,13 @@ function readPart(part: Element, divisionsBanDau: number): {
         if (beats && beatType) {
           time ??= { beatsPerBar: (beats * 4) / beatType, beatUnit: beatType };
         }
+        /*
+         * Chỉ lấy hoá biểu KHAI ĐẦU TIÊN. Bài chuyển giọng giữa chừng thì hoá biểu
+         * sau vẫn hiện thành dấu hoá cạnh nốt, đọc được; ghi đè theo thẻ cuối cùng
+         * mới là hỏng, vì cả bản nhạc sẽ mang hoá biểu của mấy ô nhịp cuối.
+         */
+        const fifths = numberIn(find(node, 'key'), 'fifths');
+        if (fifths !== null) hoaBieu ??= keyFromFifths(Math.round(fifths));
         continue;
       }
 
@@ -295,7 +306,7 @@ function readPart(part: Element, divisionsBanDau: number): {
     measureStart = Math.max(measureEnd, measureStart + 1);
   }
 
-  return { notes, divisions, time, bpm };
+  return { notes, divisions, time, hoaBieu, bpm };
 }
 
 /**
@@ -337,7 +348,7 @@ export function parseMusicXml(xml: string): ImportedScore {
     throw new ImportedScoreError('File MusicXML này không có phần nhạc nào.');
   }
 
-  const { notes, time, bpm } = readPart(part, 1);
+  const { notes, time, hoaBieu, bpm } = readPart(part, 1);
   if (notes.size === 0) {
     throw new ImportedScoreError('File MusicXML này không có nốt nhạc nào.');
   }
@@ -354,6 +365,7 @@ export function parseMusicXml(xml: string): ImportedScore {
       beatsPerBar: time?.beatsPerBar ?? 4,
       beatUnit: time?.beatUnit ?? 4,
       staves: splitByHand(toEvents(notes.get(keys[0]) ?? [])),
+      key: hoaBieu,
       bpm,
     };
   }
@@ -368,6 +380,7 @@ export function parseMusicXml(xml: string): ImportedScore {
     beatsPerBar: time?.beatsPerBar ?? 4,
     beatUnit: time?.beatUnit ?? 4,
     staves,
+    key: hoaBieu,
     bpm,
   };
 }

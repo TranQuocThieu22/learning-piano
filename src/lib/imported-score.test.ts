@@ -9,6 +9,7 @@ import {
   type ImportedEvent,
   type ImportedScore,
 } from './imported-score';
+import { findKey, KEY_SIGNATURES } from './midi-notes';
 import { caoDoVangRa } from './__fixtures__/abc-sound';
 import { seededRandom } from './__fixtures__/piano-synth';
 
@@ -116,6 +117,48 @@ describe('ghi ra chuỗi ABC', () => {
     expect(abc).toContain('[CEG]4');
   });
 
+  it('không chọn gì thì đầu khuông không có dấu nào, như trước giờ', () => {
+    expect(toAbc(score([{ clef: 'treble', events: [den(60)] }]))).toContain('K: C');
+  });
+
+  it('file khai giọng nào thì mở ra sẵn giọng đó', () => {
+    const khai = { ...score([{ clef: 'treble', events: [den(63)] }]), key: findKey('Eb') };
+    expect(toAbc(khai)).toContain('K: Eb');
+  });
+
+  it('chọn giọng thì đầu khuông ghi giọng đó, cả ở bản hai khuông', () => {
+    const hai = score([
+      { clef: 'treble', events: [den(72, 4)] },
+      { clef: 'bass', events: [den(48, 4)] },
+    ]);
+    expect(toAbc(hai, findKey('Db'))).toContain('K: Db');
+    // Người học chọn tay là thắng lời khai của file, không phải ngược lại.
+    expect(toAbc({ ...hai, key: findKey('G') }, findKey('Db'))).toContain('K: Db');
+  });
+
+  /*
+   * Đây là cả điểm của tính năng: bản nhạc bốn năm phím đen mà ghi cứng `K: C`
+   * thì mỗi nốt một dấu, đọc trên điện thoại đặt ở giá nhạc không nổi.
+   */
+  it('chọn đúng giọng thì nốt nằm trong hoá biểu hết dấu cạnh nốt', () => {
+    // Si giáng - Đô - Rê - Mi giáng: bốn nốt đầu gam Si giáng trưởng.
+    const gam = score([{ clef: 'treble', events: [den(70), den(72), den(74), den(75)] }]);
+    expect(toAbc(gam, findKey('Bb'))).toContain('B c d e');
+    // Cùng mấy nốt ấy mà để Đô trưởng thì hai nốt phải kéo theo dấu giáng.
+    expect(toAbc(gam)).toContain('_B c d _e');
+  });
+
+  it('nốt ngoài hoá biểu vẫn có dấu của nó, và nốt trắng được ghi dấu bình', () => {
+    /*
+     * Giọng Sol trưởng: Pha viết trơn ĐÃ LÀ Pha thăng, nên Pha trắng phải có dấu
+     * bình — rồi dấu bình ấy sống tới hết ô nhịp, nên Pha thăng ngay sau đó phải
+     * tự ghi lại dấu thăng của mình. Bỏ dấu ở nốt thứ ba là nó vang thành Pha trắng.
+     */
+    const abc = toAbc(score([{ clef: 'treble', events: [den(66), den(65), den(66), den(61)] }]), findKey('G'));
+    expect(abc).toContain('F =F ^F ^C');
+    expect(caoDoVangRa(abc)).toEqual([66, 65, 66, 61]);
+  });
+
   it('file không có nốt nào thì báo lỗi đọc được, không dựng bản nhạc rỗng', () => {
     expect(() => toAbc(score([]))).toThrow(ImportedScoreError);
   });
@@ -185,6 +228,27 @@ describe('bản nhạc nhập vào vang ra đúng nốt của file gốc', () =>
       .toEqual([72, 73, 72, 73, 72, 73, 72, 73, 73, 72, 67, 68, 67, 68]);
   });
 
+  /*
+   * Ca quan trọng nhất của cả tính năng chọn hoá biểu: đổi hoá biểu chỉ được đổi
+   * CÁCH VIẾT. Chọn trật giọng thì bản nhạc nhiều dấu hơn mức cần — chấp nhận
+   * được, người học đổi lại là xong — nhưng lệch một nửa cung thì họ tập sai cả
+   * bài mà không ai báo, đúng thứ đã xảy ra với Für Elise (bẫy 25).
+   */
+  it('chọn giọng nào thì nốt vang ra cũng y nguyên file gốc, kể cả giọng chọn trật', () => {
+    const rand = seededRandom(2026);
+    const events = Array.from({ length: 32 }, () => ({
+      // Tầm một quãng tám rưỡi, dày phím đen: đúng chỗ dấu hoá hay nấp.
+      midis: [60 + Math.floor(rand() * 19)],
+      beats: [0.5, 1, 1.5, 2][Math.floor(rand() * 4)],
+    }));
+    const score = baiNhac([{ clef: 'treble', events }]);
+    const goc = caoDoGoc(score);
+
+    for (const key of KEY_SIGNATURES) {
+      expect(caoDoVangRa(toAbc(score, key)), `giọng ${key.id}`).toEqual(goc);
+    }
+  });
+
   it('bản hai khuông dày nốt hoá, hợp âm và dấu luyến: nốt nào vang ra cũng đúng file gốc', () => {
     // Mười hạt giống — một hạt may mắn không chứng minh được gì. Tầm nốt hẹp để
     // cùng một chữ cái lặp lại dày trong ô nhịp, đúng chỗ lỗi dấu hoá hay nấp.
@@ -204,6 +268,13 @@ describe('bản nhạc nhập vào vang ra đúng nốt của file gốc', () =>
         { clef: 'bass', events: khuong(43, 59) },
       ]);
       expect(sapTheoHopAm(score, caoDoVangRa(toAbc(score))), `hạt giống ${hat}`).toEqual(caoDoGoc(score));
+      // Cùng bản nhạc ấy ở một giọng bốn giáng: từ đây một chữ cái viết trơn
+      // không còn nghĩa là nốt trắng, nên sổ dấu hoá của ô nhịp phải tính cả hoá
+      // biểu. Tính thiếu là nốt lệch nửa cung mà bản nhạc nhìn vẫn hợp lý.
+      expect(
+        sapTheoHopAm(score, caoDoVangRa(toAbc(score, findKey('Ab')))),
+        `hạt giống ${hat} ở giọng La giáng trưởng`,
+      ).toEqual(caoDoGoc(score));
     }
   });
 });

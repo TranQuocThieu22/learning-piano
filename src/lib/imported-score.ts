@@ -1,4 +1,4 @@
-import { noteAt } from './midi-notes';
+import { findKey, noteAt, type KeySignature } from './midi-notes';
 
 /**
  * Bản nhạc **nhập từ ngoài vào**, ở dạng trung gian giữa file gốc và chuỗi ABC.
@@ -39,6 +39,15 @@ export interface ImportedScore {
   beatUnit: number;
   /** Một khuông (một tay) hoặc hai khuông (Sol trên, Pha dưới). */
   staves: ImportedStaff[];
+  /**
+   * Hoá biểu file gốc **khai ra**, `null` khi file không khai (file MIDI xuất từ
+   * đàn điện hầu như không bao giờ khai).
+   *
+   * Chỉ là lời khai, không phải lựa chọn cuối: người học đổi được ở trang nhập.
+   * Máy KHÔNG tự đoán giọng từ các nốt — đoán trật thì bản nhạc đầy dấu bình
+   * trông còn rối hơn lúc chưa có hoá biểu, mà người học không biết vì sao.
+   */
+  key?: KeySignature | null;
   /** Nhịp mỗi phút nếu file có khai, `null` thì để abcjs tự chọn. */
   bpm: number | null;
 }
@@ -80,17 +89,43 @@ export function abcLength(beats: number): string {
 }
 
 /**
- * Sổ dấu hoá của MỘT ô nhịp: cách viết chữ cái kèm dấu quãng tám (`c`, `C,`,
- * `c'`) → dấu đang có hiệu lực (`^`, `_`, hoặc chuỗi rỗng là nốt trắng). Chữ nào
- * chưa có trong sổ là nốt trắng, vì bản nhập vào luôn ghi `K: C`.
- */
-type BarAccidentals = Map<string, string>;
-
-/**
  * Giá trị trong sổ cho chữ cái mà không biết abcjs đang giữ dấu nào (xem chỗ nốt
- * luyến trong `toBars`). Nó không bằng dấu thật nào, nên nốt kế tiếp luôn tự ghi dấu.
+ * luyến trong `toBars`). Nó không bằng mức hoá thật nào, nên nốt kế tiếp luôn tự ghi dấu.
  */
 const CHUA_RO = '?';
+
+/**
+ * Sổ dấu hoá của MỘT ô nhịp: cách viết chữ cái kèm dấu quãng tám (`c`, `C,`,
+ * `c'`) → mức hoá đang có hiệu lực, tính bằng nửa cung (`1` thăng, `-1` giáng,
+ * `0` nốt trắng). Chữ nào chưa có trong sổ thì hiệu lực là **của hoá biểu**.
+ *
+ * Ghi bằng SỐ chứ không bằng ký hiệu ABC, vì từ khi có hoá biểu thì một chữ cái
+ * viết trơn không còn nghĩa là nốt trắng: `F` trong giọng Sol trưởng là Pha
+ * thăng, còn Pha trắng phải viết `=F`. Sổ cũ gộp hai thứ đó làm một.
+ */
+type BarAccidentals = Map<string, number | typeof CHUA_RO>;
+
+/** Chữ cái trần của một cách viết ABC (`c'` → `C`), để tra hoá biểu. */
+function baseLetter(chu: string): string {
+  return chu[0].toUpperCase();
+}
+
+/**
+ * Tách cách viết của `noteAt` thành chữ cái kèm quãng tám và **mức hoá bằng số**.
+ *
+ * Nốt viết trơn lấy mức hoá của hoá biểu — đó là cả điểm của hoá biểu, và cũng là
+ * chỗ dễ nhầm nhất: `F` với `=F` trông gần giống nhau nhưng cách nhau nửa cung.
+ */
+function spell(midi: number, key: KeySignature): { chu: string; alter: number } {
+  const abc = noteAt(midi, key).abc;
+  const chu = abc.replace(/^[\^_=]+/, '');
+  const dau = abc.slice(0, abc.length - chu.length);
+  const alter = dau === '^' ? 1
+    : dau === '_' ? -1
+      : dau === '=' ? 0
+        : key.alter[baseLetter(chu)] ?? 0;
+  return { chu, alter };
+}
 
 /**
  * Một sự kiện thành chữ ABC, chưa kèm độ dài.
@@ -104,17 +139,16 @@ const CHUA_RO = '?';
  * Khoá của sổ là CHỮ mà `noteAt` sắp viết ra, không suy lại từ số MIDI: luật dấu
  * hoá bám theo cách viết chứ không bám theo phím (bẫy 36).
  */
-function abcPitches(event: ImportedEvent, dauHoa: BarAccidentals): string {
+function abcPitches(event: ImportedEvent, dauHoa: BarAccidentals, key: KeySignature): string {
   if (event.midis.length === 0) return 'z';
   // Dùng lại bộ đổi nốt của bài luyện nhận nốt: dấu hoá và dấu quãng tám đã có
   // test ở đó, mà đó đúng là hai chỗ sai thì bản nhạc vẽ ra sai không ai báo.
   const spelled = event.midis.map((midi) => {
-    const abc = noteAt(midi).abc;
-    const chu = abc.replace(/^[\^_=]+/, '');
-    const dau = abc.slice(0, abc.length - chu.length).replace('=', '');
-    const dangCo = dauHoa.get(chu) ?? '';
-    dauHoa.set(chu, dau);
-    return dau === dangCo ? chu : `${dau || '='}${chu}`;
+    const { chu, alter } = spell(midi, key);
+    const dangCo = dauHoa.get(chu) ?? key.alter[baseLetter(chu)] ?? 0;
+    dauHoa.set(chu, alter);
+    if (alter === dangCo) return chu;
+    return `${alter === 1 ? '^' : alter === -1 ? '_' : '='}${chu}`;
   });
   return spelled.length === 1 ? spelled[0] : `[${spelled.join('')}]`;
 }
@@ -128,7 +162,11 @@ function abcPitches(event: ImportedEvent, dauHoa: BarAccidentals): string {
  * mà con trỏ *Tập bài này với đàn* lại đếm theo sự kiện, nên người học thấy máy
  * chờ ở một chỗ mà mắt họ đang đọc chỗ khác.
  */
-export function toBars(events: ImportedEvent[], beatsPerBar: number): string[][] {
+export function toBars(
+  events: ImportedEvent[],
+  beatsPerBar: number,
+  key: KeySignature = findKey('C'),
+): string[][] {
   const bars: string[][] = [];
   let bar: string[] = [];
   let filled = 0;
@@ -152,7 +190,7 @@ export function toBars(events: ImportedEvent[], beatsPerBar: number): string[][]
        */
       const nuaSau = left < quantize(event.beats);
       const soNuaSau: BarAccidentals = new Map();
-      bar.push(`${abcPitches(event, nuaSau ? soNuaSau : dauHoa)}${abcLength(take)}${tied ? '-' : ''}`);
+      bar.push(`${abcPitches(event, nuaSau ? soNuaSau : dauHoa, key)}${abcLength(take)}${tied ? '-' : ''}`);
       for (const chu of soNuaSau.keys()) dauHoa.set(chu, CHUA_RO);
       filled += take;
       left -= take;
@@ -193,17 +231,22 @@ function barsToLines(bars: string[][]): string[] {
  * Ghi ra chuỗi ABC hoàn chỉnh — thứ mà `SheetViewer` vẽ, phát tiếng và tập được
  * với đàn thật.
  *
- * Luôn ghi `K: C`: file nhập vào có thể ở giọng bất kỳ, nhưng mỗi nốt đã mang dấu
- * hoá của nó theo sổ từng ô nhịp (`abcPitches`), nên bản nhạc vẫn kêu đúng. Đoán
- * hoá biểu rồi đoán sai là mọi nốt sau đó lệch nửa cung mà nhìn vẫn hợp lý — thà
- * nhiều dấu hoá còn hơn sai cao độ.
+ * **Hoá biểu là lựa chọn của người học**, mặc định là thứ file gốc khai ra, và
+ * `K: C` khi file không khai gì (`findKey` lùi về Đô trưởng).
+ *
+ * Đổi hoá biểu **không đổi một nốt nào vang ra**: mỗi nốt vẫn được `noteAt` viết
+ * lại theo đúng giọng đang chọn, chỗ nào hoá biểu chưa lo thì có dấu cạnh nốt,
+ * chỗ nào ngược lại thì có dấu bình. Nhờ vậy chọn trật giọng cũng chỉ là bản nhạc
+ * nhiều dấu hơn mức cần, không bao giờ là sai cao độ — đúng lý do trước đây máy
+ * không dám đoán hoá biểu và ghi cứng `K: C`, khiến bản nhạc nhiều phím đen hiện
+ * ra dày đặc dấu thăng giáng.
  */
-export function toAbc(score: ImportedScore): string {
+export function toAbc(score: ImportedScore, key: KeySignature = score.key ?? findKey('C')): string {
   if (score.staves.length === 0) {
     throw new ImportedScoreError('File này không có nốt nhạc nào đọc được.');
   }
 
-  const staffBars = score.staves.map((s) => toBars(s.events, score.beatsPerBar));
+  const staffBars = score.staves.map((s) => toBars(s.events, score.beatsPerBar, key));
   const soO = Math.max(...staffBars.map((b) => b.length));
   if (soO === 0) {
     throw new ImportedScoreError('File này không có nốt nhạc nào đọc được.');
@@ -233,7 +276,7 @@ export function toAbc(score: ImportedScore): string {
   if (deu.length === 1) {
     return [
       ...dau,
-      'K: C',
+      `K: ${key.abc}`,
       ...(score.staves[0].clef === 'bass' ? ['V:1 clef=bass'] : []),
       ...barsToLines(deu[0]).map((line, i, all) => (i === all.length - 1 ? `${line} |]` : `${line} |`)),
     ].join('\n');
@@ -246,7 +289,7 @@ export function toAbc(score: ImportedScore): string {
   return [
     ...dau,
     '%%score { 1 | 2 }',
-    'K: C',
+    `K: ${key.abc}`,
     `V:1 clef=${score.staves[0].clef}`,
     `V:2 clef=${score.staves[1].clef}`,
     ...lineTren.flatMap((line, i) => {

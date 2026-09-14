@@ -1,8 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { END_OF_TRACK, midiFile, note } from './__fixtures__/midi-bytes';
 import { containerXml, inflateRawNode, zipFile } from './__fixtures__/zip-bytes';
-import { importSheetFile } from './import-sheet';
+import { importSheetFile, sheetAbc } from './import-sheet';
 import { ImportedScoreError } from './imported-score';
+import { findKey } from './midi-notes';
 
 const bonNot = [...note(60, 480), ...note(62, 480), ...note(64, 480), ...note(65, 480), ...END_OF_TRACK];
 
@@ -27,6 +28,21 @@ describe('nhập một file thành bản nhạc lưu được', () => {
     expect(sheet.title).toBe('Fur Elise');
     expect(sheet.abc).toContain('K: C');
     expect(sheet.abc).toContain('C D E F');
+  });
+
+  it('file không khai giọng thì mở ra ở Đô trưởng, đổi sang giọng khác được ngay', async () => {
+    const sheet = await importSheetFile('Fur Elise.mid', midiFile([bonNot]));
+    expect(sheet.key.id).toBe('C');
+    // Giữ lại bản nhạc đã đọc, để trang nhập ghi lại chuỗi ABC theo giọng người
+    // học chọn mà không bắt họ chọn file lần nữa.
+    expect(sheetAbc(sheet.score, findKey('Eb'))).toContain('K: Eb');
+  });
+
+  it('file khai giọng thì mở ra sẵn giọng đó, không phải Đô trưởng', async () => {
+    const hoaBieu = [0x00, 0xff, 0x59, 0x02, 0x02, 0x00]; // hai thăng
+    const sheet = await importSheetFile('bai.mid', midiFile([[...hoaBieu, ...bonNot]]));
+    expect(sheet.key.id).toBe('D');
+    expect(sheet.abc).toContain('K: D');
   });
 
   it('file MusicXML giữ tên bài ghi trong file', async () => {

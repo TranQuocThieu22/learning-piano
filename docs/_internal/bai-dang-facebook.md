@@ -299,6 +299,47 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 
 ---
 
+## 4g. Bài đăng số 8 — soạn 14/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** đây là loại bài "kể cả chỗ sửa sai" ở mục 5 — bản nhạc nhập vào
+> trước nay hiện ra dày đặc dấu thăng giáng, và người nhập file không có cách nào biết đó là
+> do app chứ không phải do bài của mình khó. Nói thẳng chỗ chưa ổn rồi kể cách gỡ thì người
+> đọc tin hơn hẳn một bài chỉ khoe thêm tính năng.
+>
+> **Đừng viết thành "app tự nhận ra giọng của bài".** App cố ý KHÔNG đoán giọng từ các nốt —
+> nó chỉ đọc giọng khi file có ghi sẵn, còn lại để người học tự chọn. Viết sai chỗ này là
+> hứa một thứ sản phẩm không làm.
+>
+> **Ảnh nên kèm:** hai ảnh chụp màn hình cùng một bản nhạc, trước và sau khi chọn đúng hoá
+> biểu — chỗ khác nhau nhìn ra ngay mà không cần đọc chữ nào.
+
+```text
+Ai từng mang file .mid vào Piano Journey chắc đã thấy cảnh này: bản nhạc hiện
+ra mà gần như nốt nào cũng có một dấu thăng hay dấu giáng đứng cạnh, nhìn rối
+mắt. Đó là lỗi của app, không phải bài của bạn khó tới vậy — file .mid không
+nói bài ở giọng nào, nên app đành ghi dấu cho từng nốt một.
+
+Giờ ở bước xem trước có thêm dòng "Hoá biểu đầu khuông". Chọn đúng giọng của
+bài là mấy dấu đó dồn hết lên đầu khuông, chỗ chúng vốn phải nằm, và bản nhạc
+thưa hẳn ra. Không biết bài mình ở giọng nào thì cứ thử vài dòng rồi nhìn
+xuống — dòng nào làm dấu hoá cạnh nốt ít nhất thường là dòng đúng.
+
+Chọn trật cũng không hỏng gì: hoá biểu chỉ đổi cách viết, không đổi một nốt
+nào vang ra. Nghe mẫu và tập với đàn vẫn đúng y như cũ.
+
+Vì sao đáng làm: người tự học đọc bản nhạc chậm hơn người có thầy, mà mỗi dấu
+thừa nằm cạnh nốt là một thứ nữa mắt phải xử lý — nhất là lúc máy đang nằm
+trên giá nhạc cách mắt nửa sải tay. Bản nhạc sạch không phải chuyện đẹp xấu,
+nó là chuyện đọc kịp hay không kịp.
+
+Chi tiết:
+https://pianojourney.rehover.io/updates
+
+Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn thật để tập.
+```
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -356,6 +397,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 14/09/2026 | `feat: Chọn hoá biểu đầu khuông cho bản nhạc nhập vào` | Thêm bài đăng số 8 rút từ bài cập nhật cùng ngày — chọn góc "kể cả chỗ sửa sai" (mục 5) vì rừng dấu hoá là thứ người nhập file đã thấy tận mắt, nói thẳng nó là lỗi của app tin được hơn khoe thêm tính năng. Ghi kèm lời dặn đừng viết thành "app tự nhận ra giọng" — app cố ý không đoán |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Bài đăng số 7: đổi từ "hai chương đầu" sang cả 25 bài vì Chương 3-7 đã viết lại cùng ngày, và đổi lời dặn thành "nói đúng phạm vi" — Chương 8-10 chưa soạn nên vẫn không được viết "toàn bộ giáo trình" |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm bài đăng số 7 rút từ bài *Mở bài ra là tập*, kèm lời dặn chỉ nói về Chương 1-2 — Chương 3-7 chưa viết lại, viết như thể cả giáo trình đã đổi là hứa thứ chưa có |
 | 14/09/2026 | `feat: Tiêu chí xong bài, nhắc khi vượt bài, khen khi đánh trọn với đàn` | Thêm bài đăng số 6 rút từ bài *Tick lúc nào? Giờ mỗi bài nói rõ luôn*, kèm lời dặn đừng viết thành "app khoá bài bắt tập đạt" — app cố ý không khoá, viết sai là hứa một thứ trái với chính sản phẩm |

@@ -58,6 +58,25 @@ describe('đọc file MIDI thành bản nhạc', () => {
     expect(score.title).toBe('Test');
   });
 
+  it('file khai hoá biểu thì mở ra sẵn đúng giọng đó', () => {
+    // FF 59 02 sf mi — ba giáng, giọng trưởng.
+    const hoaBieu = [0x00, 0xff, 0x59, 0x02, 0xfd, 0x00];
+    const score = parseMidiFile(file([[...hoaBieu, ...note(60, 480), ...END_OF_TRACK]]));
+    expect(score.key?.id).toBe('Eb');
+  });
+
+  it('giọng thứ dùng chung hoá biểu với giọng trưởng song song', () => {
+    // Hai thăng, giọng thứ: Si thứ, cùng hoá biểu với Rê trưởng.
+    const hoaBieu = [0x00, 0xff, 0x59, 0x02, 0x02, 0x01];
+    const score = parseMidiFile(file([[...hoaBieu, ...note(60, 480), ...END_OF_TRACK]]));
+    expect(score.key?.id).toBe('D');
+  });
+
+  it('file không khai hoá biểu thì để trống cho người học tự chọn, không đoán', () => {
+    const score = parseMidiFile(file([[...note(61, 480), ...note(63, 480), ...END_OF_TRACK]]));
+    expect(score.key).toBeNull();
+  });
+
   it('đọc được file dùng trạng thái chạy tiếp (bỏ byte lệnh lặp lại)', () => {
     const track = [
       0x00, 0x90, 60, 0x40,

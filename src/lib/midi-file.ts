@@ -4,17 +4,21 @@ import {
   toEvents,
   type ImportedScore,
 } from './imported-score';
+import { keyFromFifths, type KeySignature } from './midi-notes';
 
 /**
  * Đọc file MIDI (`.mid`) thành bản nhạc nhập vào.
  *
  * **Vì sao nhận MIDI chứ không chỉ MusicXML:** người học Việt Nam tìm được file
  * `.mid` của gần như mọi bài, còn file MusicXML thì hiếm hơn nhiều. Đổi lại, MIDI
- * là bản GHI CÁCH ĐÁNH chứ không phải bản nhạc: nó không có hoá biểu, không có
- * khuông Sol/khuông Pha, và độ dài từng nốt là thời gian ngón tay thật giữ phím.
- * Ba chỗ đó phải đoán, và chỗ nào đoán thì ghi rõ ở đây:
+ * là bản GHI CÁCH ĐÁNH chứ không phải bản nhạc: nó hiếm khi khai hoá biểu, không
+ * có khuông Sol/khuông Pha, và độ dài từng nốt là thời gian ngón tay thật giữ
+ * phím. Ba chỗ đó máy phải tự lo, và chỗ nào tự lo thì ghi rõ ở đây:
  *
- * - **Hoá biểu** — không đoán, luôn ghi `K: C` rồi viết dấu hoá cạnh từng nốt.
+ * - **Hoá biểu** — lấy thẳng khi file có khai (meta `0x59`), còn không thì để
+ *   người học tự chọn ở trang nhập. Không đoán từ các nốt: chọn trật giọng chỉ
+ *   là bản nhạc nhiều dấu hơn mức cần, nhưng chọn hộ rồi trật thì người học
+ *   không biết thứ mình đang nhìn ở đâu ra.
  * - **Hai tay** — tách theo Đô giữa (`splitByHand`), đúng chỗ giáo trình này đặt
  *   hai tay từ Chương 1. Kênh MIDI và số track KHÔNG dùng để tách: nhiều file
  *   xuất ra từ đàn điện chỉ có một track cho cả hai tay, nên luật theo track lúc
@@ -110,6 +114,7 @@ interface TrackResult {
   name: string | null;
   usPerQuarter: number | null;
   timeSignature: { beatsPerBar: number; beatUnit: number } | null;
+  key: KeySignature | null;
 }
 
 function readTrack(reader: Reader, length: number): TrackResult {
@@ -117,7 +122,9 @@ function readTrack(reader: Reader, length: number): TrackResult {
   const notes: RawNote[] = [];
   /** Phím đang giữ: một phím bấm lại khi chưa nhả thì nốt cũ chốt tại đó. */
   const dangGiu = new Map<number, number>();
-  const result: TrackResult = { notes, name: null, usPerQuarter: null, timeSignature: null };
+  const result: TrackResult = {
+    notes, name: null, usPerQuarter: null, timeSignature: null, key: null,
+  };
 
   let tick = 0;
   let running = 0;
@@ -144,6 +151,16 @@ function readTrack(reader: Reader, length: number): TrackResult {
         result.name = reader.text(len).trim() || null;
       } else if (type === 0x51 && len === 3) {
         result.usPerQuarter = (reader.u8() << 16) | (reader.u8() << 8) | reader.u8();
+      } else if (type === 0x59 && len >= 1) {
+        /*
+         * Hoá biểu: byte đầu là số dấu, ĐẾM CÓ DẤU ÂM cho giọng giáng — `0xff` là
+         * một giáng chứ không phải 255, nên phải kéo dài dấu trước khi tra bảng.
+         * Byte thứ hai nói trưởng hay thứ; bỏ qua vì hai giọng song song dùng
+         * chung đúng một hoá biểu.
+         */
+        const sf = (reader.u8() << 24) >> 24;
+        reader.skip(len - 1);
+        result.key ??= keyFromFifths(sf);
       } else if (type === 0x58 && len >= 2) {
         const nn = reader.u8();
         const dd = reader.u8();
@@ -219,6 +236,7 @@ export function parseMidiFile(bytes: Uint8Array): ImportedScore {
   let title: string | null = null;
   let usPerQuarter: number | null = null;
   let timeSignature: { beatsPerBar: number; beatUnit: number } | null = null;
+  let key: KeySignature | null = null;
 
   for (let i = 0; i < trackCount && !reader.done; i += 1) {
     const kind = reader.text(4);
@@ -232,6 +250,7 @@ export function parseMidiFile(bytes: Uint8Array): ImportedScore {
     title ??= track.name;
     usPerQuarter ??= track.usPerQuarter;
     timeSignature ??= track.timeSignature;
+    key ??= track.key;
   }
 
   if (notes.length === 0) {
@@ -249,6 +268,7 @@ export function parseMidiFile(bytes: Uint8Array): ImportedScore {
     beatsPerBar: timeSignature?.beatsPerBar ?? 4,
     beatUnit: timeSignature?.beatUnit ?? 4,
     staves,
+    key,
     bpm: usPerQuarter ? Math.round(60_000_000 / usPerQuarter) : null,
   };
 }

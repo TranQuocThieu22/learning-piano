@@ -75,8 +75,13 @@ function partKey(part: DrillPart): string {
  * đều là Pha thăng mà không có dấu nào bên cạnh. Đọc được điều đó là một kỹ năng
  * riêng, và là kỹ năng người học sẽ cần ngay khi mở một bản nhạc bất kỳ.
  *
- * Bảy giọng dưới đây đủ dùng cho Giai đoạn 1-2: từ không dấu tới ba dấu mỗi bên.
- * Thứ tự dấu thăng là Pha-Đô-Sol-Rê, thứ tự dấu giáng là Si-Mi-La-Rê.
+ * Thứ tự dấu thăng là Pha-Đô-Sol-Rê-La-Mi-Si, thứ tự dấu giáng là ngược lại.
+ *
+ * **Bảng có đủ mười lăm giọng, nhưng bài luyện nhận nốt chỉ hỏi bảy.** Bản nhạc
+ * người học tự nhập vào ở giọng nào cũng được — bốn, năm dấu là chuyện thường
+ * của nhạc phim — nên chỗ ghi ra bản nhạc cần cả vòng quãng năm. Còn câu hỏi
+ * luyện nhận nốt của Giai đoạn 1-2 dừng ở ba dấu mỗi bên, đánh dấu bằng `drill`:
+ * thêm giọng vào bảng này không được làm bài tập khó lên sau lưng người học.
  */
 export interface KeySignature {
   id: string;
@@ -85,8 +90,22 @@ export interface KeySignature {
   label: string;
   /** Chữ cái nào bị hoá sẵn, và hoá lên hay xuống. */
   alter: Record<string, number>;
+  /**
+   * Số dấu ở đầu khuông: dương là dấu thăng, âm là dấu giáng.
+   *
+   * Chính là con số file MIDI và file MusicXML dùng để khai hoá biểu (`fifths`),
+   * nên nhập file vào là tra thẳng ra dòng nào, không phải dịch qua cái tên.
+   */
+  fifths: number;
   /** Giọng thăng hay giọng giáng — quyết cách viết nốt hoá bất thường. */
   prefersSharp: boolean;
+  /**
+   * Bài luyện nhận nốt có được bốc trúng giọng này không.
+   *
+   * Xem chú thích trên: bảng dùng chung cho cả chỗ ghi bản nhạc nhập vào, nơi
+   * cần đủ mười lăm giọng.
+   */
+  drill?: boolean;
   /**
    * Cách viết riêng cho từng phím đen, khi `prefersSharp` là chưa đủ.
    *
@@ -102,25 +121,160 @@ export const KEY_SIGNATURES: KeySignature[] = [
     id: 'C',
     abc: 'C',
     label: 'Đô trưởng — không dấu',
+    fifths: 0,
     alter: {},
     prefersSharp: true,
+    drill: true,
     chromatic: { 1: 1, 3: -1, 6: 1, 8: 1, 10: -1 },
   },
-  { id: 'G', abc: 'G', label: 'Sol trưởng — 1 thăng', alter: { F: 1 }, prefersSharp: true },
-  { id: 'D', abc: 'D', label: 'Rê trưởng — 2 thăng', alter: { F: 1, C: 1 }, prefersSharp: true },
-  { id: 'A', abc: 'A', label: 'La trưởng — 3 thăng', alter: { F: 1, C: 1, G: 1 }, prefersSharp: true },
-  { id: 'F', abc: 'F', label: 'Pha trưởng — 1 giáng', alter: { B: -1 }, prefersSharp: false },
-  { id: 'Bb', abc: 'Bb', label: 'Si giáng trưởng — 2 giáng', alter: { B: -1, E: -1 }, prefersSharp: false },
-  { id: 'Eb', abc: 'Eb', label: 'Mi giáng trưởng — 3 giáng', alter: { B: -1, E: -1, A: -1 }, prefersSharp: false },
+  {
+    id: 'G',
+    abc: 'G',
+    label: 'Sol trưởng — 1 thăng',
+    fifths: 1,
+    alter: { F: 1 },
+    prefersSharp: true,
+    drill: true,
+  },
+  {
+    id: 'D',
+    abc: 'D',
+    label: 'Rê trưởng — 2 thăng',
+    fifths: 2,
+    alter: { F: 1, C: 1 },
+    prefersSharp: true,
+    drill: true,
+  },
+  {
+    id: 'A',
+    abc: 'A',
+    label: 'La trưởng — 3 thăng',
+    fifths: 3,
+    alter: { F: 1, C: 1, G: 1 },
+    prefersSharp: true,
+    drill: true,
+  },
+  {
+    id: 'E',
+    abc: 'E',
+    label: 'Mi trưởng — 4 thăng',
+    fifths: 4,
+    alter: { F: 1, C: 1, G: 1, D: 1 },
+    prefersSharp: true,
+  },
+  {
+    id: 'B',
+    abc: 'B',
+    label: 'Si trưởng — 5 thăng',
+    fifths: 5,
+    alter: { F: 1, C: 1, G: 1, D: 1, A: 1 },
+    prefersSharp: true,
+  },
+  {
+    id: 'F#',
+    abc: 'F#',
+    label: 'Pha thăng trưởng — 6 thăng',
+    fifths: 6,
+    alter: { F: 1, C: 1, G: 1, D: 1, A: 1, E: 1 },
+    prefersSharp: true,
+  },
+  {
+    id: 'C#',
+    abc: 'C#',
+    label: 'Đô thăng trưởng — 7 thăng',
+    fifths: 7,
+    alter: { F: 1, C: 1, G: 1, D: 1, A: 1, E: 1, B: 1 },
+    prefersSharp: true,
+  },
+  {
+    id: 'F',
+    abc: 'F',
+    label: 'Pha trưởng — 1 giáng',
+    fifths: -1,
+    alter: { B: -1 },
+    prefersSharp: false,
+    drill: true,
+  },
+  {
+    id: 'Bb',
+    abc: 'Bb',
+    label: 'Si giáng trưởng — 2 giáng',
+    fifths: -2,
+    alter: { B: -1, E: -1 },
+    prefersSharp: false,
+    drill: true,
+  },
+  {
+    id: 'Eb',
+    abc: 'Eb',
+    label: 'Mi giáng trưởng — 3 giáng',
+    fifths: -3,
+    alter: { B: -1, E: -1, A: -1 },
+    prefersSharp: false,
+    drill: true,
+  },
+  {
+    id: 'Ab',
+    abc: 'Ab',
+    label: 'La giáng trưởng — 4 giáng',
+    fifths: -4,
+    alter: { B: -1, E: -1, A: -1, D: -1 },
+    prefersSharp: false,
+  },
+  {
+    id: 'Db',
+    abc: 'Db',
+    label: 'Rê giáng trưởng — 5 giáng',
+    fifths: -5,
+    alter: { B: -1, E: -1, A: -1, D: -1, G: -1 },
+    prefersSharp: false,
+  },
+  {
+    id: 'Gb',
+    abc: 'Gb',
+    label: 'Sol giáng trưởng — 6 giáng',
+    fifths: -6,
+    alter: { B: -1, E: -1, A: -1, D: -1, G: -1, C: -1 },
+    prefersSharp: false,
+  },
+  {
+    id: 'Cb',
+    abc: 'Cb',
+    label: 'Đô giáng trưởng — 7 giáng',
+    fifths: -7,
+    alter: { B: -1, E: -1, A: -1, D: -1, G: -1, C: -1, F: -1 },
+    prefersSharp: false,
+  },
 ];
 
 export function findKey(id: string): KeySignature {
   return KEY_SIGNATURES.find((k) => k.id === id) ?? KEY_SIGNATURES[0];
 }
 
-/** Những giọng câu hỏi được phép bốc trúng, theo lựa chọn đang bật. */
+/**
+ * Hoá biểu ứng với số dấu đầu khuông mà file nhập vào khai, `null` nếu con số đó
+ * không ra giọng nào (file hỏng, hoặc hoá biểu kiểu cổ không theo vòng quãng năm).
+ */
+export function keyFromFifths(fifths: number): KeySignature | null {
+  return KEY_SIGNATURES.find((k) => k.fifths === fifths) ?? null;
+}
+
+/**
+ * Cả bảng xếp theo vòng quãng năm, từ bảy giáng tới bảy thăng.
+ *
+ * Thứ tự này dành cho ô chọn hoá biểu: đó là thứ tự in trên mọi cuốn sách nhạc,
+ * nên mắt người học tìm ra dòng mình cần mà không phải đọc hết.
+ */
+export const KEYS_BY_FIFTHS: KeySignature[] = [...KEY_SIGNATURES].sort((a, b) => a.fifths - b.fifths);
+
+/**
+ * Những giọng câu hỏi được phép bốc trúng, theo lựa chọn đang bật.
+ *
+ * Lọc theo `drill` chứ không lấy cả bảng: bảng còn phục vụ chỗ ghi bản nhạc nhập
+ * vào, nơi có cả những giọng sáu bảy dấu mà Giai đoạn 1-2 chưa dạy tới.
+ */
 export function keysForOptions(options: DrillOptions): KeySignature[] {
-  return options.randomKeys ? KEY_SIGNATURES : [KEY_SIGNATURES[0]];
+  return options.randomKeys ? KEY_SIGNATURES.filter((k) => k.drill) : [KEY_SIGNATURES[0]];
 }
 
 const LETTERS = ['C', 'D', 'E', 'F', 'G', 'A', 'B'] as const;
