@@ -465,7 +465,7 @@ pnpm fb publish 4 --confirm       # đăng thật
 pnpm fb publish 4 --image D:\anh\bai-4.png --at "2026-09-17 20:00" --confirm
 ```
 
-**Bốn điều script tự giữ, đừng gỡ:**
+**Năm điều script tự giữ, đừng gỡ:**
 
 1. **Thiếu `--confirm` thì không đăng gì**, chỉ in ra Trang nào, lúc nào, ảnh nào và trọn lời
    văn. Bài đã lên Trang không rút lại được với người kịp đọc, nên một lệnh gõ nhầm số bài —
@@ -478,9 +478,32 @@ pnpm fb publish 4 --image D:\anh\bai-4.png --at "2026-09-17 20:00" --confirm
    nào cũng gãy giữa màn hình. Dòng trống ngăn đoạn và gạch đầu dòng thì giữ.
 4. **Chỉ đăng được lên Trang.** Graph API không đăng vào nhóm hay trang cá nhân được nữa. Kênh
    tuyển thật — comment và bài trong các nhóm tự học piano — vẫn phải làm tay.
+5. **Không có ảnh thì không đăng.** Chủ sản phẩm chốt 15/09/2026: bài nào cũng kèm ảnh, như bài
+   số 2 và số 3 — trên bảng tin, bài chỉ có chữ trôi qua gần như vô hình. Script từ chối lệnh
+   `publish` thiếu `--image`, vì lời dặn trên giấy thì lúc vội sẽ quên. Ảnh làm thế nào: xem
+   mục *Ảnh cho bài đăng* ngay dưới.
 
 **Đăng xong phải sửa tiêu đề mục** của bài đó thành `đã đăng dd/mm/yyyy` (script nhắc lại một
 câu ở cuối). File này là chỗ duy nhất biết bài nào còn trong hàng chờ.
+
+### Ảnh cho bài đăng
+
+- **Mặc định Claude tự dựng ảnh đồ hoạ**, khổ 4:5 (1080×1350). **Không cần khớp từng khuôn** —
+  chủ sản phẩm nói rõ chỉ cần màu hài hoà, các ảnh đặt cạnh nhau trông cùng một nhà: nền chuyển
+  tím sang hồng, chữ trắng đậm, khung trắng bo tròn. Bố cục cứ đổi theo nội dung từng bài.
+- **Chữ trên nút trong ảnh chép đúng từ web**, như bài số 3 và số 4 — người xem nhìn ảnh rồi đi
+  tìm đúng nút đó trên app, lệch một chữ là họ tưởng mình vào nhầm chỗ.
+- **Bài cần ảnh chụp thật** — điện thoại trên giá nhạc, cây đàn, trang sách giấy — thì Claude
+  **hỏi chủ sản phẩm gửi ảnh**, không dựng hình vẽ thay cho ảnh chụp. Lời dặn *Ảnh nên kèm* trên
+  mỗi bài nói bài đó cần loại nào.
+- **Nguồn ảnh là một tệp HTML** trong `scripts/facebook-images/` (`bai-04.html` là mẫu), dựng ra
+  PNG bằng Edge chạy ngầm trên Windows — chữ tiếng Việt lấy phông Segoe UI của máy:
+
+  ```text
+  "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --headless=new --hide-scrollbars --force-device-scale-factor=1 --window-size=1080,1350 --screenshot="<nơi lưu>\bai-04.png" "file:///D:/AQ-Project/BE/piano-learning/scripts/facebook-images/bai-04.html"
+  ```
+
+  PNG không commit — dựng lại được bất cứ lúc nào, và Facebook giữ một bản khi đã đăng.
 
 ### Lấy mã truy cập — làm một lần, cần máy tính
 
@@ -526,6 +549,7 @@ Triệu chứng là script báo lỗi `190` — lúc đó làm lại từ bướ
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Bắt buộc kèm ảnh khi đăng bài Facebook` | Thêm điều thứ năm vào mục 6: không có ảnh thì không đăng, script từ chối lệnh thiếu `--image`. Chủ sản phẩm chốt sau khi có mã truy cập — bài chỉ có chữ trôi qua gần như vô hình trên bảng tin. Thêm mục *Ảnh cho bài đăng*: Claude tự dựng ảnh đồ hoạ, **không cần khớp từng khuôn mà chỉ cần màu hài hoà** cho các ảnh trông cùng một nhà — chủ sản phẩm nói rõ vậy để khỏi tốn công dựng lại đúng từng chi tiết; bài cần ảnh chụp thật thì hỏi chủ sản phẩm gửi, không vẽ thay. Nguồn HTML của ảnh bài số 4 để ở `scripts/facebook-images/`, kèm lệnh dựng PNG |
 | 15/09/2026 | `feat: Đánh trên đàn, điện thoại phát tiếng piano` | Thêm bài đăng số 10 rút từ bài cập nhật cùng ngày — góc kể là "đàn rẻ thì loa dở", lý do có thật khiến người mới ngại mua đàn và chán tiếng. Ghi kèm hai lời dặn đừng hứa iPhone làm được và đừng nói pedal chạy mọi đường, vì cả hai đều sai với bản đang chạy |
 | 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Thêm mục 6 — cách đăng bằng script và năm bước lấy mã truy cập. Có lúc chủ sản phẩm không tiện mở Facebook, mà bài đăng thì đã duyệt sẵn nằm trong file này. Chọn Graph API thay vì điều khiển trình duyệt vì giao diện Facebook đổi liên tục; ghi luôn bốn lưới an toàn (không có `--confirm` thì không đăng, chặn đăng trùng, nối dòng ngắt, chỉ đăng lên Trang) để lần sau không ai "dọn cho gọn" mất |
 | 15/09/2026 | `fix: Bỏ ô chọn hoá biểu, đọc thẳng hoá biểu file khai` | Sửa bài đăng số 8: bản trước kể "bạn chọn hoá biểu", mà ô chọn đó đã gỡ — hoá biểu là thứ người soạn bản nhạc quyết, app chỉ đọc theo. Thêm lời dặn đừng viết cả "app tự nhận ra giọng" lẫn "bạn chọn hoá biểu", vì cả hai đều sai theo hai hướng ngược nhau |

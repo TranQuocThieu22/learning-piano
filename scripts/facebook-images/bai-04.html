@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1080px; height: 1350px; overflow: hidden; }
+  body {
+    font-family: "Segoe UI", "Segoe UI Variable", Arial, sans-serif;
+    background: linear-gradient(160deg, #6a2ee8 0%, #8b3cf0 45%, #b44bd9 75%, #e0569b 100%);
+    color: #fff;
+    position: relative;
+  }
+  .wrap { position: absolute; inset: 0; padding: 72px 76px 0; }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 12px 26px; border-radius: 999px;
+    background: rgba(255,255,255,.16); border: 2px solid rgba(255,255,255,.35);
+    font-size: 26px; font-weight: 700; letter-spacing: 1.5px;
+  }
+  .pill i { width: 14px; height: 14px; border-radius: 50%; background: #5ee39a; display: block; }
+
+  h1 { margin-top: 30px; font-size: 84px; line-height: 1.08; font-weight: 800; letter-spacing: -1px; }
+
+  .chips { display: flex; gap: 16px; margin-top: 30px; }
+  .chip {
+    background: #fff; color: #4b1fb8; border-radius: 16px;
+    padding: 12px 22px; font-size: 28px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .chip b { color: #16a34a; font-size: 30px; }
+
+  .art { margin-top: 40px; height: 300px; position: relative; }
+
+  .card {
+    position: absolute; left: 76px; right: 76px; top: 800px;
+    background: #fff; color: #1f2937; border-radius: 34px;
+    padding: 36px 44px 20px;
+    box-shadow: 0 18px 40px rgba(60, 10, 120, .25);
+  }
+  .card h2 { font-size: 34px; font-weight: 800; color: #3b1a8f; margin-bottom: 14px; }
+  .step { display: flex; gap: 22px; align-items: flex-start; padding: 18px 0; border-top: 2px solid #efeaf8; }
+  .step:first-of-type { border-top: 0; }
+  .num {
+    flex: none; width: 50px; height: 50px; border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed, #db2777);
+    color: #fff; font-weight: 800; font-size: 26px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step p { font-size: 30px; line-height: 1.35; padding-top: 4px; }
+  .btn {
+    display: inline-block; padding: 2px 16px; border-radius: 12px;
+    border: 2px solid #c9b6f5; background: #f4efff; color: #4b1fb8; font-weight: 700;
+  }
+
+  .foot {
+    position: absolute; left: 76px; right: 76px; bottom: 44px;
+    display: flex; justify-content: space-between; align-items: flex-end;
+  }
+  .foot .left { font-size: 24px; line-height: 1.4; opacity: .95; }
+  .foot .right { display: flex; align-items: center; gap: 18px; text-align: right; }
+  .foot .brand { font-size: 30px; font-weight: 800; }
+  .foot .url { font-size: 24px; opacity: .95; }
+  .logo {
+    width: 72px; height: 72px; border-radius: 18px; background: rgba(255,255,255,.2);
+    border: 2px solid rgba(255,255,255,.4); display: flex; align-items: center; justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="pill"><i></i>CÓ GÌ MỚI</div>
+  <h1>Nhạc ra ngoài 5 nốt<br>đặt tay ở đâu?</h1>
+
+  <div class="chips">
+    <div class="chip"><b>✓</b>Không đếm giờ</div>
+    <div class="chip"><b>✓</b>Không chấm điểm</div>
+    <div class="chip"><b>✓</b>Tập luôn với đàn</div>
+  </div>
+
+  <!-- Hình minh hoạ: năm phím quen có số ngón, hai phím ngoài thế tay đánh dấu hỏi. -->
+  <div class="art">
+    <svg width="928" height="300" viewBox="0 0 928 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Bàn phím -->
+      <rect x="0" y="40" width="600" height="220" rx="22" fill="#1c1537"/>
+      <g transform="translate(22,62)">
+        <!-- 9 phím trắng: Đô Rê Mi Pha Sol La Si Đô Rê -->
+        <rect x="0"   y="0" width="58" height="176" rx="6" fill="#8ee6b0"/>
+        <rect x="62"  y="0" width="58" height="176" rx="6" fill="#8ee6b0"/>
+        <rect x="124" y="0" width="58" height="176" rx="6" fill="#8ee6b0"/>
+        <rect x="186" y="0" width="58" height="176" rx="6" fill="#8ee6b0"/>
+        <rect x="248" y="0" width="58" height="176" rx="6" fill="#8ee6b0"/>
+        <rect x="310" y="0" width="58" height="176" rx="6" fill="#fff" stroke="#ff7ab8" stroke-width="5" stroke-dasharray="12 8"/>
+        <rect x="372" y="0" width="58" height="176" rx="6" fill="#fff" stroke="#ff7ab8" stroke-width="5" stroke-dasharray="12 8"/>
+        <rect x="434" y="0" width="58" height="176" rx="6" fill="#fff"/>
+        <rect x="496" y="0" width="58" height="176" rx="6" fill="#fff"/>
+        <!-- phím đen -->
+        <rect x="42"  y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <rect x="104" y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <rect x="228" y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <rect x="290" y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <rect x="352" y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <rect x="476" y="0" width="36" height="104" rx="5" fill="#1c1537"/>
+        <!-- số ngón -->
+        <g font-family="Segoe UI, Arial" font-size="30" font-weight="800" fill="#14532d" text-anchor="middle">
+          <text x="29"  y="160">1</text>
+          <text x="91"  y="160">2</text>
+          <text x="153" y="160">3</text>
+          <text x="215" y="160">4</text>
+          <text x="277" y="160">5</text>
+        </g>
+        <g font-family="Segoe UI, Arial" font-size="40" font-weight="800" fill="#e0467f" text-anchor="middle">
+          <text x="339" y="164">?</text>
+          <text x="401" y="164">?</text>
+        </g>
+      </g>
+
+      <!-- Mũi tên nối sang điện thoại -->
+      <g stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" fill="none" opacity=".85">
+        <path d="M 620 150 L 690 150"/>
+      </g>
+
+      <!-- Điện thoại: bản nhạc có số ngón và ô đáp án -->
+      <g transform="translate(712,0)">
+        <rect x="0" y="0" width="216" height="300" rx="34" fill="#1c1537"/>
+        <rect x="12" y="12" width="192" height="276" rx="24" fill="#fff"/>
+        <text x="30" y="52" font-family="Segoe UI, Arial" font-size="17" font-weight="700" fill="#4b1fb8">Đặt tay ở đâu</text>
+        <g stroke="#9aa3b2" stroke-width="2">
+          <line x1="28" y1="92"  x2="188" y2="92"/>
+          <line x1="28" y1="104" x2="188" y2="104"/>
+          <line x1="28" y1="116" x2="188" y2="116"/>
+          <line x1="28" y1="128" x2="188" y2="128"/>
+          <line x1="28" y1="140" x2="188" y2="140"/>
+        </g>
+        <g fill="#1c1537">
+          <ellipse cx="54"  cy="146" rx="9" ry="7"/>
+          <ellipse cx="88"  cy="134" rx="9" ry="7"/>
+          <ellipse cx="122" cy="116" rx="9" ry="7"/>
+          <ellipse cx="160" cy="98"  rx="9" ry="7"/>
+        </g>
+        <g font-family="Segoe UI, Arial" font-size="15" font-weight="800" fill="#7c3aed" text-anchor="middle">
+          <text x="54"  y="80">1</text>
+          <text x="88"  y="80">3</text>
+          <text x="122" y="80">5</text>
+          <text x="160" y="80">4</text>
+        </g>
+        <rect x="28" y="176" width="160" height="40" rx="10" fill="#dcfce7"/>
+        <text x="108" y="202" font-family="Segoe UI, Arial" font-size="17" font-weight="700" fill="#15803d" text-anchor="middle">✓ Đúng rồi</text>
+        <rect x="28" y="228" width="160" height="40" rx="10" fill="#f4efff" stroke="#c9b6f5" stroke-width="2"/>
+        <text x="108" y="254" font-family="Segoe UI, Arial" font-size="15" font-weight="700" fill="#4b1fb8" text-anchor="middle">Tập câu này với đàn</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Luyện trong 3 bước</h2>
+  <div class="step">
+    <div class="num">1</div>
+    <p>Nhìn câu nhạc chưa có số ngón, tự chọn đặt tay ở đâu</p>
+  </div>
+  <div class="step">
+    <div class="num">2</div>
+    <p>Xem đáp án kèm số ngón và chỗ phải dời tay</p>
+  </div>
+  <div class="step">
+    <div class="num">3</div>
+    <p>Bấm <span class="btn">Tập câu này với đàn</span> — app nghe qua micro</p>
+  </div>
+</div>
+
+<div class="foot">
+  <div class="left">Chạy trên mọi điện thoại,<br>cả iPhone và iPad.</div>
+  <div class="right">
+    <div>
+      <div class="brand">Piano Journey</div>
+      <div class="url">pianojourney.rehover.io/hand-position</div>
+    </div>
+    <div class="logo">
+      <svg width="40" height="40" viewBox="0 0 40 40"><rect x="2" y="6" width="36" height="28" rx="4" fill="#fff"/><g fill="#2a1a5e"><rect x="9" y="6" width="5" height="16"/><rect x="18" y="6" width="5" height="16"/><rect x="27" y="6" width="5" height="16"/></g></svg>
+    </div>
+  </div>
+</div>
+</body>
+</html>

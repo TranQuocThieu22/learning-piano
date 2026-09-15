@@ -27,6 +27,12 @@ Viết xong một bài ở đây thì rút thành bài Facebook theo mẫu ở
 `docs/_internal/bai-dang-facebook.md` — bản trên web là bản gốc, Facebook là bản rút gọn
 dẫn về nó.
 
+**Bài Facebook nào cũng phải kèm ảnh.** Claude tự dựng ảnh đồ hoạ — không cần khớp từng
+khuôn, chỉ cần màu hài hoà để các ảnh đặt cạnh nhau trông cùng một nhà. Bài cần ảnh chụp
+thật (điện thoại trên giá nhạc, cây đàn, trang sách) thì **hỏi chủ sản phẩm gửi**, đừng dựng
+ảnh thay. Cách dựng ở mục 6 của `bai-dang-facebook.md`; `scripts/post-facebook.mjs` từ chối
+lệnh đăng thiếu ảnh.
+
 Đọc `docs/07-doc-them/` trước khi đề xuất tính năng mới. Thư mục này **hiển thị trên web** (mục "Đọc thêm" trong trang `/library`) nên hãy viết cho người học đọc, không viết theo văn phong tài liệu kỹ thuật nội bộ. Đây cũng là chỗ chứa các bài bên lề không nằm trong lộ trình tập — ví dụ lịch sử piano (`lich-su-piano.md`) đã được tách khỏi Chương 0. Các quyết định đã chốt:
 
 - **Không làm piano ảo bấm chuột/chạm màn hình** — xem `docs/07-doc-them/khong-lam-piano-ao.md`. Lý do ngắn gọn: giáo trình dạy kỹ thuật vật lý (form tay, độc lập ngón, lực đánh) mà bàn phím ảo không rèn được, lại tạo cảm giác sai về tiến bộ và cạnh tranh thời gian với cây đàn thật người học đang có. Thứ thay thế được chấp nhận là **app nghe chính cây đàn thật** — qua **micro** (mặc định, chạy trên mọi máy) hoặc **dây MIDI** — trong bài luyện nhận nốt và phần *Tập bài này với đàn*. Mã nghe qua micro nằm ở `src/lib/mic-*.ts`; chỉnh con số nào ở đó thì phải chạy lại `mic-accuracy.test.ts`, vì nó là thứ duy nhất đo độ chính xác trên nhiều câu nhạc chứ không phải vài ca chọn sẵn.

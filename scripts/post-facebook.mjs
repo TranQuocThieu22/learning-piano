@@ -161,6 +161,11 @@ async function publish(options) {
   if (post.alreadyPosted) {
     fail(`Tiêu đề bài số ${post.number} ghi "đã đăng". Muốn đăng lại thì sửa tiêu đề trong ${DOC} trước.`);
   }
+  // Bài không ảnh thì không đăng — chủ sản phẩm chốt 15/09/2026. Trên bảng tin, bài chỉ có
+  // chữ trôi qua gần như vô hình; chặn ở đây vì chữ dặn trong tài liệu thì lúc vội sẽ quên.
+  if (options.images.length === 0) {
+    fail(`Bài nào cũng phải kèm ảnh. Thêm --image <đường dẫn ảnh> — lời dặn ảnh nằm ngay trên bài số ${post.number} trong ${DOC}.`);
+  }
   checkImages(options.images);
 
   const at = options.at ? parseVietnamTime(options.at) : null;
