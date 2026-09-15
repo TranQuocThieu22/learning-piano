@@ -299,38 +299,34 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 
 ---
 
-## 4g. Bài đăng số 8 — soạn 14/09/2026, chưa đăng
+## 4g. Bài đăng số 8 — soạn 14/09/2026, sửa 15/09/2026, chưa đăng
 
 > **Chọn chủ đề này vì:** đây là loại bài "kể cả chỗ sửa sai" ở mục 5 — bản nhạc nhập vào
 > trước nay hiện ra dày đặc dấu thăng giáng, và người nhập file không có cách nào biết đó là
 > do app chứ không phải do bài của mình khó. Nói thẳng chỗ chưa ổn rồi kể cách gỡ thì người
 > đọc tin hơn hẳn một bài chỉ khoe thêm tính năng.
 >
-> **Đừng viết thành "app tự nhận ra giọng của bài".** App cố ý KHÔNG đoán giọng từ các nốt —
-> nó chỉ đọc giọng khi file có ghi sẵn, còn lại để người học tự chọn. Viết sai chỗ này là
-> hứa một thứ sản phẩm không làm.
+> **Đừng viết thành "app tự nhận ra giọng của bài", cũng đừng viết "bạn chọn hoá biểu".**
+> App chỉ ĐỌC hoá biểu ghi sẵn trong file — không đoán từ các nốt, và không cho đặt lại. Hoá
+> biểu là một phần của bản nhạc do người soạn quyết, không phải tuỳ chọn của người đọc.
 >
-> **Ảnh nên kèm:** hai ảnh chụp màn hình cùng một bản nhạc, trước và sau khi chọn đúng hoá
-> biểu — chỗ khác nhau nhìn ra ngay mà không cần đọc chữ nào.
+> **Ảnh nên kèm:** hai ảnh chụp màn hình — một bản nhạc nhập từ file không ghi hoá biểu (đầy
+> dấu cạnh nốt) và một bản từ file có ghi (dấu dồn lên đầu khuông).
 
 ```text
-Ai từng mang file .mid vào Piano Journey chắc đã thấy cảnh này: bản nhạc hiện
+Ai từng mang file nhạc vào Piano Journey chắc đã thấy cảnh này: bản nhạc hiện
 ra mà gần như nốt nào cũng có một dấu thăng hay dấu giáng đứng cạnh, nhìn rối
-mắt. Đó là lỗi của app, không phải bài của bạn khó tới vậy — file .mid không
-nói bài ở giọng nào, nên app đành ghi dấu cho từng nốt một.
+mắt. Đó là lỗi của app, không phải bài của bạn khó tới vậy — app chưa đọc hoá
+biểu, nên đành ghi dấu cho từng nốt một.
 
-Giờ ở bước xem trước có thêm dòng "Hoá biểu đầu khuông". Chọn đúng giọng của
-bài là mấy dấu đó dồn hết lên đầu khuông, chỗ chúng vốn phải nằm, và bản nhạc
-thưa hẳn ra. Không biết bài mình ở giọng nào thì cứ thử vài dòng rồi nhìn
-xuống — dòng nào làm dấu hoá cạnh nốt ít nhất thường là dòng đúng.
+Giờ app đọc hoá biểu ghi sẵn trong file. Bài ở giọng nào thì mấy dấu đó dồn
+hết lên đầu khuông, chỗ chúng vốn phải nằm, và bản nhạc thưa hẳn ra. Đọc được
+cả mười lăm giọng, từ bảy giáng tới bảy thăng.
 
-Chọn trật cũng không hỏng gì: hoá biểu chỉ đổi cách viết, không đổi một nốt
-nào vang ra. Nghe mẫu và tập với đàn vẫn đúng y như cũ.
-
-Vì sao đáng làm: người tự học đọc bản nhạc chậm hơn người có thầy, mà mỗi dấu
-thừa nằm cạnh nốt là một thứ nữa mắt phải xử lý — nhất là lúc máy đang nằm
-trên giá nhạc cách mắt nửa sải tay. Bản nhạc sạch không phải chuyện đẹp xấu,
-nó là chuyện đọc kịp hay không kịp.
+App không đoán giọng hộ bạn, và cũng không cho đặt lại hoá biểu. Người soạn
+bản nhạc đã quyết bài ở giọng nào và mỗi dấu hoá đứng ở đâu — đó là một phần
+của bản nhạc chứ không phải tuỳ chọn. File nào không ghi thì giữ nguyên cách
+cũ: nhiều dấu hơn, nhưng không sai một nốt nào.
 
 Chi tiết:
 https://pianojourney.rehover.io/updates
@@ -428,6 +424,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `fix: Bỏ ô chọn hoá biểu, đọc thẳng hoá biểu file khai` | Sửa bài đăng số 8: bản trước kể "bạn chọn hoá biểu", mà ô chọn đó đã gỡ — hoá biểu là thứ người soạn bản nhạc quyết, app chỉ đọc theo. Thêm lời dặn đừng viết cả "app tự nhận ra giọng" lẫn "bạn chọn hoá biểu", vì cả hai đều sai theo hai hướng ngược nhau |
 | 15/09/2026 | `feat: Tiếng piano êm và vang cho phần nghe mẫu` | Viết lại bài đăng số 9: bản trước kể về vibraphone, đàn hạc, celesta — chủ sản phẩm chốt mọi tiếng phải là piano nên ba thứ đó đã gỡ. Bản mới kể đúng thứ còn lại (nắn tiếng chính cây piano cho êm và vang), thêm lời dặn đừng viết "thêm nhạc cụ mới" |
 | 14/09/2026 | `feat: Thêm nhóm tiếng êm cho phần nghe mẫu, chọn bằng số đo` | Thêm bài đăng số 9 rút từ bài cập nhật cùng ngày — bài ngắn giữ nhịp đăng, kèm lời dặn nói rõ đây là tiếng **nghe mẫu** chứ không phải tiếng cây đàn thật, vì người chưa dùng rất dễ hiểu nhầm chỗ đó |
 | 14/09/2026 | `feat: Chọn hoá biểu đầu khuông cho bản nhạc nhập vào` | Thêm bài đăng số 8 rút từ bài cập nhật cùng ngày — chọn góc "kể cả chỗ sửa sai" (mục 5) vì rừng dấu hoá là thứ người nhập file đã thấy tận mắt, nói thẳng nó là lỗi của app tin được hơn khoe thêm tính năng. Ghi kèm lời dặn đừng viết thành "app tự nhận ra giọng" — app cố ý không đoán |

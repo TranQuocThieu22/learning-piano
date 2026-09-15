@@ -4,23 +4,19 @@ nhan: Kho nhạc
 
 # Bản nhạc nhập vào bớt rừng dấu thăng giáng
 
-Nhập một file `.mid` vào *Kho nhạc của tôi* xong mà thấy bản nhạc hiện ra dày đặc dấu thăng
-dấu giáng, gần như nốt nào cũng có một dấu đứng cạnh? Đó không phải bài của bạn khó tới vậy
-— chỉ là app chưa biết bài ở giọng nào nên đành ghi dấu cho từng nốt một.
+Nhập một file vào *Kho nhạc của tôi* xong mà thấy bản nhạc hiện ra dày đặc dấu thăng dấu
+giáng, gần như nốt nào cũng có một dấu đứng cạnh? Đó không phải bài của bạn khó tới vậy —
+chỉ là app chưa đọc hoá biểu, nên đành ghi dấu cho từng nốt một.
 
-Giờ ngay ở bước xem trước, dưới ô tên bài có thêm dòng **Hoá biểu đầu khuông**. Chọn đúng
-giọng của bài là mấy dấu ấy dồn hết lên đầu khuông, chỗ chúng vốn phải nằm, và bản nhạc thưa
-hẳn ra — đọc từ giá nhạc dễ hơn nhiều.
+Giờ app **đọc hoá biểu ghi sẵn trong file**. File `.musicxml` xuất từ phần mềm soạn nhạc
+luôn có sẵn thông tin đó, và nhiều file `.mid` cũng ghi. Bài ở giọng nào thì mấy dấu ấy dồn
+hết lên đầu khuông, chỗ chúng vốn phải nằm, và bản nhạc thưa hẳn ra — đọc từ giá nhạc dễ hơn
+nhiều.
 
-Chọn được cả mười lăm giọng, từ bảy giáng tới bảy thăng, xếp theo đúng thứ tự vòng quãng năm
-in trong sách nhạc.
+Đọc được tất cả mười lăm giọng, từ bảy dấu giáng tới bảy dấu thăng.
 
-**Chọn trật cũng không sao cả.** Hoá biểu chỉ đổi *cách viết*, không đổi một nốt nào vang ra:
-chọn nhầm thì bản nhạc nhiều dấu hơn mức cần, đổi lại dòng khác là xong. Nghe mẫu và *Tập bài
-này với đàn* vẫn đúng y như cũ dù bạn để giọng nào.
-
-Không biết bài mình ở giọng nào? Cứ thử vài dòng rồi nhìn xuống bản nhạc — dòng nào làm dấu
-hoá cạnh nốt ít nhất thường là dòng đúng.
-
-File `.musicxml` xuất từ phần mềm soạn nhạc, và cả file `.mid` nào có ghi sẵn giọng, thì app
-tự mở ra đúng giọng đó luôn, không phải chọn gì.
+**App không tự đoán giọng, và cũng không cho bạn đặt lại.** Người soạn bản nhạc đã quyết bài
+ở giọng nào, mỗi dấu hoá đứng ở đâu — đó là một phần của bản nhạc, không phải tuỳ chọn. File
+nào không ghi hoá biểu thì app giữ nguyên cách cũ: dấu hoá nằm cạnh từng nốt. Nhìn nhiều dấu
+hơn, nhưng **không sai một nốt nào** — nghe mẫu và *Tập bài này với đàn* vẫn đúng y như bản
+gốc.

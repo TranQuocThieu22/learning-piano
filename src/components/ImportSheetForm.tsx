@@ -1,13 +1,11 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
-import { Alert, Button, Group, Select, Stack, Text, TextInput } from '@mantine/core';
+import { useRef, useState } from 'react';
+import { Alert, Button, Group, Stack, Text, TextInput } from '@mantine/core';
 import { IconAlertTriangle, IconFileMusic, IconDeviceFloppy } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
 import { SheetViewer } from './SheetViewer';
-import { importSheetFile, sheetAbc } from '@/lib/import-sheet';
-import { findKey, KEYS_BY_FIFTHS } from '@/lib/midi-notes';
-import type { ImportedScore } from '@/lib/imported-score';
+import { importSheetFile } from '@/lib/import-sheet';
 import { saveImportedSheet } from '@/lib/sheet-actions';
 import { sheetErrorMessage, sheetSource, type SheetSource } from '@/lib/user-sheets';
 
@@ -25,35 +23,20 @@ import { sheetErrorMessage, sheetSource, type SheetSource } from '@/lib/user-she
  * gật — chứ không phải lưu xong mới phát hiện bản nhạc không giống bài mình định
  * tập.
  *
- * **Hoá biểu chọn được ngay ở bước xem trước.** File MIDI hiếm khi khai giọng, mà
- * không có hoá biểu thì bản nhạc nhiều phím đen hiện ra dày đặc dấu thăng giáng —
- * đọc trên điện thoại đặt ở giá nhạc gần như không nổi. Đổi hoá biểu chỉ đổi cách
- * VIẾT, không đổi nốt nào vang ra (xem `toAbc`), nên đây là ô chọn an toàn: thử
- * tới lúc nhìn thuận mắt rồi mới lưu.
+ * **Hoá biểu lấy từ file, người học KHÔNG chọn.** Người soạn bản nhạc đã quyết
+ * bài ở giọng nào và mỗi dấu hoá đứng ở đâu; cho chọn lại là cho sửa bản nhạc của
+ * họ. Từng có ô chọn mười lăm giọng ở đây, gỡ ngày 15/09/2026 vì đúng lý do đó.
+ * File nào không khai giọng (file MIDI hầu như không khai) thì giữ `K: C` và ghi
+ * dấu hoá cạnh từng nốt — nhiều dấu nhưng không sai một nốt nào.
  */
 export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [preview, setPreview] = useState<{ score: ImportedScore; source: SheetSource } | null>(null);
-  const [keyId, setKeyId] = useState('C');
+  const [preview, setPreview] = useState<{ abc: string; source: SheetSource } | null>(null);
   const [title, setTitle] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-
-  /*
-   * Ghi lại cả chuỗi ABC mỗi lần đổi hoá biểu, và chỉ khi đó: bản nhạc dài 400 ô
-   * nhịp thì đây là việc nặng nhất của cả trang, mà gõ tên bài lại làm trang vẽ
-   * lại liên tục.
-   */
-  const abc = useMemo(() => {
-    if (!preview) return null;
-    try {
-      return { text: sheetAbc(preview.score, findKey(keyId)), error: null };
-    } catch (e) {
-      return { text: null, error: e instanceof Error ? e.message : 'Bản nhạc này app chưa ghi được.' };
-    }
-  }, [preview, keyId]);
 
   async function onPick(file: File | null) {
     if (!file) return;
@@ -61,8 +44,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
     try {
       const bytes = new Uint8Array(await file.arrayBuffer());
       const sheet = await importSheetFile(file.name, bytes);
-      setPreview({ score: sheet.score, source: sheet.source });
-      setKeyId(sheet.key.id);
+      setPreview({ abc: sheet.abc, source: sheet.source });
       setTitle(sheet.title);
     } catch (e) {
       setPreview(null);
@@ -73,10 +55,10 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
   }
 
   async function onSave() {
-    if (!preview || !abc?.text) return;
+    if (!preview) return;
     setSaving(true);
     setError(null);
-    const result = await saveImportedSheet({ title, abc: abc.text, source: preview.source });
+    const result = await saveImportedSheet({ title, abc: preview.abc, source: preview.source });
     setSaving(false);
 
     if (!result.ok || !result.id) {
@@ -138,26 +120,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
             maxLength={120}
           />
 
-          {/*
-            Ô chọn hoá biểu đứng NGAY TRÊN bản nhạc: đổi một dòng rồi nhìn ngay
-            xuống thấy dấu hoá thưa hẳn ra, không phải cuộn đi tìm.
-          */}
-          <Select
-            label="Hoá biểu đầu khuông"
-            description="Chọn đúng giọng của bài thì dấu hoá cạnh nốt thưa hẳn. Nốt vang ra không đổi."
-            data={KEYS_BY_FIFTHS.map((k) => ({ value: k.id, label: k.label }))}
-            value={keyId}
-            onChange={(value) => setKeyId(value ?? 'C')}
-            allowDeselect={false}
-          />
-
-          {abc?.text && <SheetViewer abcNotation={abc.text} />}
-
-          {abc?.error && (
-            <Alert color="orange" variant="light" icon={<IconAlertTriangle size={18} />}>
-              <Text size="sm">{abc.error}</Text>
-            </Alert>
-          )}
+          <SheetViewer abcNotation={preview.abc} />
 
           {/*
             Nói thẳng chỗ máy phải đoán, ngay dưới bản nhạc vừa vẽ. Giấu đi thì
@@ -173,7 +136,7 @@ export function ImportSheetForm({ signedIn }: { signedIn: boolean }) {
             <Button
               onClick={() => void onSave()}
               loading={saving}
-              disabled={!signedIn || title.trim().length === 0 || !abc?.text}
+              disabled={!signedIn || title.trim().length === 0}
               leftSection={<IconDeviceFloppy size={18} />}
             >
               Lưu vào kho của tôi

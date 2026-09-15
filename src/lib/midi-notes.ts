@@ -260,14 +260,6 @@ export function keyFromFifths(fifths: number): KeySignature | null {
 }
 
 /**
- * Cả bảng xếp theo vòng quãng năm, từ bảy giáng tới bảy thăng.
- *
- * Thứ tự này dành cho ô chọn hoá biểu: đó là thứ tự in trên mọi cuốn sách nhạc,
- * nên mắt người học tìm ra dòng mình cần mà không phải đọc hết.
- */
-export const KEYS_BY_FIFTHS: KeySignature[] = [...KEY_SIGNATURES].sort((a, b) => a.fifths - b.fifths);
-
-/**
  * Những giọng câu hỏi được phép bốc trúng, theo lựa chọn đang bật.
  *
  * Lọc theo `drill` chứ không lấy cả bảng: bảng còn phục vụ chỗ ghi bản nhạc nhập

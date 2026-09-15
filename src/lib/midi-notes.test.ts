@@ -3,7 +3,7 @@ import {
   allowedDrillOptions, FREE_DRILL_PRESET,
   allParts, answerBeat, BEATS_PER_BAR, checkAnswer, clefsFor, DEFAULT_OPTIONS, describeMidiNote,
   DRILL_PRESETS, DrillOptions, DrillPart, DrillQuestion, findKey, keyFromFifths,
-  KEY_SIGNATURES, KEYS_BY_FIFTHS, keysForOptions,
+  KEY_SIGNATURES, keysForOptions,
   MAX_PER_STAFF, noteAt, notePoolForOptions, octaveLabel, octavesFor, OCTAVES_BY_CLEF,
   pickNextQuestion, presetOf, questionAbc,
 } from './midi-notes';
@@ -56,10 +56,11 @@ describe('hoá biểu', () => {
     expect(Object.keys(findKey('Eb').alter)).toHaveLength(3);
   });
 
-  it('bản nhạc nhập vào chọn được cả vòng quãng năm, xếp từ bảy giáng tới bảy thăng', () => {
-    expect(KEYS_BY_FIFTHS.map((k) => k.fifths)).toEqual([-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7]);
-    expect(KEYS_BY_FIFTHS[0].id).toBe('Cb');
-    expect(KEYS_BY_FIFTHS.at(-1)?.id).toBe('C#');
+  it('có đủ cả vòng quãng năm để đọc được hoá biểu bất kỳ file nào khai', () => {
+    // Bảng phải phủ hết -7..+7: thiếu một giọng là file khai giọng đó rơi về
+    // `K: C` và bản nhạc hiện ra dày đặc dấu hoá mà không ai biết vì sao.
+    expect([...KEY_SIGNATURES].map((k) => k.fifths).sort((a, b) => a - b))
+      .toEqual([-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7]);
     // Số dấu ở đầu khuông phải khớp số chữ cái bị hoá, không thì hoá biểu vẽ ra
     // một đằng mà nốt viết một nẻo.
     for (const key of KEY_SIGNATURES) {
