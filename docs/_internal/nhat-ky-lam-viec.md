@@ -42,8 +42,8 @@
 
 ## 15/09/2026 (chiều) — Đăng Facebook bằng script, hướng đàn gập câm, và bộ phát tiếng
 
-> Ba commit `71805bc`, `77f275e`, `bf32f06`, đẩy thẳng `main` (hai commit sau do chủ sản phẩm
-> nói "commit luôn"). Phiên Claude Code trên máy tính Windows, không phải trên web.
+> Bốn commit `71805bc`, `77f275e`, `bf32f06`, `228d8af`, đẩy thẳng `main` (ba commit sau do chủ
+> sản phẩm nói "commit luôn"). Phiên Claude Code trên máy tính Windows, không phải trên web.
 
 **Đã làm**
 
@@ -62,6 +62,16 @@
 - **Dựng bộ phát tiếng** (`bf32f06`) — trang `/piano-sound`: nối MIDI, đánh trên đàn thì điện
   thoại kêu, theo lực bấm, pedal ngân qua dây, hiện độ trễ. Kèm bài *Có gì mới* và bài
   Facebook số 10.
+- **Chủ sản phẩm lấy mã truy cập Facebook**, Claude chỉ từng bước qua ảnh chụp màn hình.
+  `pnpm fb check` trỏ đúng Trang *Piano Journey - Giáo trình tự học piano online*
+  (`1282536924939717`). Tài khoản quản trị **hai** Trang cùng tên; Trang kia có ảnh đại diện chữ
+  P mặc định, chưa dùng — chỉ cấp quyền cho một Trang.
+- **Luật mới: bài Facebook nào cũng kèm ảnh** (`228d8af`). Script từ chối lệnh thiếu `--image`; Claude tự
+  dựng ảnh đồ hoạ, chỉ cần màu hài hoà giữa các ảnh, bài cần ảnh chụp thật thì hỏi chủ sản
+  phẩm. Ghi vào `AGENTS.md` và mục 6 của `bai-dang-facebook.md`.
+- **Dựng ảnh bài số 4** (HTML → Edge chạy ngầm → PNG 1080×1350, nguồn ở
+  `scripts/facebook-images/bai-04.html`) và chạy bản xem trước có ảnh, có giờ hẹn. **Chưa
+  đăng** — chờ chủ sản phẩm chọn giờ.
 
 **Quan sát**
 
@@ -80,6 +90,14 @@
   toạ độ không ăn, trông y như app hỏng. Bấm bằng mã trong trang (`button.click()`) mới tách được
   lỗi công cụ khỏi lỗi app: trang chạy đúng, tải đủ 49 mẫu âm. Trình duyệt thử không có đàn nên
   báo từ chối quyền MIDI — đúng như phải thế.
+- **Hướng dẫn lấy mã qua ảnh chụp thì mã lọt vào ảnh — hai lần liền.** Ô *Mã truy cập* của Graph
+  API Explorer và ô nhập của Access Token Debugger đều nằm ngay trên cùng, chụp màn hình nào cũng
+  dính. Mã bị lộ là mã người dùng ngắn hạn (sống một giờ), nên đã bảo tạo mã mới rồi mới kéo dài.
+  Lần sau dặn **che ô mã ngay từ trước bước Generate**, không đợi tới lúc lộ mới nói.
+- **`date` trong Git Bash in giờ UTC, kể cả khi đặt `TZ=Asia/Ho_Chi_Minh`.** Tôi báo "14:58" và
+  định hẹn đăng 20:00 "tối nay" trong khi đồng hồ thật đã 22:00 — phát hiện nhờ giờ ghi trên tệp
+  ảnh vừa dựng. Script đăng bài tự cộng 7 tiếng nên không sai; cần giờ thật thì hỏi
+  `node -e "console.log(new Date().toString())"`, đừng tin `date`.
 - **Nghịch lý nên nhớ cho hướng đàn câm:** iOS có độ trễ âm thanh tốt nhất mà không nhận MIDI;
   Android nhận MIDI thì độ trễ âm thanh lại là chỗ yếu nhất.
 
@@ -87,7 +105,10 @@
 
 - **Thử `/piano-sound` trên FP-30X, đọc số ms trên trang.** Đây là con số quyết định hướng đàn
   câm có đi tiếp được không, và chỉ đo được trên máy thật.
-- **Lấy mã truy cập Facebook** (năm bước), rồi hẹn giờ bảy bài đang chờ, số 4 tới số 10.
+- **Bài số 4 chờ chủ sản phẩm chọn giờ đăng** — ảnh đã dựng, bản xem trước đã chạy. Đây là lần
+  đăng thật đầu tiên nên nó thử luôn quyền đăng bài và việc tải ảnh lên.
+- **Bài 5 tới 10:** Claude dựng ảnh cùng tông màu, bài nào cần ảnh chụp thật thì chủ sản phẩm
+  gửi. Lịch dự kiến hai ngày một bài lúc 20:00, bắt đầu từ 18/09, duyệt cả loạt một lượt.
 - **Đo tỷ lệ người học dùng iOS** trong Vercel Analytics — nó quyết định "tạm gác iPhone" là chấp
   nhận được hay mất nửa thị trường.
 - Việc cũ vẫn treo: thử micro trên máy thật, nghe thử bốn tiếng piano mới.

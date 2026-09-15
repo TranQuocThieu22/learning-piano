@@ -113,11 +113,16 @@ Không gấp, xoá dòng nào đã xong:
       form **sau** ngày này vẫn đi đúng hai bước ấy — cách làm ở mục 2 của
       [`ke-hoach-beta.md`](ke-hoach-beta.md), nhớ ô *Lý do* gõ đúng `beta dot 1`.
 
-- [ ] **Lấy mã truy cập Facebook một lần, để Claude đăng bài hộ.** Năm bước ở mục 6 của
-      [`bai-dang-facebook.md`](bai-dang-facebook.md), cần ngồi ở máy tính vì bước cuối là dán
-      hai dòng vào `.env.local`. Xong thì bảo Claude chạy `pnpm fb check`. Còn bảy bài (số 4
-      tới số 10) đang chờ đăng — chưa làm bước này thì vẫn hẹn giờ tay trong Meta Business
-      Suite được, script chỉ là cho đỡ phải mở Facebook.
+- [x] ~~**Lấy mã truy cập Facebook một lần, để Claude đăng bài hộ.**~~ Xong 15/09/2026:
+      `pnpm fb check` trỏ đúng Trang *Piano Journey - Giáo trình tự học piano online*
+      (`1282536924939717`). Tài khoản quản trị **hai** Trang cùng tên, chỉ Trang này được cấp
+      quyền. Mã hết hiệu lực khi đổi mật khẩu Facebook hay gỡ app — lúc đó làm lại năm bước ở
+      mục 6 của [`bai-dang-facebook.md`](bai-dang-facebook.md).
+
+- [ ] **Hẹn giờ bảy bài Facebook đang chờ (số 4 tới số 10).** Mã đã có, bảo Claude xếp lịch
+      rồi xem bản xem trước từng bài trước khi đăng. Bài nào cũng kèm ảnh: Claude tự dựng ảnh
+      đồ hoạ; bài cần ảnh chụp thật (điện thoại trên giá nhạc, cây đàn) thì Claude sẽ hỏi bạn
+      gửi. Ảnh bài số 4 đã dựng xong, chỉ chờ bạn chọn giờ đăng.
 
 - [ ] **Thử *Tiếng đàn qua điện thoại* (`/piano-sound`) trên FP-30X.** Đây là con số quyết định
       hướng đàn gập câm có đi tiếp được không. Nối đàn vào điện thoại Android (dây OTG hoặc
@@ -193,7 +198,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
-| 15/09/2026 | `docs(internal): Ghi nhật ký phiên đăng Facebook, đàn gập câm và bộ phát tiếng 15/09` | Mục 7: thêm việc thử trang phát tiếng trên FP-30X — độ trễ trên Android thật là con số quyết định hướng đàn câm, mà chỉ đo được bằng cây đàn và chiếc điện thoại thật, nên phải nằm trong danh sách việc của chủ sản phẩm chứ không chỉ trong nhật ký quyết định. Sửa số bài Facebook đang chờ từ sáu thành bảy vì đã có bài số 10 |
+| 15/09/2026 | `docs(internal): Ghi nhật ký phiên đăng Facebook, đàn gập câm và bộ phát tiếng 15/09` | Mục 7: thêm việc thử trang phát tiếng trên FP-30X — độ trễ trên Android thật là con số quyết định hướng đàn câm, mà chỉ đo được bằng cây đàn và chiếc điện thoại thật, nên phải nằm trong danh sách việc của chủ sản phẩm chứ không chỉ trong nhật ký quyết định. Sửa số bài Facebook đang chờ từ sáu thành bảy vì đã có bài số 10. Đánh dấu xong việc lấy mã Facebook — `pnpm fb check` trỏ đúng Trang ngay trong phiên — và tách việc hẹn giờ bảy bài thành dòng riêng, vì mã có rồi mà bài vẫn chưa lên. Ghi mã số Trang vào vì tài khoản quản trị hai Trang cùng tên, dễ nhầm lúc làm lại mã. Ghi vào việc hẹn giờ rằng bài nào cũng kèm ảnh và ai lo ảnh nào — Claude dựng ảnh đồ hoạ, bạn gửi ảnh chụp thật — để lúc xếp lịch không ai phải hỏi lại |
 | 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Mục 5: thêm hai dòng phân việc cho chuyện đăng Facebook — Claude chạy `pnpm fb` sau khi bạn duyệt bản xem trước, còn việc lấy mã truy cập vẫn là của bạn vì nó dính tới mật khẩu. Mục 7: thêm việc lấy mã một lần, kèm lối đi vòng (hẹn giờ tay trong Meta Business Suite) để sáu bài đang chờ không bị kẹt chờ script |
 | 14/09/2026 | `docs(internal): Ghi nhật ký phiên 14/09 và cách đọc bài trả phí ở máy` | Mục 3: thêm cách đọc bài trả phí ở máy bằng `DEV_UNLOCK_ALL`, kèm cảnh báo tunnel là công khai — bật công tắc rồi mở tunnel là cả giáo trình trả phí mở cho ai có link, đúng kiểu sơ suất không có triệu chứng |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Đánh dấu xong việc đọc thử Chương 1-2 và làm tiếp Chương 3-7 — chủ sản phẩm bảo làm tiếp nên cả giáo trình đã đổi khuôn; giữ lời nhắc mở thử vài bài Chương 3-7 trên máy thật vì chúng chưa ai đọc trên điện thoại |
