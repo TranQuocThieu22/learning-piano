@@ -40,6 +40,61 @@
 
 ---
 
+## 15/09/2026 — Tiếng piano êm và trong trẻo, và bỏ ô chọn hoá biểu
+
+> Bốn commit `79b9ec7`, `0098bcc`, `38d67e3`, `0050616`, đẩy thẳng `main`. Vẫn làm trong
+> phiên Claude Code chạy trên web.
+
+**Đã làm**
+
+- **Đi sai hướng một vòng rồi quay lại.** Chủ sản phẩm xin "tiếng đàn êm hơn". Đo phổ mười
+  chín nhạc cụ ở hai bộ mẫu âm rồi thêm vibraphone, đàn hạc, celesta vì chúng đo ra êm hơn
+  Grand Piano rõ rệt (`79b9ec7`). Chủ sản phẩm bác ngay: **mọi tiếng phải là piano**. Gỡ cả
+  ba cùng 264 tệp mẫu âm trong ngày.
+- **Làm đúng hướng: nắn tiếng chính cây piano** (`0098bcc`). Dựng `src/lib/piano-tone.ts` —
+  bộ lọc hai cực cho phần "êm", bộ vang Freeverb cho phần "vang". Ba tiếng mới: *Grand Piano
+  êm dịu*, *Grand Piano vang (kiểu nhạc buồn)*, *Rhodes vang*.
+- **Thêm *Grand Piano trong trẻo*, dựng theo một video chủ sản phẩm gửi** (`38d67e3`). Tách
+  tiếng khỏi mp4 rồi đo: nó **không sáng hơn** mẫu âm của app (384Hz so với 390Hz), chỉ hụt
+  hẳn vùng 1-2kHz. Thêm `roundness` — bộ lọc chuông khoét đúng vùng đó.
+- **Bỏ ô chọn hoá biểu ở trang nhập bản nhạc** (`0050616`), giữ lại phần đọc hoá biểu từ file.
+
+**Quan sát**
+
+- **"Êm hơn" và "hay hơn" không phải một câu hỏi.** Vòng đầu tôi đo đúng (vibraphone thật sự
+  êm hơn) mà trả lời sai, vì đã coi đó là bài toán *tìm âm sắc êm nhất* thay vì *tìm tiếng
+  piano êm nhất*. Số đo không cứu được một câu hỏi đặt sai.
+- **Lập luận sai nghe xuôi nhất trong ngày:** "hoá biểu chỉ đổi cách viết chứ không đổi cao
+  độ, nên người học chọn trật cũng vô hại". Đúng về kỹ thuật, lạc đề về sản phẩm — hoá biểu
+  là một phần của bản nhạc do người soạn quyết. **Vô hại không có nghĩa là đúng.** Ghi nguyên
+  văn vào `nhat-ky-quyet-dinh.md` vì kiểu lập luận này sẽ quay lại.
+- **Cái làm piano chói không phải cao độ của nốt**, mà là tiếng búa gõ nằm cao hơn nốt hai ba
+  quãng tám. Dò trượt hai lần mới ra: cắt từ 1100Hz nghe êm thật nhưng Đô6 chỉ còn 52% và
+  giai điệu tay phải chìm dưới bè đệm; phải lùi lên 2200Hz.
+- **Tiếng vang để mức hút phần cao nhẹ như Freeverb gốc thì nó làm bản nhạc SÁNG THÊM 5-8%** —
+  ngược hẳn thứ đang cần. Phòng thật hút phần cao trước, nên đuôi vang phải tối hơn tiếng gốc.
+- **Bản ghi mẫu của chủ sản phẩm bị cắt trần ở 5,9kHz** (quay qua điện thoại, nén mạnh). Chép
+  y hệt là chép cả khuyết điểm khâu thu — và chỗ nó khác mẫu âm của app nhiều nhất lại đúng
+  là dải 800-1600Hz của giai điệu. Dừng ở mức giữ Đô6 ở 70%: cách bản mẫu 2,9dB thay vì 5,5dB,
+  còn khoét sâu hơn thì được 2,2dB nhưng Đô6 tụt còn 57%.
+- **Đo được thì đừng đoán.** Cả ngày không nghe được một giây nào: cài `soundfile` rồi
+  `imageio-ffmpeg` từ PyPI, ghi tiếng ra WAV bằng chính mã sắp giao, rồi đo trọng tâm phổ,
+  phần năng lượng trên 2kHz, đuôi vang và **độ tách nốt** (chỗ trũng giữa hai nốt sâu bao
+  nhiêu dB). Cái cuối là thứ giữ cho tiếng vang không trộn các nốt thành một đám mây.
+- **Máy ảo chặn `github.io` nhưng không chặn `raw.githubusercontent.com`** — cùng một kho mẫu
+  âm. Đã thêm đường vòng vào `scripts/download-soundfont.mjs`.
+
+**Tiếp theo**
+
+- **Chủ sản phẩm nghe thử bốn tiếng piano mới trên máy thật** rồi nói tiếng nào gần ý nhất,
+  hoặc "đanh quá / tối quá". Toàn bộ phần này chọn bằng số đo, chưa ai nghe bằng tai.
+- **Bản nhạc đã lưu vẫn chưa đổi được hoá biểu** — chuỗi ABC chốt lúc lưu. Giờ đã rõ là hoá
+  biểu không phải tuỳ chọn, nên việc còn lại chỉ là: file khai giọng mà nhập trước lúc có
+  tính năng này thì phải nhập lại mới thấy đúng hoá biểu.
+- **Bài Facebook số 8 và số 9** chờ đăng, cùng số 4-7 từ mấy hôm trước.
+
+---
+
 ## 14/09/2026 (tối) — Chọn hoá biểu cho bản nhạc nhập vào
 
 > Commit `654e4d8`, đẩy thẳng `main` sau khi năm lệnh kiểm đều xanh. Làm trong phiên
