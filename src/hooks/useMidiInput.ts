@@ -41,15 +41,30 @@ export interface UseMidiInputResult {
 
 const NOTE_ON = 0x90;
 const NOTE_OFF = 0x80;
+const CONTROL_CHANGE = 0xb0;
+/** Số hiệu pedal ngân theo chuẩn MIDI, và mốc coi là đã đạp. */
+const SUSTAIN_PEDAL = 64;
+const PEDAL_DOWN_FROM = 64;
+
+export interface MidiHandlers {
+  onNoteOn?: (note: number, velocity: number) => void;
+  /**
+   * Một phím vừa nhả. Bài tập chỉ quan tâm lúc phím xuống, nhưng bộ phát tiếng
+   * (`live-piano.ts`) cần cả lúc nhả — không có thì nốt nào cũng ngân mãi.
+   */
+  onNoteOff?: (note: number) => void;
+  /** Pedal ngân (CC64) vừa đạp hoặc vừa nhả. */
+  onPedal?: (down: boolean) => void;
+}
 
 /**
  * Kết nối đàn qua Web MIDI.
  *
- * `onNoteOn` được giữ trong ref nên component gọi hook không cần bọc useCallback;
+ * Trình xử lý được giữ trong ref nên component gọi hook không cần bọc useCallback;
  * nếu gắn thẳng vào effect thì mỗi lần state đổi sẽ tháo ra gắn lại trình xử lý,
  * và những nốt bấm đúng lúc đó sẽ rơi mất.
  */
-export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void): UseMidiInputResult {
+export function useMidiInput(handlers: MidiHandlers = {}): UseMidiInputResult {
   const [status, setStatus] = useState<MidiStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [devices, setDevices] = useState<MidiDevice[]>([]);
@@ -57,9 +72,9 @@ export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void
   const [heldNotes, setHeldNotes] = useState<number[]>([]);
 
   const accessRef = useRef<MIDIAccess | null>(null);
-  const onNoteOnRef = useRef(onNoteOn);
+  const handlersRef = useRef(handlers);
   useEffect(() => {
-    onNoteOnRef.current = onNoteOn;
+    handlersRef.current = handlers;
   });
 
   const refreshDevices = useCallback((access: MIDIAccess) => {
@@ -127,9 +142,13 @@ export function useMidiInput(onNoteOn?: (note: number, velocity: number) => void
       // Nhiều đàn báo nhả phím bằng "note on, lực = 0" thay vì note off.
       if (command === NOTE_ON && velocity > 0) {
         setHeldNotes((prev) => (prev.includes(note) ? prev : [...prev, note]));
-        onNoteOnRef.current?.(note, velocity);
+        handlersRef.current.onNoteOn?.(note, velocity);
       } else if (command === NOTE_OFF || (command === NOTE_ON && velocity === 0)) {
         setHeldNotes((prev) => prev.filter((n) => n !== note));
+        handlersRef.current.onNoteOff?.(note);
+      } else if (command === CONTROL_CHANGE && note === SUSTAIN_PEDAL) {
+        // Với lệnh điều khiển thì byte thứ hai là số hiệu nút, byte thứ ba là mức.
+        handlersRef.current.onPedal?.(velocity >= PEDAL_DOWN_FROM);
       }
     };
 

@@ -311,14 +311,15 @@ Ghi ở đây để lần sau mở ra là biết mình đang đứng ở đâu. 
   dùng chính hai bộ đọc đó để lấy bài từ `musetrainer/library` vào `/songs`, và nhập thử một
   bài Mutopia (LilyPond → ABC) qua đủ ba lớp kiểm ở mục 6 của `ban-quyen-bai-hat.md`. Bộ đọc
   LilyPond thì vẫn chưa có ai viết.
-- **App chưa phát tiếng nốt người học bấm — đây là điều kiện sống còn của hướng đàn câm.**
-  `usePianoInput` hiện chỉ *nghe* rồi tô màu; tiếng đàn trong app mới chỉ dùng cho phần nghe
-  mẫu, phát theo lịch đặt trước nên chậm vài chục ms cũng không ai biết. Cắm một cây đàn câm
-  vào app hôm nay là im lặng hoàn toàn. Thứ phải đo **trước khi đặt sản xuất bất cứ thứ gì**:
-  độ trễ từ lúc bấm phím tới lúc nghe tiếng, trên điện thoại Android thật. Trên 50ms là không
-  tập được, và nếu Android không đạt thì cả hướng đàn câm phải tính lại. Nghịch lý phải nhớ:
-  iOS có độ trễ âm thanh tốt nhất nhưng không nhận được MIDI, còn Android nhận được MIDI thì
-  độ trễ âm thanh lại là chỗ yếu nhất.
+- **App phát tiếng nốt người học bấm — đã dựng, CHƯA đo trên máy thật.** Điều kiện sống còn
+  của hướng đàn câm. 15/09/2026 đã có trang `/piano-sound` (`src/lib/live-piano.ts`): nối
+  MIDI, đánh trên đàn thì điện thoại phát tiếng, theo lực bấm, tắt dần khi nhả phím, pedal
+  ngân qua dây (Bluetooth thẳng chưa đọc pedal), và hiện độ trễ trình duyệt tự báo. Mới kiểm
+  trên trình duyệt thử không có đàn: tải đủ mẫu âm, giải mã được. Thứ còn phải đo **trước khi
+  đặt sản xuất bất cứ thứ gì**: độ trễ từ lúc bấm phím tới lúc nghe tiếng, trên điện thoại
+  Android thật nối FP-30X. Trên 50ms là không tập được, và nếu Android không đạt thì cả hướng
+  đàn câm phải tính lại. Nghịch lý phải nhớ: iOS có độ trễ âm thanh tốt nhất nhưng không nhận
+  được MIDI, còn Android nhận được MIDI thì độ trễ âm thanh lại là chỗ yếu nhất.
 - **Đàn câm đẩy iPhone/iPad ra ngoài cuộc cho tới khi có đường khác.** Đàn không kêu thì micro
   không có gì để nghe, mà WebKit không có cả Web MIDI lẫn Web Bluetooth — nên trên iOS không
   còn đường nối nào. Chủ sản phẩm chấp nhận và tính giải sau (app native, hoặc thêm tiếng cho
@@ -382,6 +383,7 @@ Không phải chuyện kỹ thuật, nhưng ảnh hưởng tới cách viết t�
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Đánh trên đàn, điện thoại phát tiếng piano` | Sửa việc treo ở mục 3 từ "app chưa phát tiếng nốt người học bấm" thành "đã dựng, chưa đo trên máy thật" — để nguyên dòng cũ thì lần sau đọc tưởng việc chưa ai làm, còn gạch hẳn đi thì mất lời nhắc rằng con số quyết định (độ trễ trên Android thật) vẫn chưa có. Ghi luôn hai giới hạn của bản đầu: Bluetooth thẳng chưa đọc pedal, và mới kiểm trên trình duyệt thử không có đàn |
 | 15/09/2026 | `docs(internal): Chốt hướng đàn gập câm, tiếng do app phát` | Thêm dòng quyết định về phần cứng vào mục 1 và hai việc treo vào mục 3. Ghi kèm số đo tầm nốt của cả giáo trình (Đô2..Đô6 = 49 nửa cung) vì đó là lý do 61 phím là cỡ nhỏ nhất — 49 phím chỉ vừa khít nội dung hôm nay nên đã bỏ khỏi kế hoạch, và ghi rõ hai cái giá đã chấp nhận — iPhone/iPad tạm ngoài cuộc, và app phải tự phát tiếng nốt người học bấm. Việc thứ hai là điều kiện sống còn mà hôm nay app chưa có, nên để nó nằm im trong đầu ai đó là rủi ro lớn nhất của cả hướng này |
 | 15/09/2026 | `fix: Bỏ ô chọn hoá biểu, đọc thẳng hoá biểu file khai` | Sửa lại dòng quyết định về hoá biểu: bản hôm qua chốt "người học chọn", chủ sản phẩm bác — hoá biểu là một phần của bản nhạc do người soạn quyết, không phải tuỳ chọn của người đọc. Ghi lại cả lập luận sai ("chỉ đổi cách viết nên chọn trật cũng vô hại") vì nó nghe rất xuôi và sẽ quay lại nếu không ghi ra |
 | 15/09/2026 | `feat: Tiếng piano êm và vang cho phần nghe mẫu` | Thêm một dòng vào mục 1: mọi tiếng nghe mẫu phải là piano, muốn êm hơn thì nắn tiếng chính cây đàn đó chứ không mượn nhạc cụ khác. Ghi cả lần làm sai (thêm vibraphone, đàn hạc, celesta rồi gỡ) và hai tham số đã dò trượt, để lần sau không ai đi lại đúng hai vòng đó |

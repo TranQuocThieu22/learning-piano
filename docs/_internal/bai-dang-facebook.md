@@ -367,6 +367,41 @@ https://pianojourney.rehover.io/updates
 
 ---
 
+## 4i. Bài đăng số 10 — soạn 15/09/2026, chưa đăng
+
+> **Chọn chủ đề này vì:** "đàn rẻ thì tiếng dở" là lý do có thật khiến người mới ngại mua cây
+> đàn đầu tiên, và cũng là lý do tập một thời gian thì chán tiếng. Bài này kể một cách gỡ
+> không tốn thêm tiền.
+>
+> **Đừng hứa iPhone làm được.** iPhone và iPad không nối đàn bằng đường nào — viết thiếu câu
+> đó là người dùng iPhone bấm vào rồi thất vọng ngay. Cũng đừng nói pedal chạy mọi đường: nối
+> Bluetooth thẳng thì pedal chưa ngân.
+>
+> **Ảnh nên kèm:** điện thoại cắm tai nghe có dây đặt trên giá nhạc, dây MIDI nối xuống đàn,
+> màn hình mở trang *Tiếng đàn qua điện thoại* thấy rõ ô độ trễ màu xanh.
+
+```text
+Đàn phím giá mềm hay có một chỗ yếu: loa. Phím bấm ổn, cảm ứng lực đủ, nhưng
+tiếng phát ra mỏng và rè — tập vài tuần là chán nghe.
+
+Giờ có cách khác: nối đàn vào điện thoại bằng dây MIDI hoặc Bluetooth, đánh
+trên đàn, và nghe tiếng piano từ điện thoại. Đánh nhẹ thì nhỏ, đánh mạnh thì
+to, đạp pedal thì nốt ngân. Chọn được tiếng Grand Piano mộc, êm dịu hay vang
+kiểu nhạc buồn. Cắm tai nghe vào là tập khuya được mà tiếng vẫn hay.
+
+Trang có hiện độ trễ của máy bạn — từ lúc chạm phím tới lúc nghe ra tiếng.
+Dưới 30ms thì tai không nhận ra. Thấy tiếng chạy sau tay thì thử tai nghe có
+dây trước, tai nghe Bluetooth chậm hơn hẳn.
+
+Chạy trên điện thoại Android và máy tính. iPhone, iPad thì chưa — trình duyệt
+trên iOS không cho nối đàn, giới hạn đó nằm ở trình duyệt chứ không ở cây đàn.
+
+Mở cho tất cả mọi người, không cần đăng ký:
+https://pianojourney.rehover.io/piano-sound
+```
+
+---
+
 ## 5. Mẫu bài "cập nhật hệ thống"
 
 Khuôn bốn đoạn. Đoạn 3 là đoạn hay bị bỏ nhất, và nó mới là đoạn làm bài này khác một
@@ -491,6 +526,7 @@ Triệu chứng là script báo lỗi `190` — lúc đó làm lại từ bướ
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Đánh trên đàn, điện thoại phát tiếng piano` | Thêm bài đăng số 10 rút từ bài cập nhật cùng ngày — góc kể là "đàn rẻ thì loa dở", lý do có thật khiến người mới ngại mua đàn và chán tiếng. Ghi kèm hai lời dặn đừng hứa iPhone làm được và đừng nói pedal chạy mọi đường, vì cả hai đều sai với bản đang chạy |
 | 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Thêm mục 6 — cách đăng bằng script và năm bước lấy mã truy cập. Có lúc chủ sản phẩm không tiện mở Facebook, mà bài đăng thì đã duyệt sẵn nằm trong file này. Chọn Graph API thay vì điều khiển trình duyệt vì giao diện Facebook đổi liên tục; ghi luôn bốn lưới an toàn (không có `--confirm` thì không đăng, chặn đăng trùng, nối dòng ngắt, chỉ đăng lên Trang) để lần sau không ai "dọn cho gọn" mất |
 | 15/09/2026 | `fix: Bỏ ô chọn hoá biểu, đọc thẳng hoá biểu file khai` | Sửa bài đăng số 8: bản trước kể "bạn chọn hoá biểu", mà ô chọn đó đã gỡ — hoá biểu là thứ người soạn bản nhạc quyết, app chỉ đọc theo. Thêm lời dặn đừng viết cả "app tự nhận ra giọng" lẫn "bạn chọn hoá biểu", vì cả hai đều sai theo hai hướng ngược nhau |
 | 15/09/2026 | `feat: Tiếng piano êm và vang cho phần nghe mẫu` | Viết lại bài đăng số 9: bản trước kể về vibraphone, đàn hạc, celesta — chủ sản phẩm chốt mọi tiếng phải là piano nên ba thứ đó đã gỡ. Bản mới kể đúng thứ còn lại (nắn tiếng chính cây piano cho êm và vang), thêm lời dặn đừng viết "thêm nhạc cụ mới" |

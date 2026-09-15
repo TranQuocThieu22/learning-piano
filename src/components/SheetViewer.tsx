@@ -12,7 +12,7 @@ import {
 import { ScorePractice } from './ScorePractice';
 import { holdAmbient } from '@/lib/ambient-hold';
 import { SheetAudioControls } from './SheetAudioControls';
-import { INSTRUMENTS, INSTRUMENT_GROUPS } from '@/lib/soundfont';
+import { INSTRUMENT_SELECT_DATA } from '@/lib/soundfont';
 import { useSheetRender } from '@/hooks/useSheetRender';
 import { useSheetAudio } from '@/hooks/useSheetAudio';
 
@@ -227,13 +227,7 @@ export function SheetViewer({
             <Select
               size="xs"
               label="Tiếng đàn khi nghe mẫu"
-              data={INSTRUMENT_GROUPS.map((group) => ({
-                group,
-                items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
-                  value: i.id,
-                  label: i.label,
-                })),
-              }))}
+              data={INSTRUMENT_SELECT_DATA}
               value={audio.instrumentId}
               allowDeselect={false}
               // Cả bề ngang trên điện thoại: 240px cạnh một cái nút là tràn dòng lệch lạc.

@@ -24,10 +24,16 @@ export function PianoInputChooser({
   input,
   title,
   description,
+  midiOnly = false,
 }: {
   input: PianoInput;
   title: string;
   description: ReactNode;
+  /**
+   * Chỉ cho nối MIDI, giấu nút micro. Dùng ở trang phát tiếng lúc bấm phím: micro nghe
+   * được tiếng thì cây đàn đã tự kêu rồi, điện thoại kêu theo chỉ thành hai tiếng chồng nhau.
+   */
+  midiOnly?: boolean;
 }) {
   return (
     <Card withBorder padding="md" data-testid="input-chooser">
@@ -37,16 +43,18 @@ export function PianoInputChooser({
           <Text size="sm" c="dimmed">{description}</Text>
         </Box>
         <Group gap="sm" wrap="wrap">
-          <Button
-            leftSection={<IconMicrophone size={18} />}
-            onClick={input.chooseMic}
-            data-testid="choose-mic"
-          >
-            Nghe qua micro
-          </Button>
+          {!midiOnly && (
+            <Button
+              leftSection={<IconMicrophone size={18} />}
+              onClick={input.chooseMic}
+              data-testid="choose-mic"
+            >
+              Nghe qua micro
+            </Button>
+          )}
           {input.midiSupported && (
             <Button
-              variant="default"
+              variant={midiOnly ? 'filled' : 'default'}
               leftSection={<IconUsb size={18} />}
               onClick={input.chooseMidi}
               data-testid="choose-midi"
@@ -55,9 +63,17 @@ export function PianoInputChooser({
             </Button>
           )}
         </Group>
-        <Text size="xs" c="dimmed">
-          Micro: đặt máy trên giá nhạc rồi đánh, không cần mua gì thêm. {PRIVACY_NOTE}
-        </Text>
+        {midiOnly && !input.midiSupported && (
+          <Text size="sm" data-testid="midi-unsupported">
+            Máy này chưa nối MIDI được. Nối đàn — bằng dây hay Bluetooth — chạy trên điện thoại
+            Android (Chrome, Edge) và máy tính; iPhone và iPad thì trình duyệt chưa cho làm.
+          </Text>
+        )}
+        {!midiOnly && (
+          <Text size="xs" c="dimmed">
+            Micro: đặt máy trên giá nhạc rồi đánh, không cần mua gì thêm. {PRIVACY_NOTE}
+          </Text>
+        )}
         {input.midiSupported && (
           <Text size="xs" c="dimmed">
             MIDI: chính xác tuyệt đối, dành cho đàn có cổng USB hoặc có Bluetooth — nối

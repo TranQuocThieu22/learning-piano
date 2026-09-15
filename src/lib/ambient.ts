@@ -274,8 +274,9 @@ export function parseAmbient(raw: string | null): AmbientSettings {
 /**
  * Trang này có được bật nhạc nền không?
  *
- * Chỉ còn hai trang tắt hẳn, và cả hai đều tồn tại để phát tiếng: máy đánh nhịp
- * và bài luyện nhận nốt. Nhạc nền chồng lên tiếng gõ nhịp thì hỏng cả hai.
+ * Chỉ ba trang tắt hẳn, và cả ba đều tồn tại để phát tiếng: máy đánh nhịp, bài
+ * luyện nhận nốt, và trang phát tiếng lúc bấm phím. Nhạc nền chồng lên tiếng gõ nhịp
+ * hay tiếng đàn người học đang đánh thì hỏng cả hai.
  *
  * **Trang bài học thì KHÔNG tắt theo trang nữa** (đổi 11/09/2026). Đọc phần chữ
  * của bài vẫn là đọc, có nhạc vẫn dễ chịu. Nhạc chỉ tắt đúng lúc có tiếng khác
@@ -283,5 +284,5 @@ export function parseAmbient(raw: string | null): AmbientSettings {
  * do `ambient-hold.ts` lo theo SỰ KIỆN chứ không theo đường dẫn.
  */
 export function ambientAllowedOn(pathname: string): boolean {
-  return pathname !== '/metronome' && pathname !== '/note-trainer';
+  return pathname !== '/metronome' && pathname !== '/note-trainer' && pathname !== '/piano-sound';
 }

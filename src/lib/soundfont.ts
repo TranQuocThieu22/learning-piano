@@ -1,5 +1,6 @@
 import type { SynthOptions } from 'abcjs';
 import { createLocalStore } from './local-store';
+import { octaveOf, pitchClass } from './pitch';
 import { voiceChannel, type PianoVoicing } from './piano-tone';
 
 /**
@@ -168,6 +169,38 @@ export const INSTRUMENTS: Instrument[] = [
  */
 export const GM_PIANO_PROGRAMS = { first: 0, last: 7 };
 
+/**
+ * Tên nốt trong tên tệp mẫu âm. Bộ MusyngKite ghi phím đen bằng **dấu giáng**
+ * (`Db4.mp3`), không có tệp nào tên theo dấu thăng — nên bảng này là bảng duy
+ * nhất, đừng đổi sang thăng cho "giống bản nhạc".
+ */
+const SAMPLE_NOTE_NAMES = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+
+/** Mẫu âm có sẵn từ La0 tới Đô8 — đúng 88 phím của cây piano. */
+export const SAMPLE_RANGE = { lowest: 21, highest: 108 };
+
+/**
+ * Đường dẫn tệp mẫu âm của một nốt, ví dụ `/soundfonts/acoustic_grand_piano-mp3/Db4.mp3`.
+ *
+ * Dùng cho bộ phát tiếng lúc người học bấm phím (`live-piano.ts`). Phần nghe mẫu
+ * không đi qua đây — abcjs tự dựng URL từ `program`.
+ */
+export function sampleUrl(instrument: Instrument, midi: number): string {
+  const name = SAMPLE_NOTE_NAMES[pitchClass(midi)];
+  return `${SOUNDFONT_URL}${instrument.folder}-mp3/${name}${octaveOf(midi)}.mp3`;
+}
+
+/**
+ * Dữ liệu cho ô chọn tiếng đàn, chia nhóm theo `INSTRUMENT_GROUPS`.
+ *
+ * Một chỗ dựng cho mọi ô chọn — dưới bản nhạc và ở trang phát tiếng lúc bấm phím. Để mỗi
+ * chỗ tự dựng thì thêm một nhóm mới là nhóm đó hiện ở chỗ này mà thiếu ở chỗ kia.
+ */
+export const INSTRUMENT_SELECT_DATA = INSTRUMENT_GROUPS.map((group) => ({
+  group,
+  items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({ value: i.id, label: i.label })),
+}));
+
 export const DEFAULT_INSTRUMENT = INSTRUMENTS[0];
 
 /** Tiếng theo mã đã lưu, lùi về Grand Piano khi mã lạ. */
@@ -244,23 +277,32 @@ const MAX_GAIN = 20;
  * (abcjs đánh phách mạnh 105, phách nhẹ 85) vẫn giữ nguyên.
  */
 function normalizeBufferVolume(buffer: AudioBuffer) {
-  const channels: Float32Array[] = [];
-  let peak = 0;
-  for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-    const data = buffer.getChannelData(ch);
-    channels.push(data);
-    for (let i = 0; i < data.length; i++) {
-      const level = Math.abs(data[i]);
-      if (level > peak) peak = level;
-    }
-  }
+  const peak = bufferPeak(buffer);
   if (peak <= 0) return;
 
   const gain = Math.min(TARGET_PEAK / peak, MAX_GAIN);
   // Chênh dưới 1% thì tai không nghe ra, khỏi quét lại cả buffer.
   if (Math.abs(gain - 1) < 0.01) return;
 
-  for (const data of channels) {
+  scaleBuffer(buffer, gain);
+}
+
+/** Giá trị tuyệt đối lớn nhất trên mọi kênh. */
+function bufferPeak(buffer: AudioBuffer): number {
+  let peak = 0;
+  for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+    const data = buffer.getChannelData(ch);
+    for (let i = 0; i < data.length; i++) {
+      const level = Math.abs(data[i]);
+      if (level > peak) peak = level;
+    }
+  }
+  return peak;
+}
+
+function scaleBuffer(buffer: AudioBuffer, gain: number) {
+  for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+    const data = buffer.getChannelData(ch);
     for (let i = 0; i < data.length; i++) data[i] *= gain;
   }
 }
@@ -277,10 +319,57 @@ function normalizeBufferVolume(buffer: AudioBuffer) {
  * đàn, đổi tốc độ — vì lần nào nó cũng tạo AudioBuffer mới ở mức gốc (bẫy 20).
  */
 export function shapeBuffer(buffer: AudioBuffer, instrument: Instrument) {
-  if (instrument.voicing) {
-    for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
-      voiceChannel(buffer.getChannelData(ch), buffer.sampleRate, instrument.voicing, ch);
-    }
-  }
+  shapeVoicing(buffer, instrument);
   normalizeBufferVolume(buffer);
+}
+
+function shapeVoicing(buffer: AudioBuffer, instrument: Instrument) {
+  if (!instrument.voicing) return;
+  for (let ch = 0; ch < buffer.numberOfChannels; ch++) {
+    voiceChannel(buffer.getChannelData(ch), buffer.sampleRate, instrument.voicing, ch);
+  }
+}
+
+/**
+ * Nốt dùng làm mốc âm lượng cho bộ phát tiếng lúc bấm phím: Đô giữa, nốt người học
+ * bấm nhiều nhất.
+ */
+export const LIVE_REFERENCE_MIDI = 60;
+
+/**
+ * Đỉnh nhắm cho nốt mốc sau khi kéo to.
+ *
+ * **Vì sao phải kéo, và kéo bao nhiêu — đo, không đoán.** Mẫu âm MusyngKite thu rất nhỏ:
+ * Đô4 của Grand Piano chỉ đạt đỉnh 0,03. Bản đầu nhân 3 theo hệ số abcjs dùng, ra 0,09 —
+ * khoảng -21dB, cộng thêm lực bấm vừa tay thì trên loa điện thoại nhỏ rõ. 0,5 chừa khoảng
+ * 6dB cho hai tay bấm cùng lúc; hợp âm dày hơn thì bộ nén đặt trong hook đè đỉnh.
+ */
+const LIVE_REFERENCE_PEAK = 0.5;
+
+/**
+ * Trần hệ số kéo. Mốc 0,03 cần khoảng 17 lần; trần 40 đủ cho tiếng đã nắn êm (tối hơn,
+ * đỉnh thấp hơn) mà không kéo một tệp gần như câm thành tiếng xì.
+ */
+const LIVE_MAX_GAIN = 40;
+
+/**
+ * Hệ số kéo to cho **cả bộ nốt** của một tiếng đàn, đo từ nốt mốc đã nắn tiếng.
+ *
+ * Một hệ số chung chứ không căn đỉnh từng nốt như `shapeBuffer`: căn từng nốt lẻ là nốt nào
+ * cũng to bằng nhau — mất chỗ nốt trầm dày, nốt cao mỏng vốn có của cây đàn, và nốt mượn mẫu
+ * âm cho nốt bên cạnh cũng lệch mức theo.
+ */
+export function liveSampleGain(voicedReference: AudioBuffer): number {
+  const peak = bufferPeak(voicedReference);
+  return peak > 0 ? Math.min(LIVE_REFERENCE_PEAK / peak, LIVE_MAX_GAIN) : 1;
+}
+
+/**
+ * Nắn **một nốt lẻ** cho bộ phát tiếng lúc bấm phím (`live-piano.ts`): nắn tiếng như phần
+ * nghe mẫu, rồi nhân hệ số chung của cả bộ (`liveSampleGain`). Đo hệ số thì gọi với
+ * `gain = 1` trên nốt mốc trước.
+ */
+export function shapeSample(buffer: AudioBuffer, instrument: Instrument, gain: number) {
+  shapeVoicing(buffer, instrument);
+  if (gain !== 1) scaleBuffer(buffer, gain);
 }

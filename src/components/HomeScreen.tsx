@@ -9,6 +9,7 @@ import {
   IconEar,
   IconHandFinger,
   IconMusicSearch,
+  IconPiano,
   IconPlayerPlayFilled,
   IconRepeat,
   IconRoute,
@@ -170,6 +171,15 @@ export function HomeScreen({
       label: 'Luyện tai',
       hint: 'Nghe rồi mò trên đàn',
       Icon: IconEar,
+      section: 'trainer',
+    },
+    {
+      // Cuối nhóm công cụ: chỉ người có đàn nối MIDI mới dùng được, nên không đứng chắn
+      // trước những ô ai cũng dùng được.
+      href: '/piano-sound',
+      label: 'Tiếng đàn qua điện thoại',
+      hint: 'Đánh đàn, máy phát tiếng',
+      Icon: IconPiano,
       section: 'trainer',
     },
     ...(extraHref

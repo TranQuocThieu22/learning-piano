@@ -202,9 +202,10 @@ describe('ambientAllowedOn', () => {
     }
   });
 
-  it('tắt ở hai trang sinh ra để phát tiếng', () => {
+  it('tắt ở ba trang sinh ra để phát tiếng', () => {
     expect(ambientAllowedOn('/metronome')).toBe(false);
     expect(ambientAllowedOn('/note-trainer')).toBe(false);
+    expect(ambientAllowedOn('/piano-sound')).toBe(false);
   });
 
   // Đổi 11/09/2026: đọc phần chữ của bài thì nhạc vẫn chạy. Việc tắt lúc bấm

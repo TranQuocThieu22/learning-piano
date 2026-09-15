@@ -7,8 +7,13 @@ import {
   findInstrument,
   GM_PIANO_PROGRAMS,
   INSTRUMENT_GROUPS,
+  INSTRUMENT_SELECT_DATA,
   INSTRUMENTS,
+  liveSampleGain,
+  SAMPLE_RANGE,
+  sampleUrl,
   shapeBuffer,
+  shapeSample,
   synthOptions,
 } from './soundfont';
 
@@ -22,6 +27,65 @@ import {
  * với `updates.test.ts`.
  */
 const SOUNDFONT_DIR = path.join(process.cwd(), 'public', 'soundfonts');
+
+/** AudioBuffer giả đủ cho các hàm nắn tiếng: chỉ cần kênh và tần số lấy mẫu. */
+function fakeBuffer(samples: number[], channels = 1): AudioBuffer {
+  const data = Array.from({ length: channels }, () => Float32Array.from(samples));
+  return {
+    numberOfChannels: channels,
+    sampleRate: 44100,
+    length: samples.length,
+    getChannelData: (ch: number) => data[ch],
+  } as unknown as AudioBuffer;
+}
+
+describe('bộ phát tiếng lúc bấm phím tìm đúng tệp mẫu âm', () => {
+  it('nốt nào trong 88 phím, của tiếng đàn nào, cũng trỏ tới một tệp có thật', () => {
+    // Sai một chữ trong tên tệp (Db hay C#) là nốt đó im lặng mà không báo lỗi gì.
+    const thieu: string[] = [];
+    for (const instrument of INSTRUMENTS) {
+      for (let midi = SAMPLE_RANGE.lowest; midi <= SAMPLE_RANGE.highest; midi++) {
+        const url = sampleUrl(instrument, midi);
+        const file = path.join(process.cwd(), 'public', url);
+        if (!fs.existsSync(file)) thieu.push(url);
+      }
+    }
+    expect(thieu).toEqual([]);
+  });
+
+  it('Đô giữa và phím đen ghi theo dấu giáng, đúng tên tệp của bộ mẫu âm', () => {
+    expect(sampleUrl(DEFAULT_INSTRUMENT, 60)).toBe('/soundfonts/acoustic_grand_piano-mp3/C4.mp3');
+    expect(sampleUrl(DEFAULT_INSTRUMENT, 61)).toBe('/soundfonts/acoustic_grand_piano-mp3/Db4.mp3');
+  });
+});
+
+describe('âm lượng tiếng bấm phím', () => {
+  it('mẫu âm thu nhỏ thì kéo nốt mốc lên đủ nghe trên loa điện thoại', () => {
+    // 0,03 là đỉnh đo được của Đô4 Grand Piano thật.
+    const gain = liveSampleGain(fakeBuffer([0, 0.03, -0.02]));
+    expect(0.03 * gain).toBeCloseTo(0.5, 5);
+  });
+
+  it('tệp gần như câm thì không kéo thành tiếng xì', () => {
+    expect(liveSampleGain(fakeBuffer([0, 0.0001]))).toBe(40);
+    expect(liveSampleGain(fakeBuffer([0, 0]))).toBe(1);
+  });
+
+  it('mọi nốt nhân cùng một hệ số, nên nốt trầm vẫn dày hơn nốt cao', () => {
+    const tram = fakeBuffer([0.04, -0.04]);
+    const cao = fakeBuffer([0.01, -0.01]);
+    shapeSample(tram, DEFAULT_INSTRUMENT, 10);
+    shapeSample(cao, DEFAULT_INSTRUMENT, 10);
+    expect(tram.getChannelData(0)[0] / cao.getChannelData(0)[0]).toBeCloseTo(4, 5);
+  });
+});
+
+describe('ô chọn tiếng đàn', () => {
+  it('có đủ mọi tiếng, mỗi tiếng đúng một lần', () => {
+    const ids = INSTRUMENT_SELECT_DATA.flatMap((g) => g.items.map((i) => i.value));
+    expect([...ids].sort()).toEqual(INSTRUMENTS.map((i) => i.id).sort());
+  });
+});
 
 /** A0 tới C8 — đúng 88 phím, cùng dải mà `scripts/download-soundfont.mjs` tải. */
 const SO_PHIM = 88;

@@ -20,9 +20,15 @@ export type PianoInputMode = 'mic' | 'midi';
 
 export interface PianoInputHandlers {
   /** Một phím vừa xuống, báo từ đàn qua dây MIDI. */
-  onMidiNote: (midi: number) => void;
+  onMidiNote: (midi: number, velocity: number) => void;
   /** Một lần micro nghe thấy phím xuống — có thể nhiều nốt cùng lúc. `atMs` theo `performance.now()`. */
   onMicHeard: (event: HeardEvent, atMs: number) => void;
+  /**
+   * Phím vừa nhả và pedal ngân — chỉ có ở chế độ MIDI. Micro không báo được hai thứ
+   * này: nó nghe tiếng kêu lên chứ không nghe ngón tay rời phím.
+   */
+  onMidiNoteOff?: (midi: number) => void;
+  onPedal?: (down: boolean) => void;
 }
 
 export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptions = {}) {
@@ -38,8 +44,16 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
 
   // Quyền MIDI một khi đã cấp thì còn đó cả khi người học chuyển sang micro, nên
   // phải tự chặn: đang dùng micro thì bỏ qua mọi thứ đến từ dây.
-  const midi = useMidiInput((note) => {
-    if (modeRef.current === 'midi') handlersRef.current.onMidiNote(note);
+  const midi = useMidiInput({
+    onNoteOn: (note, velocity) => {
+      if (modeRef.current === 'midi') handlersRef.current.onMidiNote(note, velocity);
+    },
+    onNoteOff: (note) => {
+      if (modeRef.current === 'midi') handlersRef.current.onMidiNoteOff?.(note);
+    },
+    onPedal: (down) => {
+      if (modeRef.current === 'midi') handlersRef.current.onPedal?.(down);
+    },
   });
   const mic = useMicInput((event, atMs) => {
     if (modeRef.current === 'mic') handlersRef.current.onMicHeard(event, atMs);
@@ -51,8 +65,13 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
    * cùng một chỗ với nốt đi qua dây, nên phần bài tập không cần biết nốt tới bằng
    * đường nào.
    */
-  const ble = useBleMidiInput((note) => {
-    if (modeRef.current === 'midi') handlersRef.current.onMidiNote(note);
+  const ble = useBleMidiInput({
+    onNoteOn: (note, velocity) => {
+      if (modeRef.current === 'midi') handlersRef.current.onMidiNote(note, velocity);
+    },
+    onNoteOff: (note) => {
+      if (modeRef.current === 'midi') handlersRef.current.onMidiNoteOff?.(note);
+    },
   });
 
   /**
