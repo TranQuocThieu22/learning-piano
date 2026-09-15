@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "check:lessons": "node scripts/check-lessons.mjs",
+    "fb": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/post-facebook.mjs",
     "images:optimize": "node scripts/optimize-images.mjs"
   },
   "dependencies": {

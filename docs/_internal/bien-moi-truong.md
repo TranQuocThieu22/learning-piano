@@ -135,6 +135,21 @@ khoảng trắng. Không phân biệt hoa thường.
 - **Chỉ mở phần xem.** Tick bài, phản hồi, Kho nhạc của tôi vẫn cần đăng nhập — mấy thứ
   đó gắn với tài khoản, không có tài khoản thì không có chỗ ghi.
 
+### `FACEBOOK_PAGE_ID` và `FACEBOOK_PAGE_ACCESS_TOKEN` — chỉ script đọc, KHÔNG khai trên Vercel
+
+Trang Facebook Piano Journey và mã truy cập của nó, để `scripts/post-facebook.mjs` đăng
+bài lên Trang.
+
+- Đọc bởi: **chỉ script chạy tay**, không phải ứng dụng web. Vì vậy hai biến này không
+  nằm trong `env-schema.ts` và không có tầng nào trong bảng ở mục 1 — web thiếu chúng vẫn
+  chạy y nguyên.
+- Thiếu thì sao: script dừng ngay và chỉ sang mục 6 của
+  [`bai-dang-facebook.md`](bai-dang-facebook.md), nơi ghi năm bước lấy mã.
+- **Mã của Trang đăng được bài dưới tên Trang** — coi như mật khẩu. Giữ trong `.env.local`,
+  đừng khai lên Vercel: web không dùng tới, mà khai thêm một chỗ là thêm một chỗ lộ.
+- Mã lấy theo đúng năm bước kia thì **không có ngày hết hạn**, nhưng chết khi đổi mật khẩu
+  Facebook, mất quyền quản trị Trang, hoặc gỡ app. Triệu chứng: script báo lỗi `190`.
+
 ---
 
 ## 5. Thanh toán (SePay)
@@ -254,6 +269,9 @@ Google Cloud Console, xem ô ngay bên dưới.
 - [ ] **Không** khai `DEV_UNLOCK_ALL` — biến này chỉ cho `.env.local`. Khai nhầm cũng
       không mở gì vì Vercel chạy `NODE_ENV=production`, nhưng để nó trong bảng điều khiển là
       để lại một cái bẫy cho lần ai đó đổi cách kiểm
+- [ ] **Không** khai `FACEBOOK_PAGE_ID`, `FACEBOOK_PAGE_ACCESS_TOKEN` — chỉ script đăng bài
+      chạy ở máy mới đọc chúng. Mã của Trang đăng được bài dưới tên Trang, để thêm một bản
+      trong bảng điều khiển là thêm một chỗ lộ mà không đổi lại được gì
 - [ ] `SELLING_ENABLED` — **trong beta để trống**. Chỉ đặt `true` vào ngày mở bán,
       và chỉ sau khi đã nâng gói Vercel Pro
 - [ ] Bật **Web Analytics** trong bảng điều khiển Vercel (project → Analytics →
@@ -304,6 +322,7 @@ người dùng bấm đồng ý — chỗ đó cần tài khoản thật.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Thêm `FACEBOOK_PAGE_ID` và `FACEBOOK_PAGE_ACCESS_TOKEN` vào mục 4, cùng một ô "không khai trên Vercel" ở danh sách kiểm. Hai biến này là loại đầu tiên **chỉ script đọc mà ứng dụng không đọc**, nên nói rõ vì sao chúng không có mặt trong ba tầng ở mục 1 — thiếu ghi chú đó thì lần sau dễ có người "bổ sung cho đủ" vào `env-schema.ts` và làm web chết vì thiếu một mã chẳng liên quan gì tới web |
 | 14/09/2026 | `chore: Công tắc DEV_UNLOCK_ALL mở khoá bài trả phí khi chạy dev` | Thêm `DEV_UNLOCK_ALL` vào tầng đóng cửa an toàn, một mục riêng ở phần Quản trị và một dòng "không khai trên Vercel" ở danh sách kiểm khi deploy — viết lại nội dung Chương 2-7 xong mà ở máy không đọc thử được vì không đăng nhập Google được; ghi rõ chốt thật là `NODE_ENV`, để không ai "sửa cho gọn" thành chỉ kiểm cờ |
 | 09/09/2026 | `feat: Đếm lượt truy cập bằng Vercel Web Analytics` | Thêm ô bật Web Analytics vào danh sách kiểm khi deploy. Đây là **nút bấm ở bảng điều khiển**, không phải biến môi trường — nên nó không lọt vào ba tầng biến ở mục 2 và cũng không có test nào canh. Quên bấm thì `<Analytics />` im lặng và bảng số liệu trống trơn, trông hệt như chưa có ai vào; đó là lý do ô này phải nằm trong danh sách chứ không chỉ nằm trong trí nhớ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Thêm `SELLING_ENABLED` vào tầng đóng cửa an toàn và giải thích vì sao chiều cờ ngược với trực giác — quên bật thì phát hiện ngay, quên tắt thì người beta tạo được đơn thật trên gói Hobby mà không có triệu chứng nào |

@@ -416,6 +416,73 @@ bắt gõ chữ.
 
 ---
 
+## 6. Đăng bằng script, không phải dán tay
+
+Có lúc không tiện mở Facebook. `scripts/post-facebook.mjs` lấy đúng khối chữ của một bài ở
+trên rồi đăng thẳng lên Trang qua Graph API của Meta — kèm ảnh, hoặc hẹn giờ.
+
+```bash
+pnpm fb list                      # bài nào trong file, bài nào đã đăng
+pnpm fb show 4                    # lời văn bài số 4, đúng như sẽ lên Trang
+pnpm fb check                     # mã truy cập còn dùng được không, đang trỏ vào Trang nào
+pnpm fb publish 4                 # xem trước, KHÔNG đăng
+pnpm fb publish 4 --confirm       # đăng thật
+pnpm fb publish 4 --image D:\anh\bai-4.png --at "2026-09-17 20:00" --confirm
+```
+
+**Bốn điều script tự giữ, đừng gỡ:**
+
+1. **Thiếu `--confirm` thì không đăng gì**, chỉ in ra Trang nào, lúc nào, ảnh nào và trọn lời
+   văn. Bài đã lên Trang không rút lại được với người kịp đọc, nên một lệnh gõ nhầm số bài —
+   hoặc AI chạy thử — không được phép đăng luôn.
+2. **Tiêu đề mục ghi "đã đăng" thì script từ chối**, và nó còn đọc 50 bài gần nhất trên Trang
+   cùng danh sách bài đã hẹn giờ để so phần mở đầu. Hai lưới này chặn cùng một tai nạn: đăng
+   lại bài cũ vì quên mất đã đăng rồi.
+3. **Dòng ngắt trong file được nối lại thành đoạn liền.** Lời văn ở trên ngắt dòng cho dễ đọc
+   lúc soạn, nhưng Facebook giữ nguyên từng dấu xuống dòng — gửi nguyên thì trên điện thoại câu
+   nào cũng gãy giữa màn hình. Dòng trống ngăn đoạn và gạch đầu dòng thì giữ.
+4. **Chỉ đăng được lên Trang.** Graph API không đăng vào nhóm hay trang cá nhân được nữa. Kênh
+   tuyển thật — comment và bài trong các nhóm tự học piano — vẫn phải làm tay.
+
+**Đăng xong phải sửa tiêu đề mục** của bài đó thành `đã đăng dd/mm/yyyy` (script nhắc lại một
+câu ở cuối). File này là chỗ duy nhất biết bài nào còn trong hàng chờ.
+
+### Lấy mã truy cập — làm một lần, cần máy tính
+
+Năm bước sau làm bằng tài khoản Facebook đang quản trị Trang. Meta hay đổi chữ trên nút, nên
+bám theo *ý* của từng bước chứ đừng tìm đúng từng chữ.
+
+1. Vào <https://developers.facebook.com> → *My Apps* → *Create App*. Chọn mục đích liên quan
+   tới quản lý Trang, đặt tên gì cũng được (ví dụ `Piano Journey dang bai`). **Không cần gửi
+   xét duyệt** — app chỉ đăng lên Trang do chính người tạo app quản trị.
+2. Mở [Graph API Explorer](https://developers.facebook.com/tools/explorer): chọn app vừa tạo,
+   lấy *User Access Token* với ba quyền `pages_show_list`, `pages_read_engagement`,
+   `pages_manage_posts`. Bấm *Generate*, đồng ý, chọn Trang Piano Journey.
+3. Dán mã vừa nhận vào [Access Token Debugger](https://developers.facebook.com/tools/debug/accesstoken)
+   → *Debug* → nút *Extend Access Token* ở cuối trang. Được một mã sống 60 ngày.
+4. Quay lại Explorer, dán **mã 60 ngày** vào ô mã, gọi `me/accounts` rồi *Submit*. Trong kết
+   quả tìm Piano Journey: chép `id` và `access_token` của Trang. Mã Trang lấy từ mã người dùng
+   dài hạn thì **không có ngày hết hạn**.
+5. Mở `.env.local` trên máy, thêm hai dòng — **tự tay dán, đừng gửi mã qua khung chat**:
+
+   ```
+   FACEBOOK_PAGE_ID="..."
+   FACEBOOK_PAGE_ACCESS_TOKEN="..."
+   ```
+
+Xong thì chạy `pnpm fb check`: nó phải in ra đúng tên Trang. In ra tên **người** là đã chép
+nhầm mã người dùng ở bước 4.
+
+**Mã này đăng được bài dưới tên Trang, nên giữ như mật khẩu.** Nó nằm trong `.env.local` —
+file đã bị `.gitignore` chặn, đừng chép sang chỗ khác và đừng khai lên Vercel (web không dùng
+tới nó). Lỡ lộ thì vào Facebook → *Cài đặt* → *Ứng dụng và trang web kinh doanh*, gỡ app ra là
+mọi mã của nó chết ngay, rồi làm lại năm bước trên.
+
+**Mã tự mất hiệu lực khi:** đổi mật khẩu Facebook, mất quyền quản trị Trang, hoặc gỡ app.
+Triệu chứng là script báo lỗi `190` — lúc đó làm lại từ bước 2.
+
+---
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -424,6 +491,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Thêm mục 6 — cách đăng bằng script và năm bước lấy mã truy cập. Có lúc chủ sản phẩm không tiện mở Facebook, mà bài đăng thì đã duyệt sẵn nằm trong file này. Chọn Graph API thay vì điều khiển trình duyệt vì giao diện Facebook đổi liên tục; ghi luôn bốn lưới an toàn (không có `--confirm` thì không đăng, chặn đăng trùng, nối dòng ngắt, chỉ đăng lên Trang) để lần sau không ai "dọn cho gọn" mất |
 | 15/09/2026 | `fix: Bỏ ô chọn hoá biểu, đọc thẳng hoá biểu file khai` | Sửa bài đăng số 8: bản trước kể "bạn chọn hoá biểu", mà ô chọn đó đã gỡ — hoá biểu là thứ người soạn bản nhạc quyết, app chỉ đọc theo. Thêm lời dặn đừng viết cả "app tự nhận ra giọng" lẫn "bạn chọn hoá biểu", vì cả hai đều sai theo hai hướng ngược nhau |
 | 15/09/2026 | `feat: Tiếng piano êm và vang cho phần nghe mẫu` | Viết lại bài đăng số 9: bản trước kể về vibraphone, đàn hạc, celesta — chủ sản phẩm chốt mọi tiếng phải là piano nên ba thứ đó đã gỡ. Bản mới kể đúng thứ còn lại (nắn tiếng chính cây piano cho êm và vang), thêm lời dặn đừng viết "thêm nhạc cụ mới" |
 | 14/09/2026 | `feat: Thêm nhóm tiếng êm cho phần nghe mẫu, chọn bằng số đo` | Thêm bài đăng số 9 rút từ bài cập nhật cùng ngày — bài ngắn giữ nhịp đăng, kèm lời dặn nói rõ đây là tiếng **nghe mẫu** chứ không phải tiếng cây đàn thật, vì người chưa dùng rất dễ hiểu nhầm chỗ đó |

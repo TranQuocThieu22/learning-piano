@@ -82,6 +82,8 @@ khẩu" (bẫy 14).
 | Viết mã, chạy cổng kiểm tra, soạn commit message | Claude |
 | Đọc diff, commit, push, merge, xoá nhánh | Bạn, trong Fork |
 | Bấm nút trên Vercel, Cloudflare, Google Console, Neon | Bạn |
+| Đăng bài lên Trang Facebook — sau khi bạn xem bản xem trước và nói "đăng" | Claude, bằng `pnpm fb` |
+| Lấy mã truy cập Facebook, dán vào `.env.local` (làm một lần) | Bạn — mục 6 của [`bai-dang-facebook.md`](bai-dang-facebook.md) |
 | Script đụng database **production** | Bạn |
 | `pnpm db:generate` / `db:migrate` trên nhánh **dev** | Claude |
 
@@ -110,6 +112,12 @@ Không gấp, xoá dòng nào đã xong:
       14/09/2026: đã cấp gói và nhắn tay cho những người điền form tới hôm đó. Người điền
       form **sau** ngày này vẫn đi đúng hai bước ấy — cách làm ở mục 2 của
       [`ke-hoach-beta.md`](ke-hoach-beta.md), nhớ ô *Lý do* gõ đúng `beta dot 1`.
+
+- [ ] **Lấy mã truy cập Facebook một lần, để Claude đăng bài hộ.** Năm bước ở mục 6 của
+      [`bai-dang-facebook.md`](bai-dang-facebook.md), cần ngồi ở máy tính vì bước cuối là dán
+      hai dòng vào `.env.local`. Xong thì bảo Claude chạy `pnpm fb check`. Còn sáu bài (số 4
+      tới số 9) đang chờ đăng — chưa làm bước này thì vẫn hẹn giờ tay trong Meta Business
+      Suite được, script chỉ là cho đỡ phải mở Facebook.
 
 - [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
       micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
@@ -179,6 +187,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Mục 5: thêm hai dòng phân việc cho chuyện đăng Facebook — Claude chạy `pnpm fb` sau khi bạn duyệt bản xem trước, còn việc lấy mã truy cập vẫn là của bạn vì nó dính tới mật khẩu. Mục 7: thêm việc lấy mã một lần, kèm lối đi vòng (hẹn giờ tay trong Meta Business Suite) để sáu bài đang chờ không bị kẹt chờ script |
 | 14/09/2026 | `docs(internal): Ghi nhật ký phiên 14/09 và cách đọc bài trả phí ở máy` | Mục 3: thêm cách đọc bài trả phí ở máy bằng `DEV_UNLOCK_ALL`, kèm cảnh báo tunnel là công khai — bật công tắc rồi mở tunnel là cả giáo trình trả phí mở cho ai có link, đúng kiểu sơ suất không có triệu chứng |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Đánh dấu xong việc đọc thử Chương 1-2 và làm tiếp Chương 3-7 — chủ sản phẩm bảo làm tiếp nên cả giáo trình đã đổi khuôn; giữ lời nhắc mở thử vài bài Chương 3-7 trên máy thật vì chúng chưa ai đọc trên điện thoại |
 | 14/09/2026 | `feat: Tập trước, lý thuyết thành đọc thêm — viết lại Chương 1-2` | Thêm vào mục 7 việc đọc thử Chương 1-2 khuôn mới trước khi làm Chương 3-7 — đợt viết lại cố ý dừng ở hai chương để chủ sản phẩm duyệt khuôn trên máy thật, và việc duyệt đó không ai làm hộ được |
