@@ -24,17 +24,24 @@
  *   thông điệp.
  * - **status/d1/d2**: thông điệp MIDI thường.
  *
- * Ba chỗ dễ sai, và là lý do file này tách riêng để test:
+ * Bốn chỗ dễ sai, và là lý do file này tách riêng để test:
  *
  * 1. **Một gói chứa nhiều thông điệp.** Bấm hợp âm ba nốt có thể về trong một
  *    gói duy nhất. Đọc mỗi thông điệp đầu là mất hai nốt.
- * 2. **Running status.** Thông điệp sau có thể lược cả byte status LẪN byte mốc
- *    thời gian, chỉ còn hai byte dữ liệu, hiểu là "cùng loại như thông điệp
+ * 2. **Running status.** Thông điệp sau có thể lược byte status (giữ hoặc lược cả
+ *    byte mốc thời gian), chỉ còn byte dữ liệu, hiểu là "cùng loại như thông điệp
  *    trước". Không xử lý thì hai nốt sau của hợp âm thành rác.
- * 3. **Nhấc phím cũng là nốt.** `note on` với velocity 0 chính là `note off` —
+ * 3. **Byte mốc thời gian chạy khắp 0x80-0xFF**, quay vòng mỗi 128ms. Bản đầu chỉ
+ *    nhận ra mốc trong khoảng 0x80-0x8F, nên cứ mốc rơi vào 0x90 trở lên mà đàn
+ *    dùng running status là nốt bị hiểu thành một thông điệp lạ và rơi mất. Luật
+ *    đúng của chuẩn đơn giản hơn nhiều: ở chỗ bắt đầu một thông điệp, **byte có
+ *    bit 7 bật luôn là mốc thời gian**, byte ngay sau nó bật bit 7 mới là status.
+ * 4. **Nhấc phím cũng là nốt.** `note on` với velocity 0 chính là `note off` —
  *    chuẩn MIDI cho phép cả hai cách, và đàn Roland dùng cách này. Coi nó là
  *    phím xuống thì mỗi lần nhấc tay là app tưởng vừa đánh thêm một nốt.
  */
+
+import { isPedalDown, SUSTAIN_PEDAL } from './midi-messages';
 
 /** Service và characteristic của chuẩn BLE-MIDI. Hằng số của chuẩn, đừng đổi. */
 export const BLE_MIDI_SERVICE = '03b80e5a-ede8-4b33-a751-6ce34ec4c700';
@@ -42,6 +49,8 @@ export const BLE_MIDI_CHARACTERISTIC = '7772e5db-3868-4112-a1a9-f2669d106bf3';
 
 const STATUS_NOTE_OFF = 0x80;
 const STATUS_NOTE_ON = 0x90;
+const STATUS_CONTROL_CHANGE = 0xb0;
+const STATUS_SYSEX = 0xf0;
 
 export interface BleMidiNote {
   /** `down` là phím vừa xuống, `up` là vừa nhấc. */
@@ -51,74 +60,86 @@ export interface BleMidiNote {
   velocity: number;
 }
 
+/** Pedal ngân (CC64) vừa đạp hoặc vừa nhả. */
+export interface BleMidiPedal {
+  kind: 'pedal';
+  down: boolean;
+}
+
+export type BleMidiEvent = BleMidiNote | BleMidiPedal;
+
 /** Byte có bit 7 bật là byte điều khiển (status, header, mốc thời gian). */
 function isStatusByte(byte: number): boolean {
   return (byte & 0x80) !== 0;
 }
 
+/** Số byte dữ liệu theo sau một byte status. SysEx đọc riêng vì không có độ dài cố định. */
+function dataLength(status: number): number {
+  if (status < 0xf0) {
+    const kind = status & 0xf0;
+    // Đổi tiếng (0xC0) và lực nén cả kênh (0xD0) chỉ có một byte dữ liệu.
+    return kind === 0xc0 || kind === 0xd0 ? 1 : 2;
+  }
+  if (status === 0xf1 || status === 0xf3) return 1;
+  if (status === 0xf2) return 2;
+  return 0;
+}
+
 /**
- * Bóc một gói BLE-MIDI thành các phím xuống/nhấc.
+ * Bóc một gói BLE-MIDI thành các phím xuống/nhấc và pedal ngân.
  *
- * Bỏ qua mọi thứ không phải note on/note off — pedal, bánh xe uốn tiếng, đồng
- * hồ nhịp của đàn. Gói lạ hay gói cụt thì trả về những gì đọc được, **không ném
- * lỗi**: dữ liệu này đến từ dây Bluetooth, hụt một byte là chuyện bình thường,
- * mà ném lỗi giữa lúc người học đang đánh thì mất luôn cả buổi tập.
+ * Bỏ qua mọi thứ khác — bánh xe uốn tiếng, đổi tiếng, đồng hồ nhịp, SysEx của
+ * đàn. Gói lạ hay gói cụt thì trả về những gì đọc được, **không ném lỗi**: dữ
+ * liệu này đến từ dây Bluetooth, hụt một byte là chuyện bình thường, mà ném lỗi
+ * giữa lúc người học đang đánh thì mất luôn cả buổi tập.
  */
-export function parseBlePacket(bytes: Uint8Array): BleMidiNote[] {
-  const out: BleMidiNote[] = [];
+export function parseBlePacket(bytes: Uint8Array): BleMidiEvent[] {
+  const out: BleMidiEvent[] = [];
   // Byte 0 là header (mốc thời gian bậc cao) — bỏ.
   let i = 1;
-  /** Status của thông điệp trước, để hiểu running status. */
+  /** Status của thông điệp kênh gần nhất, để hiểu running status. */
   let runningStatus = 0;
 
   while (i < bytes.length) {
-    // Byte mốc thời gian đứng trước thông điệp: có thì bỏ qua, không có thì đây
-    // là running status, đọc thẳng dữ liệu.
-    if (isStatusByte(bytes[i]) && (bytes[i] & 0xf0) === 0x80 && i + 1 < bytes.length
-      && isStatusByte(bytes[i + 1])) {
-      // `1 0 t t t t t t t` của mốc thời gian luôn nằm ngay trước một byte status.
-      i += 1;
-    } else if (isStatusByte(bytes[i]) && (bytes[i] & 0xf8) === 0x80 && !isStatusByte(bytes[i + 1] ?? 0)
-      && (runningStatus & 0xf0) !== STATUS_NOTE_OFF) {
-      /*
-       * Chỗ nhập nhằng của chuẩn: byte mốc thời gian và byte status `note off`
-       * dùng chung khoảng 0x80-0x8F. Phân biệt bằng byte kế tiếp — sau mốc thời
-       * gian là một byte status (bit 7 bật), sau `note off` là số nốt (bit 7 tắt).
-       */
-      i += 1;
-    }
-
-    if (i >= bytes.length) break;
-
     let status = runningStatus;
     if (isStatusByte(bytes[i])) {
-      status = bytes[i];
-      runningStatus = status;
+      // Mốc thời gian — xem chú thích 3 ở đầu file. Sau nó mà là dữ liệu thì vẫn là running status.
       i += 1;
+      if (i >= bytes.length) break;
+      if (isStatusByte(bytes[i])) {
+        status = bytes[i];
+        i += 1;
+        // Thông điệp kênh thì nhớ lại; thông điệp hệ thống (F0-F7) xoá running status;
+        // real-time (F8-FF) chen giữa được, không đụng tới nó — luật của chuẩn MIDI.
+        if (status < 0xf0) runningStatus = status;
+        else if (status <= 0xf7) runningStatus = 0;
+      }
     }
     if (status === 0) {
       // Chưa biết loại thông điệp mà đã gặp dữ liệu: gói hỏng, bỏ phần còn lại.
       break;
     }
 
-    const kind = status & 0xf0;
-    if (kind === STATUS_NOTE_ON || kind === STATUS_NOTE_OFF) {
-      if (i + 1 >= bytes.length) break;
-      const midi = bytes[i];
-      const velocity = bytes[i + 1];
-      i += 2;
-      // note on velocity 0 chính là note off — xem chú thích 3 ở đầu file.
-      const nhacPhim = kind === STATUS_NOTE_OFF || velocity === 0;
-      out.push({ kind: nhacPhim ? 'up' : 'down', midi, velocity });
+    if (status === STATUS_SYSEX) {
+      // SysEx chạy tới byte F7, và F7 luôn có mốc thời gian đứng trước — dừng ở mốc đó.
+      while (i < bytes.length && !isStatusByte(bytes[i])) i += 1;
       continue;
     }
 
-    /*
-     * Thông điệp khác: nhảy qua đúng số byte dữ liệu của nó. Đoán sai độ dài là
-     * lệch cả phần còn lại của gói, nên thà đọc từng byte cho tới byte điều
-     * khiển kế tiếp.
-     */
-    while (i < bytes.length && !isStatusByte(bytes[i])) i += 1;
+    const length = dataLength(status);
+    if (i + length > bytes.length) break;
+    const d1 = bytes[i];
+    const d2 = bytes[i + 1];
+    i += length;
+
+    const kind = status & 0xf0;
+    if (status < 0xf0 && (kind === STATUS_NOTE_ON || kind === STATUS_NOTE_OFF)) {
+      // note on velocity 0 chính là note off — xem chú thích 4 ở đầu file.
+      const nhacPhim = kind === STATUS_NOTE_OFF || d2 === 0;
+      out.push({ kind: nhacPhim ? 'up' : 'down', midi: d1, velocity: d2 });
+    } else if (status < 0xf0 && kind === STATUS_CONTROL_CHANGE && d1 === SUSTAIN_PEDAL) {
+      out.push({ kind: 'pedal', down: isPedalDown(d2) });
+    }
   }
 
   return out;

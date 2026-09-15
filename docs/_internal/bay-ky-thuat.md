@@ -1574,6 +1574,45 @@ ngẫu nhiên so **theo từng hợp âm** chứ không theo thứ tự phẳng,
 **Dữ liệu cũ không tự lành.** Bản nhạc lưu vào kho trước lần sửa này vẫn giữ chuỗi ABC sai: sửa
 `toAbc` không đụng tới những gì đã ghi trong database. Người học phải xoá bản đó rồi nhập lại file.
 
+## 44. Bộ nén Web Audio giữ tiếng lại 6ms, và số độ trễ trình duyệt báo không tính phần đó
+
+**Triệu chứng.** Trang *Tiếng đàn qua điện thoại* báo độ trễ một con số, mà đánh nhanh vẫn thấy
+tiếng chạy sau tay hơn con số ấy. Không lỗi nào, không cảnh báo nào.
+
+**Nguyên nhân.** `DynamicsCompressorNode` có **đoạn nhìn trước cố định 6ms**: nó tách tín hiệu,
+giữ một nhánh lại 6ms để kịp hạ trước khi đỉnh tới. Không có tham số nào tắt được. Đo bằng
+`OfflineAudioContext` ở 48kHz: xung vào ở mẫu 100 thì ra ở mẫu 388 — đúng 288 mẫu. Còn
+`baseLatency` và `outputLatency` chỉ tính bộ đệm của trình duyệt và của loa, **không tính trễ của
+các nút trong đồ thị**, nên số hiện trên trang thấp hơn thật đúng 6ms.
+
+**Cách sửa.** Ở chỗ cần trễ thấp (`useLivePiano.ts`), đừng dùng bộ nén để chặn đỉnh. Dùng
+`WaveShaperNode` với đường cong `softClip` (`live-piano.ts`) và `oversample: 'none'` — chặn theo từng
+mẫu nên trễ 0; lấy mẫu dư (`'2x'`, `'4x'`) cũng thêm trễ. `WaveShaperNode` chỉ nhận -1..1 nên phải
+hạ tín hiệu trước khi vào, xem `SOFT_CLIP_RANGE`.
+
+**Chỗ không cần đổi.** Phần nghe mẫu và nhạc nền (`ambient-engine.ts`, bẫy 20) phát theo lịch hẹn
+trước, chậm 6ms không ai biết — bộ nén ở đó cứ để.
+
+**Cách gác.** Muốn biết một nút có trễ không thì đo, đừng đọc tài liệu: dựng `OfflineAudioContext`,
+thả một xung đơn qua nút, tìm mẫu đầu tiên khác 0 ở đầu ra.
+
+## 45. Nốt Bluetooth rơi mất khi byte mốc thời gian từ 0x90 trở lên
+
+**Triệu chứng dự kiến.** Nối thẳng Bluetooth, bấm hợp âm: thỉnh thoảng thiếu một hai nốt, không đều,
+không lặp lại được theo ý. Chưa ai báo — lỗi tìm ra khi đọc lại `parseBlePacket` để thêm pedal.
+
+**Nguyên nhân.** Gói BLE-MIDI đặt một byte mốc thời gian `1ttttttt` trước mỗi thông điệp. Byte này
+chạy khắp **0x80-0xFF**, quay vòng mỗi 128ms. Bản đầu chỉ coi 0x80-0x8F là mốc thời gian (vì dễ lẫn
+với status `note off`), nên mốc 0xA5 bị hiểu thành status *polyphonic aftertouch*. Thông điệp đi kèm
+có đủ byte status thì may mắn đọc lại được; đàn dùng **running status** (lược byte status cho các nốt
+sau của hợp âm) thì các nốt đó thành dữ liệu của một thông điệp lạ và bị bỏ.
+
+**Cách sửa.** Theo đúng luật của chuẩn, khỏi đoán: ở chỗ bắt đầu một thông điệp, byte có bit 7 bật
+**luôn là mốc thời gian**; byte ngay sau nó có bit 7 bật mới là status, không thì là running status.
+
+**Cách gác.** `ble-midi.test.ts` có ca chạy mốc 0x90, 0xA5, 0xB0, 0xFF với running status. Ca cũ chỉ
+dùng mốc 0x81-0x85 nên xanh suốt mà vẫn sai.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1582,6 +1621,7 @@ ngẫu nhiên so **theo từng hợp âm** chứ không theo thứ tự phẳng,
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Pedal ngân qua Bluetooth và bớt 6ms trễ khi phát tiếng` | Thêm bẫy 44 — bộ nén Web Audio giữ tiếng 6ms mà `baseLatency`/`outputLatency` không tính, đo được bằng xung đơn qua `OfflineAudioContext`; ghi kèm chỗ không cần đổi (nhạc nền phát theo lịch) để không ai gỡ bộ nén ở đó cho "đồng bộ". Thêm bẫy 45 — byte mốc thời gian BLE-MIDI chạy khắp 0x80-0xFF mà bản đọc gói chỉ nhận 0x80-0x8F, lộ ra khi thêm pedal; ghi rõ là tìm bằng cách đọc chuẩn, chưa có ai báo triệu chứng |
 | 14/09/2026 | `fix: Sửa bản nhạc nhập từ file phát sai nốt vì dấu hoá ăn theo ô nhịp` | Thêm bẫy 43 — bản nhạc nhập từ file ghi `noteAt` từng nốt một nên nốt trắng đứng sau nốt hoá cùng tên bị ăn theo dấu (39/168 nốt lệch ở một bản thật), và sau khi sửa thì lộ thêm chuyện abcjs mang dấu trên nửa sau nốt luyến không nhất quán. Ghi cả hai số đo mâu thuẫn nhau để lần sau không ai "sửa gọn" bằng cách đoán theo một luật, kèm lời nhắc bản nhạc đã lưu không tự lành |
 | 14/09/2026 | `fix: Quy xuống dòng CRLF về LF ngay ở cửa đọc file docs` | Thêm bẫy 42 — worktree mới trên Windows checkout `docs/` ra `\r\n` nên regex tách khối abc viết theo `\n` không khớp, `songs.test.ts` trượt hai ca trong khi CI xanh. Ghi lý do sửa ở cửa đọc `readDocFile` thay vì vá tiếp từng regex (đã vá ba chỗ mà chỗ thứ tư vẫn quên) và thay vì `.gitattributes` (không che file chưa commit, không test được) |
 | 13/09/2026 | `docs(internal): Ghi quyết định cho kho ôn luyện và kho nhạc của tôi` | Thêm bẫy 40 (file `'use server'` chỉ xuất được hàm async, một bảng hằng số là `next build` đỏ trong khi bốn lệnh kia xanh) và bẫy 41 (Server Action chặn 1MB mỗi lời gọi nên ảnh chụp phải thu nhỏ ở trình duyệt rồi gửi từng trang, kèm chuyện `canvas` không tự xoay theo EXIF) — cả hai gặp khi dựng Kho nhạc của tôi |

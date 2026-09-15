@@ -342,7 +342,8 @@ export const LIVE_REFERENCE_MIDI = 60;
  * **Vì sao phải kéo, và kéo bao nhiêu — đo, không đoán.** Mẫu âm MusyngKite thu rất nhỏ:
  * Đô4 của Grand Piano chỉ đạt đỉnh 0,03. Bản đầu nhân 3 theo hệ số abcjs dùng, ra 0,09 —
  * khoảng -21dB, cộng thêm lực bấm vừa tay thì trên loa điện thoại nhỏ rõ. 0,5 chừa khoảng
- * 6dB cho hai tay bấm cùng lúc; hợp âm dày hơn thì bộ nén đặt trong hook đè đỉnh.
+ * 6dB cho hai tay bấm cùng lúc; hợp âm dày hơn thì bộ chặn đỉnh đặt trong hook uốn đỉnh
+ * (`softClip` ở `live-piano.ts`).
  */
 const LIVE_REFERENCE_PEAK = 0.5;
 

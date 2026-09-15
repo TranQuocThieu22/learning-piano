@@ -23,8 +23,9 @@ export interface LivePianoOptions {
   /** Tối đa bao nhiêu nốt cùng kêu. Vượt thì nốt cũ nhất bị dập. */
   maxVoices?: number;
   /**
-   * Tiếng đi ra đâu. Bỏ trống là thẳng ra loa. Hook đặt một bộ nén ở đây để bấm cả
-   * hợp âm không vỡ tiếng — dựng bộ nén là việc của trình duyệt nên không nằm trong file này.
+   * Tiếng đi ra đâu. Bỏ trống là thẳng ra loa. Hook đặt bộ chặn đỉnh (`softClipCurve`) ở
+   * đây để bấm cả hợp âm không vỡ tiếng — dựng nút là việc của trình duyệt nên không nằm
+   * trong file này.
    */
   output?: AudioNode;
 }
@@ -77,6 +78,50 @@ export function velocityGain(velocity: number): number {
 /** Phát mẫu âm của nốt `source` ở tốc độ nào để ra đúng cao độ nốt `target`. */
 export function playbackRateFor(target: number, source: number): number {
   return 2 ** ((target - source) / 12);
+}
+
+/**
+ * Mức bắt đầu bẻ cong đỉnh. Dưới mức này tiếng đi qua nguyên vẹn.
+ *
+ * Một nốt Đô giữa đánh mạnh hết cỡ ở âm lượng mặc định ra khoảng 0,4 (mốc 0,5 của
+ * `soundfont.ts` × âm lượng 0,8), nên 0,6 để mọi nốt lẻ và phần lớn hai tay đánh thường
+ * không bị chạm tới — chỉ hợp âm dày cộng pedal mới vào vùng bẻ cong.
+ */
+const SOFT_CLIP_KNEE = 0.6;
+
+/**
+ * Chặn đỉnh mềm: dưới `SOFT_CLIP_KNEE` giữ nguyên, trên đó uốn dần về sát 1 mà không bao
+ * giờ vượt — nên bấm cả chùm nốt không vỡ tiếng rè.
+ *
+ * **Vì sao thay bộ nén (`DynamicsCompressorNode`) bằng cái này:** bộ nén của trình duyệt có
+ * đoạn nhìn trước cố định **6ms** — đo bằng `OfflineAudioContext` trên Chrome, xung vào ở mẫu
+ * 100 thì ra ở mẫu 388 (48kHz). Nó giữ tiếng lại 6ms để kịp hạ trước đỉnh, mà trang này chỉ
+ * sống nhờ độ trễ thấp; con số độ trễ trình duyệt báo cũng không tính phần đó, nên người học
+ * thấy số đẹp hơn thật. Chặn đỉnh theo từng mẫu thì không cần nhìn trước: trễ 0.
+ *
+ * Đổi lại, ở vùng trên mức gối nó uốn dạng sóng (thêm chút hài âm) chứ không hạ cả tiếng
+ * xuống như bộ nén. Chỉ chạm tới khi hợp âm rất dày — đánh đến đó thì tai khó phân biệt.
+ */
+export function softClip(x: number): number {
+  const level = Math.abs(x);
+  if (level <= SOFT_CLIP_KNEE) return x;
+  const room = 1 - SOFT_CLIP_KNEE;
+  // tanh có độ dốc 1 ở gốc, nên đường cong nối liền với đoạn thẳng không gãy khúc.
+  return Math.sign(x) * (SOFT_CLIP_KNEE + room * Math.tanh((level - SOFT_CLIP_KNEE) / room));
+}
+
+/**
+ * Bảng hình cho `WaveShaperNode`: `length` điểm của `softClip` trải đều trên khoảng vào
+ * `-range..range`.
+ *
+ * `WaveShaperNode` chỉ nhận tín hiệu trong -1..1, vượt ra là dính mép — tức là cắt cứng. Nên
+ * hook hạ tín hiệu xuống `1 / range` trước khi vào, và bảng này dựng sẵn cho khoảng đã giãn.
+ * `length` nên là số lẻ để có đúng một điểm nằm ở 0.
+ */
+export function softClipCurve(length: number, range: number): Float32Array<ArrayBuffer> {
+  const curve = new Float32Array(length);
+  for (let i = 0; i < length; i++) curve[i] = softClip(range * ((2 * i) / (length - 1) - 1));
+  return curve;
 }
 
 /** Nốt đã có mẫu âm gần `midi` nhất, trong khoảng còn cho mượn. Không có thì `null`. */

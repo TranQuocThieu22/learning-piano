@@ -1,5 +1,51 @@
 import { describe, expect, it, vi } from 'vitest';
-import { LivePiano, nearestLoaded, playbackRateFor, velocityGain } from './live-piano';
+import {
+  LivePiano, nearestLoaded, playbackRateFor, softClip, softClipCurve, velocityGain,
+} from './live-piano';
+
+describe('softClip', () => {
+  it('nốt lẻ và hai tay đánh thường đi qua nguyên vẹn', () => {
+    for (const x of [0, 0.1, -0.3, 0.4, -0.6]) expect(softClip(x)).toBe(x);
+  });
+
+  it('hợp âm dày không bao giờ vượt mức vỡ tiếng', () => {
+    for (const x of [0.8, 1, 2, 4]) {
+      expect(softClip(x)).toBeLessThan(1);
+      expect(softClip(-x)).toBeGreaterThan(-1);
+    }
+    // Rất xa thì tanh làm tròn thành đúng 1 trong số thực — chạm mép, vẫn không vượt.
+    expect(softClip(100)).toBeLessThanOrEqual(1);
+    expect(softClip(-100)).toBeGreaterThanOrEqual(-1);
+  });
+
+  it('càng to vào thì càng to ra, không có chỗ gãy làm tiếng giật', () => {
+    // Gãy khúc ở mức gối là nghe ra tiếng lách tách mỗi khi hợp âm chạm tới đó.
+    let previous = -Infinity;
+    for (let x = 0; x <= 4; x += 0.01) {
+      const y = softClip(x);
+      expect(y).toBeGreaterThanOrEqual(previous);
+      previous = y;
+    }
+    const slopeBelow = (softClip(0.6) - softClip(0.599)) / 0.001;
+    const slopeAbove = (softClip(0.601) - softClip(0.6)) / 0.001;
+    expect(Math.abs(slopeAbove - slopeBelow)).toBeLessThan(0.01);
+  });
+
+  it('bảng hình cho WaveShaper có đúng một điểm ở 0 và đối xứng hai phía', () => {
+    const curve = softClipCurve(4097, 4);
+    expect(curve[2048]).toBe(0);
+    expect(curve[0]).toBeCloseTo(-curve[4096], 6);
+    // Điểm cuối ứng với tín hiệu vào 4: vẫn dưới 1.
+    expect(curve[4096]).toBeLessThan(1);
+  });
+
+  it('bảng hình giữ nguyên tín hiệu nhỏ sau khi hạ xuống 1/range rồi tra ngược', () => {
+    // WaveShaper tra bảng theo tín hiệu đã hạ; điểm ứng với 0,5 phải trả lại 0,5.
+    const curve = softClipCurve(4097, 4);
+    const index = ((0.5 / 4 + 1) / 2) * 4096;
+    expect(curve[index]).toBeCloseTo(0.5, 6);
+  });
+});
 
 /**
  * Bộ phát tiếng phải kiểm bằng `AudioContext` giả, cùng lối với `ambient-engine.test.ts`:

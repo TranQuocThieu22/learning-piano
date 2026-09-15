@@ -72,6 +72,9 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
     onNoteOff: (note) => {
       if (modeRef.current === 'midi') handlersRef.current.onMidiNoteOff?.(note);
     },
+    onPedal: (down) => {
+      if (modeRef.current === 'midi') handlersRef.current.onPedal?.(down);
+    },
   });
 
   /**

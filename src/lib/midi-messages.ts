@@ -1,13 +1,28 @@
 /**
- * Lệnh MIDI app **gửi sang** đàn — phần tính toán thuần, không chạm trình duyệt.
+ * Thông điệp MIDI dùng chung cho mọi đường nối — phần tính toán thuần, không chạm trình duyệt.
  *
- * Tới giờ app chỉ nhận MIDI. Lệnh đầu tiên gửi đi là **Local Control**: bảo đàn thôi
+ * Hai chiều ở cùng một chỗ: **nhận** (pedal ngân, đọc giống nhau dù nốt tới bằng dây hay
+ * Bluetooth) và **gửi** (Local Control). Lệnh gửi đi là **Local Control**: bảo đàn thôi
  * tự phát tiếng khi bấm phím nhưng vẫn gửi nốt, lực bấm và pedal ra cổng MIDI. Dùng ở
  * trang *Tiếng đàn qua điện thoại*, để người học không nghe hai tiếng chồng nhau — tiếng
- * loa đàn và tiếng điện thoại lệch nhau vài chục ms.
+ * loa đàn và tiếng điện thoại lệch nhau vài chục ms. Đàn Roland và Kawai bỏ qua lệnh này.
  */
 
 const CONTROL_CHANGE = 0xb0;
+
+/** Số hiệu pedal ngân (damper) theo chuẩn MIDI. */
+export const SUSTAIN_PEDAL = 64;
+
+/**
+ * Mức CC64 nào thì coi là đang đạp.
+ *
+ * Đàn có pedal nửa chừng (FP-30X và nhiều đàn khác) gửi cả dải 0..127 theo độ lún của chân,
+ * chứ không chỉ 0 và 127. Bộ phát tiếng mới có hai trạng thái ngân/không ngân, nên cắt ở giữa
+ * — đúng mốc chuẩn MIDI định cho công tắc bật tắt.
+ */
+export function isPedalDown(value: number): boolean {
+  return value >= 64;
+}
 /** Số hiệu Local Control trong chuẩn MIDI (channel mode message). Mức 0 là tắt, 127 là bật. */
 const LOCAL_CONTROL = 122;
 

@@ -88,13 +88,10 @@ export interface BleMidiHandlers {
   onNoteOn?: (midi: number, velocity: number) => void;
   /** Phím vừa nhả — bộ phát tiếng cần nó để tắt nốt. */
   onNoteOff?: (midi: number) => void;
+  /** Pedal ngân (CC64) vừa đạp hoặc vừa nhả. */
+  onPedal?: (down: boolean) => void;
 }
 
-/*
- * Pedal chưa đi qua đường này: `parseBlePacket` mới đọc nốt bấm và nhả, chưa đọc lệnh
- * điều khiển (CC64). Đàn nối Bluetooth thẳng thì đạp pedal app chưa ngân theo — đường
- * Web MIDI (dây) thì đã có.
- */
 export function useBleMidiInput(handlers: BleMidiHandlers = {}): UseBleMidiResult {
   const [supported, setSupported] = useState(false);
   const [status, setStatus] = useState<BleMidiStatus>('idle');
@@ -190,13 +187,15 @@ export function useBleMidiInput(handlers: BleMidiHandlers = {}): UseBleMidiResul
           const value = (event.target as BleCharacteristic).value;
           if (!value) return;
           const bytes = new Uint8Array(value.buffer, value.byteOffset, value.byteLength);
-          for (const note of parseBlePacket(bytes)) {
-            if (note.kind === 'down') {
-              handlersRef.current.onNoteOn?.(note.midi, note.velocity);
-              setHeldNotes((giu) => (giu.includes(note.midi) ? giu : [...giu, note.midi]));
+          for (const event of parseBlePacket(bytes)) {
+            if (event.kind === 'pedal') {
+              handlersRef.current.onPedal?.(event.down);
+            } else if (event.kind === 'down') {
+              handlersRef.current.onNoteOn?.(event.midi, event.velocity);
+              setHeldNotes((giu) => (giu.includes(event.midi) ? giu : [...giu, event.midi]));
             } else {
-              handlersRef.current.onNoteOff?.(note.midi);
-              setHeldNotes((giu) => giu.filter((m) => m !== note.midi));
+              handlersRef.current.onNoteOff?.(event.midi);
+              setHeldNotes((giu) => giu.filter((m) => m !== event.midi));
             }
           }
         });

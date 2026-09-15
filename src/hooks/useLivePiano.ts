@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { LivePiano } from '@/lib/live-piano';
+import { LivePiano, softClipCurve } from '@/lib/live-piano';
 import {
   DEFAULT_INSTRUMENT, findInstrument, LIVE_REFERENCE_MIDI, liveSampleGain, loadSavedInstrument,
   sampleUrl, saveInstrument, shapeSample, type Instrument,
@@ -35,6 +35,14 @@ const PRELOAD_ORDER = Array.from(
 /** Âm lượng mặc định: chừa chỗ để vặn to thêm khi đánh nhẹ hoặc phòng ồn. */
 const DEFAULT_VOLUME = 0.8;
 
+/**
+ * Bộ chặn đỉnh đón được tín hiệu tới ±4 trước khi dính mép cắt cứng — mười nốt cùng mạnh
+ * hết cỡ cộng pedal vẫn nằm trong đó. 4097 điểm: số lẻ để có một điểm đúng ở 0, và mỗi bước
+ * 0,002 nên đoạn thẳng dưới mức gối đi qua không sai lệch.
+ */
+const SOFT_CLIP_RANGE = 4;
+const SOFT_CLIP_POINTS = 4097;
+
 export function useLivePiano() {
   // Đọc tiếng đã lưu trong effect, không lúc khởi tạo: ô chọn hiện ngay trong lần render
   // đầu, mà máy chủ không có localStorage — đọc sớm là HTML hai bên lệch nhau.
@@ -66,16 +74,20 @@ export function useLivePiano() {
       // 'interactive' xin trình duyệt bộ đệm nhỏ nhất nó chịu được: đây là chỗ độ trễ
       // quan trọng hơn mọi thứ khác.
       const ctx = new AudioContext({ latencyHint: 'interactive' });
-      // Bộ nén đứng cuối để bấm hợp âm nhiều nốt không vỡ tiếng. Nén nhẹ, chỉ đè đỉnh.
-      const limiter = ctx.createDynamicsCompressor();
-      limiter.threshold.value = -6;
-      limiter.knee.value = 6;
-      limiter.ratio.value = 12;
-      limiter.attack.value = 0.002;
-      limiter.release.value = 0.2;
-      limiter.connect(ctx.destination);
+      /*
+       * Bộ chặn đỉnh đứng cuối để bấm hợp âm nhiều nốt không vỡ tiếng. KHÔNG dùng
+       * `DynamicsCompressorNode`: nó giữ tiếng lại 6ms để nhìn trước — xem `softClip`.
+       * `oversample: 'none'` là bắt buộc, lấy mẫu dư cũng thêm trễ.
+       */
+      const headroom = ctx.createGain();
+      headroom.gain.value = 1 / SOFT_CLIP_RANGE;
+      const shaper = ctx.createWaveShaper();
+      shaper.curve = softClipCurve(SOFT_CLIP_POINTS, SOFT_CLIP_RANGE);
+      shaper.oversample = 'none';
+      headroom.connect(shaper);
+      shaper.connect(ctx.destination);
       ctxRef.current = ctx;
-      outputRef.current = limiter;
+      outputRef.current = headroom;
     }
     void ctxRef.current.resume();
     setStarted(true);

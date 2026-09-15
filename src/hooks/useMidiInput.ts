@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { pickOutputFor } from '@/lib/midi-messages';
+import { isPedalDown, pickOutputFor, SUSTAIN_PEDAL } from '@/lib/midi-messages';
 
 export type MidiStatus =
   /** Chưa bấm nút kết nối lần nào. */
@@ -48,9 +48,6 @@ export interface UseMidiInputResult {
 const NOTE_ON = 0x90;
 const NOTE_OFF = 0x80;
 const CONTROL_CHANGE = 0xb0;
-/** Số hiệu pedal ngân theo chuẩn MIDI, và mốc coi là đã đạp. */
-const SUSTAIN_PEDAL = 64;
-const PEDAL_DOWN_FROM = 64;
 
 export interface MidiHandlers {
   onNoteOn?: (note: number, velocity: number) => void;
@@ -154,7 +151,7 @@ export function useMidiInput(handlers: MidiHandlers = {}): UseMidiInputResult {
         handlersRef.current.onNoteOff?.(note);
       } else if (command === CONTROL_CHANGE && note === SUSTAIN_PEDAL) {
         // Với lệnh điều khiển thì byte thứ hai là số hiệu nút, byte thứ ba là mức.
-        handlersRef.current.onPedal?.(velocity >= PEDAL_DOWN_FROM);
+        handlersRef.current.onPedal?.(isPedalDown(velocity));
       }
     };
 

@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { localControlMessages, pickOutputFor } from './midi-messages';
+import { isPedalDown, localControlMessages, pickOutputFor } from './midi-messages';
+
+describe('isPedalDown', () => {
+  it('pedal nửa chừng cắt ở giữa dải: từ 64 trở lên là đang đạp', () => {
+    expect([0, 20, 63].map(isPedalDown)).toEqual([false, false, false]);
+    expect([64, 90, 127].map(isPedalDown)).toEqual([true, true, true]);
+  });
+});
 
 describe('localControlMessages', () => {
   it('tắt loa đàn gửi Local Control mức 0 trên đủ 16 kênh', () => {

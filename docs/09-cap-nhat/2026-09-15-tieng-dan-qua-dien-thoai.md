@@ -16,8 +16,7 @@ gửi nốt sang điện thoại, nên không còn hai tiếng chồng nhau. Có
 - **Chọn được tiếng đàn**, cùng bộ tiếng với phần nghe mẫu: Grand Piano mộc, êm dịu, trong
   trẻo, vang kiểu nhạc buồn, hay piano điện.
 - **Đánh nhẹ thì nhỏ, đánh mạnh thì to**, theo đúng lực ngón tay trên phím.
-- **Đạp pedal thì nốt ngân** — với đàn nối bằng dây. Nối Bluetooth thẳng thì tạm thời pedal
-  chưa ngân theo.
+- **Đạp pedal thì nốt ngân**, cả khi nối bằng dây lẫn nối thẳng qua Bluetooth.
 - **Cắm tai nghe vào điện thoại** là tập khuya được mà tiếng vẫn hay.
 
 Trang có hiện **độ trễ** của máy bạn: khoảng thời gian từ lúc ngón tay chạm đáy phím tới lúc
