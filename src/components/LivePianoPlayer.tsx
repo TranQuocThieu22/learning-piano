@@ -23,7 +23,14 @@ import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 const LATENCY_LEVELS = [
   { below: 30, color: 'teal', text: 'Như đàn thật' },
   { below: 50, color: 'yellow', text: 'Tập được, hơi chậm' },
-  { below: Infinity, color: 'red', text: 'Chậm — thử cắm tai nghe có dây' },
+  { below: 100, color: 'red', text: 'Chậm — thử cắm tai nghe có dây' },
+  /*
+   * Trên 100ms gần như chắc là tiếng đang đi qua Bluetooth âm thanh (150-250ms), không phải
+   * loa điện thoại. Đã gặp thật 15/09/2026: thử FP-30X nối Bluetooth thấy 180-195ms, tưởng
+   * loa điện thoại chậm — thật ra tai nghe Bluetooth vẫn đang nối với điện thoại; tắt đi thì
+   * tiếng ra nhanh. Nói thẳng thủ phạm, người học khỏi đoán.
+   */
+  { below: Infinity, color: 'red', text: 'Rất chậm — tai nghe hay loa Bluetooth đang nối với điện thoại? Tắt đi, hoặc cắm tai nghe có dây' },
 ];
 
 /**
@@ -117,7 +124,7 @@ export function LivePianoPlayer() {
         input={wiredInput}
         midiOnly
         title="Nối đàn vào điện thoại"
-        description="Bấm nối rồi đánh thử một phím. Nối xong có nút tắt loa của đàn, để khỏi nghe hai tiếng chồng nhau."
+        description="Bấm nối rồi đánh thử một phím. Đàn vẫn tự kêu thì xem cách tắt tiếng đàn ở cuối trang, để khỏi nghe hai tiếng chồng nhau."
       />
     );
   }
@@ -162,15 +169,24 @@ export function LivePianoPlayer() {
           >
             {speaker === 'off' ? 'Bật lại loa đàn' : 'Tắt loa đàn'}
           </Button>
+          {/*
+            * Nói trước khi bấm, không đợi bấm xong: đã thử trên Roland FP-30X — đàn lặng lẽ bỏ
+            * qua lệnh Local Control, app không có cách nào biết, người học chỉ thấy nút vô tác dụng.
+            */}
+          {speaker === null && (
+            <Text size="xs" c="dimmed" mt={4} data-testid="speaker-note">
+              Chỉ một số đàn nhận lệnh này: đàn Yamaha thường nhận, Roland và Kawai thì không.
+            </Text>
+          )}
           {speaker === 'off' && (
             <Text size="xs" c="dimmed" mt={4} data-testid="speaker-note">
-              Đàn vẫn kêu thì cây này không nhận lệnh — vặn nhỏ loa, hoặc cắm tai nghe vào đàn.
-              Rời trang là loa đàn tự bật lại; không thì tắt đàn rồi mở lại.
+              Đàn vẫn kêu thì cây này không nhận lệnh — xem cách tắt tiếng đàn ở cuối trang. Rời
+              trang là loa đàn tự bật lại; không thì tắt đàn rồi mở lại.
             </Text>
           )}
           {speaker === 'failed' && (
             <Text size="xs" c="orange" mt={4} data-testid="speaker-note">
-              Không gửi được lệnh sang đàn. Vặn nhỏ loa, hoặc cắm tai nghe vào lỗ tai nghe của đàn.
+              Không gửi được lệnh sang đàn — xem cách tắt tiếng đàn ở cuối trang.
             </Text>
           )}
         </Box>
@@ -187,8 +203,21 @@ export function LivePianoPlayer() {
 
         <Group gap="xs" wrap="wrap">
           {level && (
-            <Badge color={level.color} variant="light" size="lg" data-testid="live-latency">
-              Độ trễ khoảng {live.latencyMs}ms · {level.text}
+            /*
+             * "Tiếng ra chậm" chứ không "độ trễ": số này chỉ là đường tiếng ra loa hay tai nghe
+             * (`baseLatency` + `outputLatency`), không tính dây MIDI hay Bluetooth MIDI. Ghi "độ
+             * trễ" thì lần thử 15/09 nối Bluetooth thấy 187ms, cắm dây thấy 57ms, và ai cũng tưởng
+             * Bluetooth MIDI chậm — thật ra lúc đó tiếng đang đi ra tai nghe Bluetooth.
+             */
+            <Badge
+              color={level.color}
+              variant="light"
+              size="lg"
+              tt="none"
+              styles={{ root: { height: 'auto', paddingBlock: 4 }, label: { whiteSpace: 'normal' } }}
+              data-testid="live-latency"
+            >
+              Tiếng ra chậm khoảng {live.latencyMs}ms · {level.text}
             </Badge>
           )}
           {live.pedalDown && (

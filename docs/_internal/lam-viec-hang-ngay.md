@@ -133,8 +133,10 @@ Không gấp, xoá dòng nào đã xong:
       duyệt thử không có đàn.
       **Đã biết 15/09:** FP-30X bỏ qua lệnh tắt loa (Roland không nhận CC 122) — hạ Volume đàn
       về 0 thì im hẳn. Nối **dây** thì FP-30X làm luôn card âm thanh USB, tiếng app chạy sang loa
-      đàn; nối **Bluetooth** thì tiếng ra điện thoại, đã chạy ổn. Còn phải thử: **đạp pedal khi
-      nối Bluetooth có ngân không**, và số ms sau bản bớt 6ms trễ.
+      đàn; nối **Bluetooth** thì tiếng ra điện thoại, đã chạy ổn. Lần thử đầu nối Bluetooth thấy
+      **180-195ms là do tai nghe Bluetooth vẫn nối với điện thoại** — tắt đi thì tiếng ra nhanh;
+      loa điện thoại không chậm như đã tưởng. Còn phải thử: **đạp pedal khi nối Bluetooth có ngân
+      không**, và số ms sau bản bớt 6ms trễ.
 
 - [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
       micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
@@ -204,6 +206,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `fix: Hướng dẫn tắt tiếng đàn theo tình huống, badge tiếng ra chậm` | Mục 7: ghi 180-195ms lúc thử Bluetooth là do tai nghe Bluetooth còn nối với điện thoại, tắt đi thì tiếng ra nhanh — trước đó đã kết luận nhầm là loa điện thoại chậm. Không ghi lại thì lần sau lại đổ cho loa điện thoại hay cho Bluetooth MIDI rồi dò lại từ đầu |
 | 15/09/2026 | `feat: Pedal ngân qua Bluetooth và bớt 6ms trễ khi phát tiếng` | Mục 7: ghi ba điều đã biết sau lần thử FP-30X — đàn bỏ qua lệnh tắt loa, nối dây thì tiếng app chạy sang loa đàn vì đàn làm card âm thanh USB, nối Bluetooth thì ổn — và thêm hai thứ còn phải thử (pedal qua Bluetooth, số ms mới). Không ghi lại thì lần sau có người lại bảo "bấm Tắt loa đàn" rồi dò lại từ đầu |
 | 15/09/2026 | `feat: Nút tắt loa đàn khi phát tiếng qua điện thoại` | Mục 7: thêm bước bấm *Tắt loa đàn* và kiểm loa FP-30X có câm thật không. Lệnh Local Control gửi đi mà đàn không hiểu thì lặng lẽ bỏ qua — app không tự biết được, chỉ thử trên đàn thật mới biết nút có tác dụng, và phải thử cả hai đường vì Bluetooth ghi lệnh bằng lối khác hẳn dây |
 | 15/09/2026 | `docs(internal): Hẹn giờ đăng bài Facebook số 4` | Mục 7: ghi bài số 4 đã hẹn đăng 22:30 tối 15/09 và còn sáu bài — dòng cũ ghi "chờ bạn chọn giờ", để nguyên thì lần mở file sau tưởng bài số 4 vẫn kẹt |

@@ -29,18 +29,39 @@ export default function PianoSoundPage() {
               hoặc máy tính. Cắm dây vào điện thoại thì cần cáp OTG. iPhone và iPad chưa làm được —
               trình duyệt trên iOS không cho nối MIDI bằng đường nào.
             </Text>
+
+            <Title order={4} mt="md">Tắt tiếng của chính cây đàn</Title>
             <Text size="sm">
-              <b>Tắt loa của đàn.</b> Điện thoại và đàn cùng kêu thì nghe ra hai tiếng lệch nhau
-              một chút. Nối xong bấm <i>Tắt loa đàn</i>: đàn thôi tự kêu nhưng vẫn gửi nốt sang
-              điện thoại. Có đàn không nhận lệnh này — khi đó vặn nhỏ loa, hoặc cắm một tai nghe
-              vào lỗ tai nghe của đàn, loa đàn sẽ tự im.
+              Điện thoại và đàn cùng kêu thì nghe ra hai tiếng lệch nhau. Cắm dây xong, đánh thử
+              một phím rồi xem tiếng app ra ở đâu:
+            </Text>
+            <Text size="sm">
+              <b>Tiếng app ra loa đàn.</b> Đàn đang làm luôn card âm thanh cho điện thoại (Roland
+              FP-30X là vậy), nên vặn nhỏ loa đàn là mất cả tiếng app. Tắt <b>Local Control</b>{' '}
+              ngay trên đàn — tìm mục này trong sách hướng dẫn của đàn. Đàn thôi tự kêu khi bấm
+              phím, loa đàn chỉ còn phát tiếng app. Tắt nguồn đàn thường phải tắt lại.
+            </Text>
+            <Text size="sm">
+              <b>Tiếng app ra loa điện thoại.</b> Đàn chỉ gửi nốt sang, không nhận tiếng về. Vặn
+              nhỏ loa đàn hết cỡ là xong — đàn vẫn gửi đủ nốt và lực bấm.
+            </Text>
+            <Text size="sm">
+              <b>Nút <i>Tắt loa đàn</i></b> gửi lệnh Local Control qua dây, khỏi mò cài đặt. Chỉ một
+              số đàn nhận: đàn Yamaha thường nhận, Roland và Kawai thì không — bấm mà đàn vẫn kêu
+              thì làm theo một trong hai cách trên.
             </Text>
 
-            <Title order={4} mt="md">Độ trễ là gì</Title>
+            <Title order={4} mt="md">Tiếng ra chậm là gì</Title>
             <Text size="sm">
-              Là khoảng thời gian từ lúc ngón tay chạm đáy phím tới lúc nghe ra tiếng. Dưới 30ms thì
-              tai không nhận ra; trên 50ms thì đánh nhanh sẽ thấy tiếng chạy sau tay. Tai nghe{' '}
-              <b>có dây</b> thường nhanh hơn loa ngoài, còn tai nghe Bluetooth thì chậm hơn hẳn.
+              Là khoảng thời gian điện thoại cần để đưa tiếng ra loa hoặc tai nghe. Số này chưa tính
+              đường nối từ đàn sang: dây gần như tức thì, Bluetooth thêm khoảng 15-40ms. Dưới 30ms
+              thì tai không nhận ra; trên 50ms thì đánh nhanh sẽ thấy tiếng chạy sau tay. Tai nghe{' '}
+              <b>có dây</b> thường nhanh hơn loa ngoài điện thoại, còn tai nghe hay loa Bluetooth
+              thì chậm hơn hẳn.
+            </Text>
+            <Text size="sm">
+              <b>Số lên hơn 100ms</b> thì gần như chắc là điện thoại vẫn đang nối với một tai nghe
+              hay loa Bluetooth, dù bạn không đeo. Tắt kết nối đó là tiếng ra nhanh lại.
             </Text>
             <Text size="sm" c="dimmed">
               Đây là công cụ hỗ trợ, không phải phần bắt buộc của giáo trình. Đàn của bạn đã có tiếng

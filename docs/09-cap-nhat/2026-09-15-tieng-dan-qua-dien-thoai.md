@@ -9,9 +9,15 @@ phát ra mỏng và rè — tập lâu nghe chán. Giờ có một cách khác: 
 trên đàn, và nghe tiếng piano từ điện thoại**.
 
 Mở ô **Tiếng đàn qua điện thoại** ở màn hình chủ, bấm **Nối MIDI** — bằng dây hoặc nối thẳng
-qua Bluetooth — rồi đánh thử một phím. Nối xong bấm **Tắt loa đàn**: đàn thôi tự kêu nhưng vẫn
-gửi nốt sang điện thoại, nên không còn hai tiếng chồng nhau. Có đàn không nhận lệnh này — khi
-đó vặn nhỏ loa, hoặc cắm tai nghe vào lỗ tai nghe của đàn là loa tự im.
+qua Bluetooth — rồi đánh thử một phím. Để khỏi nghe hai tiếng chồng nhau, tắt tiếng của chính
+cây đàn:
+
+- **Tiếng app ra loa điện thoại:** vặn nhỏ loa đàn hết cỡ. Đàn vẫn gửi đủ nốt và lực bấm.
+- **Cắm dây mà tiếng app chạy ra loa đàn:** đàn đang làm luôn card âm thanh cho điện thoại, nên
+  vặn nhỏ là mất cả tiếng app. Tắt **Local Control** ngay trên đàn (xem sách hướng dẫn của đàn) —
+  đàn thôi tự kêu, loa đàn chỉ còn phát tiếng app.
+- Trang có nút **Tắt loa đàn** làm việc đó hộ, nhưng chỉ một số đàn nhận: đàn Yamaha thường nhận,
+  Roland và Kawai thì không.
 
 - **Chọn được tiếng đàn**, cùng bộ tiếng với phần nghe mẫu: Grand Piano mộc, êm dịu, trong
   trẻo, vang kiểu nhạc buồn, hay piano điện.
