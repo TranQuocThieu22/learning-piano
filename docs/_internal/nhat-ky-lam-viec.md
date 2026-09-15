@@ -40,6 +40,60 @@
 
 ---
 
+## 15/09/2026 (chiều) — Đăng Facebook bằng script, hướng đàn gập câm, và bộ phát tiếng
+
+> Ba commit `71805bc`, `77f275e`, `bf32f06`, đẩy thẳng `main` (hai commit sau do chủ sản phẩm
+> nói "commit luôn"). Phiên Claude Code trên máy tính Windows, không phải trên web.
+
+**Đã làm**
+
+- **Mở phiên bằng câu buổi sáng**, xếp việc trong ngày: thử micro trên máy thật đứng đầu vì nó
+  chặn việc mời thêm người beta; nghe thử bốn tiếng piano mới đứng thứ hai.
+- **Script đăng bài lên Trang Facebook** (`71805bc`) — `pnpm fb list / show / check / publish`,
+  đi qua Graph API. Chủ sản phẩm chọn đường này thay vì để Claude điều khiển Chrome. Chưa dùng
+  được: **mã truy cập chưa lấy**, năm bước ở mục 6 của `bai-dang-facebook.md`.
+- **Hỏi đăng bài được không khi chỉ cầm điện thoại.** Trả lời thẳng: script chạy trên máy tính
+  nên máy phải bật; mã truy cập cố ý không nằm trong Git nên phiên Claude trên web không có. Cách
+  chính đề xuất là **soạn và hẹn giờ lúc ngồi máy** — Facebook nhận hẹn trước tới 30 ngày.
+- **Bàn hướng phần cứng** (`77f275e`). Chủ sản phẩm nêu rào cản lớn nhất để app tới được người
+  mới là cây đàn — cồng kềnh và đắt — và muốn khi có doanh thu thì làm đàn gập gọn nối điện
+  thoại. Chốt: **đàn gập 61 phím, 61 là nhỏ nhất, không phát tiếng, tiếng do app phát**. Chưa
+  liên hệ nhà sản xuất, chưa có kế hoạch cụ thể.
+- **Dựng bộ phát tiếng** (`bf32f06`) — trang `/piano-sound`: nối MIDI, đánh trên đàn thì điện
+  thoại kêu, theo lực bấm, pedal ngân qua dây, hiện độ trễ. Kèm bài *Có gì mới* và bài
+  Facebook số 10.
+
+**Quan sát**
+
+- **Hai lần tôi khuyên ngược với chỗ chủ sản phẩm chốt, và lần nào lý lẽ của họ cũng đứng.**
+  Lần một khuyên đừng làm đàn câm vì iPhone/iPad sẽ không nối được đường nào; chủ sản phẩm vẫn
+  chọn câm vì loa rẻ không thể hay, còn tiếng hay ở app thì kéo người ta dùng app. Lần hai tôi để
+  ngỏ 49 phím; chủ sản phẩm bỏ hẳn. Việc của tôi là **ghi rõ cái giá** (iOS ngoài cuộc, app phải
+  tự phát tiếng đủ nhanh) chứ không phải thắng cuộc tranh luận.
+- **Đo tầm nốt trước khi bàn cỡ đàn là đúng.** Quét 125 khối nhạc ra đúng Đô2..Đô6 = 49 nửa cung.
+  Không có con số đó thì "49 hay 61 phím" chỉ là cảm giác.
+- **Mẫu âm MusyngKite thu rất nhỏ — Đô4 chỉ đạt đỉnh 0,03.** Bản đầu nhân 3 như abcjs, ra khoảng
+  -21dB, trên loa điện thoại sẽ nhỏ rõ. Test không bắt được (buffer giả không có mức thật); chỉ
+  thấy nhờ giải mã một tệp thật trong trình duyệt rồi đo đỉnh. Sửa bằng một hệ số chung đo từ Đô
+  giữa, không căn từng nốt.
+- **Trình duyệt thử của Claude không vẽ khi cửa sổ bị che** — chụp màn hình quá hạn, bấm theo
+  toạ độ không ăn, trông y như app hỏng. Bấm bằng mã trong trang (`button.click()`) mới tách được
+  lỗi công cụ khỏi lỗi app: trang chạy đúng, tải đủ 49 mẫu âm. Trình duyệt thử không có đàn nên
+  báo từ chối quyền MIDI — đúng như phải thế.
+- **Nghịch lý nên nhớ cho hướng đàn câm:** iOS có độ trễ âm thanh tốt nhất mà không nhận MIDI;
+  Android nhận MIDI thì độ trễ âm thanh lại là chỗ yếu nhất.
+
+**Tiếp theo**
+
+- **Thử `/piano-sound` trên FP-30X, đọc số ms trên trang.** Đây là con số quyết định hướng đàn
+  câm có đi tiếp được không, và chỉ đo được trên máy thật.
+- **Lấy mã truy cập Facebook** (năm bước), rồi hẹn giờ bảy bài đang chờ, số 4 tới số 10.
+- **Đo tỷ lệ người học dùng iOS** trong Vercel Analytics — nó quyết định "tạm gác iPhone" là chấp
+  nhận được hay mất nửa thị trường.
+- Việc cũ vẫn treo: thử micro trên máy thật, nghe thử bốn tiếng piano mới.
+
+---
+
 ## 15/09/2026 — Tiếng piano êm và trong trẻo, và bỏ ô chọn hoá biểu
 
 > Bốn commit `79b9ec7`, `0098bcc`, `38d67e3`, `0050616`, đẩy thẳng `main`. Vẫn làm trong
