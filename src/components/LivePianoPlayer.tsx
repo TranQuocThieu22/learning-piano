@@ -1,11 +1,15 @@
 'use client';
 
-import { useMemo } from 'react';
 import {
-  Badge, Box, Group, Progress, Select, Slider, Stack, Text,
+  useCallback, useEffect, useMemo, useRef, useState,
+} from 'react';
+import {
+  Badge, Box, Button, Group, Progress, Select, Slider, Stack, Text,
 } from '@mantine/core';
+import { IconVolume, IconVolumeOff } from '@tabler/icons-react';
 import { useLivePiano } from '@/hooks/useLivePiano';
 import { usePianoInput, type PianoInput } from '@/hooks/usePianoInput';
+import { localControlMessages } from '@/lib/midi-messages';
 import { INSTRUMENT_SELECT_DATA } from '@/lib/soundfont';
 import { PianoInputChooser, PianoInputStatus } from './PianoInputPanel';
 
@@ -39,6 +43,55 @@ export function LivePianoPlayer() {
   });
 
   /*
+   * Tắt loa của đàn bằng lệnh Local Control, để không nghe hai tiếng lệch nhau.
+   *
+   * `null` là chưa bấm lần nào; `'failed'` là không có đường gửi sang đàn. Gửi được
+   * cũng KHÔNG có nghĩa đàn đã câm — đàn không hiểu lệnh thì lặng lẽ bỏ qua, app không
+   * có cách nào biết, nên chữ dưới nút phải nói cho người học cách tự kiểm.
+   */
+  const [speaker, setSpeaker] = useState<'on' | 'off' | 'failed' | null>(null);
+  const speakerOffRef = useRef(false);
+  const inputRef = useRef(input);
+  useEffect(() => {
+    inputRef.current = input;
+  });
+
+  const toggleSpeaker = useCallback(async () => {
+    const turnOff = !speakerOffRef.current;
+    const sent = await inputRef.current.send(localControlMessages(!turnOff));
+    if (!sent) {
+      setSpeaker('failed');
+      return;
+    }
+    speakerOffRef.current = turnOff;
+    setSpeaker(turnOff ? 'off' : 'on');
+  }, []);
+
+  /**
+   * Trả lại tiếng cho đàn trước khi rời đi. Đàn giữ Local Control tới lúc tắt nguồn,
+   * nên quên bước này thì lần sau người học đánh đàn không có app, đàn câm mà không
+   * biết vì sao.
+   */
+  const restoreSpeaker = useCallback(() => {
+    if (!speakerOffRef.current) return;
+    speakerOffRef.current = false;
+    void inputRef.current.send(localControlMessages(true));
+  }, []);
+
+  /*
+   * `pagehide` cho lúc tải lại trang hay đóng thẻ — effect không kịp dọn khi trang bị huỷ.
+   * Cố ý không nghe `visibilitychange`: người học chuyển sang app khác một lát rồi quay
+   * lại thì loa đàn không nên bật lên giữa chừng.
+   */
+  useEffect(() => {
+    window.addEventListener('pagehide', restoreSpeaker);
+    return () => {
+      window.removeEventListener('pagehide', restoreSpeaker);
+      restoreSpeaker();
+    };
+  }, [restoreSpeaker]);
+
+  /*
    * Bật âm thanh ngay trong cú bấm *Nối MIDI*: trình duyệt điện thoại chặn âm thanh tới
    * cú chạm đầu tiên, và nốt từ dây MIDI không tính là cú chạm. Gói lại ở đây thay vì
    * thêm một nút *Bật tiếng* riêng — người học đang để hai tay trên đàn, bớt được một
@@ -50,7 +103,13 @@ export function LivePianoPlayer() {
       live.start();
       input.chooseMidi();
     },
-  }), [input, live]);
+    // Gửi lệnh bật loa khi đường nối còn sống; ngắt Bluetooth tự đợi lệnh ghi xong.
+    reset: () => {
+      restoreSpeaker();
+      setSpeaker(null);
+      input.reset();
+    },
+  }), [input, live, restoreSpeaker]);
 
   if (!input.mode) {
     return (
@@ -58,7 +117,7 @@ export function LivePianoPlayer() {
         input={wiredInput}
         midiOnly
         title="Nối đàn vào điện thoại"
-        description="Bấm nối rồi đánh thử một phím. Nhớ vặn nhỏ loa của đàn để khỏi nghe hai tiếng chồng nhau."
+        description="Bấm nối rồi đánh thử một phím. Nối xong có nút tắt loa của đàn, để khỏi nghe hai tiếng chồng nhau."
       />
     );
   }
@@ -90,6 +149,30 @@ export function LivePianoPlayer() {
             size="lg"
             aria-label="Âm lượng tiếng đàn"
           />
+        </Box>
+
+        <Box>
+          <Button
+            fullWidth
+            size="md"
+            variant={speaker === 'off' ? 'light' : 'filled'}
+            leftSection={speaker === 'off' ? <IconVolume size={20} /> : <IconVolumeOff size={20} />}
+            onClick={toggleSpeaker}
+            data-testid="speaker-toggle"
+          >
+            {speaker === 'off' ? 'Bật lại loa đàn' : 'Tắt loa đàn'}
+          </Button>
+          {speaker === 'off' && (
+            <Text size="xs" c="dimmed" mt={4} data-testid="speaker-note">
+              Đàn vẫn kêu thì cây này không nhận lệnh — vặn nhỏ loa, hoặc cắm tai nghe vào đàn.
+              Rời trang là loa đàn tự bật lại; không thì tắt đàn rồi mở lại.
+            </Text>
+          )}
+          {speaker === 'failed' && (
+            <Text size="xs" c="orange" mt={4} data-testid="speaker-note">
+              Không gửi được lệnh sang đàn. Vặn nhỏ loa, hoặc cắm tai nghe vào lỗ tai nghe của đàn.
+            </Text>
+          )}
         </Box>
 
         {live.loaded < live.loadTotal && (

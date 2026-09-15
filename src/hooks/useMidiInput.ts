@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { pickOutputFor } from '@/lib/midi-messages';
 
 export type MidiStatus =
   /** Chưa bấm nút kết nối lần nào. */
@@ -37,6 +38,11 @@ export interface UseMidiInputResult {
   refresh: () => void;
   /** Các phím đang được giữ, dùng để hiện phản hồi tức thời. */
   heldNotes: number[];
+  /**
+   * Gửi lệnh sang đúng cây đàn đang nghe. Trả `false` khi đàn không mở cổng ra hoặc
+   * không nhận ra cổng ra nào của nó — người gọi phải báo cho người học, đừng giả là xong.
+   */
+  send: (messages: number[][]) => boolean;
 }
 
 const NOTE_ON = 0x90;
@@ -165,6 +171,23 @@ export function useMidiInput(handlers: MidiHandlers = {}): UseMidiInputResult {
     };
   }, []);
 
+  const send = useCallback((messages: number[][]) => {
+    const access = accessRef.current;
+    if (!access || !selectedDeviceId) return false;
+    const input = access.inputs.get(selectedDeviceId);
+    const outputs: MIDIOutput[] = [];
+    access.outputs.forEach((output) => outputs.push(output));
+    const output = pickOutputFor(input?.name, outputs);
+    if (!output) return false;
+    try {
+      for (const message of messages) output.send(message);
+      return true;
+    } catch {
+      // Rút dây đúng lúc bấm thì cổng đóng giữa chừng.
+      return false;
+    }
+  }, [selectedDeviceId]);
+
   return {
     status,
     errorMessage,
@@ -174,5 +197,6 @@ export function useMidiInput(handlers: MidiHandlers = {}): UseMidiInputResult {
     connect,
     refresh,
     heldNotes,
+    send,
   };
 }

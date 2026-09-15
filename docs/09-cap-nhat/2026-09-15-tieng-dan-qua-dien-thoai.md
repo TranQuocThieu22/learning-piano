@@ -9,8 +9,9 @@ phát ra mỏng và rè — tập lâu nghe chán. Giờ có một cách khác: 
 trên đàn, và nghe tiếng piano từ điện thoại**.
 
 Mở ô **Tiếng đàn qua điện thoại** ở màn hình chủ, bấm **Nối MIDI** — bằng dây hoặc nối thẳng
-qua Bluetooth — rồi đánh thử một phím. Nhớ vặn nhỏ loa của đàn, không thì nghe ra hai tiếng
-chồng nhau.
+qua Bluetooth — rồi đánh thử một phím. Nối xong bấm **Tắt loa đàn**: đàn thôi tự kêu nhưng vẫn
+gửi nốt sang điện thoại, nên không còn hai tiếng chồng nhau. Có đàn không nhận lệnh này — khi
+đó vặn nhỏ loa, hoặc cắm tai nghe vào lỗ tai nghe của đàn là loa tự im.
 
 - **Chọn được tiếng đàn**, cùng bộ tiếng với phần nghe mẫu: Grand Piano mộc, êm dịu, trong
   trẻo, vang kiểu nhạc buồn, hay piano điện.

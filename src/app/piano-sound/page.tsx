@@ -30,8 +30,10 @@ export default function PianoSoundPage() {
               trình duyệt trên iOS không cho nối MIDI bằng đường nào.
             </Text>
             <Text size="sm">
-              <b>Vặn nhỏ loa của đàn.</b> Điện thoại và đàn cùng kêu thì nghe ra hai tiếng lệch nhau
-              một chút. Cắm tai nghe vào điện thoại là gọn nhất.
+              <b>Tắt loa của đàn.</b> Điện thoại và đàn cùng kêu thì nghe ra hai tiếng lệch nhau
+              một chút. Nối xong bấm <i>Tắt loa đàn</i>: đàn thôi tự kêu nhưng vẫn gửi nốt sang
+              điện thoại. Có đàn không nhận lệnh này — khi đó vặn nhỏ loa, hoặc cắm một tai nghe
+              vào lỗ tai nghe của đàn, loa đàn sẽ tự im.
             </Text>
 
             <Title order={4} mt="md">Độ trễ là gì</Title>

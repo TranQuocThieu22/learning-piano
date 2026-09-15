@@ -126,9 +126,11 @@ Không gấp, xoá dòng nào đã xong:
 
 - [ ] **Thử *Tiếng đàn qua điện thoại* (`/piano-sound`) trên FP-30X.** Đây là con số quyết định
       hướng đàn gập câm có đi tiếp được không. Nối đàn vào điện thoại Android (dây OTG hoặc
-      *Nối thẳng qua Bluetooth*), vặn nhỏ loa đàn, cắm tai nghe **có dây**, đánh vài câu có cả
-      chạy nhanh và đạp pedal. Kể lại cho Claude ba thứ: **số ms hiện trên trang**, tiếng có chạy
-      sau tay không, âm lượng có vừa không. Mới kiểm trên trình duyệt thử không có đàn.
+      *Nối thẳng qua Bluetooth*), bấm **Tắt loa đàn**, cắm tai nghe **có dây**, đánh vài câu có cả
+      chạy nhanh và đạp pedal. Kể lại cho Claude bốn thứ: **số ms hiện trên trang**, tiếng có chạy
+      sau tay không, âm lượng có vừa không, và **loa FP-30X có câm thật không** — thử cả đường dây
+      lẫn Bluetooth, rồi bấm *Đổi cách nối* xem loa đàn có kêu lại không. Mới kiểm trên trình
+      duyệt thử không có đàn.
 
 - [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
       micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
@@ -198,6 +200,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Nút tắt loa đàn khi phát tiếng qua điện thoại` | Mục 7: thêm bước bấm *Tắt loa đàn* và kiểm loa FP-30X có câm thật không. Lệnh Local Control gửi đi mà đàn không hiểu thì lặng lẽ bỏ qua — app không tự biết được, chỉ thử trên đàn thật mới biết nút có tác dụng, và phải thử cả hai đường vì Bluetooth ghi lệnh bằng lối khác hẳn dây |
 | 15/09/2026 | `docs(internal): Hẹn giờ đăng bài Facebook số 4` | Mục 7: ghi bài số 4 đã hẹn đăng 22:30 tối 15/09 và còn sáu bài — dòng cũ ghi "chờ bạn chọn giờ", để nguyên thì lần mở file sau tưởng bài số 4 vẫn kẹt |
 | 15/09/2026 | `docs(internal): Tách lại dòng lịch sử nhật ký 15/09 bị viết nối` | Trả dòng lịch sử của commit nhật ký đầu tiên về đúng chữ đã commit, và tách phần viết thêm ra dòng riêng ngay trên. Lần trước Claude viết nối vào một dòng đã nằm trên `main` — bạn đã commit bản đầu bằng Fork mà Claude không để ý — tức là sửa dòng cũ, đúng thứ bảng này cấm vì nó xoá mất dấu vết lần sửa nào nói gì |
 | 15/09/2026 | `docs(internal): Ghi nhật ký phiên đăng Facebook, đàn gập câm và bộ phát tiếng 15/09` | **Commit thứ hai cùng tiêu đề** (`d538e24`) — bản đầu đã được commit bằng Fork trước đó, tìm bằng `git log --grep` sẽ ra cả hai. Đánh dấu xong việc lấy mã Facebook — `pnpm fb check` trỏ đúng Trang ngay trong phiên — và tách việc hẹn giờ bảy bài thành dòng riêng, vì mã có rồi mà bài vẫn chưa lên. Ghi mã số Trang vào vì tài khoản quản trị hai Trang cùng tên, dễ nhầm lúc làm lại mã. Ghi vào việc hẹn giờ rằng bài nào cũng kèm ảnh và ai lo ảnh nào — Claude dựng ảnh đồ hoạ, bạn gửi ảnh chụp thật — để lúc xếp lịch không ai phải hỏi lại |

@@ -125,6 +125,34 @@ export function parseBlePacket(bytes: Uint8Array): BleMidiNote[] {
 }
 
 /**
+ * Số thông điệp tối đa trong một gói gửi đi.
+ *
+ * Kết nối BLE chưa thương lượng gì thì mỗi lần ghi chỉ chở được 20 byte (MTU 23 trừ 3
+ * byte đầu gói). Một gói = 1 byte header + mỗi thông điệp 4 byte (mốc thời gian + 3 byte
+ * MIDI), nên 4 thông điệp là 17 byte — vừa với mọi đàn, kể cả đàn không chịu nâng MTU.
+ */
+const MESSAGES_PER_PACKET = 4;
+
+/**
+ * Gói các thông điệp MIDI 3 byte thành các gói BLE-MIDI để ghi sang đàn.
+ *
+ * Mốc thời gian để 0: đàn phát lệnh ngay khi nhận, và app chỉ gửi lệnh cài đặt chứ
+ * không gửi nốt nhạc, nên không có gì cần dựng lại khoảng cách. Không dùng running
+ * status cho gọn — mỗi thông điệp đủ byte status thì đàn nào đọc cũng không nhầm.
+ */
+export function encodeBlePackets(messages: number[][]): Uint8Array<ArrayBuffer>[] {
+  const packets: Uint8Array<ArrayBuffer>[] = [];
+  for (let start = 0; start < messages.length; start += MESSAGES_PER_PACKET) {
+    const bytes = [0x80];
+    for (const message of messages.slice(start, start + MESSAGES_PER_PACKET)) {
+      bytes.push(0x80, ...message);
+    }
+    packets.push(new Uint8Array(bytes));
+  }
+  return packets;
+}
+
+/**
  * Vì sao bỏ mốc thời gian của đàn.
  *
  * Chuẩn BLE-MIDI gói kèm mốc thời gian 13 bit (quay vòng mỗi 8192ms) để dựng

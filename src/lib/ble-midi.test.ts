@@ -1,5 +1,25 @@
 import { describe, expect, it } from 'vitest';
-import { parseBlePacket } from './ble-midi';
+import { encodeBlePackets, parseBlePacket } from './ble-midi';
+import { localControlMessages } from './midi-messages';
+
+describe('encodeBlePackets', () => {
+  it('một lệnh thành một gói: header, mốc thời gian, rồi ba byte MIDI', () => {
+    expect(encodeBlePackets([[0xb0, 122, 0]]))
+      .toEqual([new Uint8Array([0x80, 0x80, 0xb0, 122, 0])]);
+  });
+
+  it('lệnh tắt loa trên 16 kênh chia thành gói không quá 20 byte', () => {
+    // Quá 20 byte thì đàn chưa nâng MTU cắt mất đuôi gói, và các kênh cuối không nhận được lệnh.
+    const packets = encodeBlePackets(localControlMessages(false));
+    expect(packets.every((p) => p.length <= 20)).toBe(true);
+    const channels = packets.flatMap((p) => [...p].filter((_, i) => i % 4 === 2).map((b) => b & 0x0f));
+    expect(channels).toEqual(Array.from({ length: 16 }, (_, ch) => ch));
+  });
+
+  it('không có lệnh nào thì không ghi gói nào', () => {
+    expect(encodeBlePackets([])).toEqual([]);
+  });
+});
 
 /** Dựng gói cho gọn: `pk(0x81, 0x90, 60, 100)` = header + các byte sau. */
 const pk = (...bytes: number[]) => new Uint8Array([0x80, ...bytes]);

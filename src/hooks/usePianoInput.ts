@@ -86,8 +86,18 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
   }, []);
 
   const { connect: connectMic, disconnect: disconnectMic } = mic;
-  const { connect: connectMidi } = midi;
-  const { disconnect: disconnectBle } = ble;
+  const { connect: connectMidi, send: sendMidi } = midi;
+  const { disconnect: disconnectBle, send: sendBle, status: bleStatus } = ble;
+
+  /**
+   * Gửi lệnh sang đàn qua đúng đường đang nối — Bluetooth thẳng nếu đã nối, không thì
+   * Web MIDI. Như nốt đi vào, người gọi không cần biết lệnh ra bằng đường nào.
+   * Micro thì không có đường ra: trả `false`.
+   */
+  const send = useCallback(async (messages: number[][]) => {
+    if (modeRef.current !== 'midi') return false;
+    return bleStatus === 'connected' ? sendBle(messages) : sendMidi(messages);
+  }, [bleStatus, sendBle, sendMidi]);
 
   const chooseMic = useCallback(() => {
     modeRef.current = 'mic';
@@ -122,7 +132,7 @@ export function usePianoInput(handlers: PianoInputHandlers, micOptions: MicOptio
       (midi.status === 'ready' && midi.devices.length > 0) || ble.status === 'connected'
     );
 
-  return { mode, ready, midi, mic, ble, midiSupported, chooseMic, chooseMidi, reset };
+  return { mode, ready, midi, mic, ble, midiSupported, chooseMic, chooseMidi, reset, send };
 }
 
 export type PianoInput = ReturnType<typeof usePianoInput>;

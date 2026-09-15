@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import {
-  BLE_MIDI_CHARACTERISTIC, BLE_MIDI_SERVICE, parseBlePacket,
+  BLE_MIDI_CHARACTERISTIC, BLE_MIDI_SERVICE, encodeBlePackets, parseBlePacket,
 } from '@/lib/ble-midi';
 
 /**
@@ -34,6 +34,9 @@ import {
 interface BleCharacteristic extends EventTarget {
   startNotifications: () => Promise<BleCharacteristic>;
   stopNotifications: () => Promise<BleCharacteristic>;
+  writeValue: (value: BufferSource) => Promise<void>;
+  /** Chuẩn BLE-MIDI dùng kiểu ghi này; trình duyệt cũ chưa có thì lùi về `writeValue`. */
+  writeValueWithoutResponse?: (value: BufferSource) => Promise<void>;
   value?: DataView;
 }
 interface BleService {
@@ -77,6 +80,8 @@ export interface UseBleMidiResult {
   disconnect: () => void;
   /** Các phím đang được giữ, dùng để hiện phản hồi tức thời. */
   heldNotes: number[];
+  /** Gửi lệnh sang đàn. `false` khi chưa nối hoặc đàn không nhận ghi. */
+  send: (messages: number[][]) => Promise<boolean>;
 }
 
 export interface BleMidiHandlers {
@@ -99,6 +104,12 @@ export function useBleMidiInput(handlers: BleMidiHandlers = {}): UseBleMidiResul
 
   const deviceRef = useRef<BleDevice | null>(null);
   const charRef = useRef<BleCharacteristic | null>(null);
+  /**
+   * Lần ghi cuối cùng đang chạy. Ngắt kết nối phải **đợi nó xong**: lệnh bật lại loa đàn
+   * được gửi ngay trước khi ngắt, và cắt Bluetooth giữa lúc đang ghi là lệnh rơi mất —
+   * đàn câm luôn cho tới khi tắt nguồn. Không bao giờ ở trạng thái lỗi (đã bắt ở `send`).
+   */
+  const pendingWriteRef = useRef<Promise<unknown>>(Promise.resolve());
   const handlersRef = useRef(handlers);
   useEffect(() => {
     handlersRef.current = handlers;
@@ -113,17 +124,35 @@ export function useBleMidiInput(handlers: BleMidiHandlers = {}): UseBleMidiResul
     setSupported(bluetooth() !== null);
   }, []);
 
+  const send = useCallback((messages: number[][]) => {
+    const char = charRef.current;
+    if (!char) return Promise.resolve(false);
+    // Xếp hàng sau lần ghi trước: Web Bluetooth từ chối hai lần ghi chồng nhau trên cùng một characteristic.
+    const write = pendingWriteRef.current.then(async () => {
+      for (const packet of encodeBlePackets(messages)) {
+        if (char.writeValueWithoutResponse) await char.writeValueWithoutResponse(packet);
+        else await char.writeValue(packet);
+      }
+      return true;
+    }).catch(() => false);
+    pendingWriteRef.current = write;
+    return write;
+  }, []);
+
   const disconnect = useCallback(() => {
     const char = charRef.current;
+    const device = deviceRef.current;
     charRef.current = null;
-    void char?.stopNotifications().catch(() => {
-      // Đàn đã đi xa rồi thì dừng cũng chẳng có gì để dừng.
-    });
-    deviceRef.current?.gatt?.disconnect();
     deviceRef.current = null;
     setStatus('idle');
     setDeviceName(null);
     setHeldNotes([]);
+    void pendingWriteRef.current.then(() => {
+      void char?.stopNotifications().catch(() => {
+        // Đàn đã đi xa rồi thì dừng cũng chẳng có gì để dừng.
+      });
+      device?.gatt?.disconnect();
+    });
   }, []);
 
   const connect = useCallback(() => {
@@ -209,10 +238,19 @@ export function useBleMidiInput(handlers: BleMidiHandlers = {}): UseBleMidiResul
     })();
   }, []);
 
-  // Rời trang thì ngắt hẳn: đàn vẫn giữ kết nối với trang cũ thì lần sau nối lại không được.
+  /*
+   * Rời trang thì ngắt hẳn: đàn vẫn giữ kết nối với trang cũ thì lần sau nối lại không được.
+   *
+   * Ngắt **sau một nhịp microtask** chứ không ngay: component gọi hook này dọn dẹp SAU
+   * hook (React dọn theo thứ tự khai báo), và đó là lúc nó gửi lệnh bật lại loa đàn.
+   * Ngắt ngay thì lệnh ấy tới khi Bluetooth đã đứt. Đợi một nhịp để lệnh kịp xếp hàng,
+   * rồi đợi nó ghi xong.
+   */
   useEffect(() => () => {
-    deviceRef.current?.gatt?.disconnect();
+    void Promise.resolve()
+      .then(() => pendingWriteRef.current)
+      .then(() => deviceRef.current?.gatt?.disconnect());
   }, []);
 
-  return { supported, status, deviceName, errorMessage, connect, disconnect, heldNotes };
+  return { supported, status, deviceName, errorMessage, connect, disconnect, heldNotes, send };
 }
