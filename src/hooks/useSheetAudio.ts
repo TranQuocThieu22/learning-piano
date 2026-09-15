@@ -4,7 +4,7 @@ import { type RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import ABCJS from 'abcjs';
 import type { NoteTimingEvent } from 'abcjs';
 import {
-  loadSavedProgram, normalizeBufferVolume, saveProgram, synthOptions,
+  findInstrument, loadSavedInstrument, saveInstrument, shapeBuffer, synthOptions,
 } from '@/lib/soundfont';
 import type { SheetTune } from './useSheetRender';
 
@@ -26,9 +26,9 @@ import type { SheetTune } from './useSheetRender';
  * 2. **`setTune` phải truyền `userAction = true`.** Gọi với `false` chỉ ghi đè
  *    tuỳ chọn mà không nạp lại gì, nên sau lần phát đầu tiên thì đổi nhạc cụ
  *    không có tác dụng.
- * 3. **Mỗi lần abcjs dựng lại chuỗi âm thanh là phải kéo to lại âm lượng** —
+ * 3. **Mỗi lần abcjs dựng lại chuỗi âm thanh là phải gọi lại `shapeBuffer`** —
  *    đổi bài, đổi tiếng đàn, đổi tốc độ — vì lần nào nó cũng tạo AudioBuffer mới
- *    ở mức gốc (bẫy 20).
+ *    ở mức gốc (bẫy 20), chưa nắn tiếng và chưa kéo to.
  */
 
 /**
@@ -58,9 +58,9 @@ export interface SheetAudio {
   /** Phần trăm tốc độ: 100 là đúng tốc độ ghi trong bản nhạc. */
   warp: number;
   bpm: number;
-  /** Nhạc cụ đang chọn, đã nhớ sẵn từ buổi trước. */
-  program: number;
-  chooseProgram: (program: number) => void;
+  /** Mã tiếng đàn đang chọn, đã nhớ sẵn từ buổi trước. */
+  instrumentId: string;
+  chooseInstrument: (id: string) => void;
   playPause: () => void;
   restart: () => void;
   toggleLoop: () => void;
@@ -93,13 +93,13 @@ export function useSheetAudio(
   // Đọc localStorage ngay lúc khởi tạo state được, không lo lệch hydration: ô
   // chọn nhạc cụ chỉ hiện sau khi `ready` bật, nên `program` không hề nằm trong
   // cây render đầu tiên mà React đem so với HTML dựng từ server.
-  const [program, setProgram] = useState(loadSavedProgram);
+  const [instrument, setInstrument] = useState(loadSavedInstrument);
 
-  /** Kéo to bản nhạc vừa dựng xong — xem bẫy 3 ở đầu file. */
-  const boostVolume = useCallback(() => {
+  /** Nắn tiếng rồi kéo to bản nhạc vừa dựng xong — xem bẫy 3 ở đầu file. */
+  const shape = useCallback(() => {
     const buffer = synthRef.current?.midiBuffer?.getAudioBuffer?.();
-    if (buffer) normalizeBufferVolume(buffer);
-  }, []);
+    if (buffer) shapeBuffer(buffer, instrument);
+  }, [instrument]);
 
   /**
    * Dựng bộ phát mỗi khi đổi bản nhạc, và **dẹp cái cũ trước khi dựng cái mới**.
@@ -187,10 +187,10 @@ export function useSheetAudio(
     if (!ready || !synthControl || !tune) return;
 
     // Xem bẫy 2 ở đầu file: phải là `true`, không phải `false`.
-    synthControl.setTune(tune, true, synthOptions(program)).then(boostVolume).catch((err) => {
+    synthControl.setTune(tune, true, synthOptions(instrument)).then(shape).catch((err) => {
       console.warn('Audio problem:', err);
     });
-  }, [ready, program, tune, boostVolume]);
+  }, [ready, instrument, tune, shape]);
 
   const playPause = useCallback(() => {
     const synthControl = synthRef.current;
@@ -219,13 +219,13 @@ export function useSheetAudio(
   const changeWarp = useCallback((next: number) => {
     setWarp(next);
     setBpm(bpmAt(next));
-    // setWarp dựng lại buffer từ đầu (destroy rồi go), nên phải kéo to lại.
-    synthRef.current?.setWarp(next)?.then(boostVolume);
-  }, [bpmAt, boostVolume]);
+    // setWarp dựng lại buffer từ đầu (destroy rồi go), nên phải nắn lại.
+    synthRef.current?.setWarp(next)?.then(shape);
+  }, [bpmAt, shape]);
 
-  const chooseProgram = useCallback((next: number) => {
-    setProgram(next);
-    saveProgram(next);
+  const chooseInstrument = useCallback((id: string) => {
+    setInstrument(findInstrument(id));
+    saveInstrument(id);
   }, []);
 
   return {
@@ -236,8 +236,8 @@ export function useSheetAudio(
     totalMs,
     warp,
     bpm,
-    program,
-    chooseProgram,
+    instrumentId: instrument.id,
+    chooseInstrument,
     playPause,
     restart,
     toggleLoop,

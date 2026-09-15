@@ -340,28 +340,30 @@ Beta vẫn đang nhận người. Điều kiện duy nhất là có cây đàn t
 
 ---
 
-## 4h. Bài đăng số 9 — soạn 14/09/2026, chưa đăng
+## 4h. Bài đăng số 9 — soạn 15/09/2026, chưa đăng
 
-> **Chọn chủ đề này vì:** tập khuya phải mở nhỏ hoặc đeo tai nghe là cảnh ai tự học cũng
-> gặp, mà chói tai thì người ta tắt máy sớm hơn là họ tưởng. Bài ngắn, không cần ảnh đồ hoạ
-> — đây là loại bài giữ nhịp đăng của trang chứ không phải bài kéo người.
+> **Chọn chủ đề này vì:** "tập khuya, đeo tai nghe, nghe mãi một câu tới chói tai" là cảnh
+> ai tự học cũng gặp mà không ai nghĩ là sửa được. Bài này kể một thứ nhỏ nhưng đúng vào
+> khoảnh khắc có thật.
 >
-> **Đừng viết thành "đổi tiếng đàn cho hay hơn".** Nói rõ đây là tiếng **nghe mẫu**, không
-> dính gì tới cây đàn thật lúc tập — người chưa dùng dễ tưởng app đổi tiếng đàn của họ.
+> **Đừng viết thành "đổi tiếng đàn cho hay hơn".** Nói rõ đây là tiếng **app phát cho nghe**,
+> không dính gì tới cây đàn thật lúc tập — người chưa dùng rất dễ tưởng app đổi tiếng đàn của
+> họ. Cũng đừng viết "thêm nhạc cụ mới": vẫn đúng cây piano ấy, chỉ nắn lại tiếng.
 
 ```text
-Nghe đi nghe lại một câu nhạc hai chục lần thì tiếng piano bắt đầu chói tai.
-Tập khuya phải mở nhỏ, hoặc đeo tai nghe, thì càng rõ.
+Tập khuya, đeo tai nghe, nghe đi nghe lại một câu nhạc hai chục lần — tới
+lần thứ mười là tiếng piano bắt đầu chói tai. Chuyện này sửa được.
 
-Ô chọn tiếng đàn dưới mỗi bản nhạc trên web giờ có thêm nhóm Tiếng êm: piano
-điện Rhodes, vibraphone, đàn hạc, celesta. Chọn một lần là mọi bài sau đều
-dùng tiếng đó. Đây là tiếng lúc app phát nhạc mẫu cho bạn nghe — cây đàn thật
-của bạn thì vẫn y nguyên.
+Ô chọn tiếng đàn dưới mỗi bản nhạc trên web giờ có thêm "Grand Piano êm dịu"
+và "Grand Piano vang" — kiểu tiếng piano bạn nghe trong các bài hát buồn, nốt
+còn ngân sau khi tay đã rời phím. Vẫn đúng cây đàn ấy, đúng bài ấy, đúng nốt
+ấy: chỉ là nghe như người chơi chạm phím nhẹ hơn, trong một căn phòng rộng hơn.
 
-Bốn tiếng này không chọn theo cảm tính: mẫu âm được đo độ chói và độ ngân
-trước khi đưa vào. Marimba nghe cũng rất êm nhưng bị loại vì tiếng tắt sau nửa
-giây, mà một nốt trắng ở tốc độ người mới tập kéo dài tới bốn giây — tiếng tắt
-giữa chừng thì bạn lại tưởng bản nhạc bị lỗi.
+Hoá ra cái làm tiếng piano chói không phải nốt nhạc, mà là tiếng búa gõ vào
+dây — nó nằm cao hơn nốt hai ba quãng tám. Hạ đúng phần đó xuống là êm hẳn
+mà cao độ không suy suyển gì.
+
+Đây là tiếng app phát cho bạn nghe. Cây đàn thật của bạn thì vẫn y nguyên.
 
 Chi tiết:
 https://pianojourney.rehover.io/updates
@@ -426,6 +428,7 @@ bắt gõ chữ.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 15/09/2026 | `feat: Tiếng piano êm và vang cho phần nghe mẫu` | Viết lại bài đăng số 9: bản trước kể về vibraphone, đàn hạc, celesta — chủ sản phẩm chốt mọi tiếng phải là piano nên ba thứ đó đã gỡ. Bản mới kể đúng thứ còn lại (nắn tiếng chính cây piano cho êm và vang), thêm lời dặn đừng viết "thêm nhạc cụ mới" |
 | 14/09/2026 | `feat: Thêm nhóm tiếng êm cho phần nghe mẫu, chọn bằng số đo` | Thêm bài đăng số 9 rút từ bài cập nhật cùng ngày — bài ngắn giữ nhịp đăng, kèm lời dặn nói rõ đây là tiếng **nghe mẫu** chứ không phải tiếng cây đàn thật, vì người chưa dùng rất dễ hiểu nhầm chỗ đó |
 | 14/09/2026 | `feat: Chọn hoá biểu đầu khuông cho bản nhạc nhập vào` | Thêm bài đăng số 8 rút từ bài cập nhật cùng ngày — chọn góc "kể cả chỗ sửa sai" (mục 5) vì rừng dấu hoá là thứ người nhập file đã thấy tận mắt, nói thẳng nó là lỗi của app tin được hơn khoe thêm tính năng. Ghi kèm lời dặn đừng viết thành "app tự nhận ra giọng" — app cố ý không đoán |
 | 14/09/2026 | `feat: Viết lại Chương 3-7 theo khuôn tập trước, ít chữ` | Bài đăng số 7: đổi từ "hai chương đầu" sang cả 25 bài vì Chương 3-7 đã viết lại cùng ngày, và đổi lời dặn thành "nói đúng phạm vi" — Chương 8-10 chưa soạn nên vẫn không được viết "toàn bộ giáo trình" |

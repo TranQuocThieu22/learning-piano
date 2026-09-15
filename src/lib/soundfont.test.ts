@@ -3,10 +3,12 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { describe, expect, it } from 'vitest';
 import {
-  DEFAULT_PROGRAM,
+  DEFAULT_INSTRUMENT,
+  findInstrument,
+  GM_PIANO_PROGRAMS,
   INSTRUMENT_GROUPS,
   INSTRUMENTS,
-  normalizeBufferVolume,
+  shapeBuffer,
   synthOptions,
 } from './soundfont';
 
@@ -25,7 +27,7 @@ const SOUNDFONT_DIR = path.join(process.cwd(), 'public', 'soundfonts');
 const SO_PHIM = 88;
 
 describe('bảng tiếng đàn', () => {
-  it('nhạc cụ nào cũng có đủ 88 phím mẫu âm, không phím nào rỗng', () => {
+  it('tiếng nào cũng có đủ 88 phím mẫu âm, không phím nào rỗng', () => {
     for (const instrument of INSTRUMENTS) {
       const dir = path.join(SOUNDFONT_DIR, `${instrument.folder}-mp3`);
       expect(fs.existsSync(dir), `${instrument.label}: thiếu thư mục ${instrument.folder}-mp3`).toBe(true);
@@ -64,9 +66,25 @@ describe('bảng tiếng đàn', () => {
     }
   });
 
-  it('mỗi số hiệu nhạc cụ chỉ xuất hiện một lần', () => {
-    const programs = INSTRUMENTS.map((i) => i.program);
-    expect(new Set(programs).size).toBe(programs.length);
+  it('mỗi mã tiếng chỉ xuất hiện một lần', () => {
+    // Số hiệu GM thì trùng được — ba dòng Grand Piano cùng `program: 0`, khác
+    // nhau ở cách nắn tiếng — nhưng mã là khoá lưu nên trùng là người học chọn
+    // một đằng nghe một nẻo.
+    const ids = INSTRUMENTS.map((i) => i.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  /*
+   * Ràng buộc sản phẩm, chủ sản phẩm chốt 14/09/2026: **mọi tiếng phải là piano**.
+   * Đã từng thêm vibraphone, đàn hạc, celesta vì chúng đo ra êm hơn hẳn rồi phải
+   * gỡ ngay trong ngày — đây là app dạy piano, nghe mẫu là để biết câu nhạc mình
+   * sắp đánh nghe ra sao trên cây đàn của mình.
+   */
+  it('không tiếng nào ra khỏi họ Piano của General MIDI', () => {
+    for (const instrument of INSTRUMENTS) {
+      expect(instrument.program, instrument.label).toBeGreaterThanOrEqual(GM_PIANO_PROGRAMS.first);
+      expect(instrument.program, instrument.label).toBeLessThanOrEqual(GM_PIANO_PROGRAMS.last);
+    }
   });
 
   it('nhóm nào cũng có nhạc cụ, và không nhạc cụ nào rơi ra ngoài ô chọn', () => {
@@ -79,58 +97,71 @@ describe('bảng tiếng đàn', () => {
     }
   });
 
-  it('tiếng mặc định là Grand Piano và nằm trong bảng', () => {
-    expect(INSTRUMENTS.some((i) => i.program === DEFAULT_PROGRAM)).toBe(true);
-    expect(INSTRUMENTS[0].folder).toBe('acoustic_grand_piano');
+  it('tiếng mặc định là Grand Piano mộc, không nắn gì', () => {
+    expect(DEFAULT_INSTRUMENT.folder).toBe('acoustic_grand_piano');
+    expect(DEFAULT_INSTRUMENT.voicing).toBeUndefined();
   });
 
-  it('người học có tiếng êm để đổi sang khi Grand Piano nghe chói', () => {
-    const em = INSTRUMENTS.filter((i) => i.group === 'Tiếng êm');
-    expect(em.length).toBeGreaterThanOrEqual(3);
-    // Rhodes là tiếng êm nhất đo được, nên nó phải nằm trong nhóm đó chứ không
-    // nấp dưới tên "Piano điện 1" như trước.
-    expect(em.some((i) => i.folder === 'electric_piano_1')).toBe(true);
+  it('mã lạ thì lùi về Grand Piano chứ không trả về tiếng không có mẫu âm', () => {
+    expect(findInstrument('khong-co-that').id).toBe(DEFAULT_INSTRUMENT.id);
+    expect(findInstrument('grand-vang').voicing?.reverb).toBeGreaterThan(0);
+  });
+
+  it('người học có tiếng piano êm và vang để đổi sang khi Grand Piano nghe chói', () => {
+    const nan = INSTRUMENTS.filter((i) => i.voicing);
+    expect(nan.length).toBeGreaterThanOrEqual(3);
+    // Nắn tiếng chỉ được đổi ÂM SẮC. Đụng vào số hiệu GM là đổi luôn cây đàn,
+    // mà người học chọn "Grand Piano êm dịu" thì vẫn phải là Grand Piano.
+    for (const tieng of nan) {
+      const moc = INSTRUMENTS.find((i) => i.program === tieng.program && !i.voicing);
+      expect(moc, `${tieng.label}: không có bản mộc cùng cây đàn`).toBeDefined();
+      expect(tieng.folder).toBe(moc?.folder);
+    }
   });
 
   it('mẫu âm tự host, và khai đúng hệ số âm lượng của bộ MusyngKite', () => {
-    const options = synthOptions(DEFAULT_PROGRAM);
+    const options = synthOptions(DEFAULT_INSTRUMENT);
     expect(options.soundFontUrl).toBe('/soundfonts/');
     // Để trống hệ số này là abcjs rơi về 1.0 và tiếng nhỏ hẳn đi.
     expect(options.soundFontVolumeMultiplier).toBe(3);
   });
 });
 
-describe('kéo to bản nhạc trước khi phát', () => {
+describe('nắn tiếng rồi kéo to bản nhạc trước khi phát', () => {
   /** Buffer giả đủ dùng: `normalizeBufferVolume` chỉ cần ba thứ này. */
   function buffer(samples: number[]): AudioBuffer {
     const data = Float32Array.from(samples);
     return {
       numberOfChannels: 1,
+      sampleRate: 44100,
       getChannelData: () => data,
     } as unknown as AudioBuffer;
   }
 
+  /** Grand Piano mộc: chỉ kéo to, không nắn tiếng. */
+  const moc = DEFAULT_INSTRUMENT;
+
   it('bài thu nhỏ tiếng được kéo lên gần chạm đỉnh', () => {
     const buf = buffer([0.1, -0.05, 0.02]);
-    normalizeBufferVolume(buf);
+    shapeBuffer(buf, moc);
     expect(Math.max(...buf.getChannelData(0))).toBeCloseTo(0.9, 5);
   });
 
   it('bài lỡ quá to thì hạ xuống, không để vỡ tiếng', () => {
     const buf = buffer([0.99, -0.98]);
-    normalizeBufferVolume(buf);
+    shapeBuffer(buf, moc);
     expect(Math.max(...buf.getChannelData(0).map(Math.abs))).toBeLessThanOrEqual(0.9001);
   });
 
   it('bản nhạc toàn dấu lặng thì để yên, không khuếch đại tiếng ồn nền', () => {
     const buf = buffer([0, 0, 0]);
-    normalizeBufferVolume(buf);
+    shapeBuffer(buf, moc);
     expect([...buf.getChannelData(0)]).toEqual([0, 0, 0]);
   });
 
   it('tương quan mạnh nhẹ giữa các nốt giữ nguyên sau khi kéo', () => {
     const buf = buffer([0.2, 0.1]);
-    normalizeBufferVolume(buf);
+    shapeBuffer(buf, moc);
     const [manh, nhe] = buf.getChannelData(0);
     expect(manh / nhe).toBeCloseTo(2, 5);
   });

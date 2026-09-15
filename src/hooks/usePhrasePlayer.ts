@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import ABCJS from 'abcjs';
-import { loadSavedProgram, normalizeBufferVolume, synthOptions } from '@/lib/soundfont';
+import { loadSavedInstrument, shapeBuffer, synthOptions } from '@/lib/soundfont';
 
 /**
  * Phát một **câu nhạc ngắn** từ chuỗi ABC. Không vẽ gì ra màn hình.
@@ -64,11 +64,14 @@ export function usePhrasePlayer(): PhrasePlayer {
       const [tune] = ABCJS.renderAbc(sink, abc, {});
       const synth = new ABCJS.synth.CreateSynth();
       synthRef.current = synth;
-      await synth.init({ visualObj: tune, options: synthOptions(loadSavedProgram()) });
+      const instrument = loadSavedInstrument();
+      await synth.init({ visualObj: tune, options: synthOptions(instrument) });
       await synth.prime();
-      // Bộ mẫu âm thu rất nhỏ; kéo to ngay trên buffer như chỗ phát bản nhạc mẫu.
+      // Nắn tiếng rồi kéo to ngay trên buffer, đúng một cửa với chỗ phát bản nhạc
+      // mẫu: bộ mẫu âm thu rất nhỏ, và người học chọn tiếng êm thì luyện tai cũng
+      // phải nghe đúng tiếng đó.
       const buffer = synth.getAudioBuffer?.();
-      if (buffer) normalizeBufferVolume(buffer);
+      if (buffer) shapeBuffer(buffer, instrument);
       synth.start();
       return true;
     } catch {

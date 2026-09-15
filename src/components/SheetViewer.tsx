@@ -230,16 +230,16 @@ export function SheetViewer({
               data={INSTRUMENT_GROUPS.map((group) => ({
                 group,
                 items: INSTRUMENTS.filter((i) => i.group === group).map((i) => ({
-                  value: String(i.program),
+                  value: i.id,
                   label: i.label,
                 })),
               }))}
-              value={String(audio.program)}
+              value={audio.instrumentId}
               allowDeselect={false}
               // Cả bề ngang trên điện thoại: 240px cạnh một cái nút là tràn dòng lệch lạc.
               w={{ base: '100%', xs: 240 }}
               onChange={(value) => {
-                if (value) audio.chooseProgram(Number(value));
+                if (value) audio.chooseInstrument(value);
               }}
             />
           )}

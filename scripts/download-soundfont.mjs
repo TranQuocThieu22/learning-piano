@@ -34,9 +34,6 @@ const INSTRUMENTS = [
   'electric_piano_2',
   'clavinet',
   'harpsichord',
-  'celesta',
-  'vibraphone',
-  'orchestral_harp',
 ];
 
 /**
