@@ -69,6 +69,36 @@ describe('nắn tiếng cho êm', () => {
   });
 });
 
+describe('khoét vùng tiếng đanh cho tròn tiếng', () => {
+  it('hạ vùng 1,5kHz mà vẫn giữ được giai điệu', () => {
+    const giai = sine(1047);   // Đô6, nốt cao nhất giáo trình dùng
+    const danh = sine(1500);   // giữa vùng đanh
+    const bass = sine(262);
+    for (const song of [giai, danh, bass]) voiceChannel(song, SR, { roundness: 0.3, soften: 0, reverb: 0 });
+
+    expect(level(danh) / level(sine(1500))).toBeLessThan(0.7);
+    // Ngưỡng 70% là ngưỡng đã chốt: dưới mức này thì giai điệu tay phải chìm
+    // xuống dưới bè đệm tay trái.
+    expect(level(giai) / level(sine(1047))).toBeGreaterThan(0.7);
+    expect(level(bass) / level(sine(262))).toBeGreaterThan(0.95);
+  });
+
+  it('khoét khác hẳn hạ phần cao: phần trên 4kHz vẫn còn nguyên', () => {
+    // Đây là chỗ "trong trẻo" khác "êm dịu": không đụng tới phần cao nên tiếng
+    // tròn mà không tối.
+    const cao = sine(6000);
+    voiceChannel(cao, SR, { roundness: 1, soften: 0, reverb: 0 });
+    expect(level(cao) / level(sine(6000))).toBeGreaterThan(0.85);
+  });
+
+  it('không khai roundness thì không khoét gì', () => {
+    const goc = sine(1500);
+    const data = Float32Array.from(goc);
+    voiceChannel(data, SR, { soften: 0, reverb: 0 });
+    expect([...data]).toEqual([...goc]);
+  });
+});
+
 describe('thêm tiếng vang', () => {
   it('nốt còn ngân sau khi tay đã rời phím', () => {
     const kho = pluck();

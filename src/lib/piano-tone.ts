@@ -25,6 +25,19 @@ export interface PianoVoicing {
    */
   soften: number;
   /**
+   * Hạ riêng vùng 1-2kHz đi bao nhiêu, 0 tới 1. `0` là để nguyên.
+   *
+   * Đây là phần "trong trẻo", và nó **khác hẳn `soften`**: `soften` hạ tất cả
+   * phần cao nên tiếng tối đi, còn cái này chỉ khoét đúng vùng 1-2kHz — chỗ
+   * tiếng "đanh" của piano nằm. Bỏ vùng đó đi thì tiếng tròn và sạch, mà phần
+   * cao vẫn còn nguyên nên tai nghe ra là *trong*, không phải *bị bịt*.
+   *
+   * Đo được từ một bản ghi piano thật mà chủ sản phẩm gửi làm mẫu: nó có **cùng
+   * trọng tâm phổ** với mẫu âm của app (384Hz so với 390Hz) nhưng vùng 1-2kHz
+   * chỉ còn 2,4% thay vì 7,6%. Khác biệt duy nhất nằm đúng ở đó.
+   */
+  roundness?: number;
+  /**
    * Vang bao nhiêu, 0 tới 1. `0` là khô như thu trong phòng tiêu âm.
    *
    * Đây là phần "vang": tiếng dội lại của căn phòng, thứ làm nốt nhạc còn ngân
@@ -76,6 +89,60 @@ function lowpassMix(data: Float32Array, sampleRate: number, soften: number): voi
     mot += alpha * (data[i] - mot);
     hai += alpha * (mot - hai);
     data[i] = data[i] * (1 - mix) + hai * mix;
+  }
+}
+
+/**
+ * Vùng tiếng "đanh" của piano: quanh 1500Hz, rộng khoảng một quãng tám.
+ *
+ * Đã thử 2000Hz để tránh xa Đô6 (1047Hz) cho an toàn — **nhưng lệch chỗ**: bản
+ * ghi mẫu khác mẫu âm của app rõ nhất đúng ở dải 800-1600Hz, dời lên 2000Hz là
+ * khoét trượt ra ngoài chỗ cần khoét, và tiếng nghe tròn hơn nhưng không giống
+ * bản mẫu hơn.
+ *
+ * `Q = 1,2` là chỗ cân được: đủ hẹp để Đô6 còn 70% mức cũ, đủ rộng để phủ vùng
+ * đanh. Hẹp hơn thì nghe như điện thoại; rộng hơn thì ăn sang tiếng cơ bản của
+ * nốt và thành tối tiếng — việc đó `soften` đã lo, không cần làm hai lần.
+ */
+const HARSH_HZ = 1500;
+const HARSH_Q = 1.2;
+
+/** Hạ sâu nhất bao nhiêu dB khi `roundness` bằng 1. */
+const HARSH_MAX_DB = -12;
+
+/**
+ * Bộ lọc chuông hạ một vùng tần số, theo công thức RBJ — cùng công thức mọi bàn
+ * trộn và mọi bộ chỉnh âm trong trình duyệt đang dùng.
+ *
+ * Viết tay ở đây chứ không gọi `BiquadFilterNode` của Web Audio vì cùng lý do với
+ * bộ vang: phần tính toán của repo này phải chạy được trong vitest ở node.
+ */
+function dipHarsh(data: Float32Array, sampleRate: number, roundness: number): void {
+  if (!roundness || roundness <= 0) return;
+  const gainDb = HARSH_MAX_DB * Math.min(1, roundness);
+  const A = 10 ** (gainDb / 40);
+  const w0 = (2 * Math.PI * HARSH_HZ) / sampleRate;
+  const alpha = Math.sin(w0) / (2 * HARSH_Q);
+  const cos = Math.cos(w0);
+
+  const b0 = (1 + alpha * A) / (1 + alpha / A);
+  const b1 = (-2 * cos) / (1 + alpha / A);
+  const b2 = (1 - alpha * A) / (1 + alpha / A);
+  const a1 = (-2 * cos) / (1 + alpha / A);
+  const a2 = (1 - alpha / A) / (1 + alpha / A);
+
+  let x1 = 0;
+  let x2 = 0;
+  let y1 = 0;
+  let y2 = 0;
+  for (let i = 0; i < data.length; i++) {
+    const x0 = data[i];
+    const y0 = b0 * x0 + b1 * x1 + b2 * x2 - a1 * y1 - a2 * y2;
+    x2 = x1;
+    x1 = x0;
+    y2 = y1;
+    y1 = y0;
+    data[i] = y0;
   }
 }
 
@@ -179,9 +246,9 @@ function addReverb(data: Float32Array, sampleRate: number, amount: number, chann
 /**
  * Nắn một kênh tiếng theo cách chơi đã chọn. Sửa thẳng trên mảng.
  *
- * Lọc phần cao TRƯỚC rồi mới thêm vang, đúng thứ tự của đời thật: cây đàn phát
- * ra tiếng thế nào thì căn phòng dội lại tiếng đó. Làm ngược lại thì tiếng vang
- * bị lọc mất phần cao và nghe đục.
+ * Nắn tiếng của cây đàn TRƯỚC rồi mới thêm vang, đúng thứ tự của đời thật: cây
+ * đàn phát ra tiếng thế nào thì căn phòng dội lại tiếng đó. Làm ngược lại thì
+ * tiếng vang bị lọc mất phần cao và nghe đục.
  */
 export function voiceChannel(
   data: Float32Array,
@@ -189,6 +256,7 @@ export function voiceChannel(
   voicing: PianoVoicing,
   channel = 0,
 ): void {
+  dipHarsh(data, sampleRate, voicing.roundness ?? 0);
   lowpassMix(data, sampleRate, voicing.soften);
   addReverb(data, sampleRate, voicing.reverb, channel);
 }

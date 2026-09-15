@@ -2,13 +2,15 @@
 nhan: Luyện tập
 ---
 
-# Tiếng piano êm và vang, cho lúc nghe đi nghe lại một câu
+# Bốn tiếng piano mới, cho lúc nghe đi nghe lại một câu
 
 Nghe mẫu một câu nhạc hai chục lần thì tiếng piano bắt đầu chói tai — nhất là lúc tập khuya
-phải mở nhỏ, hoặc đeo tai nghe. Ô **Tiếng đàn khi nghe mẫu** dưới mỗi bản nhạc giờ có thêm ba
+phải mở nhỏ, hoặc đeo tai nghe. Ô **Tiếng đàn khi nghe mẫu** dưới mỗi bản nhạc giờ có thêm bốn
 lựa chọn:
 
 - **Grand Piano êm dịu** — vẫn cây đàn ấy, nhưng nghe như người chơi chạm phím nhẹ hơn.
+- **Grand Piano trong trẻo** — tròn và sạch, bỏ đi chỗ tiếng "đanh" mà vẫn giữ phần cao, nên
+  nghe trong chứ không bị bịt.
 - **Grand Piano vang (kiểu nhạc buồn)** — thêm tiếng vang của một khán phòng nhỏ, nốt còn
   ngân sau khi tay đã rời phím. Đây là thứ bạn nghe thấy trong các bản piano nhạc buồn.
 - **Rhodes vang** — tiếng piano điện vốn đã êm nhất, đặt trong cùng căn phòng đó.

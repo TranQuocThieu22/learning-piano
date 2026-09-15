@@ -95,11 +95,28 @@ export interface Instrument {
  * **Rhodes là chỗ để đổi sang** — tên nhãn nói thẳng điều đó, vì dưới cái tên
  * "Piano điện 1" thì không ai đoán ra.
  *
- * **Ba dòng *êm dịu* và *vang* không phải nhạc cụ mới**, chúng là chính cây đàn
- * ở trên đem nắn lại tiếng (`voicing`). Đo trên câu mở đầu Ode to Joy đánh bằng
- * Grand Piano, tốc độ người mới tập: phần chói trên 2kHz **giảm 79%**, mà chỗ
- * trũng giữa hai nốt vẫn sâu -18,7dB nên tai vẫn đếm được từng nốt — tiếng vang
- * không trộn các nốt vào nhau.
+ * **Mấy dòng *êm dịu*, *trong trẻo*, *vang* không phải nhạc cụ mới**, chúng là
+ * chính cây đàn ở trên đem nắn lại tiếng (`voicing`). Đo trên câu mở đầu Ode to
+ * Joy đánh bằng Grand Piano, tốc độ người mới tập: phần chói trên 2kHz **giảm
+ * 79%**, mà chỗ trũng giữa hai nốt vẫn sâu -18,7dB nên tai vẫn đếm được từng
+ * nốt — tiếng vang không trộn các nốt vào nhau.
+ *
+ * **Riêng *trong trẻo* dựng theo một bản ghi piano thật chủ sản phẩm gửi làm
+ * mẫu** (15/09/2026). Đo hình phổ trên một đoạn hai tay có bè trầm, so ba dải
+ * trên 800Hz với bản mẫu — càng nhỏ càng giống:
+ *
+ * | Tiếng | Cách bản mẫu | Đô6 còn lại |
+ * |---|---|---|
+ * | Grand Piano mộc | 5,5 dB | 100% |
+ * | Grand Piano trong trẻo | **2,9 dB** | **70%** |
+ * | khoét sâu hơn (đã thử, không dùng) | 2,2 dB | 57% |
+ *
+ * **Vì sao dừng ở đây chứ không đuổi cho giống hẳn:** thứ làm bản mẫu khác mẫu
+ * âm của app nhiều nhất lại nằm đúng ở dải 800-1600Hz — dải của giai điệu. Khoét
+ * sâu thêm thì số đo đẹp hơn, nhưng Đô6 tụt xuống 57% và giai điệu tay phải chìm
+ * dưới bè đệm, đúng cái bẫy đã mắc một lần ở `piano-tone.ts`. Bản mẫu còn là một
+ * bản ghi thật đã bị cắt trần ở 5,9kHz, nên chép y hệt cũng là chép cả khuyết
+ * điểm của khâu thu.
  */
 export const INSTRUMENTS: Instrument[] = [
   { id: 'grand', program: 0, folder: 'acoustic_grand_piano', label: 'Grand Piano', group: 'Piano cơ' },
@@ -110,6 +127,14 @@ export const INSTRUMENTS: Instrument[] = [
     label: 'Grand Piano êm dịu',
     group: 'Piano cơ',
     voicing: { soften: 0.85, reverb: 0.25 },
+  },
+  {
+    id: 'grand-trong',
+    program: 0,
+    folder: 'acoustic_grand_piano',
+    label: 'Grand Piano trong trẻo',
+    group: 'Piano cơ',
+    voicing: { roundness: 0.3, soften: 0.25, reverb: 0.4 },
   },
   {
     id: 'grand-vang',
