@@ -124,19 +124,9 @@ Không gấp, xoá dòng nào đã xong:
       đồ hoạ; bài cần ảnh chụp thật (điện thoại trên giá nhạc, cây đàn) thì Claude sẽ hỏi bạn
       gửi. **Bài số 4 đã hẹn đăng 15/09/2026 22:30**; còn sáu bài, số 5 tới số 10.
 
-- [ ] **Thử *Tiếng đàn qua điện thoại* (`/piano-sound`) trên FP-30X.** Đây là con số quyết định
-      hướng đàn gập câm có đi tiếp được không. Nối đàn vào điện thoại Android (dây OTG hoặc
-      *Nối thẳng qua Bluetooth*), bấm **Tắt loa đàn**, cắm tai nghe **có dây**, đánh vài câu có cả
-      chạy nhanh và đạp pedal. Kể lại cho Claude bốn thứ: **số ms hiện trên trang**, tiếng có chạy
-      sau tay không, âm lượng có vừa không, và **loa FP-30X có câm thật không** — thử cả đường dây
-      lẫn Bluetooth, rồi bấm *Đổi cách nối* xem loa đàn có kêu lại không. Mới kiểm trên trình
-      duyệt thử không có đàn.
-      **Đã biết 15/09:** FP-30X bỏ qua lệnh tắt loa (Roland không nhận CC 122) — hạ Volume đàn
-      về 0 thì im hẳn. Nối **dây** thì FP-30X làm luôn card âm thanh USB, tiếng app chạy sang loa
-      đàn; nối **Bluetooth** thì tiếng ra điện thoại, đã chạy ổn. Lần thử đầu nối Bluetooth thấy
-      **180-195ms là do tai nghe Bluetooth vẫn nối với điện thoại** — tắt đi thì tiếng ra nhanh;
-      loa điện thoại không chậm như đã tưởng. Còn phải thử: **đạp pedal khi nối Bluetooth có ngân
-      không**, và số ms sau bản bớt 6ms trễ.
+- [ ] **Hỏi phím tắt Local Control trên FP-30X** — chụp trang *Function Mode* trong sách hướng
+      dẫn gửi Claude, để trang `/piano-sound` ghi thẳng phím thay vì bảo người học tự tra sách.
+      Chưa gấp: hạ Volume đàn về 0 cũng im hẳn.
 
 - [ ] **Thử *Tập câu này với đàn* ở trang `/hand-position` trên đàn thật.** Phần nghe qua
       micro của trang này chưa ai đo lần nào — mọi con số micro tới giờ đều đo ở bài luyện
@@ -206,6 +196,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `docs(internal): Ghi số đo 47ms trên FP-30X cho hướng đàn gập` | Mục 7: xoá việc thử `/piano-sound` trên FP-30X vì đã thử xong (47ms, pedal ngân qua Bluetooth) — số đo và bối cảnh chuyển sang mục 3 của `nhat-ky-quyet-dinh.md`, chỗ nó quyết định một việc chứ không chỉ là việc phải làm. Còn lại một dòng nhỏ: xin ảnh trang *Function Mode* để ghi phím tắt Local Control, chưa gấp |
 | 15/09/2026 | `fix: Hướng dẫn tắt tiếng đàn theo tình huống, badge tiếng ra chậm` | Mục 7: ghi 180-195ms lúc thử Bluetooth là do tai nghe Bluetooth còn nối với điện thoại, tắt đi thì tiếng ra nhanh — trước đó đã kết luận nhầm là loa điện thoại chậm. Không ghi lại thì lần sau lại đổ cho loa điện thoại hay cho Bluetooth MIDI rồi dò lại từ đầu |
 | 15/09/2026 | `feat: Pedal ngân qua Bluetooth và bớt 6ms trễ khi phát tiếng` | Mục 7: ghi ba điều đã biết sau lần thử FP-30X — đàn bỏ qua lệnh tắt loa, nối dây thì tiếng app chạy sang loa đàn vì đàn làm card âm thanh USB, nối Bluetooth thì ổn — và thêm hai thứ còn phải thử (pedal qua Bluetooth, số ms mới). Không ghi lại thì lần sau có người lại bảo "bấm Tắt loa đàn" rồi dò lại từ đầu |
 | 15/09/2026 | `feat: Nút tắt loa đàn khi phát tiếng qua điện thoại` | Mục 7: thêm bước bấm *Tắt loa đàn* và kiểm loa FP-30X có câm thật không. Lệnh Local Control gửi đi mà đàn không hiểu thì lặng lẽ bỏ qua — app không tự biết được, chỉ thử trên đàn thật mới biết nút có tác dụng, và phải thử cả hai đường vì Bluetooth ghi lệnh bằng lối khác hẳn dây |
