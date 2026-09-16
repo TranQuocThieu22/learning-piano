@@ -5,9 +5,7 @@ import { IconLock } from '@tabler/icons-react';
 import Link from 'next/link';
 import { findPackage } from '@/lib/packages';
 import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
-
-/** Form đăng ký đợt thử nghiệm — cùng đường dẫn với `LessonLocked`. */
-const FORM_DANG_KY = 'https://forms.gle/aSPhbC82fRXPdciK6';
+import { FORM_DANG_KY } from '@/lib/contact-links';
 
 /**
  * Lời mời mở khoá khi người học chạm vào một mức luyện tập chưa mua.

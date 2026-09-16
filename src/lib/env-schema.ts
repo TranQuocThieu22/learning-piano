@@ -34,6 +34,12 @@ export const envSchema = z.object({
   SELLING_ENABLED: tuyChon,
   /** Chỉ có tác dụng khi chạy `next dev` — xem `moKhoaKhiDev()` bên dưới. */
   DEV_UNLOCK_ALL: tuyChon,
+  /**
+   * Khoá của Resend — dịch vụ gửi thư. Thiếu thì app KHÔNG gửi thư nào cả,
+   * phần còn lại chạy như thường: cấp gói vẫn xong, chỉ là người học không
+   * nhận được thư báo. Xem `sendEmail()` ở `email.ts`.
+   */
+  RESEND_API_KEY: tuyChon,
 
   // --- 3. Tuỳ chọn ---
   /** Chuỗi không qua pooler, chỉ drizzle-kit dùng. Thiếu thì lùi về DATABASE_URL. */
@@ -41,6 +47,8 @@ export const envSchema = z.object({
   SEPAY_BANK_CODE: tuyChon,
   SEPAY_ACCOUNT_NUMBER: tuyChon,
   SEPAY_ACCOUNT_NAME: tuyChon,
+  /** Người gửi đứng tên trên thư. Thiếu thì lùi về `DIA_CHI_GUI_MAC_DINH`. */
+  EMAIL_FROM: tuyChon,
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -100,4 +108,19 @@ export function moTaLoiThieuBien(issues: { path: PropertyKey[] }[]): string {
     'khiển Vercel (Settings > Environment Variables). ' +
     'Giải thích từng biến: docs/_internal/bien-moi-truong.md'
   );
+}
+
+/**
+ * Người gửi mặc định của mọi thư app gửi đi.
+ *
+ * Địa chỉ `@rehover.io` chứ không phải `@gmail.com`: mục 8 của
+ * `docs/_internal/ke-hoach-beta.md` đã chốt rằng trước khi mở bán thì thư phải
+ * đi đúng tên miền, vì hoá đơn gửi từ một địa chỉ Gmail trông không đáng tin.
+ * Tên miền phải được xác minh ở Resend trước, nếu không thư bị từ chối ngay.
+ */
+export const DIA_CHI_GUI_MAC_DINH = 'Piano Journey <pianojourney@rehover.io>';
+
+/** Địa chỉ đứng tên người gửi; khai thiếu hay khai chuỗi rỗng đều lùi về mặc định. */
+export function diaChiGuiThu(raw: string | undefined | null): string {
+  return raw?.trim() || DIA_CHI_GUI_MAC_DINH;
 }

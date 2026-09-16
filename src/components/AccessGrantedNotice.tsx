@@ -2,6 +2,7 @@
 
 import { Button, Group, Paper, Text } from '@mantine/core';
 import { IconLockOpen } from '@tabler/icons-react';
+import { MESSENGER_TRANG } from '@/lib/contact-links';
 import { createLocalStore } from '@/lib/local-store';
 import { useLocalStore } from '@/hooks/useLocalStore';
 
@@ -12,9 +13,11 @@ import { useLocalStore } from '@/hooks/useLocalStore';
  * đợt thử nghiệm điền form rồi *đợi* — `LessonLocked` hứa với họ "trong vòng 24
  * giờ mình mở toàn bộ giáo trình cho tài khoản của bạn". Trước tấm thẻ này, việc
  * cấp quyền không để lại dấu vết nào phía người học: ổ khoá lặng lẽ biến mất, và
- * cách duy nhất để biết là tự mở app ra đoán. Mà app thì chưa gửi được email
- * (chuyển tiếp ở `rehover.io` mới có chiều nhận), nên đây là đường báo tin duy
- * nhất chạy được ngay.
+ * cách duy nhất để biết là tự mở app ra đoán.
+ *
+ * Từ 16/09/2026 việc cấp gói còn gửi một lá thư (`buildAccessGrantedEmail`),
+ * nên tấm thẻ này **không còn là đường báo tin duy nhất** — nó lo phần người mở
+ * app trước khi đọc thư, và phần người không bao giờ đọc thư.
  *
  * Hai điều giữ cho nó không thành quảng cáo:
  *
@@ -64,14 +67,36 @@ export function AccessGrantedNotice({ grantedAt }: { grantedAt: number }) {
             Giờ bạn đọc được mọi chương và dùng được mọi mức của bài luyện nhận
             nốt — không phải làm gì thêm. Quyền này gắn với tài khoản và không hết hạn.
           </Text>
-          <Button
-            size="compact-sm"
-            variant="light"
-            mt="sm"
-            onClick={() => dismissedStore.save(grantedAt)}
-          >
-            Đã hiểu
-          </Button>
+          {/* Xin người học nhắn câu đầu tiên, bằng MỘT câu hỏi trả lời được ngay.
+              Không phải phép lịch sự: Trang Facebook không nhắn trước cho ai
+              được (Meta chỉ cho Trang trả lời trong 24 giờ sau khi người dùng
+              nhắn), nên câu trả lời của họ là thứ duy nhất mở ra đường hỏi tiếp
+              trong suốt đợt thử nghiệm. Xem `MESSENGER_TRANG`. */}
+          <Text size="sm" c="dimmed" mt="sm">
+            Bạn nhắn cho mình một câu trên Facebook nhé — chỉ cần trả lời:{' '}
+            <Text span fw={600} c="inherit">
+              bạn đang tập trên cây đàn nào?
+            </Text>{' '}
+            Biết bạn có đàn gì thì mình mới chỉ được cách cho app nghe đàn.
+          </Text>
+          <Group gap="xs" mt="sm">
+            <Button
+              size="compact-sm"
+              component="a"
+              href={MESSENGER_TRANG}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Nhắn cho mình
+            </Button>
+            <Button
+              size="compact-sm"
+              variant="light"
+              onClick={() => dismissedStore.save(grantedAt)}
+            >
+              Đã hiểu
+            </Button>
+          </Group>
         </div>
       </Group>
     </Paper>

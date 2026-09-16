@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { AppProviders } from '@/components/AppProviders';
 import { ThemeColorMeta } from '@/components/ThemeColorMeta';
 import { AmbientMusic } from '@/components/AmbientMusic';
+import { SITE_URL } from '@/lib/site';
 
 /**
  * Nạp font dưới dạng biến CSS để `theme.ts` trỏ tới được (`var(--font-be-vietnam)`).
@@ -33,7 +34,7 @@ export const metadata: Metadata = {
    * thiếu nó thì ô xem trước lúc chia sẻ link không có ảnh. **Đổi tên miền thì
    * phải sửa dòng này.**
    */
-  metadataBase: new URL('https://pianojourney.rehover.io'),
+  metadataBase: new URL(SITE_URL),
 
   title: {
     default: TEN_DAY_DU,

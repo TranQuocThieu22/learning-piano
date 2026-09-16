@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { dangBan, ENV_KEYS, moKhoaKhiDev } from './env-schema';
+import {
+  dangBan,
+  DIA_CHI_GUI_MAC_DINH,
+  diaChiGuiThu,
+  ENV_KEYS,
+  moKhoaKhiDev,
+} from './env-schema';
 
 /**
  * Canh gác: mọi biến môi trường code đọc đều phải được ghi trong .env.example.
@@ -114,5 +120,28 @@ describe('công tắc mở khoá nội dung khi chạy dev', () => {
     for (const raw of [undefined, null, '', '1', 'yes', 'false']) {
       expect(moKhoaKhiDev(raw, 'development')).toBe(false);
     }
+  });
+});
+
+describe('người gửi đứng tên trên thư', () => {
+  it('khai địa chỉ nào thì thư đi từ địa chỉ đó', () => {
+    expect(diaChiGuiThu('Piano Journey <xin-chao@rehover.io>')).toBe(
+      'Piano Journey <xin-chao@rehover.io>'
+    );
+  });
+
+  it('không khai, khai rỗng hay khai toàn dấu cách đều lùi về địa chỉ mặc định', () => {
+    // Lùi về mặc định chứ không ném lỗi: khai thiếu một biến tuỳ chọn không
+    // được phép làm chết cả app, và địa chỉ mặc định là địa chỉ đã xác minh.
+    for (const raw of [undefined, null, '', '   ']) {
+      expect(diaChiGuiThu(raw)).toBe(DIA_CHI_GUI_MAC_DINH);
+    }
+  });
+
+  it('địa chỉ mặc định đi từ tên miền riêng, không phải Gmail', () => {
+    // Mục 8 của docs/_internal/ke-hoach-beta.md: trước khi mở bán thì thư phải
+    // mang đúng tên miền, vì hoá đơn gửi từ @gmail.com trông không đáng tin.
+    expect(DIA_CHI_GUI_MAC_DINH).toContain('@rehover.io');
+    expect(DIA_CHI_GUI_MAC_DINH).not.toContain('gmail');
   });
 });

@@ -108,6 +108,14 @@ Lý do đầy đủ ở mục 9 của [`quy-trinh-lam-viec.md`](quy-trinh-lam-vi
 
 Không gấp, xoá dòng nào đã xong:
 
+- [ ] **Tạo tài khoản Resend và xác minh tên miền, để thư báo cấp gói gửi được.** Mã đã
+      xong và đã lên production, nhưng thiếu `RESEND_API_KEY` thì app **im lặng không gửi
+      thư nào** — cấp gói vẫn chạy, chỉ có một dòng chữ trên màn hình quản trị báo là chưa
+      gửi được. Ba việc: (1) đăng ký ở resend.com; (2) thêm mấy bản ghi DNS nó đưa vào
+      Cloudflare cho `rehover.io` — Claude chỉ từng bước, và nhớ **đừng đụng bản ghi MX
+      đang lo chiều nhận** của Email Routing; (3) dán khoá vào `.env.local` và khai luôn
+      trên Vercel. Xong thì cấp gói thử cho chính mình xem thư có tới không.
+
 - [x] ~~**Cấp gói cho những người đã điền form, rồi NHẮN TAY cho từng người.**~~ Xong
       14/09/2026: đã cấp gói và nhắn tay cho những người điền form tới hôm đó. Người điền
       form **sau** ngày này vẫn đi đúng hai bước ấy — cách làm ở mục 2 của
@@ -196,6 +204,7 @@ Không gấp, xoá dòng nào đã xong:
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `feat: Thư báo mở khoá gói và đường nhắn Facebook cho người học` | Mục 7: thêm việc tạo tài khoản Resend và xác minh tên miền. Đây là phần duy nhất của thay đổi mà Claude không làm được — tạo tài khoản và đụng DNS là việc của chủ sản phẩm — và nếu quên thì hỏng theo kiểu tệ nhất: app vẫn chạy, cấp gói vẫn xong, chỉ người học là không nhận được gì và không ai biết |
 | 16/09/2026 | `docs(internal): Ghi số đo 47ms trên FP-30X cho hướng đàn gập` | Mục 7: xoá việc thử `/piano-sound` trên FP-30X vì đã thử xong (47ms, pedal ngân qua Bluetooth) — số đo và bối cảnh chuyển sang mục 3 của `nhat-ky-quyet-dinh.md`, chỗ nó quyết định một việc chứ không chỉ là việc phải làm. Còn lại một dòng nhỏ: xin ảnh trang *Function Mode* để ghi phím tắt Local Control, chưa gấp |
 | 15/09/2026 | `fix: Hướng dẫn tắt tiếng đàn theo tình huống, badge tiếng ra chậm` | Mục 7: ghi 180-195ms lúc thử Bluetooth là do tai nghe Bluetooth còn nối với điện thoại, tắt đi thì tiếng ra nhanh — trước đó đã kết luận nhầm là loa điện thoại chậm. Không ghi lại thì lần sau lại đổ cho loa điện thoại hay cho Bluetooth MIDI rồi dò lại từ đầu |
 | 15/09/2026 | `feat: Pedal ngân qua Bluetooth và bớt 6ms trễ khi phát tiếng` | Mục 7: ghi ba điều đã biết sau lần thử FP-30X — đàn bỏ qua lệnh tắt loa, nối dây thì tiếng app chạy sang loa đàn vì đàn làm card âm thanh USB, nối Bluetooth thì ổn — và thêm hai thứ còn phải thử (pedal qua Bluetooth, số ms mới). Không ghi lại thì lần sau có người lại bảo "bấm Tắt loa đàn" rồi dò lại từ đầu |

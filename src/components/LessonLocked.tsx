@@ -5,21 +5,7 @@ import Link from 'next/link';
 import { findPackage } from '@/lib/packages';
 import { formatVnd } from '@/lib/payment/vietqr';
 import { FREE_THROUGH_CHAPTER, REQUIRED_PACKAGE_ID } from '@/lib/access';
-
-/** Trang Facebook ở mục 8 của docs/legal/terms.md — nơi duy nhất nhận tin nhắn. */
-const TRANG_FACEBOOK = 'https://www.facebook.com/profile.php?id=61593938880341';
-
-/**
- * Form đăng ký đợt thử nghiệm.
- *
- * Đặt trước Trang Facebook vì nhắn tin là một bước CHỜ: người học phải mở
- * Messenger, nghĩ xem viết gì, rồi đợi tới lúc có người rảnh trả lời. Form thì
- * họ tự làm xong trong ba mươi giây và bạn xử lý theo lô mỗi ngày một lần.
- *
- * Gỡ cả khối này khi đóng đợt beta — xem mục "Còn treo" của
- * docs/_internal/lam-viec-hang-ngay.md.
- */
-const FORM_DANG_KY = 'https://forms.gle/aSPhbC82fRXPdciK6';
+import { FORM_DANG_KY, TRANG_FACEBOOK } from '@/lib/contact-links';
 
 /**
  * Màn hình thay cho nội dung bài khi người học chưa sở hữu gói.

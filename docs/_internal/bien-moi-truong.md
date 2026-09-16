@@ -220,6 +220,35 @@ Tài khoản nhận tiền, dùng để dựng mã VietQR hiển thị cho ngư�
 
 ---
 
+## 5b. Gửi thư cho người học (Resend)
+
+### `RESEND_API_KEY` — đóng cửa an toàn khi thiếu
+
+Khoá của [Resend](https://resend.com), dịch vụ app dùng để gửi thư báo đã mở khoá
+gói (`sendEmail()` trong `src/lib/email.ts`).
+
+**Thiếu biến này thì app không gửi thư nào cả và vẫn chạy bình thường.** Cùng tầng
+đóng cửa an toàn với `ADMIN_EMAILS`: cấp gói ở `/admin` vẫn xong, quyền vẫn vào
+database, chỉ khác là màn hình quản trị trả về *"CHƯA gửi được thư … nhắn tay cho
+họ"*. Cố ý không để thư hỏng làm hỏng việc cấp quyền — quyền mới là thứ người học
+cần, còn thư chỉ là lời báo tin.
+
+Chọn Resend chứ không phải SMTP vì nó là một lời gọi HTTP thường: không mở cổng TCP
+nào nên chạy được trên hàm serverless của Vercel. Chuyển tiếp thư ở `rehover.io`
+(Cloudflare Email Routing) **chỉ có chiều nhận**, không gửi được.
+
+### `EMAIL_FROM` — tuỳ chọn
+
+Người gửi đứng tên trên thư. Để trống thì lùi về
+`Piano Journey <pianojourney@rehover.io>` (`DIA_CHI_GUI_MAC_DINH`).
+
+**Địa chỉ phải thuộc tên miền ĐÃ XÁC MINH ở Resend**, không thì Resend từ chối gửi
+và lý do hiện nguyên văn trên màn hình quản trị. Nếu xác minh bằng tên miền con
+(Resend hay khuyên vậy để khỏi đụng bản ghi SPF của Cloudflare Email Routing đang lo
+chiều nhận) thì khai đúng tên miền con đó vào đây.
+
+---
+
 ## 6. Biến do tích hợp bơm vào mà ứng dụng KHÔNG dùng
 
 Tích hợp Neon và Vercel tự thêm một loạt biến vào `.env.local`. Ứng dụng **không đọc
@@ -266,6 +295,10 @@ Google Cloud Console, xem ô ngay bên dưới.
       `https://pianojourney.rehover.io/api/webhooks/sepay`. Chưa đăng ký thì bỏ qua mục
       này, endpoint tự từ chối mọi request khi thiếu khoá
 - [ ] `SEPAY_BANK_CODE`, `SEPAY_ACCOUNT_NUMBER`, `SEPAY_ACCOUNT_NAME`
+- [ ] **Chỉ khi đã tạo tài khoản Resend:** `RESEND_API_KEY`, và `EMAIL_FROM` nếu địa
+      chỉ gửi khác mặc định. Chưa khai thì người được cấp gói không nhận được thư —
+      không có triệu chứng nào ở phía họ, chỉ có một dòng chữ trên màn hình quản trị
+      lúc bạn bấm *Cấp gói*, nên dễ trôi qua
 - [ ] **Không** khai `DEV_UNLOCK_ALL` — biến này chỉ cho `.env.local`. Khai nhầm cũng
       không mở gì vì Vercel chạy `NODE_ENV=production`, nhưng để nó trong bảng điều khiển là
       để lại một cái bẫy cho lần ai đó đổi cách kiểm
@@ -322,6 +355,7 @@ người dùng bấm đồng ý — chỗ đó cần tài khoản thật.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `feat: Thư báo mở khoá gói và đường nhắn Facebook cho người học` | Thêm mục 5b cho hai biến mới `RESEND_API_KEY` và `EMAIL_FROM`, và thêm chúng vào danh sách kiểm khi deploy. Ghi rõ thiếu khoá thì app lặng lẽ không gửi thư chứ không chết — và đó chính là chỗ nguy: người được cấp gói không thấy triệu chứng gì, chỉ có một dòng chữ thoáng qua trên màn hình quản trị |
 | 15/09/2026 | `feat: Script đăng bài Facebook lên Trang qua Graph API` | Thêm `FACEBOOK_PAGE_ID` và `FACEBOOK_PAGE_ACCESS_TOKEN` vào mục 4, cùng một ô "không khai trên Vercel" ở danh sách kiểm. Hai biến này là loại đầu tiên **chỉ script đọc mà ứng dụng không đọc**, nên nói rõ vì sao chúng không có mặt trong ba tầng ở mục 1 — thiếu ghi chú đó thì lần sau dễ có người "bổ sung cho đủ" vào `env-schema.ts` và làm web chết vì thiếu một mã chẳng liên quan gì tới web |
 | 14/09/2026 | `chore: Công tắc DEV_UNLOCK_ALL mở khoá bài trả phí khi chạy dev` | Thêm `DEV_UNLOCK_ALL` vào tầng đóng cửa an toàn, một mục riêng ở phần Quản trị và một dòng "không khai trên Vercel" ở danh sách kiểm khi deploy — viết lại nội dung Chương 2-7 xong mà ở máy không đọc thử được vì không đăng nhập Google được; ghi rõ chốt thật là `NODE_ENV`, để không ai "sửa cho gọn" thành chỉ kiểm cờ |
 | 09/09/2026 | `feat: Đếm lượt truy cập bằng Vercel Web Analytics` | Thêm ô bật Web Analytics vào danh sách kiểm khi deploy. Đây là **nút bấm ở bảng điều khiển**, không phải biến môi trường — nên nó không lọt vào ba tầng biến ở mục 2 và cũng không có test nào canh. Quên bấm thì `<Analytics />` im lặng và bảng số liệu trống trơn, trông hệt như chưa có ai vào; đó là lý do ô này phải nằm trong danh sách chứ không chỉ nằm trong trí nhớ |

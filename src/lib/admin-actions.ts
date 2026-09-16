@@ -8,6 +8,10 @@ import { entitlements, users } from '@/db/schema';
 import { requireAdmin } from './admin';
 import { findPackage } from './packages';
 import { grantEntitlement } from './payment/orders';
+import { buildAccessGrantedEmail } from './email-message';
+import { sendEmail } from './email';
+import { MESSENGER_TRANG } from './contact-links';
+import { SITE_URL } from './site';
 import { idSchema, noteSchema } from './validation';
 
 const grantAccessInput = z.object({
@@ -49,7 +53,7 @@ export async function grantAccessAction(
   if (!pkg) return { ok: false, message: `Không có gói "${input.data.packageId}".` };
 
   const [user] = await db
-    .select({ id: users.id, email: users.email })
+    .select({ id: users.id, email: users.email, name: users.name })
     .from(users)
     .where(eq(users.id, input.data.userId))
     .limit(1);
@@ -66,7 +70,38 @@ export async function grantAccessAction(
   });
 
   revalidatePath('/admin');
-  return { ok: true, message: `Đã cấp "${pkg.name}" cho ${user.email}.` };
+
+  // Báo tin cho người học NGAY, và cố ý gửi sau khi quyền đã ghi xong.
+  //
+  // Trước lá thư này, người điền form được hứa mở khoá "trong vòng 24 giờ" rồi
+  // phải tự mở app ra đoán xem đã được mở chưa — mục 2 của
+  // docs/_internal/ke-hoach-beta.md gọi quãng ngồi đợi đó là chỗ người ta rơi
+  // mất. Thẻ AccessGrantedNotice chỉ lo được phần người tự quay lại.
+  //
+  // Thư hỏng thì KHÔNG coi là cấp trượt: quyền đã nằm trong database, báo đỏ ở
+  // đây chỉ khiến admin bấm cấp lại một lần nữa cho cùng một người. Thay vào
+  // đó nói thẳng là phải nhắn tay — đúng việc vẫn đang làm trước khi có thư.
+  //
+  // Người ĐÃ có gói thì `grantEntitlement` không ghi gì (onConflictDoNothing)
+  // nhưng thư vẫn gửi — cố ý để nguyên như vậy. Đó là đường duy nhất báo tin
+  // cho những người được cấp trước khi có lá thư này; đổi lại, bấm hai lần là
+  // họ nhận hai thư, nên đừng bấm cho vui.
+  const thu = await sendEmail(
+    user.email,
+    buildAccessGrantedEmail({
+      tenNguoiHoc: user.name,
+      tenGoi: pkg.name,
+      linkApp: SITE_URL,
+      linkMessenger: MESSENGER_TRANG,
+    })
+  );
+
+  return {
+    ok: true,
+    message: thu.ok
+      ? `Đã cấp "${pkg.name}" cho ${user.email} và gửi thư báo.`
+      : `Đã cấp "${pkg.name}" cho ${user.email}, nhưng CHƯA gửi được thư (${thu.reason}) — nhắn tay cho họ.`,
+  };
 }
 
 /**

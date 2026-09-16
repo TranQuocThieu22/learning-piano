@@ -1613,6 +1613,26 @@ sau của hợp âm) thì các nốt đó thành dữ liệu của một thông 
 **Cách gác.** `ble-midi.test.ts` có ca chạy mốc 0x90, 0xA5, 0xB0, 0xFF với running status. Ca cũ chỉ
 dùng mốc 0x81-0x85 nên xanh suốt mà vẫn sai.
 
+## 46. Một Trang Facebook có HAI mã số khác nhau — tưởng là hai Trang
+
+**Triệu chứng.** Mã Trang lấy từ Graph API (`me/accounts`) là `1282536924939717`, nhưng link Trang
+trên web lại là `facebook.com/profile.php?id=61593938880341`. Hai con số khác hẳn nhau, mà tài khoản
+thì đang quản trị **hai Trang trùng tên**. Kết luận vội: link in trong điều khoản trỏ nhầm sang Trang
+bỏ không, và người học đã nhắn vào một hộp thư không ai đọc.
+
+**Nguyên nhân.** Trang lập theo *New Pages Experience* mang hai mã: một mã hồ sơ (mở đầu bằng `61`,
+dùng trong đường dẫn web) và một mã Trang kiểu cũ (Graph API trả về). **Cùng một Trang.** Mở
+`m.me/61593938880341` thì Messenger tự chuyển thành `messenger.com/t/1282536924939717` — đã kiểm
+16/09/2026, ra đúng Trang có ảnh đại diện piano và đúng các bài đã đăng.
+
+**Cách sửa.** Không phải sửa gì. Nhưng **đừng suy ra hai Trang chỉ vì hai con số**: cách kiểm rẻ nhất
+là mở `m.me/<mã>` trên điện thoại rồi nhìn xem Messenger dừng lại ở Trang nào và ảnh đại diện có
+đúng không. Tra bằng Graph API thì cần mã truy cập còn hiệu lực, mà mã đó hay hết hạn đúng lúc cần.
+
+**Còn một câu chưa trả lời.** Trang thứ hai trùng tên vẫn có hộp thư riêng. Mở `m.me` chỉ chứng minh
+link đang đúng, **không** chứng minh hộp thư kia rỗng — muốn biết có ai từng nhắn vào đó thì phải mở
+hộp thư của chính Trang đó trong Meta Business Suite.
+
 ## Lịch sử cập nhật
 
 > Mỗi lần sửa file thì **thêm một dòng mới lên đầu bảng**, không sửa dòng cũ. Cột
@@ -1621,6 +1641,7 @@ dùng mốc 0x81-0x85 nên xanh suốt mà vẫn sai.
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `feat: Thư báo mở khoá gói và đường nhắn Facebook cho người học` | Thêm bẫy 46: một Trang Facebook mang hai mã số khác nhau (mã hồ sơ mở đầu bằng 61 trên web, mã Trang kiểu cũ ở Graph API). Ghi lại vì sáng nay đã suýt kết luận là hai Trang và link trong điều khoản trỏ nhầm — kết luận đó dẫn tới việc đi sửa một thứ không hỏng. Ghi kèm cách kiểm rẻ nhất (mở m.me trên điện thoại) và phần nó KHÔNG chứng minh được, là hộp thư của Trang trùng tên còn lại |
 | 15/09/2026 | `feat: Pedal ngân qua Bluetooth và bớt 6ms trễ khi phát tiếng` | Thêm bẫy 44 — bộ nén Web Audio giữ tiếng 6ms mà `baseLatency`/`outputLatency` không tính, đo được bằng xung đơn qua `OfflineAudioContext`; ghi kèm chỗ không cần đổi (nhạc nền phát theo lịch) để không ai gỡ bộ nén ở đó cho "đồng bộ". Thêm bẫy 45 — byte mốc thời gian BLE-MIDI chạy khắp 0x80-0xFF mà bản đọc gói chỉ nhận 0x80-0x8F, lộ ra khi thêm pedal; ghi rõ là tìm bằng cách đọc chuẩn, chưa có ai báo triệu chứng |
 | 14/09/2026 | `fix: Sửa bản nhạc nhập từ file phát sai nốt vì dấu hoá ăn theo ô nhịp` | Thêm bẫy 43 — bản nhạc nhập từ file ghi `noteAt` từng nốt một nên nốt trắng đứng sau nốt hoá cùng tên bị ăn theo dấu (39/168 nốt lệch ở một bản thật), và sau khi sửa thì lộ thêm chuyện abcjs mang dấu trên nửa sau nốt luyến không nhất quán. Ghi cả hai số đo mâu thuẫn nhau để lần sau không ai "sửa gọn" bằng cách đoán theo một luật, kèm lời nhắc bản nhạc đã lưu không tự lành |
 | 14/09/2026 | `fix: Quy xuống dòng CRLF về LF ngay ở cửa đọc file docs` | Thêm bẫy 42 — worktree mới trên Windows checkout `docs/` ra `\r\n` nên regex tách khối abc viết theo `\n` không khớp, `songs.test.ts` trượt hai ca trong khi CI xanh. Ghi lý do sửa ở cửa đọc `readDocFile` thay vì vá tiếp từng regex (đã vá ba chỗ mà chỗ thứ tư vẫn quên) và thay vì `.gitattributes` (không che file chưa commit, không test được) |

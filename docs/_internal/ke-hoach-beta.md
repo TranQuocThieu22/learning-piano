@@ -67,13 +67,23 @@ Ba lý do chọn cách này:
 - Họ **giữ quyền truy cập vĩnh viễn**. Cố ý. Người bỏ thời gian dò lỗi cho bạn thì
   xứng đáng, và điều đó cũng khiến họ trả lời thẳng thay vì lịch sự cho qua.
 
-**Cấp xong phải báo lại — và phải báo bằng tay.** Màn hình bài khoá hứa với người
-điền form rằng *"trong vòng 24 giờ mình mở toàn bộ giáo trình cho tài khoản của
-bạn"*, nên sau khi bấm *Cấp gói* thì **nhắn lại cho họ ngay** (trả lời vào email họ
-điền trong form, hoặc Messenger của Trang). App **không gửi được email**: chuyển
-tiếp ở `rehover.io` mới có chiều nhận, chiều gửi thuộc đợt nâng Vercel Pro ở mục 8.
-Bỏ qua bước nhắn tay là để họ ngồi đợi một tín hiệu không bao giờ tới — và người
-đang đợi thì không tập, đúng quãng hai tuần mà mục 4 lấy làm ngưỡng "coi như đã rơi".
+**Cấp xong là người học được báo tin — app tự gửi thư từ 16/09/2026.** Màn hình
+bài khoá hứa với người điền form rằng *"trong vòng 24 giờ mình mở toàn bộ giáo
+trình cho tài khoản của bạn"*, nên bấm *Cấp gói* xong mà im lặng là để họ ngồi đợi
+một tín hiệu không bao giờ tới — người đang đợi thì không tập, đúng quãng hai tuần
+mà mục 4 lấy làm ngưỡng "coi như đã rơi".
+
+`grantAccessAction` giờ gửi thẳng một lá thư (`buildAccessGrantedEmail`) qua Resend.
+**Hai điều phải nhớ:**
+
+- **Thiếu `RESEND_API_KEY` thì không có thư nào cả**, và app vẫn chạy như thường —
+  màn hình quản trị nói thẳng *"CHƯA gửi được thư … nhắn tay cho họ"*. Đọc câu đó
+  rồi bỏ qua là quay về đúng chỗ hỏng cũ, chỉ khác là lần này bạn đã được báo.
+- **Thư không thay được việc nhắn tay, nó đổi việc nhắn tay thành việc trả lời.**
+  Lá thư xin người học nhắn trước một câu trên Facebook, vì **Trang không nhắn tin
+  trước cho ai được** — Meta chỉ cho Trang trả lời trong 24 giờ sau khi người dùng
+  nhắn. Câu trả lời của họ chính là thứ mở ra đường để bạn hỏi tiếp trong suốt đợt
+  beta, nên thấy tin nhắn nào là trả lời ngay hôm đó.
 
 Phía app có **một tấm thẻ ở màn hình chủ** báo *"Đã mở khoá toàn bộ giáo trình"*
 (`src/components/AccessGrantedNotice.tsx`). Nó chỉ lo phần người **tự mở app lại**,
@@ -331,10 +341,13 @@ Ghi âm nếu họ đồng ý — vừa nghe vừa ghi chép thì sẽ bỏ sót
       và thông báo, và phải để chế độ kín vì danh sách thành viên chính là danh sách
       người học.
 
-      **Chuyển tiếp miễn phí chỉ lo chiều nhận.** Trả lời vẫn đi từ địa chỉ Gmail.
-      Chấp nhận được trong beta; trước khi mở bán thì phải có gửi-đúng-tên, vì hoá
-      đơn gửi từ `@gmail.com` trông không đáng tin. Việc đó đi cùng đợt nâng Vercel
-      Pro và đăng ký kinh doanh.
+      **Chuyển tiếp miễn phí chỉ lo chiều nhận** — thư bạn tự tay trả lời vẫn đi
+      từ địa chỉ Gmail. Nhưng **thư do app gửi thì đi đúng tên miền** từ
+      16/09/2026: `sendEmail()` gửi qua Resend, đứng tên `pianojourney@rehover.io`.
+      Hai đường đó tách nhau. Phần còn thiếu chỉ là tạo tài khoản Resend rồi xác
+      minh tên miền — mã đã sẵn sàng, thiếu khoá thì app lặng lẽ không gửi và nói
+      lại ở màn hình quản trị. Hoá đơn gửi từ `@gmail.com` trông không đáng tin,
+      nên trước khi mở bán thì phần trả lời tay cũng phải chuyển sang tên miền.
 
 **Chưa cần** trong đợt này: chính sách hoàn tiền, đăng ký kinh doanh, nâng Vercel
 Pro. Cả ba chỉ bắt buộc khi bắt đầu thu tiền.
@@ -372,6 +385,7 @@ Hệ quả phải chấp nhận: **nếu chậm thì phải báo cho người be
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `feat: Thư báo mở khoá gói và đường nhắn Facebook cho người học` | Mục 2: cấp gói xong app tự gửi thư báo, không còn dựa hết vào việc nhớ nhắn tay — kèm hai điều phải nhớ (thiếu khoá Resend thì im lặng không gửi, và thư không thay việc nhắn tay mà đổi nó thành việc trả lời). Ghi rõ lý do lá thư xin người học nhắn TRƯỚC: Trang Facebook không mở đầu một cuộc trò chuyện được, nên không xin thì cả đợt beta không có đường hỏi han gì. Mục 8: chiều gửi đã có qua Resend, tách khỏi chuyện trả lời tay vẫn đi từ Gmail |
 | 13/09/2026 | `feat: Báo cho người học biết tài khoản vừa được mở khoá` | Mục 2: thêm bước nhắn lại sau khi cấp quyền, kèm tấm thẻ ở màn hình chủ — màn hình bài khoá đã hứa mở trong 24 giờ, nhưng trước đó việc cấp quyền không để lại dấu vết nào phía người học nên họ ngồi đợi một tín hiệu không bao giờ tới; ghi rõ thẻ không thay được tin nhắn tay vì app chưa gửi được email |
 | 09/09/2026 | `chore: Đổi tên miền production sang pianojourney.rehover.io` | Sửa địa chỉ trang điều khoản ở mục 8 sang tên miền mới — ô đó tick kèm bằng chứng "trả 200", mà bằng chứng ghi sai địa chỉ thì lần sau kiểm lại sẽ kiểm nhầm chỗ |
 | 01/09/2026 | `feat: Ẩn đường thanh toán trong lúc chạy beta` | Mục 2: ghi rõ đường thanh toán bị ẩn bằng `SELLING_ENABLED` và chốt thứ tự tuyển → đăng nhập → cấp quyền trước, kèm lý do không đặt cổng xin quyền ở cuối Chương 1 vì nó tạo điểm rơi giả làm bẩn chính con số cần đo |
