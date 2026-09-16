@@ -140,7 +140,7 @@ iOS, và trên máy đó micro vẫn đủ để tập mọi bài.
 
 ---
 
-## 4c. Bài đăng số 4 — soạn 13/09/2026, đã hẹn đăng 15/09/2026 22:30
+## 4c. Bài đăng số 4 — soạn 13/09/2026, đã đăng 15/09/2026
 
 > **Đã hẹn đăng qua script, kèm ảnh đồ hoạ khổ 4:5 (1080×1350):** tiêu đề "Nhạc ra ngoài 5 nốt
 > đặt tay ở đâu?", bàn phím năm phím có số ngón và hai phím dấu hỏi, khung ba bước với nút *Tập
@@ -554,6 +554,7 @@ Triệu chứng là script báo lỗi `190` — lúc đó làm lại từ bướ
 
 | Ngày | Tiêu đề commit | Cập nhật gì |
 |---|---|---|
+| 16/09/2026 | `docs(internal): Đánh dấu bài Facebook số 4 đã đăng` | Đổi tiêu đề mục bài số 4 từ "đã hẹn đăng" thành "đã đăng 15/09/2026" sau khi chủ sản phẩm xác nhận bài đã lên Trang. File này là chỗ duy nhất biết bài nào còn trong hàng chờ, mà `pnpm fb list` đọc thẳng tiêu đề mục — để nguyên chữ "đã hẹn" thì lần sau mở ra tưởng bài số 4 vẫn đang chờ và dễ hẹn trùng một lần nữa |
 | 15/09/2026 | `docs(internal): Hẹn giờ đăng bài Facebook số 4` | Đổi tiêu đề bài số 4 thành "đã hẹn đăng 15/09/2026 22:30" và ghi ảnh đi kèm (lúc đầu hẹn 10:15 sáng 16/09, chủ sản phẩm dời lên tối cùng ngày — đổi giờ ngay trên bài đã hẹn qua Graph API, không xoá bài, không tải lại ảnh) — file này là chỗ duy nhất biết bài nào còn trong hàng chờ, để sót "chưa đăng" là lần sau dễ hẹn trùng. Ghi luôn đây là bài đầu tiên đăng bằng script, vì nó xác nhận hai thứ bản xem trước không kiểm được: quyền đăng bài và tải ảnh lên |
 | 15/09/2026 | `feat: Bắt buộc kèm ảnh khi đăng bài Facebook` | Thêm điều thứ năm vào mục 6: không có ảnh thì không đăng, script từ chối lệnh thiếu `--image`. Chủ sản phẩm chốt sau khi có mã truy cập — bài chỉ có chữ trôi qua gần như vô hình trên bảng tin. Thêm mục *Ảnh cho bài đăng*: Claude tự dựng ảnh đồ hoạ, **không cần khớp từng khuôn mà chỉ cần màu hài hoà** cho các ảnh trông cùng một nhà — chủ sản phẩm nói rõ vậy để khỏi tốn công dựng lại đúng từng chi tiết; bài cần ảnh chụp thật thì hỏi chủ sản phẩm gửi, không vẽ thay. Nguồn HTML của ảnh bài số 4 để ở `scripts/facebook-images/`, kèm lệnh dựng PNG |
 | 15/09/2026 | `feat: Đánh trên đàn, điện thoại phát tiếng piano` | Thêm bài đăng số 10 rút từ bài cập nhật cùng ngày — góc kể là "đàn rẻ thì loa dở", lý do có thật khiến người mới ngại mua đàn và chán tiếng. Ghi kèm hai lời dặn đừng hứa iPhone làm được và đừng nói pedal chạy mọi đường, vì cả hai đều sai với bản đang chạy |
